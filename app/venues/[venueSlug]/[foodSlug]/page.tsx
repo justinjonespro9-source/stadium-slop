@@ -82,6 +82,11 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 Promoted
               </p>
             ) : null}
+            {foodItem.isNewThisSeason ? (
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+                New This Season
+              </p>
+            ) : null}
             <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
               {foodItem.name}
             </h1>
@@ -164,6 +169,28 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     {foodItem.location}
                   </p>
                 </div>
+                <div className="rounded-2xl bg-black p-4">
+                  <p className="text-zinc-500">Availability</p>
+                  <p className="mt-1 font-bold text-white">
+                    {foodItem.availabilityStatus ?? "Status pending"}
+                  </p>
+                </div>
+                {foodItem.seasonIntroduced ? (
+                  <div className="rounded-2xl bg-black p-4">
+                    <p className="text-zinc-500">Season Introduced</p>
+                    <p className="mt-1 font-bold text-white">
+                      {foodItem.seasonIntroduced}
+                    </p>
+                  </div>
+                ) : null}
+                {foodItem.lastConfirmed ? (
+                  <div className="rounded-2xl bg-black p-4">
+                    <p className="text-zinc-500">Last Confirmed</p>
+                    <p className="mt-1 font-bold text-white">
+                      {foodItem.lastConfirmed}
+                    </p>
+                  </div>
+                ) : null}
               </div>
 
               <div className="mt-5 flex flex-wrap gap-2">
@@ -208,6 +235,26 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 className="mt-6 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
               >
                 Location verification coming soon
+              </button>
+            </article>
+
+            <article className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-3">
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Accuracy
+              </p>
+              <h2 className="mt-2 text-3xl font-black">
+                Help keep this item accurate
+              </h2>
+              <p className="mt-4 max-w-3xl text-zinc-400">
+                Menus change fast. Fans will be able to report price changes,
+                wrong sections, new photos, or retired items.
+              </p>
+              <button
+                type="button"
+                disabled
+                className="mt-6 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
+              >
+                Corrections coming soon
               </button>
             </article>
           </div>

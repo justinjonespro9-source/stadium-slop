@@ -102,6 +102,11 @@ export default function VenuesPage() {
                           Promoted
                         </span>
                       ) : null}
+                      {topItem?.isNewThisSeason ? (
+                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                          New This Season
+                        </span>
+                      ) : null}
                     </div>
                     {topItem ? (
                       <p className="mt-1 text-sm text-zinc-500">

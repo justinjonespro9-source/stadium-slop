@@ -20,6 +20,9 @@ export default async function VenuePage({ params }: VenuePageProps) {
   const venueFoodItems = getFoodItemsByVenueSlug(venue.slug).sort(
     (a, b) => b.rating - a.rating
   );
+  const newThisSeasonItems = venueFoodItems.filter(
+    (item) => item.isNewThisSeason
+  );
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -85,6 +88,50 @@ export default async function VenuePage({ params }: VenuePageProps) {
         </section>
 
         <section className="border-t border-zinc-800 py-10">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              New This Season
+            </p>
+            <h2 className="mt-2 text-3xl font-black">
+              Fresh concession reports
+            </h2>
+          </div>
+
+          {newThisSeasonItems.length > 0 ? (
+            <div className="mt-6 grid gap-4 lg:grid-cols-2">
+              {newThisSeasonItems.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/venues/${venue.slug}/${item.slug}`}
+                  className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
+                >
+                  <article>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-xl font-black">{item.name}</h3>
+                      <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                        New This Season
+                      </span>
+                    </div>
+                    <p className="mt-3 text-sm text-zinc-400">
+                      {item.category} · {item.location}
+                    </p>
+                    {item.seasonIntroduced ? (
+                      <p className="mt-2 text-sm text-zinc-500">
+                        Introduced: {item.seasonIntroduced}
+                      </p>
+                    ) : null}
+                  </article>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-6 text-sm text-zinc-500">
+              No new items reported yet.
+            </p>
+          )}
+        </section>
+
+        <section className="border-t border-zinc-800 py-10">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -117,6 +164,11 @@ export default async function VenuePage({ params }: VenuePageProps) {
                         {item.isPromoted ? (
                           <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                             Promoted
+                          </span>
+                        ) : null}
+                        {item.isNewThisSeason ? (
+                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                            New This Season
                           </span>
                         ) : null}
                       </div>

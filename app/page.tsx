@@ -102,6 +102,11 @@ export default function Home() {
                                 Promoted
                               </span>
                             ) : null}
+                            {item.isNewThisSeason ? (
+                              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                                New This Season
+                              </span>
+                            ) : null}
                           </div>
                           <p className="mt-1 text-sm text-zinc-400">
                             {venue
@@ -183,6 +188,11 @@ export default function Home() {
                       {topItem?.isPromoted ? (
                         <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                           Promoted
+                        </span>
+                      ) : null}
+                      {topItem?.isNewThisSeason ? (
+                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                          New This Season
                         </span>
                       ) : null}
                     </div>

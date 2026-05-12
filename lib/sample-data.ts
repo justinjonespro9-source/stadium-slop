@@ -29,6 +29,15 @@ export type FoodItem = {
   isPromoted?: boolean;
   sponsorName?: string;
   sponsorDisclosure?: string;
+  isNewThisSeason?: boolean;
+  seasonIntroduced?: string;
+  availabilityStatus?:
+    | "Available"
+    | "Seasonal"
+    | "Retired"
+    | "Fan reported"
+    | "Venue verified";
+  lastConfirmed?: string;
 };
 
 export const venues: Venue[] = [
@@ -92,7 +101,9 @@ export const foodItems: FoodItem[] = [
     reviewCount: 128,
     tags: ["Shareable", "Salty", "Fan Favorite"],
     description:
-      "Crispy cheese curds loaded up for a ballpark snack that feels like Minnesota in a basket."
+      "Crispy cheese curds loaded up for a ballpark snack that feels like Minnesota in a basket.",
+    availabilityStatus: "Fan reported",
+    lastConfirmed: "May 2026"
   },
   {
     slug: "brisket-sandwich",
@@ -109,7 +120,11 @@ export const foodItems: FoodItem[] = [
       "A stadium-sized brisket sandwich built for fans who want something more serious than a hot dog.",
     isPromoted: true,
     sponsorName: "Sample Sponsor",
-    sponsorDisclosure: "Sponsored placement. Fan ratings remain independent."
+    sponsorDisclosure: "Sponsored placement. Fan ratings remain independent.",
+    isNewThisSeason: true,
+    seasonIntroduced: "2026",
+    availabilityStatus: "Venue verified",
+    lastConfirmed: "2026 season"
   },
   {
     slug: "walleye-basket",
@@ -123,7 +138,9 @@ export const foodItems: FoodItem[] = [
     reviewCount: 74,
     tags: ["Local Flavor", "Crispy", "Arena Classic"],
     description:
-      "A Minnesota hockey-night basket with fried walleye, fries, and just enough hometown credibility."
+      "A Minnesota hockey-night basket with fried walleye, fries, and just enough hometown credibility.",
+    availabilityStatus: "Venue verified",
+    lastConfirmed: "2026 season"
   },
   {
     slug: "cold-stadium-nachos",
@@ -137,7 +154,9 @@ export const foodItems: FoodItem[] = [
     reviewCount: 51,
     tags: ["Overpriced", "Skip It", "Slop Candidate"],
     description:
-      "The kind of nachos that make fans question every financial decision that led to kickoff."
+      "The kind of nachos that make fans question every financial decision that led to kickoff.",
+    availabilityStatus: "Fan reported",
+    lastConfirmed: "May 2026"
   }
 ];
 
