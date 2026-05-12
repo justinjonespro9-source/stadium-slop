@@ -83,6 +83,9 @@ export default function VenuesPage() {
                   <p className="mt-2 text-sm text-zinc-500">
                     {venue.sports.join(", ")}
                   </p>
+                  <p className="mt-3 text-xs font-bold uppercase tracking-[0.15em] text-zinc-600">
+                    {venue.reviewRadiusMeters}m verified review zone
+                  </p>
 
                   <div className="mt-6 rounded-2xl bg-black p-4">
                     <p className="text-sm text-zinc-500">

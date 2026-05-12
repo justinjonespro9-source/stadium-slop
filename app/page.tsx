@@ -121,6 +121,22 @@ export default function Home() {
           </div>
         </div>
 
+        <section className="border-t border-zinc-800 py-14">
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Trust Layer
+            </p>
+            <h2 className="mt-2 text-3xl font-black">
+              Verified on-site reviews
+            </h2>
+            <p className="mt-4 max-w-3xl text-zinc-400">
+              Anyone can browse Stadium Slop, but official ratings are designed
+              to come from fans near the venue. Location is checked only when
+              submitting a review — never in the background.
+            </p>
+          </div>
+        </section>
+
         <section id="venues" className="border-t border-zinc-800 py-14">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>

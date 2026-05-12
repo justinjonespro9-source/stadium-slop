@@ -71,6 +71,19 @@ export default async function VenuePage({ params }: VenuePageProps) {
           </div>
         </header>
 
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Verified Review Zone
+          </p>
+          <h2 className="mt-2 text-2xl font-black">
+            {venue.reviewRadiusMeters} meters from the venue
+          </h2>
+          <p className="mt-3 max-w-3xl text-zinc-400">
+            Future official reviews will require fans to be near {venue.name}
+            before submitting a rating. Browsing stays public for everyone.
+          </p>
+        </section>
+
         <section className="border-t border-zinc-800 py-10">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>

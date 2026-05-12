@@ -190,6 +190,26 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 {venue.sports.join(", ")} · {venue.region}
               </p>
             </aside>
+
+            <article className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-3">
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Review This Item
+              </p>
+              <h2 className="mt-2 text-3xl font-black">
+                Verify you&apos;re at the venue
+              </h2>
+              <p className="mt-4 max-w-3xl text-zinc-400">
+                To keep ratings legit, Stadium Slop will check your current
+                location before accepting an official review.
+              </p>
+              <button
+                type="button"
+                disabled
+                className="mt-6 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
+              >
+                Location verification coming soon
+              </button>
+            </article>
           </div>
         </section>
 
@@ -215,7 +235,12 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
               >
                 <div className="flex items-start justify-between gap-4">
-                  <h3 className="font-bold">{review.author}</h3>
+                  <div>
+                    <h3 className="font-bold">{review.author}</h3>
+                    <span className="mt-2 inline-flex rounded-full border border-zinc-800 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
+                      Verified on-site
+                    </span>
+                  </div>
                   <span className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
                     {review.rating.toFixed(1)}
                   </span>

@@ -8,6 +8,9 @@ export type Venue = {
   sports: string[];
   country: string;
   region: string;
+  latitude: number;
+  longitude: number;
+  reviewRadiusMeters: number;
   venueType: "Ballpark" | "Stadium" | "Arena";
 };
 
@@ -39,6 +42,9 @@ export const venues: Venue[] = [
     sports: ["Baseball"],
     country: "USA",
     region: "North America",
+    latitude: 44.9817,
+    longitude: -93.2776,
+    reviewRadiusMeters: 800,
     venueType: "Ballpark"
   },
   {
@@ -51,6 +57,9 @@ export const venues: Venue[] = [
     sports: ["Football"],
     country: "USA",
     region: "North America",
+    latitude: 44.9738,
+    longitude: -93.2581,
+    reviewRadiusMeters: 800,
     venueType: "Stadium"
   },
   {
@@ -63,6 +72,9 @@ export const venues: Venue[] = [
     sports: ["Hockey"],
     country: "USA",
     region: "North America",
+    latitude: 44.9448,
+    longitude: -93.1011,
+    reviewRadiusMeters: 800,
     venueType: "Arena"
   }
 ];
