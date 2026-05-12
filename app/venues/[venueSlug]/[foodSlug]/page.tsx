@@ -73,8 +73,13 @@ export default async function FoodPage({ params }: FoodPageProps) {
         <header className="grid gap-8 py-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
           <div>
             <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
-              {foodItem.category}
+              {foodItem.itemType} · {foodItem.category}
             </p>
+            {foodItem.ageRestricted ? (
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+                21+
+              </p>
+            ) : null}
             {foodItem.isPromoted ? (
               <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
                 Promoted
@@ -138,6 +143,18 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 Sponsor: {foodItem.sponsorName}
               </p>
             ) : null}
+          </section>
+        ) : null}
+
+        {foodItem.alcoholic ? (
+          <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Responsible Drinking
+            </p>
+            <p className="mt-3 text-zinc-300">
+              Alcohol availability varies by venue. Must be 21+ to purchase.
+              Please drink responsibly.
+            </p>
           </section>
         ) : null}
 
@@ -269,6 +286,26 @@ export default async function FoodPage({ params }: FoodPageProps) {
                   </p>
                 </div>
                 <div className="rounded-2xl bg-black p-4">
+                  <p className="text-zinc-500">Item Type</p>
+                  <p className="mt-1 font-bold text-white">
+                    {foodItem.itemType}
+                  </p>
+                </div>
+                {foodItem.beverageStyle ? (
+                  <div className="rounded-2xl bg-black p-4">
+                    <p className="text-zinc-500">Beverage Style</p>
+                    <p className="mt-1 font-bold text-white">
+                      {foodItem.beverageStyle}
+                    </p>
+                  </div>
+                ) : null}
+                {foodItem.ageRestricted ? (
+                  <div className="rounded-2xl bg-black p-4">
+                    <p className="text-zinc-500">Age Restricted</p>
+                    <p className="mt-1 font-bold text-white">21+</p>
+                  </div>
+                ) : null}
+                <div className="rounded-2xl bg-black p-4">
                   <p className="text-zinc-500">Location</p>
                   <p className="mt-1 font-bold text-white">
                     {foodItem.location}
@@ -342,13 +379,15 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 To keep ratings legit, Stadium Slop will check your current
                 location before accepting an official review.
               </p>
-              <button
-                type="button"
-                disabled
-                className="mt-6 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
+              <Link
+                href={`/venues/${venue.slug}/${foodItem.slug}/review`}
+                className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-bold text-black transition hover:bg-zinc-200"
               >
-                Location verification coming soon
-              </button>
+                Review this item
+              </Link>
+              <p className="mt-3 text-sm text-zinc-500">
+                Location verification coming soon.
+              </p>
             </article>
 
             <article className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-3">

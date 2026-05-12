@@ -151,6 +151,11 @@ export default async function VenuePage({ params }: VenuePageProps) {
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="text-xl font-black">{item.name}</h3>
+                      {item.ageRestricted ? (
+                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                          21+
+                        </span>
+                      ) : null}
                       {item.venueBadge ? (
                         <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                           {item.venueBadge}
@@ -158,7 +163,8 @@ export default async function VenuePage({ params }: VenuePageProps) {
                       ) : null}
                     </div>
                     <p className="mt-2 text-sm text-zinc-400">
-                      Slop Score {item.slopScore.toFixed(1)} · {item.verdict}
+                      {item.itemType} · Slop Score {item.slopScore.toFixed(1)} ·{" "}
+                      {item.verdict}
                     </p>
                   </div>
                   <div
@@ -242,12 +248,17 @@ export default async function VenuePage({ params }: VenuePageProps) {
                   <article>
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="text-xl font-black">{item.name}</h3>
+                      {item.ageRestricted ? (
+                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                          21+
+                        </span>
+                      ) : null}
                       <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                         New This Season
                       </span>
                     </div>
                     <p className="mt-3 text-sm text-zinc-400">
-                      {item.category} · {item.location}
+                      {item.itemType} · {item.category} · {item.location}
                     </p>
                     {item.seasonIntroduced ? (
                       <p className="mt-2 text-sm text-zinc-500">
@@ -269,10 +280,10 @@ export default async function VenuePage({ params }: VenuePageProps) {
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Food Rankings
+                Item Rankings
               </p>
               <h2 className="mt-2 text-3xl font-black">
-                Rated bites at {venue.name}
+                Rated items at {venue.name}
               </h2>
             </div>
             <p className="text-sm text-zinc-400">
@@ -291,10 +302,15 @@ export default async function VenuePage({ params }: VenuePageProps) {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                        {item.category}
+                        {item.itemType} · {item.category}
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-2">
                         <h3 className="text-2xl font-black">{item.name}</h3>
+                        {item.ageRestricted ? (
+                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                            21+
+                          </span>
+                        ) : null}
                         {item.isPromoted ? (
                           <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                             Promoted

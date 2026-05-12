@@ -18,6 +18,16 @@ export type FoodItem = {
   slug: string;
   name: string;
   venueSlug: string;
+  itemType: "Food" | "Non-Alcoholic Drink" | "Alcoholic Drink";
+  alcoholic?: boolean;
+  ageRestricted?: boolean;
+  beverageStyle?:
+    | "Beer"
+    | "Cocktail"
+    | "Wine"
+    | "Seltzer"
+    | "Non-Alcoholic"
+    | "Other";
   category: string;
   location: string;
   price: number;
@@ -145,6 +155,7 @@ export const foodItems: FoodItem[] = [
     slug: "loaded-cheese-curds",
     name: "Loaded Cheese Curds",
     venueSlug: "target-field",
+    itemType: "Food",
     category: "Snack",
     location: "Main concourse",
     price: 13.99,
@@ -172,6 +183,7 @@ export const foodItems: FoodItem[] = [
     slug: "brisket-sandwich",
     name: "Brisket Sandwich",
     venueSlug: "us-bank-stadium",
+    itemType: "Food",
     category: "BBQ",
     location: "Lower concourse",
     price: 16.99,
@@ -203,6 +215,7 @@ export const foodItems: FoodItem[] = [
     slug: "walleye-basket",
     name: "Walleye Basket",
     venueSlug: "xcel-energy-center",
+    itemType: "Food",
     category: "Seafood",
     location: "Club level",
     price: 15.49,
@@ -230,6 +243,7 @@ export const foodItems: FoodItem[] = [
     slug: "cold-stadium-nachos",
     name: "Cold Stadium Nachos",
     venueSlug: "us-bank-stadium",
+    itemType: "Food",
     category: "Nachos",
     location: "Upper deck",
     price: 11.99,
@@ -252,6 +266,66 @@ export const foodItems: FoodItem[] = [
     scoreboardRank: 2,
     previousScoreboardRank: 1,
     venueBadge: "Slop Alert"
+  },
+  {
+    slug: "north-loop-old-fashioned",
+    name: "North Loop Old Fashioned",
+    venueSlug: "target-field",
+    itemType: "Alcoholic Drink",
+    alcoholic: true,
+    ageRestricted: true,
+    beverageStyle: "Cocktail",
+    category: "Cocktail",
+    location: "Main concourse",
+    price: 17.99,
+    rating: 4.1,
+    worthItScore: 72,
+    slopScore: 4.1,
+    verdict: "Solid Role Player",
+    runItBackPercent: 76,
+    valueLabel: "Stadium Tax",
+    servedRightLabel: "Game Ready",
+    lineWaitLabel: "Too Long",
+    napkinRating: 1,
+    napkinLabel: "Clean Win",
+    reviewCount: 32,
+    tags: ["Cocktail", "21+", "Premium"],
+    description:
+      "A ballpark cocktail placeholder for fans who want something stronger than a soda.",
+    availabilityStatus: "Fan reported",
+    lastConfirmed: "May 2026",
+    scoreboardRank: 2,
+    venueBadge: "Hidden Gem"
+  },
+  {
+    slug: "frozen-lemonade",
+    name: "Frozen Lemonade",
+    venueSlug: "target-field",
+    itemType: "Non-Alcoholic Drink",
+    alcoholic: false,
+    ageRestricted: false,
+    beverageStyle: "Non-Alcoholic",
+    category: "Drink",
+    location: "Family concourse",
+    price: 7.99,
+    rating: 4.2,
+    worthItScore: 86,
+    slopScore: 4.2,
+    verdict: "Solid Role Player",
+    runItBackPercent: 84,
+    valueLabel: "Fair Deal",
+    servedRightLabel: "Game Ready",
+    lineWaitLabel: "Quick Stop",
+    napkinRating: 2,
+    napkinLabel: "Safe at Your Seat",
+    reviewCount: 44,
+    tags: ["Cold", "Family Friendly", "Non-Alcoholic"],
+    description:
+      "A frozen lemonade placeholder built for hot day games and sticky fingers.",
+    availabilityStatus: "Fan reported",
+    lastConfirmed: "May 2026",
+    scoreboardRank: 3,
+    venueBadge: "Best Value"
   }
 ];
 

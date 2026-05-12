@@ -72,7 +72,7 @@ export default function VenuesPage() {
 
                   <div className="mt-6 rounded-2xl bg-black p-4">
                     <p className="text-sm text-zinc-500">
-                      {venueFoodItems.length} food{" "}
+                      {venueFoodItems.length}{" "}
                       {venueFoodItems.length === 1 ? "item" : "items"}
                     </p>
                     <p className="mt-3 text-sm text-zinc-500">Top item</p>
@@ -80,6 +80,11 @@ export default function VenuesPage() {
                       <p className="font-bold">
                         {topItem ? topItem.name : "No food items yet"}
                       </p>
+                      {topItem?.ageRestricted ? (
+                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                          21+
+                        </span>
+                      ) : null}
                       {topItem?.isPromoted ? (
                         <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                           Promoted
@@ -93,8 +98,8 @@ export default function VenuesPage() {
                     </div>
                     {topItem ? (
                       <p className="mt-1 text-sm text-zinc-500">
-                        Slop Score {topItem.slopScore.toFixed(1)} ·{" "}
-                        {topItem.verdict}
+                        {topItem.itemType} · Slop Score{" "}
+                        {topItem.slopScore.toFixed(1)} · {topItem.verdict}
                       </p>
                     ) : null}
                   </div>
