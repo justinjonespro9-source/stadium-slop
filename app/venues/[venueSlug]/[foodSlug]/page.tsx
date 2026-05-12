@@ -10,30 +10,39 @@ import {
 const mockReviews = [
   {
     author: "Section 128 Regular",
+    initials: "SR",
     rating: 4.8,
-    runItBack: "Yes",
+    runItBack: "Run It Back",
     value: "Fair Deal",
-    napkins: "3/5",
-    comment:
-      "Exactly the kind of concession stand win you hope for when the lines are moving."
+    servedRight: "Game Ready",
+    lineWait: "Worth the Wait",
+    napkins: "3/5 napkins",
+    imagePlaceholder: "🧀",
+    comment: "Hot, salty, and still crisp by the time I got back to my seat."
   },
   {
     author: "Late Inning Snack Scout",
+    initials: "LS",
     rating: 4.2,
     runItBack: "Maybe",
     value: "Stadium Tax",
-    napkins: "4/5",
-    comment:
-      "Pricey, but it feels more memorable than the usual backup-plan stadium food."
+    servedRight: "Fine",
+    lineWait: "Too Long",
+    napkins: "4/5 napkins",
+    imagePlaceholder: "🥪",
+    comment: "Good bite, but the line made it feel like a bigger commitment."
   },
   {
     author: "Upper Deck Critic",
+    initials: "UC",
     rating: 3.9,
-    runItBack: "If nearby",
+    runItBack: "Bench It",
     value: "Fair Deal",
-    napkins: "2/5",
-    comment:
-      "Worth trying once, especially if you are already nearby and hungry."
+    servedRight: "Sat on the Bench",
+    lineWait: "Quick Stop",
+    napkins: "2/5 napkins",
+    imagePlaceholder: "🍟",
+    comment: "Fine if you are close, but not worth crossing sections for."
   }
 ];
 
@@ -132,31 +141,22 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </div>
         </header>
 
-        {foodItem.isPromoted && foodItem.sponsorDisclosure ? (
-          <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Sponsor Disclosure
-            </p>
-            <p className="mt-3 text-zinc-300">{foodItem.sponsorDisclosure}</p>
-            {foodItem.sponsorName ? (
-              <p className="mt-2 text-sm text-zinc-500">
-                Sponsor: {foodItem.sponsorName}
-              </p>
-            ) : null}
-          </section>
-        ) : null}
-
-        {foodItem.alcoholic ? (
-          <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Responsible Drinking
-            </p>
-            <p className="mt-3 text-zinc-300">
-              Alcohol availability varies by venue. Must be 21+ to purchase.
-              Please drink responsibly.
-            </p>
-          </section>
-        ) : null}
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Review this item
+          </p>
+          <h2 className="mt-2 text-3xl font-black">Help move the scoreboard</h2>
+          <p className="mt-4 max-w-3xl text-zinc-400">
+            Help move the venue scoreboard. Verified reviews require a free
+            profile and an on-site location check.
+          </p>
+          <Link
+            href={`/venues/${venue.slug}/${foodItem.slug}/review`}
+            className="mt-6 inline-flex w-full justify-center rounded-full bg-white px-6 py-4 text-sm font-black text-black transition hover:bg-zinc-200 sm:w-auto"
+          >
+            Review this item
+          </Link>
+        </section>
 
         {foodItem.freshSignal ? (
           <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
@@ -227,6 +227,98 @@ export default async function FoodPage({ params }: FoodPageProps) {
               </p>
             </div>
           </div>
+        </section>
+
+        <section className="border-t border-zinc-800 py-10">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Fan Slop Cards
+              </p>
+              <h2 className="mt-2 text-3xl font-black">
+                Visual reviews from the seats
+              </h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-6 text-zinc-400">
+              Swipe fan cards to see what verified on-site reviewers actually
+              got. Photos and written notes are optional; structured signals
+              power the scoreboards.
+            </p>
+          </div>
+
+          <div className="mt-8 flex snap-x gap-4 overflow-x-auto pb-4">
+            {mockReviews.map((review) => (
+              <article
+                key={review.author}
+                className="min-w-[82vw] snap-start overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-950 sm:min-w-[24rem]"
+              >
+                <div className="relative">
+                  <div className="flex aspect-[4/3] items-center justify-center bg-black text-8xl">
+                    {review.imagePlaceholder}
+                  </div>
+                  <div className="absolute -bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border-4 border-zinc-950 bg-white text-sm font-black text-black">
+                    {review.initials}
+                  </div>
+                  <span className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+                    {review.rating.toFixed(1)}
+                  </span>
+                </div>
+
+                <div className="p-5 pt-8">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-xl font-black">{review.runItBack}</h3>
+                    <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                      Verified on-site
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm text-zinc-500">{review.author}</p>
+                  <p className="mt-4 text-sm leading-6 text-zinc-300">
+                    {review.comment}
+                  </p>
+
+                  <div className="mt-5 rounded-3xl bg-black p-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-600">
+                      Breakdown
+                    </p>
+                    <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <p className="text-zinc-600">Value</p>
+                        <p className="mt-1 font-bold text-white">
+                          {review.value}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-zinc-600">Served Right</p>
+                        <p className="mt-1 font-bold text-white">
+                          {review.servedRight}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-zinc-600">Line Wait</p>
+                        <p className="mt-1 font-bold text-white">
+                          {review.lineWait}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-zinc-600">Napkins</p>
+                        <p className="mt-1 font-bold text-white">
+                          {review.napkins}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="mt-4 text-sm leading-6 text-zinc-400">
+                      {review.comment}
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <p className="text-sm leading-6 text-zinc-500">
+            Official scores are built from structured signals. Written notes are
+            optional and should stay focused on the food.
+          </p>
         </section>
 
         <section className="border-t border-zinc-800 py-10">
@@ -399,28 +491,33 @@ export default async function FoodPage({ params }: FoodPageProps) {
               </p>
             </aside>
 
-            <article className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-3">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Review This Item
-              </p>
-              <h2 className="mt-2 text-3xl font-black">
-                Sign in and verify you&apos;re at the venue
-              </h2>
-              <p className="mt-4 max-w-3xl text-zinc-400">
-                To keep ratings legit, Stadium Slop will require a free profile
-                and an on-site location check before accepting an official
-                review.
-              </p>
-              <Link
-                href={`/venues/${venue.slug}/${foodItem.slug}/review`}
-                className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-bold text-black transition hover:bg-zinc-200"
-              >
-                Review this item
-              </Link>
-              <p className="mt-3 text-sm text-zinc-500">
-                Sign-in and location verification coming soon.
-              </p>
-            </article>
+            {foodItem.isPromoted && foodItem.sponsorDisclosure ? (
+              <article className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-3">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                  Sponsor Disclosure
+                </p>
+                <p className="mt-3 text-zinc-300">
+                  {foodItem.sponsorDisclosure}
+                </p>
+                {foodItem.sponsorName ? (
+                  <p className="mt-2 text-sm text-zinc-500">
+                    Sponsor: {foodItem.sponsorName}
+                  </p>
+                ) : null}
+              </article>
+            ) : null}
+
+            {foodItem.alcoholic ? (
+              <article className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-3">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                  Responsible Drinking
+                </p>
+                <p className="mt-3 text-zinc-300">
+                  Alcohol availability varies by venue. Must be 21+ to purchase.
+                  Please drink responsibly.
+                </p>
+              </article>
+            ) : null}
 
             <article className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6 lg:col-span-3">
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -441,60 +538,6 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 Corrections coming soon
               </button>
             </article>
-          </div>
-        </section>
-
-        <section className="border-t border-zinc-800 py-10">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Mock Reviews
-              </p>
-              <h2 className="mt-2 text-3xl font-black">
-                Early fan reactions
-              </h2>
-            </div>
-            <p className="text-sm text-zinc-400">
-              Static placeholders until real reviews are added.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {mockReviews.map((review) => (
-              <article
-                key={review.author}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="font-bold">{review.author}</h3>
-                    <span className="mt-2 inline-flex rounded-full border border-zinc-800 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
-                      Verified on-site
-                    </span>
-                  </div>
-                  <span className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                    {review.rating.toFixed(1)}
-                  </span>
-                </div>
-                <p className="mt-4 text-sm leading-6 text-zinc-400">
-                  {review.comment}
-                </p>
-                <div className="mt-5 grid gap-2 text-xs text-zinc-400">
-                  <p>
-                    <span className="text-zinc-600">Run It Back:</span>{" "}
-                    {review.runItBack}
-                  </p>
-                  <p>
-                    <span className="text-zinc-600">Value:</span>{" "}
-                    {review.value}
-                  </p>
-                  <p>
-                    <span className="text-zinc-600">Napkins:</span>{" "}
-                    {review.napkins}
-                  </p>
-                </div>
-              </article>
-            ))}
           </div>
         </section>
       </section>

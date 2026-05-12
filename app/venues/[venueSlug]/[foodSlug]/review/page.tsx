@@ -125,6 +125,10 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             Review Signals
           </p>
           <h2 className="mt-2 text-3xl font-black">Build your fan scorecard</h2>
+          <p className="mt-4 text-zinc-400">
+            Signal ratings are required because they power venue scoreboards.
+            Photos are optional, and short written notes are optional.
+          </p>
 
           <div className="mt-8 space-y-8">
             <div>
@@ -182,16 +186,20 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             </div>
 
             <div>
-              <h3 className="font-bold">Short Review</h3>
+              <h3 className="font-bold">Short Review Optional</h3>
+              <p className="mt-2 text-sm text-zinc-500">
+                Conceptual limit: 280 characters. Keep it useful. Review the
+                food, not the staff or other fans.
+              </p>
               <textarea
                 disabled
-                placeholder="Tell fans what actually showed up at the seat..."
+                placeholder="Optional: what actually showed up at the seat? 280 characters max."
                 className="mt-3 min-h-32 w-full cursor-not-allowed rounded-2xl border border-zinc-800 bg-black p-4 text-sm text-zinc-400 outline-none placeholder:text-zinc-600"
               />
             </div>
 
             <div className="rounded-2xl border border-zinc-800 bg-black p-5">
-              <p className="font-bold">Photo uploads coming soon</p>
+              <p className="font-bold">Optional photo upload coming soon</p>
               <p className="mt-2 text-sm text-zinc-500">
                 Fans will be able to attach verified on-site food photos when
                 real submissions are added.
