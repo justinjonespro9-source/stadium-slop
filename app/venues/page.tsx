@@ -74,9 +74,14 @@ export default function VenuesPage() {
                     </span>
                   </div>
 
-                  <p className="mt-5 text-sm text-zinc-500">{venue.team}</p>
+                  <p className="mt-5 text-sm text-zinc-500">
+                    {venue.teams.join(", ")}
+                  </p>
                   <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                    {venue.league}
+                    {venue.leagues.join(", ")}
+                  </p>
+                  <p className="mt-2 text-sm text-zinc-500">
+                    {venue.sports.join(", ")}
                   </p>
 
                   <div className="mt-6 rounded-2xl bg-black p-4">

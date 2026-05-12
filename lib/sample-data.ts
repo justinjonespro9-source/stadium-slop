@@ -3,8 +3,11 @@ export type Venue = {
   name: string;
   city: string;
   state: string;
-  league: string;
-  team: string;
+  leagues: string[];
+  teams: string[];
+  sports: string[];
+  country: string;
+  region: string;
   venueType: "Ballpark" | "Stadium" | "Arena";
 };
 
@@ -28,8 +31,11 @@ export const venues: Venue[] = [
     name: "Target Field",
     city: "Minneapolis",
     state: "MN",
-    league: "MLB",
-    team: "Minnesota Twins",
+    leagues: ["MLB"],
+    teams: ["Minnesota Twins"],
+    sports: ["Baseball"],
+    country: "USA",
+    region: "North America",
     venueType: "Ballpark"
   },
   {
@@ -37,8 +43,11 @@ export const venues: Venue[] = [
     name: "U.S. Bank Stadium",
     city: "Minneapolis",
     state: "MN",
-    league: "NFL",
-    team: "Minnesota Vikings",
+    leagues: ["NFL"],
+    teams: ["Minnesota Vikings"],
+    sports: ["Football"],
+    country: "USA",
+    region: "North America",
     venueType: "Stadium"
   },
   {
@@ -46,8 +55,11 @@ export const venues: Venue[] = [
     name: "Xcel Energy Center",
     city: "St. Paul",
     state: "MN",
-    league: "NHL",
-    team: "Minnesota Wild",
+    leagues: ["NHL", "PWHL"],
+    teams: ["Minnesota Wild", "Minnesota Frost"],
+    sports: ["Hockey"],
+    country: "USA",
+    region: "North America",
     venueType: "Arena"
   }
 ];

@@ -60,10 +60,13 @@ export default async function VenuePage({ params }: VenuePageProps) {
           </p>
           <div className="mt-6 flex flex-wrap gap-3 text-sm font-bold uppercase tracking-[0.2em] text-zinc-400">
             <span className="rounded-full border border-zinc-800 px-4 py-2">
-              {venue.league}
+              {venue.leagues.join(", ")}
             </span>
             <span className="rounded-full border border-zinc-800 px-4 py-2">
-              {venue.team}
+              {venue.teams.join(", ")}
+            </span>
+            <span className="rounded-full border border-zinc-800 px-4 py-2">
+              {venue.sports.join(", ")}
             </span>
           </div>
         </header>

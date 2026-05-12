@@ -141,11 +141,15 @@ export default function Home() {
                   <p className="mt-2 text-sm text-zinc-400">
                     {venue.city}, {venue.state}
                   </p>
-                  <p className="mt-4 text-sm text-zinc-500">{venue.team}</p>
+                  <p className="mt-4 text-sm text-zinc-500">
+                    {venue.teams.join(", ")}
+                  </p>
                   <div className="mt-3 flex gap-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                    <span>{venue.league}</span>
+                    <span>{venue.leagues.join(", ")}</span>
                     <span>·</span>
                     <span>{venue.venueType}</span>
+                    <span>·</span>
+                    <span>{venue.sports.join(", ")}</span>
                   </div>
                   <div className="mt-6 rounded-2xl bg-black p-4">
                     <p className="text-sm text-zinc-500">Top item</p>
