@@ -3,11 +3,43 @@ import { notFound } from "next/navigation";
 
 import { getFoodItemsByVenueSlug, getVenueBySlug } from "@/lib/sample-data";
 
+type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
+
 type VenuePageProps = {
   params: Promise<{
     venueSlug: string;
   }>;
 };
+
+function getScoreboardMovement(item: FoodItem) {
+  if (!item.scoreboardRank || item.previousScoreboardRank === undefined) {
+    return {
+      label: "NEW",
+      className: "text-amber-400"
+    };
+  }
+
+  const movement = item.previousScoreboardRank - item.scoreboardRank;
+
+  if (movement > 0) {
+    return {
+      label: `↑ ${movement}`,
+      className: "text-green-400"
+    };
+  }
+
+  if (movement < 0) {
+    return {
+      label: `↓ ${Math.abs(movement)}`,
+      className: "text-red-400"
+    };
+  }
+
+  return {
+    label: "—",
+    className: "text-zinc-500"
+  };
+}
 
 export default async function VenuePage({ params }: VenuePageProps) {
   const { venueSlug } = await params;
@@ -20,6 +52,18 @@ export default async function VenuePage({ params }: VenuePageProps) {
   const venueFoodItems = getFoodItemsByVenueSlug(venue.slug).sort(
     (a, b) => b.slopScore - a.slopScore
   );
+  const scoreboardItems = [...venueFoodItems]
+    .sort((a, b) => {
+      const rankA = a.scoreboardRank ?? Number.POSITIVE_INFINITY;
+      const rankB = b.scoreboardRank ?? Number.POSITIVE_INFINITY;
+
+      if (rankA !== rankB) {
+        return rankA - rankB;
+      }
+
+      return b.slopScore - a.slopScore;
+    })
+    .slice(0, 10);
   const newThisSeasonItems = venueFoodItems.filter(
     (item) => item.isNewThisSeason
   );
@@ -85,6 +129,58 @@ export default async function VenuePage({ params }: VenuePageProps) {
             Future official reviews will require fans to be near {venue.name}
             before submitting a rating. Browsing stays public for everyone.
           </p>
+        </section>
+
+        <section className="border-t border-zinc-800 py-10">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Venue Scoreboard
+              </p>
+              <h2 className="mt-2 text-3xl font-black">
+                {venue.name} Scoreboard
+              </h2>
+            </div>
+            <p className="text-sm text-zinc-400">
+              Ranked by venue scoreboard position, then Slop Score.
+            </p>
+          </div>
+
+          <div className="mt-8 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
+            {scoreboardItems.map((item) => {
+              const movement = getScoreboardMovement(item);
+
+              return (
+                <Link
+                  key={item.slug}
+                  href={`/venues/${venue.slug}/${item.slug}`}
+                  className="grid gap-4 border-b border-zinc-800 p-5 transition last:border-b-0 hover:bg-black sm:grid-cols-[auto_1fr_auto] sm:items-center"
+                >
+                  <div className="text-3xl font-black text-white">
+                    #{item.scoreboardRank ?? "—"}
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-xl font-black">{item.name}</h3>
+                      {item.venueBadge ? (
+                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                          {item.venueBadge}
+                        </span>
+                      ) : null}
+                    </div>
+                    <p className="mt-2 text-sm text-zinc-400">
+                      Slop Score {item.slopScore.toFixed(1)} · {item.verdict}
+                    </p>
+                  </div>
+                  <div
+                    className={`text-sm font-black uppercase tracking-[0.2em] ${movement.className}`}
+                  >
+                    {movement.label}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </section>
 
         <section className="border-t border-zinc-800 py-10">

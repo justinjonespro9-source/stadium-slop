@@ -65,6 +65,19 @@ export type FoodItem = {
     | "Fan reported"
     | "Venue verified";
   lastConfirmed?: string;
+  scoreboardRank?: number;
+  previousScoreboardRank?: number;
+  venueBadge?:
+    | "Venue MVP"
+    | "Fan Favorite"
+    | "Best Value"
+    | "Worth the Line"
+    | "New This Season"
+    | "Napkin Nightmare"
+    | "Slop Alert"
+    | "Hidden Gem"
+    | "Most Improved"
+    | "Falling Fast";
 };
 
 export const venues: Venue[] = [
@@ -138,7 +151,10 @@ export const foodItems: FoodItem[] = [
     description:
       "Crispy cheese curds loaded up for a ballpark snack that feels like Minnesota in a basket.",
     availabilityStatus: "Fan reported",
-    lastConfirmed: "May 2026"
+    lastConfirmed: "May 2026",
+    scoreboardRank: 1,
+    previousScoreboardRank: 3,
+    venueBadge: "Fan Favorite"
   },
   {
     slug: "brisket-sandwich",
@@ -167,7 +183,9 @@ export const foodItems: FoodItem[] = [
     isNewThisSeason: true,
     seasonIntroduced: "2026",
     availabilityStatus: "Venue verified",
-    lastConfirmed: "2026 season"
+    lastConfirmed: "2026 season",
+    scoreboardRank: 2,
+    venueBadge: "New This Season"
   },
   {
     slug: "walleye-basket",
@@ -191,7 +209,10 @@ export const foodItems: FoodItem[] = [
     description:
       "A Minnesota hockey-night basket with fried walleye, fries, and just enough hometown credibility.",
     availabilityStatus: "Venue verified",
-    lastConfirmed: "2026 season"
+    lastConfirmed: "2026 season",
+    scoreboardRank: 1,
+    previousScoreboardRank: 1,
+    venueBadge: "Venue MVP"
   },
   {
     slug: "cold-stadium-nachos",
@@ -215,7 +236,10 @@ export const foodItems: FoodItem[] = [
     description:
       "The kind of nachos that make fans question every financial decision that led to kickoff.",
     availabilityStatus: "Fan reported",
-    lastConfirmed: "May 2026"
+    lastConfirmed: "May 2026",
+    scoreboardRank: 2,
+    previousScoreboardRank: 1,
+    venueBadge: "Slop Alert"
   }
 ];
 

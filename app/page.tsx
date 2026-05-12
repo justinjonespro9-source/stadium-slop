@@ -1,271 +1,280 @@
+import Link from "next/link";
+
 import { foodItems, venues } from "@/lib/sample-data";
 
-const leaderboardItems = [...foodItems].sort(
-  (a, b) => b.slopScore - a.slopScore
-);
+type FoodItem = (typeof foodItems)[number];
 
-const topFoodItemByVenueSlug = foodItems.reduce<
-  Record<string, (typeof foodItems)[number]>
->((topItems, item) => {
-  const currentTopItem = topItems[item.venueSlug];
-
-  if (!currentTopItem || item.slopScore > currentTopItem.slopScore) {
-    topItems[item.venueSlug] = item;
-  }
-
-  return topItems;
-}, {});
-
-const categories = [
-  "Best Overall",
-  "Best Value",
-  "Most Overpriced",
-  "Worth the Line",
-  "Worst Slop",
-  "Hidden Gems"
+const quickActionChips = [
+  "NFL",
+  "MLB",
+  "NBA",
+  "NHL",
+  "MLS",
+  "WNBA",
+  "NWSL",
+  "PWHL",
+  "College",
+  "EPL"
 ];
+
+const topSlopScores = [...foodItems].sort((a, b) => b.slopScore - a.slopScore);
+const newThisSeasonItems = foodItems.filter((item) => item.isNewThisSeason);
+const napkinNightmares = [...foodItems].sort(
+  (a, b) => b.napkinRating - a.napkinRating
+);
+const slopAlerts = foodItems.filter((item) => item.verdict === "Slop Alert");
+
+const discoveryRows = [
+  {
+    title: "Top Slop Scores",
+    description: "The highest-rated bites in the sample dataset.",
+    items: topSlopScores
+  },
+  {
+    title: "New This Season",
+    description: "Fresh concession reports fans should know about.",
+    items: newThisSeasonItems
+  },
+  {
+    title: "Napkin Nightmares",
+    description: "Messy favorites and jersey-risk decisions.",
+    items: napkinNightmares
+  },
+  {
+    title: "Slop Alerts",
+    description: "Low-signal items fans may want to skip.",
+    items: slopAlerts
+  }
+];
+
+function getVenueForFoodItem(item: FoodItem) {
+  return venues.find((venue) => venue.slug === item.venueSlug);
+}
+
+function FoodDiscoveryCard({ item }: { item: FoodItem }) {
+  const venue = getVenueForFoodItem(item);
+
+  return (
+    <Link
+      href={`/venues/${item.venueSlug}/${item.slug}`}
+      className="group flex min-h-full flex-col rounded-3xl border border-zinc-800 bg-zinc-950 p-5 transition hover:border-zinc-500"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+            {item.category}
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <h3 className="text-xl font-black">{item.name}</h3>
+            {item.isPromoted ? (
+              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                Promoted
+              </span>
+            ) : null}
+            {item.isNewThisSeason ? (
+              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                New This Season
+              </span>
+            ) : null}
+          </div>
+        </div>
+        <span className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+          {item.slopScore.toFixed(1)}
+        </span>
+      </div>
+
+      <p className="mt-3 text-sm text-zinc-400">
+        {venue ? `${venue.name} · ${venue.city}, ${venue.state}` : "Unknown venue"}
+      </p>
+
+      <div className="mt-5 grid grid-cols-3 gap-2 text-sm">
+        <div className="rounded-2xl bg-black p-3">
+          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
+            Verdict
+          </p>
+          <p className="mt-1 font-bold text-white">{item.verdict}</p>
+        </div>
+        <div className="rounded-2xl bg-black p-3">
+          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
+            Run It Back
+          </p>
+          <p className="mt-1 font-bold text-white">{item.runItBackPercent}%</p>
+        </div>
+        <div className="rounded-2xl bg-black p-3">
+          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
+            Napkins
+          </p>
+          <p className="mt-1 font-bold text-white">{item.napkinRating}/5</p>
+        </div>
+      </div>
+
+      <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+        View food intel
+      </p>
+    </Link>
+  );
+}
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#111111] text-white">
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-10 sm:px-8 lg:px-10">
         <nav className="flex items-center justify-between">
-          <div className="text-xl font-black tracking-tight">STADIUM SLOP</div>
+          <Link href="/" className="text-xl font-black tracking-tight">
+            STADIUM SLOP
+          </Link>
           <div className="hidden gap-6 text-sm text-zinc-300 sm:flex">
-            <a href="/venues" className="hover:text-white">
+            <Link href="/venues" className="hover:text-white">
               Venues
-            </a>
-            <a href="#rankings" className="hover:text-white">
-              Rankings
-            </a>
-            <a href="#submit" className="hover:text-white">
-              Submit Food
-            </a>
+            </Link>
+            <Link href="#discover" className="hover:text-white">
+              Discover
+            </Link>
+            <Link href="#trust" className="hover:text-white">
+              Trust
+            </Link>
           </div>
         </nav>
 
-        <div className="grid flex-1 items-center gap-12 py-20 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
-            <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
-              Fan-powered food reviews for sports venues
-            </p>
+        <header className="py-20 text-center">
+          <p className="mb-5 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
+            Fan-powered concession intel for every league
+          </p>
+          <h1 className="text-6xl font-black leading-none tracking-tight sm:text-7xl lg:text-8xl">
+            STADIUM SLOP
+          </h1>
+          <p className="mx-auto mt-6 max-w-3xl text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+            Find what&apos;s worth eating before you hit the concession line.
+          </p>
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-zinc-300">
+            Search stadiums, teams, cities, or food items. Fan-powered reviews,
+            verified on-site signals, and real concession intel.
+          </p>
 
-            <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl lg:text-7xl">
-              Find what&apos;s worth eating before you hit the concession line.
-            </h1>
+          <div className="mx-auto mt-10 max-w-3xl rounded-full border border-zinc-800 bg-zinc-950 p-2 shadow-2xl">
+            <input
+              aria-label="Search Stadium Slop"
+              readOnly
+              placeholder="Search by venue, team, city, or food..."
+              className="w-full rounded-full bg-black px-6 py-5 text-lg font-semibold text-white outline-none placeholder:text-zinc-500"
+            />
+          </div>
 
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-              Stadium Slop helps fans rate, review, and rank the food inside
-              stadiums, arenas, and ballparks — from legendary bites to
-              overpriced disasters.
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="/venues"
-                className="rounded-full bg-white px-6 py-3 text-center text-sm font-bold text-black transition hover:bg-zinc-200"
+          <div className="mx-auto mt-5 flex max-w-4xl flex-wrap justify-center gap-2">
+            {quickActionChips.map((chip) => (
+              <button
+                key={chip}
+                type="button"
+                className="rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:border-zinc-500 hover:text-white"
               >
-                Browse Venues
-              </a>
-              <a
-                href="#submit"
-                className="rounded-full border borderinc-600 px-6 py-3 text-center text-sm font-bold text-white transition hover:border-white"
-              >
-                Submit a Review
-              </a>
+                {chip}
+              </button>
+            ))}
+          </div>
+        </header>
+
+        <section
+          id="trust"
+          className="grid gap-3 border-y border-zinc-800 py-6 md:grid-cols-3"
+        >
+          {[
+            "Verified on-site review zones",
+            "Fan ratings stay independent",
+            "Menus tracked by fans"
+          ].map((point) => (
+            <div
+              key={point}
+              className="rounded-2xl border border-zinc-800 bg-zinc-950 px-5 py-4 text-center text-sm font-bold text-zinc-300"
+            >
+              {point}
             </div>
-          </div>
-
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-5 shadow-2xl">
-            <div className="rounded-2xl bg-zinc-900 p-5">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-400">
-                Current Leaderboard
-              </p>
-              <h2 className="mt-3 text-3xl font-black">Top Stadium Bites</h2>
-
-              <div className="mt-6 space-y-4">
-                {leaderboardItems.map((item, index) => {
-                  const venue = venues.find(
-                    (venue) => venue.slug === item.venueSlug
-                  );
-
-                  return (
-                    <div
-                      key={item.slug}
-                      className="rounded-2xl border border-zinc-800 bg-black p-4"
-                    >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <p className="text-sm text-zinc-500">#{index + 1}</p>
-                          <div className="mt-1 flex flex-wrap items-center gap-2">
-                            <h3 className="text-lg font-bold">{item.name}</h3>
-                            {item.isPromoted ? (
-                              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                                Promoted
-                              </span>
-                            ) : null}
-                            {item.isNewThisSeason ? (
-                              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                                New This Season
-                              </span>
-                            ) : null}
-                          </div>
-                          <p className="mt-1 text-sm text-zinc-400">
-                            {venue
-                              ? `${venue.name} · ${venue.city}, ${venue.state}`
-                              : "Unknown venue"}
-                          </p>
-                        </div>
-                        <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                          Slop Score {item.slopScore.toFixed(1)}
-                        </div>
-                      </div>
-                      <div className="mt-4 grid gap-2 text-sm text-zinc-400 sm:grid-cols-3">
-                        <div>
-                          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
-                            Verdict
-                          </p>
-                          <p className="mt-1 font-bold text-white">
-                            {item.verdict}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
-                            Run It Back
-                          </p>
-                          <p className="mt-1 font-bold text-white">
-                            {item.runItBackPercent}%
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
-                            Napkins
-                          </p>
-                          <p className="mt-1 font-bold text-white">
-                            {item.napkinRating}/5
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <section className="border-t border-zinc-800 py-14">
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Trust Layer
-            </p>
-            <h2 className="mt-2 text-3xl font-black">
-              Verified on-site reviews
-            </h2>
-            <p className="mt-4 max-w-3xl text-zinc-400">
-              Anyone can browse Stadium Slop, but official ratings are designed
-              to come from fans near the venue. Location is checked only when
-              submitting a review — never in the background.
-            </p>
-          </div>
+          ))}
         </section>
 
-        <section id="venues" className="border-t border-zinc-800 py-14">
+        <section className="py-14">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Browse Venues
+                Popular Venues
               </p>
-              <h2 className="mt-2 text-3xl font-black">Start with Minnesota</h2>
+              <h2 className="mt-2 text-3xl font-black">
+                Jump into the sample venue database.
+              </h2>
             </div>
-            <p className="max-w-xl text-znc-400">
-              We&apos;ll start local, prove the flow, then expand across every
-              major sports venue.
-            </p>
+            <Link
+              href="/venues"
+              className="text-sm font-bold text-zinc-300 hover:text-white"
+            >
+              Browse all venues
+            </Link>
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {venues.map((venue) => {
-              const topItem = topFoodItemByVenueSlug[venue.slug];
-
-              return (
-                <article
-                  key={venue.slug}
-                  className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
-                >
+            {venues.map((venue) => (
+              <Link
+                key={venue.slug}
+                href={`/venues/${venue.slug}`}
+                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
+              >
+                <article>
                   <h3 className="text-xl font-black">{venue.name}</h3>
                   <p className="mt-2 text-sm text-zinc-400">
                     {venue.city}, {venue.state}
                   </p>
-                  <p className="mt-4 text-sm text-zinc-500">
+                  <p className="mt-5 text-sm text-zinc-500">
                     {venue.teams.join(", ")}
                   </p>
-                  <div className="mt-3 flex gap-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                    <span>{venue.leagues.join(", ")}</span>
-                    <span>·</span>
-                    <span>{venue.venueType}</span>
-                    <span>·</span>
-                    <span>{venue.sports.join(", ")}</span>
-                  </div>
-                  <div className="mt-6 rounded-2xl bg-black p-4">
-                    <p className="text-sm text-zinc-500">Top item</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <p className="font-bold">
-                        {topItem ? topItem.name : "No food items yet"}
-                      </p>
-                      {topItem?.isPromoted ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          Promoted
-                        </span>
-                      ) : null}
-                      {topItem?.isNewThisSeason ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          New This Season
-                        </span>
-                      ) : null}
-                    </div>
-                    {topItem ? (
-                      <p className="mt-1 text-sm text-zinc-500">
-                        {topItem.slopScore.toFixed(1)} Slop Score ·{" "}
-                        {topItem.verdict}
-                      </p>
-                    ) : null}
-                  </div>
+                  <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                    {venue.leagues.join(", ")}
+                  </p>
+                  <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+                    View venue
+                  </p>
                 </article>
-              );
-            })}
-          </div>
-        </section>
-
-        <section id="rankings" className="border-t border-zinc-800 py-14">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Rankings
-          </p>
-          <h2 className="mt-2 text-3xl font-black">Every bite needs a category.</h2>
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <div
-                key={category}
-                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-5 py-4 font-bold"
-              >
-                {category}
-              </div>
+              </Link>
             ))}
           </div>
         </section>
 
-        <section
-          id="submit"
-          className="rounded-3xl border border-zinc-800 bg-zinc-950 p-8"
-        >
+        <section id="discover" className="space-y-14 border-t border-zinc-800 py-14">
+          {discoveryRows.map((row) => (
+            <div key={row.title}>
+              <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                    Discover
+                  </p>
+                  <h2 className="mt-2 text-3xl font-black">{row.title}</h2>
+                  <p className="mt-2 text-zinc-400">{row.description}</p>
+                </div>
+              </div>
+
+              {row.items.length > 0 ? (
+                <div className="mt-6 grid gap-4 lg:grid-cols-2">
+                  {row.items.map((item) => (
+                    <FoodDiscoveryCard key={item.slug} item={item} />
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-6 text-sm text-zinc-500">
+                  No items in this lane yet.
+                </p>
+              )}
+            </div>
+          ))}
+        </section>
+
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-8">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Coming Soon
+            Independent Ratings
           </p>
-          <h2 className="mt-2 text-3xl font-black">Submit a stadium food review.</h2>
-          <p className="mt-4 max-w-2xl text-zinc-400">
-            Next we&apos;ll add sample food pages, venue pages, review cards,
-            ratings, and eventually photo uploads.
+          <h2 className="mt-2 text-3xl font-black">
+            Sponsored placement never changes the fan signals.
+          </h2>
+          <p className="mt-4 max-w-3xl text-zinc-400">
+            Promoted items are clearly labeled, official ratings are designed to
+            come from fans near the venue, and browsing stays public while the
+            database grows.
           </p>
         </section>
       </section>

@@ -96,6 +96,11 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 New This Season
               </p>
             ) : null}
+            {foodItem.venueBadge ? (
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+                {foodItem.venueBadge}
+              </p>
+            ) : null}
             <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
               {foodItem.name}
             </h1>
@@ -233,6 +238,14 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     {foodItem.availabilityStatus ?? "Status pending"}
                   </p>
                 </div>
+                {foodItem.venueBadge ? (
+                  <div className="rounded-2xl bg-black p-4">
+                    <p className="text-zinc-500">Venue Badge</p>
+                    <p className="mt-1 font-bold text-white">
+                      {foodItem.venueBadge}
+                    </p>
+                  </div>
+                ) : null}
                 {foodItem.seasonIntroduced ? (
                   <div className="rounded-2xl bg-black p-4">
                     <p className="text-zinc-500">Season Introduced</p>
