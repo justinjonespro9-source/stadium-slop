@@ -59,7 +59,7 @@ function getScoreboardMovement(item: FoodItem) {
 
 function sortFreshPulseItems(items: FoodItem[]) {
   return items
-    .filter((item) => item.freshSignal && item.freshReviewCount)
+    .filter((item) => item.freshSignal)
     .sort((a, b) => {
       const priorityA = a.freshSignal
         ? freshSignalPriority[a.freshSignal]
