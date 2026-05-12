@@ -16,10 +16,10 @@ const topFoodItemByVenueSlug = foodItems.reduce<
 
 export default function VenuesPage() {
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-10">
         <header className="py-12">
-          <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
+          <p className="brand-pill mb-4 inline-flex rounded-full border px-4 py-2 text-sm font-semibold">
             Browse Venues
           </p>
           <h1 className="max-w-3xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
@@ -42,7 +42,7 @@ export default function VenuesPage() {
               <Link
                 key={venue.slug}
                 href={`/venues/${venue.slug}`}
-                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
+                className="brand-card group rounded-3xl border p-6 transition hover:border-[var(--slop-blue)]"
               >
                 <article>
                   <div className="flex items-start justify-between gap-4">
@@ -70,7 +70,7 @@ export default function VenuesPage() {
                     {venue.reviewRadiusMeters}m verified review zone
                   </p>
 
-                  <div className="mt-6 rounded-2xl bg-black p-4">
+                  <div className="mt-6 rounded-2xl bg-[var(--slop-ink)] p-4">
                     <p className="text-sm text-zinc-500">
                       {venueFoodItems.length}{" "}
                       {venueFoodItems.length === 1 ? "item" : "items"}
@@ -104,7 +104,7 @@ export default function VenuesPage() {
                     ) : null}
                   </div>
 
-                  <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+                  <p className="mt-5 text-sm font-bold text-[var(--slop-orange)] transition group-hover:text-[var(--slop-blue)]">
                     View venue
                   </p>
                 </article>

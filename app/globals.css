@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #071321;
+  --foreground: #fff4df;
+  --slop-navy: #071321;
+  --slop-ink: #0b0f14;
+  --slop-surface: #132235;
+  --slop-cream: #fff4df;
+  --slop-red: #e23d2f;
+  --slop-orange: #ff9f1c;
+  --slop-blue: #84d7ff;
+  --slop-line: rgba(255, 244, 223, 0.16);
 }
 
 @theme inline {
@@ -14,8 +22,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #071321;
+    --foreground: #fff4df;
   }
 }
 
@@ -23,4 +31,37 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.brand-page {
+  background:
+    radial-gradient(circle at top left, rgba(226, 61, 47, 0.22), transparent 30rem),
+    radial-gradient(circle at top right, rgba(132, 215, 255, 0.16), transparent 26rem),
+    var(--slop-navy);
+  color: var(--slop-cream);
+}
+
+.brand-panel {
+  border-color: var(--slop-line);
+  background: rgba(19, 34, 53, 0.9);
+}
+
+.brand-card {
+  border-color: var(--slop-line);
+  background: rgba(11, 15, 20, 0.74);
+}
+
+.brand-pill {
+  border-color: var(--slop-line);
+  background: rgba(255, 244, 223, 0.06);
+  color: var(--slop-cream);
+}
+
+.brand-cta {
+  background: var(--slop-orange);
+  color: var(--slop-ink);
+}
+
+.brand-cta:hover {
+  background: var(--slop-cream);
 }

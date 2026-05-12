@@ -49,16 +49,16 @@ const mockReviewHistory = [
 
 export default function AccountPage() {
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8 lg:px-10">
-        <p className="inline-flex rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
+        <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
           {mockProfile.signedIn ? "Signed-in profile" : "Signed out"}
         </p>
 
-        <header className="mt-5 rounded-[2rem] border border-zinc-800 bg-zinc-950 p-5">
+        <header className="brand-panel mt-5 rounded-[2rem] border p-5">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
             <div>
-              <div className="flex h-24 w-24 items-center justify-center rounded-[2rem] border border-dashed border-zinc-600 bg-white text-3xl font-black text-black">
+              <div className="flex h-24 w-24 items-center justify-center rounded-[2rem] border-2 border-dashed border-[var(--slop-orange)] bg-[var(--slop-cream)] text-3xl font-black text-[var(--slop-ink)]">
                 {mockProfile.initials}
               </div>
               <button
@@ -87,7 +87,7 @@ export default function AccountPage() {
                 venue Season Standings.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-black">
+                <span className="rounded-full bg-[var(--slop-orange)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-ink)]">
                   Mock signed in
                 </span>
                 <span className="rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
@@ -107,7 +107,7 @@ export default function AccountPage() {
           ].map(([label, value]) => (
             <div
               key={label}
-              className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4"
+              className="brand-card rounded-3xl border p-4"
             >
               <p className="text-2xl font-black">{value}</p>
               <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
@@ -117,7 +117,7 @@ export default function AccountPage() {
           ))}
         </section>
 
-        <section className="mt-5 rounded-3xl border border-zinc-800 bg-zinc-950 p-5">
+        <section className="brand-panel mt-5 rounded-3xl border p-5">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Reputation
           </p>
@@ -163,7 +163,7 @@ export default function AccountPage() {
                         {vendor?.name ?? "Vendor TBD"}
                       </p>
                     </div>
-                    <span className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+                    <span className="rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
                       {review.slopScore.toFixed(1)}
                     </span>
                   </div>
@@ -178,7 +178,7 @@ export default function AccountPage() {
           </div>
         </section>
 
-        <section className="mt-6 rounded-3xl border border-zinc-800 bg-zinc-950 p-5">
+        <section className="brand-panel mt-6 rounded-3xl border p-5">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Sign-in / sign-up placeholder
           </p>

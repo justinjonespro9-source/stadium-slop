@@ -157,8 +157,8 @@ function FilterChips({
           href={buildVenueHref(venueSlug, mode, option.value, vendorSlug)}
           className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
             category === option.value
-              ? "border-white bg-white text-black"
-              : "border-zinc-800 bg-black text-zinc-400"
+              ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
+              : "border-[var(--slop-line)] bg-[var(--slop-ink)] text-[var(--slop-cream)]"
           }`}
         >
           {option.label}
@@ -187,8 +187,8 @@ function ModeChips({
           href={buildVenueHref(venueSlug, option.value, category, vendorSlug)}
           className={`shrink-0 rounded-full border px-4 py-2 text-sm font-black ${
             mode === option.value
-              ? "border-white bg-white text-black"
-              : "border-zinc-800 bg-zinc-950 text-zinc-300"
+              ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
+              : "border-[var(--slop-line)] bg-[var(--slop-surface)] text-[var(--slop-cream)]"
           }`}
         >
           {option.label}
@@ -217,8 +217,8 @@ function VendorChips({
         href={buildVenueHref(venueSlug, mode, category, "all")}
         className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
           vendorSlug === "all"
-            ? "border-white bg-white text-black"
-            : "border-zinc-800 bg-black text-zinc-400"
+            ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
+            : "border-[var(--slop-line)] bg-[var(--slop-ink)] text-[var(--slop-cream)]"
         }`}
       >
         All Vendors
@@ -229,8 +229,8 @@ function VendorChips({
           href={buildVenueHref(venueSlug, mode, category, vendor.slug)}
           className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
             vendorSlug === vendor.slug
-              ? "border-white bg-white text-black"
-              : "border-zinc-800 bg-black text-zinc-400"
+              ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
+              : "border-[var(--slop-line)] bg-[var(--slop-ink)] text-[var(--slop-cream)]"
           }`}
         >
           {vendor.name}
@@ -270,7 +270,7 @@ function ItemStandingRow({
   return (
     <Link
       href={`/venues/${venueSlug}/${item.slug}`}
-      className="group block border-b border-zinc-800 bg-zinc-950 px-4 py-4 transition last:border-b-0 hover:bg-black sm:px-5"
+      className="group block border-b border-[var(--slop-line)] bg-[var(--slop-surface)] px-4 py-4 transition last:border-b-0 hover:bg-[var(--slop-ink)] sm:px-5"
     >
       <article className="grid grid-cols-[auto_1fr] gap-3">
         <div className="pt-1 text-sm font-black text-zinc-500">#{rank}</div>
@@ -292,7 +292,7 @@ function ItemStandingRow({
               </p>
             </div>
             <div className="text-right">
-              <p className="text-lg font-black text-white">
+              <p className="text-lg font-black text-[var(--slop-orange)]">
                 {stats.averageSlopScore.toFixed(1)}
               </p>
               <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
@@ -360,7 +360,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   const scoreLabel = mode === "fresh" ? "Fresh" : "Slop";
 
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 lg:px-10">
         <Link
           href="/venues"
@@ -382,7 +382,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           </p>
         </header>
 
-        <p className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-xs leading-5 text-zinc-500">
+        <p className="brand-panel rounded-2xl border px-4 py-3 text-xs leading-5 text-[color:rgba(255,244,223,0.58)]">
           Verified reviews require fans to be within {venue.reviewRadiusMeters}m.
           Menus change fast, so check availability at the venue.
         </p>
@@ -429,7 +429,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             ) : null}
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
+          <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
             {standingsItems.length > 0 ? (
               standingsItems.map((item, index) => (
                 <ItemStandingRow

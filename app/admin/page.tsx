@@ -82,10 +82,10 @@ const moderationQueue = [
 
 export default function AdminPage() {
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:px-10">
         <header>
-          <p className="inline-flex rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
+          <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
             Admin foundation
           </p>
           <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
@@ -106,7 +106,7 @@ export default function AdminPage() {
           ].map(([label, count]) => (
             <div
               key={label}
-              className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4"
+              className="brand-card rounded-3xl border p-4"
             >
               <p className="text-3xl font-black">{count}</p>
               <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
@@ -124,11 +124,11 @@ export default function AdminPage() {
             {adminSections.map((section) => (
               <article
                 key={section.title}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-5"
+                className="brand-card rounded-3xl border p-5"
               >
                 <div className="flex items-start justify-between gap-3">
                   <h2 className="text-xl font-black">{section.title}</h2>
-                  <span className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+                  <span className="rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
                     {section.count}
                   </span>
                 </div>
@@ -147,7 +147,7 @@ export default function AdminPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-[2rem] border border-zinc-800 bg-zinc-950 p-5">
+        <section className="brand-panel mt-8 rounded-[2rem] border p-5">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Moderation queue
           </p>

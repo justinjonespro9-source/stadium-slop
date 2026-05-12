@@ -82,7 +82,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
         <Link
           href={`/venues/${venue.slug}/${foodItem.slug}`}
@@ -108,7 +108,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </p>
         </header>
 
-        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+        <section className="brand-panel rounded-3xl border p-4 sm:p-6">
           <div className="rounded-2xl bg-black p-4">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Sign-in required
@@ -122,7 +122,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               <button
                 type="button"
                 disabled
-                className="cursor-not-allowed rounded-full bg-white px-5 py-3 text-sm font-black text-black opacity-70"
+                className="brand-cta cursor-not-allowed rounded-full px-5 py-3 text-sm font-black opacity-70"
               >
                 Sign in coming soon
               </button>
@@ -249,7 +249,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           <button
             type="button"
             disabled
-            className="mt-7 w-full cursor-not-allowed rounded-full bg-white px-6 py-4 text-sm font-black text-black opacity-60"
+            className="brand-cta mt-7 w-full cursor-not-allowed rounded-full px-6 py-4 text-sm font-black opacity-60"
           >
             Sign in to submit review
           </button>

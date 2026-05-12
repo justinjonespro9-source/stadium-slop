@@ -43,7 +43,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
   );
 
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
         <Link
           href={`/venues/${venue.slug}`}
@@ -63,7 +63,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
             {venue.name} · {vendor.section} · {vendor.location}
           </p>
           {vendor.lineIntel ? (
-            <p className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm leading-6 text-zinc-400">
+            <p className="brand-panel mt-4 rounded-2xl border px-4 py-3 text-sm leading-6 text-zinc-400">
               {vendor.lineIntel}
             </p>
           ) : null}
@@ -73,7 +73,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Vendor Lineup
           </p>
-          <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
+          <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
             {vendorItems.map((item, index) => {
               const stats = getItemSlopStats(item.slug, "season");
 
@@ -81,7 +81,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
                 <Link
                   key={item.slug}
                   href={`/venues/${venue.slug}/${item.slug}`}
-                  className="block border-b border-zinc-800 px-4 py-4 transition last:border-b-0 hover:bg-black"
+                  className="block border-b border-[var(--slop-line)] px-4 py-4 transition last:border-b-0 hover:bg-[var(--slop-ink)]"
                 >
                   <article className="grid grid-cols-[auto_1fr_auto] gap-3">
                     <span className="pt-1 text-sm font-black text-zinc-500">
@@ -114,7 +114,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-black">
+                      <p className="text-lg font-black text-[var(--slop-orange)]">
                         {stats.averageSlopScore.toFixed(1)}
                       </p>
                       <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">

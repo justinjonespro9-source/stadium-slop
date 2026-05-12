@@ -1,57 +1,55 @@
 import Link from "next/link";
 
+import { BrandLockup } from "@/components/brand-lockup";
 import { venues } from "@/lib/sample-data";
 
 const popularSearches = venues.slice(0, 3);
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto flex min-h-[calc(100vh-160px)] w-full max-w-3xl flex-col justify-center px-5 py-12 sm:px-8">
         <header>
-          <p className="mb-5 inline-flex rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
-            Eats in the Seats
-          </p>
-          <h1 className="text-5xl font-black leading-none tracking-tight sm:text-7xl">
-            STADIUM SLOP
-          </h1>
+          <div className="mb-6 inline-flex rounded-[1.7rem] border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.74)] p-3">
+            <BrandLockup />
+          </div>
           <p className="mt-6 text-2xl font-black leading-tight tracking-tight sm:text-4xl">
             Find your venue. Then find what&apos;s worth eating.
           </p>
-          <p className="mt-5 text-base leading-7 text-zinc-300 sm:text-lg">
+          <p className="mt-5 text-base leading-7 text-[color:rgba(255,244,223,0.78)] sm:text-lg">
             Search stadiums, arenas, ballparks, teams, or cities. Browse is
             public. Verified game-day reviews require a free profile and an
             on-site location check.
           </p>
         </header>
 
-        <div className="mt-10 rounded-[2rem] border border-zinc-800 bg-zinc-950 p-2 shadow-2xl">
+        <div className="brand-panel mt-10 rounded-[2rem] border p-2 shadow-2xl">
           <input
             aria-label="Search Stadium Slop"
             readOnly
             placeholder="Search for a venue, team, city, or stadium..."
-            className="w-full rounded-[1.5rem] bg-black px-5 py-5 text-base font-semibold text-white outline-none placeholder:text-zinc-500 sm:text-lg"
+            className="w-full rounded-[1.5rem] bg-[var(--slop-ink)] px-5 py-5 text-base font-semibold text-[var(--slop-cream)] outline-none placeholder:text-[color:rgba(255,244,223,0.42)] sm:text-lg"
           />
         </div>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <Link
             href="/venues"
-            className="rounded-full bg-white px-6 py-4 text-center text-sm font-black text-black transition hover:bg-zinc-200"
+            className="brand-cta rounded-full px-6 py-4 text-center text-sm font-black transition"
           >
             Find a venue
           </Link>
           <button
             type="button"
             disabled
-            className="cursor-not-allowed rounded-full border border-zinc-700 px-6 py-4 text-center text-sm font-black text-zinc-500"
+            className="cursor-not-allowed rounded-full border border-[var(--slop-line)] px-6 py-4 text-center text-sm font-black text-[color:rgba(255,244,223,0.45)]"
           >
             Use location soon
           </button>
         </div>
 
         <div className="mt-6">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-600">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--slop-blue)]">
             Browse nearby venues
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -59,7 +57,7 @@ export default function Home() {
               <Link
                 key={venue.slug}
                 href={`/venues/${venue.slug}`}
-                className="rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:border-zinc-500 hover:text-white"
+                className="brand-pill rounded-full border px-4 py-2 text-sm font-bold transition hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
               >
                 {venue.name}
               </Link>
@@ -69,9 +67,9 @@ export default function Home() {
 
         <section
           id="trust"
-          className="mt-10 rounded-3xl border border-zinc-800 bg-zinc-950 p-5"
+          className="brand-panel mt-10 rounded-3xl border p-5"
         >
-          <div className="space-y-3 text-sm leading-6 text-zinc-400">
+          <div className="space-y-3 text-sm leading-6 text-[color:rgba(255,244,223,0.7)]">
             <p>Independent fan-powered concessions guide.</p>
             <p>
               Venue, team, vendor, and item names are used for identification

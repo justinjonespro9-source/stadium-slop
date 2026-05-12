@@ -104,7 +104,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
     : [];
 
   return (
-    <main className="min-h-screen bg-[#111111] text-white">
+    <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 lg:px-10">
         <Link
           href={`/venues/${venue.slug}`}
@@ -117,7 +117,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
           {heroPhoto ? (
             <div
               aria-label={heroPhoto.alt}
-              className="flex aspect-[16/10] items-center justify-center rounded-3xl border border-zinc-800 bg-black text-7xl sm:text-8xl lg:order-2"
+              className="brand-card flex aspect-[16/10] items-center justify-center rounded-3xl border text-7xl sm:text-8xl lg:order-2"
             >
               {heroPhoto.imagePlaceholder}
             </div>
@@ -160,9 +160,12 @@ export default async function FoodPage({ params }: FoodPageProps) {
               {foodItem.location}
             </p>
 
-            <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-3">
+            <div className="brand-panel mt-4 rounded-2xl border p-3">
               <p className="text-sm font-bold leading-6 text-zinc-200">
-                Slop Score {seasonStats.averageSlopScore.toFixed(1)} · Fresh
+                <span className="text-[var(--slop-orange)]">
+                  Slop Score {seasonStats.averageSlopScore.toFixed(1)}
+                </span>{" "}
+                · Fresh
                 Signal{" "}
                 {freshStats.reviewCount > 0
                   ? `${freshStats.averageSlopScore.toFixed(1)} today`
@@ -186,7 +189,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </div>
         </header>
 
-        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+        <section className="brand-panel rounded-3xl border p-4 sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Review this item
           </p>
@@ -199,13 +202,13 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </p>
           <Link
             href={`/venues/${venue.slug}/${foodItem.slug}/review`}
-            className="mt-4 inline-flex w-full justify-center rounded-full bg-white px-6 py-4 text-sm font-black text-black transition hover:bg-zinc-200 sm:w-auto"
+            className="brand-cta mt-4 inline-flex w-full justify-center rounded-full px-6 py-4 text-sm font-black transition sm:w-auto"
           >
             Review this item
           </Link>
         </section>
 
-        <section className="mt-3 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+        <section className="brand-panel mt-3 rounded-3xl border p-4 sm:p-6">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -432,10 +435,10 @@ export default async function FoodPage({ params }: FoodPageProps) {
                   >
                     {review.imagePlaceholder}
                   </div>
-                  <div className="absolute -bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border-4 border-zinc-950 bg-white text-sm font-black text-black">
+                  <div className="absolute -bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border-4 border-[var(--slop-surface)] bg-[var(--slop-cream)] text-sm font-black text-[var(--slop-ink)]">
                     {review.initials}
                   </div>
-                  <span className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+                  <span className="absolute right-4 top-4 rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
                     {review.rating.toFixed(1)}/10
                   </span>
                   <span className="absolute left-4 top-4 rounded-full border border-zinc-700 bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
