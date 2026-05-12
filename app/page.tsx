@@ -95,7 +95,14 @@ export default function Home() {
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <p className="text-sm text-zinc-500">#{index + 1}</p>
-                          <h3 className="text-lg font-bold">{item.name}</h3>
+                          <div className="mt-1 flex flex-wrap items-center gap-2">
+                            <h3 className="text-lg font-bold">{item.name}</h3>
+                            {item.isPromoted ? (
+                              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                                Promoted
+                              </span>
+                            ) : null}
+                          </div>
                           <p className="mt-1 text-sm text-zinc-400">
                             {venue
                               ? `${venue.name} · ${venue.city}, ${venue.state}`
@@ -153,9 +160,16 @@ export default function Home() {
                   </div>
                   <div className="mt-6 rounded-2xl bg-black p-4">
                     <p className="text-sm text-zinc-500">Top item</p>
-                    <p className="mt-1 font-bold">
-                      {topItem ? topItem.name : "No food items yet"}
-                    </p>
+                    <div className="mt-1 flex flex-wrap items-center gap-2">
+                      <p className="font-bold">
+                        {topItem ? topItem.name : "No food items yet"}
+                      </p>
+                      {topItem?.isPromoted ? (
+                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                          Promoted
+                        </span>
+                      ) : null}
+                    </div>
                     {topItem ? (
                       <p className="mt-1 text-sm text-zinc-500">
                         {topItem.rating.toFixed(1)} rating

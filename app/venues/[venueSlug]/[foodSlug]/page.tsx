@@ -77,6 +77,11 @@ export default async function FoodPage({ params }: FoodPageProps) {
             <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
               {foodItem.category}
             </p>
+            {foodItem.isPromoted ? (
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+                Promoted
+              </p>
+            ) : null}
             <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
               {foodItem.name}
             </h1>
@@ -115,6 +120,20 @@ export default async function FoodPage({ params }: FoodPageProps) {
             </div>
           </div>
         </header>
+
+        {foodItem.isPromoted && foodItem.sponsorDisclosure ? (
+          <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Sponsor Disclosure
+            </p>
+            <p className="mt-3 text-zinc-300">{foodItem.sponsorDisclosure}</p>
+            {foodItem.sponsorName ? (
+              <p className="mt-2 text-sm text-zinc-500">
+                Sponsor: {foodItem.sponsorName}
+              </p>
+            ) : null}
+          </section>
+        ) : null}
 
         <section className="border-t border-zinc-800 py-10">
           <div className="grid gap-4 lg:grid-cols-3">

@@ -23,6 +23,9 @@ export type FoodItem = {
   reviewCount: number;
   tags: string[];
   description: string;
+  isPromoted?: boolean;
+  sponsorName?: string;
+  sponsorDisclosure?: string;
 };
 
 export const venues: Venue[] = [
@@ -91,7 +94,10 @@ export const foodItems: FoodItem[] = [
     reviewCount: 96,
     tags: ["Filling", "Smoky", "Worth the Line"],
     description:
-      "A stadium-sized brisket sandwich built for fans who want something more serious than a hot dog."
+      "A stadium-sized brisket sandwich built for fans who want something more serious than a hot dog.",
+    isPromoted: true,
+    sponsorName: "Sample Sponsor",
+    sponsorDisclosure: "Sponsored placement. Fan ratings remain independent."
   },
   {
     slug: "walleye-basket",

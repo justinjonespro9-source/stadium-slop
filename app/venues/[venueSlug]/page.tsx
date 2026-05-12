@@ -99,7 +99,14 @@ export default async function VenuePage({ params }: VenuePageProps) {
                       <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
                         {item.category}
                       </p>
-                      <h3 className="mt-2 text-2xl font-black">{item.name}</h3>
+                      <div className="mt-2 flex flex-wrap items-center gap-2">
+                        <h3 className="text-2xl font-black">{item.name}</h3>
+                        {item.isPromoted ? (
+                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                            Promoted
+                          </span>
+                        ) : null}
+                      </div>
                     </div>
                     <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
                       {item.rating.toFixed(1)}
