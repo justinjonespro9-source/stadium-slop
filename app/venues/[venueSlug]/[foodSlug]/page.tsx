@@ -107,7 +107,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Slop Score</p>
+                <p className="text-zinc-500">Overall Slop Score</p>
                 <p className="mt-1 text-2xl font-black">
                   {foodItem.slopScore.toFixed(1)}
                 </p>
@@ -161,7 +161,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
         {foodItem.freshSignal ? (
           <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Fresh Review Signal
+              Fresh Review Signal / Fresh Meter
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <h2 className="text-3xl font-black">{foodItem.freshSignal}</h2>

@@ -11,6 +11,14 @@ import {
 type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
 type FreshSignal = NonNullable<FoodItem["freshSignal"]>;
 
+const filterChips = [
+  "All",
+  "Food",
+  "Sweet Treats",
+  "Alcoholic Drinks",
+  "Non-Alcoholic Drinks"
+];
+
 const freshSignalPriority: Record<FreshSignal, number> = {
   "Fans Say Skip": 0,
   "Falling Fast": 1,
@@ -27,39 +35,30 @@ type VenuePageProps = {
   }>;
 };
 
-function getScoreboardMovement(item: FoodItem) {
-  if (!item.scoreboardRank || item.previousScoreboardRank === undefined) {
-    return {
-      label: "NEW",
-      className: "text-amber-400"
-    };
-  }
+function sortOverallScoreboardItems(items: FoodItem[]) {
+  return [...items].sort((a, b) => {
+    const rankA = a.scoreboardRank;
+    const rankB = b.scoreboardRank;
 
-  const movement = item.previousScoreboardRank - item.scoreboardRank;
+    if (rankA !== undefined && rankB !== undefined) {
+      return rankA - rankB;
+    }
 
-  if (movement > 0) {
-    return {
-      label: `↑ ${movement}`,
-      className: "text-green-400"
-    };
-  }
+    if (rankA !== undefined) {
+      return -1;
+    }
 
-  if (movement < 0) {
-    return {
-      label: `↓ ${Math.abs(movement)}`,
-      className: "text-red-400"
-    };
-  }
+    if (rankB !== undefined) {
+      return 1;
+    }
 
-  return {
-    label: "—",
-    className: "text-zinc-500"
-  };
+    return b.slopScore - a.slopScore;
+  });
 }
 
-function sortFreshPulseItems(items: FoodItem[]) {
+function sortGameDayScoreboardItems(items: FoodItem[]) {
   return items
-    .filter((item) => item.freshSignal)
+    .filter((item) => item.freshSignal && item.freshReviewCount !== undefined)
     .sort((a, b) => {
       const priorityA = a.freshSignal
         ? freshSignalPriority[a.freshSignal]
@@ -76,6 +75,99 @@ function sortFreshPulseItems(items: FoodItem[]) {
     });
 }
 
+function FilterChips() {
+  return (
+    <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
+      {filterChips.map((chip) => (
+        <button
+          key={chip}
+          type="button"
+          className="shrink-0 rounded-full border border-zinc-800 bg-black px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
+        >
+          {chip}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function LeaderboardCard({
+  item,
+  rank,
+  venueSlug
+}: {
+  item: FoodItem;
+  rank: number;
+  venueSlug: string;
+}) {
+  return (
+    <Link
+      href={`/venues/${venueSlug}/${item.slug}`}
+      className="group block rounded-3xl border border-zinc-800 bg-zinc-950 p-5 transition hover:border-zinc-500"
+    >
+      <article className="grid gap-4 sm:grid-cols-[auto_1fr]">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-lg font-black text-black">
+          #{rank}
+        </div>
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-2xl font-black">{item.name}</h3>
+            {item.ageRestricted ? (
+              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                21+
+              </span>
+            ) : null}
+            {item.venueBadge ? (
+              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                {item.venueBadge}
+              </span>
+            ) : null}
+          </div>
+
+          <p className="mt-2 text-sm font-bold uppercase tracking-[0.18em] text-zinc-500">
+            {item.itemType}
+          </p>
+
+          <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-zinc-500">Slop Score</p>
+              <p className="mt-1 text-lg font-black text-white">
+                {item.slopScore.toFixed(1)}
+              </p>
+            </div>
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-zinc-500">Verdict</p>
+              <p className="mt-1 font-bold text-white">{item.verdict}</p>
+            </div>
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-zinc-500">Run It Back</p>
+              <p className="mt-1 text-lg font-black text-white">
+                {item.runItBackPercent}%
+              </p>
+            </div>
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-zinc-500">Fresh</p>
+              <p className="mt-1 font-bold text-white">
+                {item.freshSignal ?? "No fresh signal"}
+              </p>
+            </div>
+          </div>
+
+          {item.freshSignal ? (
+            <p className="mt-3 text-sm text-zinc-400">
+              {item.freshReviewCount} fresh reviews {item.freshWindowLabel}
+            </p>
+          ) : null}
+
+          <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+            View item details
+          </p>
+        </div>
+      </article>
+    </Link>
+  );
+}
+
 export default async function VenuePage({ params }: VenuePageProps) {
   const { venueSlug } = await params;
   const venue = getVenueBySlug(venueSlug);
@@ -87,23 +179,12 @@ export default async function VenuePage({ params }: VenuePageProps) {
   const venueFoodItems = getFoodItemsByVenueSlug(venue.slug).sort(
     (a, b) => b.slopScore - a.slopScore
   );
-  const scoreboardItems = [...venueFoodItems]
-    .sort((a, b) => {
-      const rankA = a.scoreboardRank ?? Number.POSITIVE_INFINITY;
-      const rankB = b.scoreboardRank ?? Number.POSITIVE_INFINITY;
-
-      if (rankA !== rankB) {
-        return rankA - rankB;
-      }
-
-      return b.slopScore - a.slopScore;
-    })
-    .slice(0, 10);
+  const overallScoreboardItems = sortOverallScoreboardItems(venueFoodItems);
+  const gameDayScoreboardItems = sortGameDayScoreboardItems(venueFoodItems);
   const newThisSeasonItems = venueFoodItems.filter(
     (item) => item.isNewThisSeason
   );
   const latestPhotos = getPhotosForVenue(venue.slug).slice(0, 6);
-  const freshPulseItems = sortFreshPulseItems(venueFoodItems);
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -162,106 +243,51 @@ export default async function VenuePage({ params }: VenuePageProps) {
         </section>
 
         <section className="border-t border-zinc-800 py-10">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Venue Scoreboard
+                Overall Scoreboard
               </p>
               <h2 className="mt-2 text-3xl font-black">
-                {venue.name} Scoreboard
+                Long-term rankings from verified fan reviews.
               </h2>
             </div>
-            <p className="text-sm text-zinc-400">
-              Ranked by venue scoreboard position, then Slop Score.
-            </p>
+            <FilterChips />
           </div>
 
-          <div className="mt-8 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
-            {scoreboardItems.map((item) => {
-              const movement = getScoreboardMovement(item);
-
-              return (
-                <Link
-                  key={item.slug}
-                  href={`/venues/${venue.slug}/${item.slug}`}
-                  className="grid gap-4 border-b border-zinc-800 p-5 transition last:border-b-0 hover:bg-black sm:grid-cols-[auto_1fr_auto] sm:items-center"
-                >
-                  <div className="text-3xl font-black text-white">
-                    #{item.scoreboardRank ?? "—"}
-                  </div>
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-xl font-black">{item.name}</h3>
-                      {item.ageRestricted ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          21+
-                        </span>
-                      ) : null}
-                      {item.venueBadge ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          {item.venueBadge}
-                        </span>
-                      ) : null}
-                    </div>
-                    <p className="mt-2 text-sm text-zinc-400">
-                      {item.itemType} · Slop Score {item.slopScore.toFixed(1)} ·{" "}
-                      {item.verdict}
-                    </p>
-                  </div>
-                  <div
-                    className={`text-sm font-black uppercase tracking-[0.2em] ${movement.className}`}
-                  >
-                    {movement.label}
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="mt-6 grid gap-4">
+            {overallScoreboardItems.map((item, index) => (
+              <LeaderboardCard
+                key={item.slug}
+                item={item}
+                rank={item.scoreboardRank ?? index + 1}
+                venueSlug={venue.slug}
+              />
+            ))}
           </div>
         </section>
 
         <section className="border-t border-zinc-800 py-10">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Game Day Pulse
+                Game Day Scoreboard
               </p>
               <h2 className="mt-2 text-3xl font-black">
-                Fresh review signals from verified on-site fans.
+                Fresh signals from today&apos;s verified on-site reviews.
               </h2>
             </div>
-            <p className="text-sm text-zinc-400">
-              Fresh reviews show what fans are seeing right now.
-            </p>
+            <FilterChips />
           </div>
 
-          <div className="mt-8 grid gap-4 lg:grid-cols-2">
-            {freshPulseItems.map((item) => (
-              <Link
+          <div className="mt-6 grid gap-4">
+            {gameDayScoreboardItems.map((item, index) => (
+              <LeaderboardCard
                 key={item.slug}
-                href={`/venues/${venue.slug}/${item.slug}`}
-                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
-              >
-                <article>
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                        {item.itemType} · {item.category}
-                      </p>
-                      <h3 className="mt-2 text-2xl font-black">{item.name}</h3>
-                    </div>
-                    <span className="rounded-full border border-zinc-700 px-3 py-1 text-sm font-black text-zinc-300">
-                      {item.freshSignal}
-                    </span>
-                  </div>
-                  <p className="mt-4 text-sm text-zinc-500">
-                    {item.freshReviewCount} fresh reviews {item.freshWindowLabel}
-                  </p>
-                  <p className="mt-3 text-zinc-300">{item.freshSignalReason}</p>
-                  <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
-                    View food details
-                  </p>
-                </article>
-              </Link>
+                item={item}
+                rank={index + 1}
+                venueSlug={venue.slug}
+              />
             ))}
           </div>
         </section>
@@ -364,115 +390,6 @@ export default async function VenuePage({ params }: VenuePageProps) {
           )}
         </section>
 
-        <section className="border-t border-zinc-800 py-10">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Item Rankings
-              </p>
-              <h2 className="mt-2 text-3xl font-black">
-                Rated items at {venue.name}
-              </h2>
-            </div>
-            <p className="text-sm text-zinc-400">
-              Sorted by highest Slop Score first.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 lg:grid-cols-2">
-            {venueFoodItems.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/venues/${venue.slug}/${item.slug}`}
-                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
-              >
-                <article>
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                        {item.itemType} · {item.category}
-                      </p>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <h3 className="text-2xl font-black">{item.name}</h3>
-                        {item.ageRestricted ? (
-                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                            21+
-                          </span>
-                        ) : null}
-                        {item.isPromoted ? (
-                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                            Promoted
-                          </span>
-                        ) : null}
-                        {item.isNewThisSeason ? (
-                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                            New This Season
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                    <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                      Slop Score {item.slopScore.toFixed(1)}
-                    </div>
-                  </div>
-
-                  <p className="mt-4 font-bold text-zinc-300">
-                    {item.verdict}
-                  </p>
-                  <p className="mt-2 text-zinc-400">{item.description}</p>
-
-                  <div className="mt-6 grid gap-3 text-sm text-zinc-400 sm:grid-cols-2">
-                    <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Location</p>
-                      <p className="mt-1 font-bold text-white">
-                        {item.location}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Price</p>
-                      <p className="mt-1 font-bold text-white">
-                        ${item.price.toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Run It Back</p>
-                      <p className="mt-1 font-bold text-white">
-                        {item.runItBackPercent}%
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Value</p>
-                      <p className="mt-1 font-bold text-white">
-                        {item.valueLabel}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Napkin Rating</p>
-                      <p className="mt-1 font-bold text-white">
-                        {item.napkinRating}/5 napkins
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {item.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-zinc-800 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
-                    View food details
-                  </p>
-                </article>
-              </Link>
-            ))}
-          </div>
-        </section>
       </section>
     </main>
   );
