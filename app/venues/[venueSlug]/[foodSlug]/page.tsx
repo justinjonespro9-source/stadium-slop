@@ -25,6 +25,8 @@ const mockReviews = [
     helpfulCount: 18,
     verifiedGameDay: true,
     imagePlaceholder: "🧀",
+    imageAlt: "Fan-uploaded loaded cheese curds in a paper tray at the seat",
+    photoLabel: "Seat photo",
     note: "Hot, salty, and still crisp by the time I got back to my seat."
   },
   {
@@ -41,6 +43,8 @@ const mockReviews = [
     helpfulCount: 11,
     verifiedGameDay: true,
     imagePlaceholder: "🥪",
+    imageAlt: "Fan-uploaded stadium sandwich photo from the concourse",
+    photoLabel: "Game-day photo",
     note: "Good bite, but the line made it feel like a bigger commitment."
   },
   {
@@ -57,6 +61,8 @@ const mockReviews = [
     helpfulCount: 6,
     verifiedGameDay: false,
     imagePlaceholder: "🍟",
+    imageAlt: "Fan-uploaded fries photo from the upper deck",
+    photoLabel: "Fan photo",
     note: "Fine if you are close, but not worth crossing sections for."
   }
 ];
@@ -88,6 +94,9 @@ export default async function FoodPage({ params }: FoodPageProps) {
   const careerStats = getItemSlopStats(foodItem.slug, "allTime");
   const seasonStats = getItemSlopStats(foodItem.slug, "season");
   const freshStats = getItemSlopStats(foodItem.slug, "gameDayFresh");
+  const reviewPhotoCards = careerStats.reviews
+    .filter((review) => review.hasPhoto)
+    .slice(0, 3);
   const moreFromVendor = vendor
     ? getFoodItemsByVendorSlug(vendor.slug).filter(
         (item) => item.slug !== foodItem.slug
@@ -194,6 +203,65 @@ export default async function FoodPage({ params }: FoodPageProps) {
           >
             Review this item
           </Link>
+        </section>
+
+        <section className="mt-3 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Fan Photo Proof
+              </p>
+              <h2 className="mt-2 text-2xl font-black sm:text-3xl">
+                What actually showed up
+              </h2>
+            </div>
+            <p className="max-w-xl text-sm leading-6 text-zinc-400">
+              Photos help other fans know what actually showed up. Verified
+              game-day photos help power Game Day Fresh. No polished vendor
+              shots — fan photos first.
+            </p>
+          </div>
+
+          <div className="mt-5 flex gap-3 overflow-x-auto pb-2">
+            {reviewPhotoCards.map((review) => (
+              <article
+                key={review.id}
+                className="min-w-48 rounded-3xl border border-zinc-800 bg-black p-3"
+              >
+                <div
+                  aria-label={
+                    review.photoAlt ??
+                    `Fan-uploaded photo for ${foodItem.name}`
+                  }
+                  className="flex aspect-square items-center justify-center rounded-2xl bg-zinc-950 text-6xl"
+                >
+                  {review.photoPlaceholder ?? heroPhoto?.imagePlaceholder ?? "🍔"}
+                </div>
+                <h3 className="mt-3 text-sm font-bold">
+                  {review.photoLabel ?? "Fan photo"}
+                </h3>
+                <p className="mt-1 text-xs leading-5 text-zinc-500">
+                  {review.reviewerHandle ?? review.reviewerName ?? "Fan"} ·{" "}
+                  {review.dateLabel}
+                </p>
+                {review.verifiedGameDay ? (
+                  <span className="mt-3 inline-flex rounded-full border border-zinc-800 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
+                    Verified game-day photo
+                  </span>
+                ) : null}
+              </article>
+            ))}
+
+            <article className="min-w-48 rounded-3xl border border-dashed border-zinc-700 bg-black p-3">
+              <div className="flex aspect-square items-center justify-center rounded-2xl bg-zinc-950 px-4 text-center text-sm font-bold text-zinc-500">
+                Menu board / price proof coming soon
+              </div>
+              <p className="mt-3 text-xs leading-5 text-zinc-500">
+                Future price updates can use fan-uploaded menu board photos
+                without turning reviews into checkout forms.
+              </p>
+            </article>
+          </div>
         </section>
 
         {foodItem.freshSignal ? (
@@ -358,7 +426,10 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 className="min-w-[82vw] snap-start overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-950 sm:min-w-[24rem]"
               >
                 <div className="relative">
-                  <div className="flex aspect-[4/3] items-center justify-center bg-black text-7xl sm:text-8xl">
+                  <div
+                    aria-label={review.imageAlt}
+                    className="flex aspect-[4/3] items-center justify-center bg-black text-7xl sm:text-8xl"
+                  >
                     {review.imagePlaceholder}
                   </div>
                   <div className="absolute -bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border-4 border-zinc-950 bg-white text-sm font-black text-black">
@@ -366,6 +437,9 @@ export default async function FoodPage({ params }: FoodPageProps) {
                   </div>
                   <span className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-black text-black">
                     {review.rating.toFixed(1)}/10
+                  </span>
+                  <span className="absolute left-4 top-4 rounded-full border border-zinc-700 bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                    {review.photoLabel}
                   </span>
                 </div>
 

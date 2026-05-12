@@ -151,6 +151,10 @@ export type FoodReview = {
   seasonLabel: string;
   dateLabel: string;
   hasPhoto?: boolean;
+  photoAlt?: string;
+  photoLabel?: string;
+  photoPlaceholder?: string;
+  hasMenuPriceProof?: boolean;
   note?: string;
 };
 
@@ -608,6 +612,10 @@ export const foodReviews: FoodReview[] = [
     seasonLabel: "2026",
     dateLabel: "Today",
     hasPhoto: true,
+    photoAlt: "Fan-uploaded loaded cheese curds in a paper tray at Target Field",
+    photoLabel: "Seat photo",
+    photoPlaceholder: "🧀",
+    hasMenuPriceProof: true,
     note: "Hot, salty, and still crisp by the time I got back to my seat."
   },
   {
@@ -624,7 +632,10 @@ export const foodReviews: FoodReview[] = [
     verifiedGameDay: true,
     seasonLabel: "2026",
     dateLabel: "Today",
-    hasPhoto: true
+    hasPhoto: true,
+    photoAlt: "Fan-uploaded close-up of loaded cheese curds with sauce",
+    photoLabel: "Game-day photo",
+    photoPlaceholder: "🧀"
   },
   {
     id: "review-loaded-curds-3",
@@ -639,7 +650,11 @@ export const foodReviews: FoodReview[] = [
     helpfulLikes: 9,
     verifiedGameDay: false,
     seasonLabel: "2026",
-    dateLabel: "May 2026"
+    dateLabel: "May 2026",
+    hasPhoto: true,
+    photoAlt: "Fan-uploaded stadium cheese curds from the concourse",
+    photoLabel: "Fan photo",
+    photoPlaceholder: "🧀"
   },
   {
     id: "review-brisket-1",
@@ -652,7 +667,11 @@ export const foodReviews: FoodReview[] = [
     verifiedGameDay: false,
     seasonLabel: "2026",
     dateLabel: "2026 season",
-    hasPhoto: true
+    hasPhoto: true,
+    photoAlt: "Fan-uploaded brisket sandwich on a stadium tray",
+    photoLabel: "Concourse photo",
+    photoPlaceholder: "🥪",
+    hasMenuPriceProof: true
   },
   {
     id: "review-brisket-2",

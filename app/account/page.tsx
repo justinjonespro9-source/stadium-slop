@@ -58,7 +58,7 @@ export default function AccountPage() {
         <header className="mt-5 rounded-[2rem] border border-zinc-800 bg-zinc-950 p-5">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
             <div>
-              <div className="flex h-24 w-24 items-center justify-center rounded-[2rem] bg-white text-3xl font-black text-black">
+              <div className="flex h-24 w-24 items-center justify-center rounded-[2rem] border border-dashed border-zinc-600 bg-white text-3xl font-black text-black">
                 {mockProfile.initials}
               </div>
               <button
@@ -68,6 +68,9 @@ export default function AccountPage() {
               >
                 Upload photo soon
               </button>
+              <p className="mt-2 max-w-40 text-xs leading-5 text-zinc-500">
+                Profile photos help fans trust the reviewer behind the score.
+              </p>
             </div>
 
             <div className="min-w-0 flex-1">
@@ -124,6 +127,10 @@ export default function AccountPage() {
             </p>
             <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400">
               Trusted reviewers earn visibility through useful game-day intel.
+            </p>
+            <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400 sm:col-span-2">
+              No polished vendor shots. Fan profile photos and food photos help
+              other fans know who reviewed it and what actually showed up.
             </p>
           </div>
         </section>

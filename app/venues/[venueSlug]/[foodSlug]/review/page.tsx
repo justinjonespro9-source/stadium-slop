@@ -142,7 +142,8 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             </p>
             <p className="mt-2 text-sm leading-6 text-zinc-400">
               Today&apos;s reviews help power Game Day Fresh. Verified game-day
-              reviews carry more weight.
+              reviews carry more weight, especially when they include a fan
+              photo of what actually showed up.
             </p>
           </div>
 
@@ -191,15 +192,30 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             <div className="rounded-3xl border border-zinc-800 bg-black p-5">
               <h3 className="text-lg font-black">3. Optional photo</h3>
               <p className="mt-2 text-sm leading-6 text-zinc-500">
-                Show fans what actually arrived at the seat. Totally optional.
+                Add a photo to make your review more trusted. Photos help other
+                fans know what actually showed up, and verified game-day photos
+                help power Game Day Fresh. Optional for now.
               </p>
               <button
                 type="button"
                 disabled
-                className="mt-4 flex aspect-video w-full cursor-not-allowed items-center justify-center rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 text-sm font-bold text-zinc-500"
+                className="mt-4 flex aspect-video w-full cursor-not-allowed flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 px-4 text-center text-sm font-bold text-zinc-500"
               >
-                Photo upload coming soon
+                Food photo upload coming soon
+                <span className="mt-2 text-xs font-medium text-zinc-600">
+                  No polished vendor shots. Fan photos first.
+                </span>
               </button>
+              <div className="mt-3 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
+                <p className="text-sm font-black text-zinc-300">
+                  Menu board / price proof
+                </p>
+                <p className="mt-2 text-xs leading-5 text-zinc-500">
+                  Optional later: snap the menu board or receipt-style price so
+                  fans can confirm price updates without making this a checkout
+                  form.
+                </p>
+              </div>
             </div>
 
             <div>
