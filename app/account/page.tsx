@@ -11,7 +11,7 @@ export default function AccountPage() {
         <p className="mt-5 text-base leading-7 text-zinc-300 sm:text-lg">
           Anyone can browse Stadium Slop. A free profile and on-site location
           check are required to leave verified reviews and move venue
-          Slop Standings.
+          Season Standings.
         </p>
 
         <div className="mt-8 grid gap-3">

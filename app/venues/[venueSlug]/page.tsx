@@ -263,10 +263,10 @@ export default async function VenuePage({ params }: VenuePageProps) {
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Slop Standings
+                Season Standings
               </p>
               <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-                Long-term rankings from verified fan reviews.
+                Long-term Slop Score rankings from verified fan reviews.
               </h2>
             </div>
             <FilterChips />
@@ -288,10 +288,10 @@ export default async function VenuePage({ params }: VenuePageProps) {
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Game Day Pulse
+                Game Day Fresh
               </p>
               <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-                Fresh Signal from today&apos;s verified on-site reviews.
+                Today&apos;s Fresh Signal from current-event verified reviews.
               </h2>
             </div>
             <FilterChips />
@@ -319,7 +319,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
             </h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
               Vendors organize reviewable items. Vendor updates do not count as
-              fan reviews.
+              fan reviews or move Season Standings.
             </p>
           </div>
 

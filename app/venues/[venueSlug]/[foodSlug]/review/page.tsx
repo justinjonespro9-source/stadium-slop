@@ -127,7 +127,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           <h2 className="mt-2 text-3xl font-black">Build your fan scorecard</h2>
           <p className="mt-4 text-zinc-400">
             Slop Score and Napkin Rating are required because structured signals
-            power Slop Standings. Photos are optional, and short food notes are
+            power Season Standings. Photos are optional, and short food notes are
             optional.
           </p>
 
@@ -224,10 +224,10 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </div>
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Slop Standings
+              Season Standings
             </p>
             <p className="mt-3 text-xl font-black">
-              Verified reviews help keep Slop Standings honest.
+              Verified reviews help keep Season Standings honest.
             </p>
           </div>
         </section>

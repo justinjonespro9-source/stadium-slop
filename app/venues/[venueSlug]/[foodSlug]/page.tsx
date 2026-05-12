@@ -165,10 +165,10 @@ export default async function FoodPage({ params }: FoodPageProps) {
             Review this item
           </p>
           <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-            Help move the Slop Standings
+            Help move the Season Standings
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
-            Help move the venue Slop Standings. Verified reviews require a free
+            Help move the venue Season Standings. Verified reviews require a free
             profile and an on-site location check.
           </p>
           <Link
@@ -197,8 +197,8 @@ export default async function FoodPage({ params }: FoodPageProps) {
               {foodItem.freshSignalReason}
             </p>
             <p className="mt-3 max-w-3xl text-sm text-zinc-500">
-              Season scores show the long-term read. Fresh reviews show what
-              fans are seeing right now.
+              Season Standings show the long-term read. Game Day Fresh shows
+              what fans are seeing right now.
             </p>
           </section>
         ) : null}
@@ -273,7 +273,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
             <p className="max-w-2xl text-sm leading-6 text-zinc-400">
               Swipe fan cards to see what verified on-site reviewers actually
               got. Photos and written notes are optional; structured signals
-              power Slop Standings. Slop Cards combine the food photo, verified
+              power Season Standings. Slop Cards combine the food photo, verified
               on-site status, and structured review signals.
             </p>
           </div>
