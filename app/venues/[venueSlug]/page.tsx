@@ -80,12 +80,12 @@ function sortGameDayScoreboardItems(items: FoodItem[]) {
 
 function FilterChips() {
   return (
-    <div className="mt-5 flex gap-2 overflow-x-auto pb-1">
+    <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
       {filterChips.map((chip) => (
         <button
           key={chip}
           type="button"
-          className="shrink-0 rounded-full border border-zinc-800 bg-black px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
+          className="shrink-0 rounded-full border border-zinc-800 bg-black px-3 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
         >
           {chip}
         </button>
@@ -108,15 +108,15 @@ function LeaderboardCard({
   return (
     <Link
       href={`/venues/${venueSlug}/${item.slug}`}
-      className="group block rounded-3xl border border-zinc-800 bg-zinc-950 p-5 transition hover:border-zinc-500"
+      className="group block rounded-3xl border border-zinc-800 bg-zinc-950 p-4 transition hover:border-zinc-500 sm:p-5"
     >
-      <article className="grid gap-4 sm:grid-cols-[auto_1fr]">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-lg font-black text-black">
+      <article className="grid gap-3 sm:grid-cols-[auto_1fr]">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-base font-black text-black sm:h-12 sm:w-12 sm:text-lg">
           #{rank}
         </div>
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-2xl font-black">{item.name}</h3>
+            <h3 className="text-xl font-black sm:text-2xl">{item.name}</h3>
             {item.ageRestricted ? (
               <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                 21+
@@ -129,11 +129,11 @@ function LeaderboardCard({
             ) : null}
           </div>
 
-          <p className="mt-2 text-sm font-bold uppercase tracking-[0.18em] text-zinc-500">
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-500 sm:text-sm">
             {item.itemType} · {vendor ? vendor.name : "Vendor TBD"}
           </p>
 
-          <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
+          <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
             <div className="rounded-2xl bg-black p-3">
               <p className="text-zinc-500">Slop Score</p>
               <p className="mt-1 text-lg font-black text-white">
@@ -175,7 +175,7 @@ function LeaderboardCard({
             </p>
           ) : null}
 
-          <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+          <p className="mt-4 text-sm font-bold text-zinc-300 transition group-hover:text-white">
             View item details
           </p>
         </div>
@@ -205,7 +205,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
-      <section className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-10">
+      <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 lg:px-10">
         <Link
           href="/venues"
           className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
@@ -213,66 +213,66 @@ export default async function VenuePage({ params }: VenuePageProps) {
           Back to venues
         </Link>
 
-        <header className="py-12">
-          <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
+        <header className="py-6 sm:py-10">
+          <p className="mb-3 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
             {venue.venueType}
           </p>
-          <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
+          <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight sm:text-6xl">
             {venue.name}
           </h1>
-          <p className="mt-5 text-lg text-zinc-300">
+          <p className="mt-3 text-base text-zinc-300 sm:text-lg">
             {venue.city}, {venue.state}
           </p>
-          <div className="mt-6 flex flex-wrap gap-3 text-sm font-bold uppercase tracking-[0.2em] text-zinc-400">
-            <span className="rounded-full border border-zinc-800 px-4 py-2">
+          <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400 sm:text-sm">
+            <span className="rounded-full border border-zinc-800 px-3 py-1.5">
               {venue.leagues.join(", ")}
             </span>
-            <span className="rounded-full border border-zinc-800 px-4 py-2">
+            <span className="rounded-full border border-zinc-800 px-3 py-1.5">
               {venue.teams.join(", ")}
             </span>
-            <span className="rounded-full border border-zinc-800 px-4 py-2">
+            <span className="rounded-full border border-zinc-800 px-3 py-1.5">
               {venue.sports.join(", ")}
             </span>
           </div>
         </header>
 
-        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Verified Review Zone
-          </p>
-          <h2 className="mt-2 text-2xl font-black">
-            {venue.reviewRadiusMeters} meters from the venue
-          </h2>
-          <p className="mt-3 max-w-3xl text-zinc-400">
-            Future official reviews will require fans to be near {venue.name}
-            before submitting a rating. Browsing stays public for everyone.
-          </p>
-        </section>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Verified Review Zone
+            </p>
+            <h2 className="mt-2 text-xl font-black">
+              {venue.reviewRadiusMeters} meters
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              Official reviews will require fans to be near {venue.name}.
+            </p>
+          </section>
 
-        <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Accuracy Note
-          </p>
-          <p className="mt-3 max-w-3xl text-zinc-400">
-            Menus change fast. Listings may be fan-reported, venue-verified,
-            seasonal, or retired. Check availability at the venue.
-          </p>
-        </section>
+          <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Accuracy Note
+            </p>
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              Menus change fast. Check availability at the venue.
+            </p>
+          </section>
+        </div>
 
-        <section className="border-t border-zinc-800 py-10">
+        <section className="border-t border-zinc-800 py-7 sm:py-10">
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
                 Slop Standings
               </p>
-              <h2 className="mt-2 text-3xl font-black">
+              <h2 className="mt-2 text-2xl font-black sm:text-3xl">
                 Long-term rankings from verified fan reviews.
               </h2>
             </div>
             <FilterChips />
           </div>
 
-          <div className="mt-6 grid gap-4">
+          <div className="mt-5 grid gap-3 sm:gap-4">
             {overallScoreboardItems.map((item, index) => (
               <LeaderboardCard
                 key={item.slug}
@@ -284,20 +284,20 @@ export default async function VenuePage({ params }: VenuePageProps) {
           </div>
         </section>
 
-        <section className="border-t border-zinc-800 py-10">
+        <section className="border-t border-zinc-800 py-7 sm:py-10">
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
                 Game Day Pulse
               </p>
-              <h2 className="mt-2 text-3xl font-black">
+              <h2 className="mt-2 text-2xl font-black sm:text-3xl">
                 Fresh Signal from today&apos;s verified on-site reviews.
               </h2>
             </div>
             <FilterChips />
           </div>
 
-          <div className="mt-6 grid gap-4">
+          <div className="mt-5 grid gap-3 sm:gap-4">
             {gameDayScoreboardItems.map((item, index) => (
               <LeaderboardCard
                 key={item.slug}
@@ -309,33 +309,35 @@ export default async function VenuePage({ params }: VenuePageProps) {
           </div>
         </section>
 
-        <section className="border-t border-zinc-800 py-10">
+        <section className="border-t border-zinc-800 py-7 sm:py-10">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Vendors / Menu
             </p>
-            <h2 className="mt-2 text-3xl font-black">
+            <h2 className="mt-2 text-2xl font-black sm:text-3xl">
               Venue to vendor to item.
             </h2>
-            <p className="mt-3 max-w-3xl text-zinc-400">
-              Vendor listings organize the reviewable items. Vendor updates do
-              not count as fan reviews or move Slop Standings.
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
+              Vendors organize reviewable items. Vendor updates do not count as
+              fan reviews.
             </p>
           </div>
 
-          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+          <div className="mt-5 grid gap-3 lg:grid-cols-2">
             {venueVendors.map((vendor) => {
               const vendorItems = getFoodItemsByVendorSlug(vendor.slug);
 
               return (
                 <article
                   key={vendor.slug}
-                  className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
+                  className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h3 className="text-2xl font-black">{vendor.name}</h3>
-                      <p className="mt-2 text-sm text-zinc-400">
+                      <h3 className="text-xl font-black sm:text-2xl">
+                        {vendor.name}
+                      </h3>
+                      <p className="mt-1 text-sm text-zinc-400">
                         {vendor.section} · {vendor.location}
                       </p>
                     </div>
@@ -344,27 +346,20 @@ export default async function VenuePage({ params }: VenuePageProps) {
                     </span>
                   </div>
 
-                  <div className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
-                    <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Items</p>
-                      <p className="mt-1 font-bold text-white">
-                        {vendorItems.length}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Line Intel</p>
-                      <p className="mt-1 font-bold text-white">
-                        {vendor.lineIntel ?? "Line intel coming soon"}
-                      </p>
-                    </div>
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                    <span>{vendorItems.length} items</span>
+                    <span>Avg {vendor.averageSlopScore.toFixed(1)}</span>
                   </div>
+                  <p className="mt-3 rounded-2xl bg-black p-3 text-sm leading-6 text-zinc-400">
+                    {vendor.lineIntel ?? "Line intel coming soon"}
+                  </p>
 
-                  <div className="mt-5 space-y-3">
+                  <div className="mt-4 space-y-2">
                     {vendorItems.map((item) => (
                       <Link
                         key={item.slug}
                         href={`/venues/${venue.slug}/${item.slug}`}
-                        className="flex items-center justify-between gap-3 rounded-2xl bg-black p-4 transition hover:bg-zinc-900"
+                        className="flex items-center justify-between gap-3 rounded-2xl bg-black p-3 transition hover:bg-zinc-900"
                       >
                         <div>
                           <p className="font-bold">{item.name}</p>
@@ -383,12 +378,12 @@ export default async function VenuePage({ params }: VenuePageProps) {
             })}
           </div>
 
-          <article className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+          <article className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Don&apos;t see your food?
             </p>
-            <h3 className="mt-2 text-2xl font-black">Add it</h3>
-            <p className="mt-3 max-w-3xl text-zinc-400">
+            <h3 className="mt-2 text-xl font-black sm:text-2xl">Add it</h3>
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
               Fans will be able to suggest missing vendors, sections, prices,
               and reviewable items after sign-in.
             </p>
