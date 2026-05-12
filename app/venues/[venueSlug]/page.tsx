@@ -4,7 +4,10 @@ import { notFound } from "next/navigation";
 import {
   getFoodItemBySlug,
   getFoodItemsByVenueSlug,
+  getFoodItemsByVendorSlug,
   getPhotosForVenue,
+  getVendorForFoodItem,
+  getVendorsByVenueSlug,
   getVenueBySlug
 } from "@/lib/sample-data";
 
@@ -100,6 +103,8 @@ function LeaderboardCard({
   rank: number;
   venueSlug: string;
 }) {
+  const vendor = getVendorForFoodItem(item);
+
   return (
     <Link
       href={`/venues/${venueSlug}/${item.slug}`}
@@ -125,7 +130,7 @@ function LeaderboardCard({
           </div>
 
           <p className="mt-2 text-sm font-bold uppercase tracking-[0.18em] text-zinc-500">
-            {item.itemType}
+            {item.itemType} · {vendor ? vendor.name : "Vendor TBD"}
           </p>
 
           <div className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
@@ -146,16 +151,27 @@ function LeaderboardCard({
               </p>
             </div>
             <div className="rounded-2xl bg-black p-3">
-              <p className="text-zinc-500">Fresh</p>
+              <p className="text-zinc-500">Fresh Signal</p>
               <p className="mt-1 font-bold text-white">
-                {item.freshSignal ?? "No fresh signal"}
+                {item.freshSignalScore
+                  ? `${item.freshSignalScore.toFixed(1)}`
+                  : "No fresh signal"}
               </p>
             </div>
           </div>
 
+          <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+            <span>{item.reviewCount} reviews</span>
+            <span>{item.napkinRating}/5 napkins</span>
+            {item.reportedPrice ? (
+              <span>${item.reportedPrice.toFixed(2)} reported</span>
+            ) : null}
+          </div>
+
           {item.freshSignal ? (
             <p className="mt-3 text-sm text-zinc-400">
-              {item.freshReviewCount} fresh reviews {item.freshWindowLabel}
+              {item.freshSignal} · {item.freshReviewCount} fresh reviews{" "}
+              {item.freshWindowLabel}
             </p>
           ) : null}
 
@@ -179,6 +195,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
   const venueFoodItems = getFoodItemsByVenueSlug(venue.slug).sort(
     (a, b) => b.slopScore - a.slopScore
   );
+  const venueVendors = getVendorsByVenueSlug(venue.slug);
   const overallScoreboardItems = sortOverallScoreboardItems(venueFoodItems);
   const gameDayScoreboardItems = sortGameDayScoreboardItems(venueFoodItems);
   const newThisSeasonItems = venueFoodItems.filter(
@@ -246,7 +263,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Overall Scoreboard
+                Slop Standings
               </p>
               <h2 className="mt-2 text-3xl font-black">
                 Long-term rankings from verified fan reviews.
@@ -271,10 +288,10 @@ export default async function VenuePage({ params }: VenuePageProps) {
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Game Day Scoreboard
+                Game Day Pulse
               </p>
               <h2 className="mt-2 text-3xl font-black">
-                Fresh signals from today&apos;s verified on-site reviews.
+                Fresh Signal from today&apos;s verified on-site reviews.
               </h2>
             </div>
             <FilterChips />
@@ -293,6 +310,99 @@ export default async function VenuePage({ params }: VenuePageProps) {
         </section>
 
         <section className="border-t border-zinc-800 py-10">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Vendors / Menu
+            </p>
+            <h2 className="mt-2 text-3xl font-black">
+              Venue to vendor to item.
+            </h2>
+            <p className="mt-3 max-w-3xl text-zinc-400">
+              Vendor listings organize the reviewable items. Vendor updates do
+              not count as fan reviews or move Slop Standings.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            {venueVendors.map((vendor) => {
+              const vendorItems = getFoodItemsByVendorSlug(vendor.slug);
+
+              return (
+                <article
+                  key={vendor.slug}
+                  className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-2xl font-black">{vendor.name}</h3>
+                      <p className="mt-2 text-sm text-zinc-400">
+                        {vendor.section} · {vendor.location}
+                      </p>
+                    </div>
+                    <span className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+                      {vendor.averageSlopScore.toFixed(1)}
+                    </span>
+                  </div>
+
+                  <div className="mt-5 grid gap-3 text-sm sm:grid-cols-2">
+                    <div className="rounded-2xl bg-black p-4">
+                      <p className="text-zinc-500">Items</p>
+                      <p className="mt-1 font-bold text-white">
+                        {vendorItems.length}
+                      </p>
+                    </div>
+                    <div className="rounded-2xl bg-black p-4">
+                      <p className="text-zinc-500">Line Intel</p>
+                      <p className="mt-1 font-bold text-white">
+                        {vendor.lineIntel ?? "Line intel coming soon"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 space-y-3">
+                    {vendorItems.map((item) => (
+                      <Link
+                        key={item.slug}
+                        href={`/venues/${venue.slug}/${item.slug}`}
+                        className="flex items-center justify-between gap-3 rounded-2xl bg-black p-4 transition hover:bg-zinc-900"
+                      >
+                        <div>
+                          <p className="font-bold">{item.name}</p>
+                          <p className="mt-1 text-sm text-zinc-500">
+                            {item.itemType} · {item.location}
+                          </p>
+                        </div>
+                        <span className="text-sm font-black text-white">
+                          {item.slopScore.toFixed(1)}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <article className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Don&apos;t see your food?
+            </p>
+            <h3 className="mt-2 text-2xl font-black">Add it</h3>
+            <p className="mt-3 max-w-3xl text-zinc-400">
+              Fans will be able to suggest missing vendors, sections, prices,
+              and reviewable items after sign-in.
+            </p>
+            <button
+              type="button"
+              disabled
+              className="mt-5 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
+            >
+              Add item coming soon
+            </button>
+          </article>
+        </section>
+
+        <section className="border-t border-zinc-800 py-10">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -303,7 +413,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
               </h2>
             </div>
             <p className="text-sm text-zinc-400">
-              Placeholder gallery until real uploads are added.
+              Recent verified seat shots from this venue.
             </p>
           </div>
 
@@ -332,6 +442,11 @@ export default async function VenuePage({ params }: VenuePageProps) {
                     {photo.verifiedOnSite ? (
                       <span className="rounded-full border border-zinc-800 px-2 py-0.5 font-bold uppercase tracking-[0.15em] text-zinc-400">
                         Verified on-site
+                      </span>
+                    ) : null}
+                    {photo.verifiedOnSite && photo.createdAt === "May 2026" ? (
+                      <span className="rounded-full border border-zinc-800 px-2 py-0.5 font-bold uppercase tracking-[0.15em] text-zinc-400">
+                        Verified today
                       </span>
                     ) : null}
                   </div>

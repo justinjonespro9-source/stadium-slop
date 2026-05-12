@@ -14,10 +14,21 @@ export type Venue = {
   venueType: "Ballpark" | "Stadium" | "Arena";
 };
 
+export type Vendor = {
+  slug: string;
+  name: string;
+  venueSlug: string;
+  section: string;
+  location: string;
+  averageSlopScore: number;
+  lineIntel?: string;
+};
+
 export type FoodItem = {
   slug: string;
   name: string;
   venueSlug: string;
+  vendorSlug: string;
   itemType: "Food" | "Non-Alcoholic Drink" | "Alcoholic Drink";
   alcoholic?: boolean;
   ageRestricted?: boolean;
@@ -31,6 +42,9 @@ export type FoodItem = {
   category: string;
   location: string;
   price: number;
+  reportedPrice?: number;
+  priceLastConfirmedLabel?: string;
+  priceReportCount?: number;
   rating: number;
   worthItScore: number;
   slopScore: number;
@@ -90,6 +104,7 @@ export type FoodItem = {
     | "Falling Fast";
   freshReviewCount?: number;
   freshWindowLabel?: string;
+  freshSignalScore?: number;
   freshSignal?:
     | "Hot Today"
     | "Holding Strong"
@@ -161,18 +176,79 @@ export const venues: Venue[] = [
   }
 ];
 
+export const vendors: Vendor[] = [
+  {
+    slug: "state-fair-stand",
+    name: "State Fair Stand",
+    venueSlug: "target-field",
+    section: "Main concourse",
+    location: "Near Section 126",
+    averageSlopScore: 8.6,
+    lineIntel: "Moves fast before first pitch, slows hard between innings."
+  },
+  {
+    slug: "north-loop-bar",
+    name: "North Loop Bar",
+    venueSlug: "target-field",
+    section: "Main concourse",
+    location: "Left field corner",
+    averageSlopScore: 7.8,
+    lineIntel: "Best before gates fill; cocktail line stacks up late."
+  },
+  {
+    slug: "family-freeze",
+    name: "Family Freeze",
+    venueSlug: "target-field",
+    section: "Family concourse",
+    location: "Right field family area",
+    averageSlopScore: 8.1,
+    lineIntel: "Quick stop during hot day games."
+  },
+  {
+    slug: "smokehouse-counter",
+    name: "Smokehouse Counter",
+    venueSlug: "us-bank-stadium",
+    section: "Lower concourse",
+    location: "Near Section 118",
+    averageSlopScore: 8.4,
+    lineIntel: "Worth checking early; fresh reviews mention line swings."
+  },
+  {
+    slug: "upper-deck-nachos",
+    name: "Upper Deck Nachos",
+    venueSlug: "us-bank-stadium",
+    section: "Upper deck",
+    location: "Near Section 332",
+    averageSlopScore: 3.6,
+    lineIntel: "Short line, but fan reports are rough."
+  },
+  {
+    slug: "north-star-fish-fry",
+    name: "North Star Fish Fry",
+    venueSlug: "xcel-energy-center",
+    section: "Club level",
+    location: "Club level market",
+    averageSlopScore: 8.2,
+    lineIntel: "Fresh batches trend positive around intermission."
+  }
+];
+
 export const foodItems: FoodItem[] = [
   {
     slug: "loaded-cheese-curds",
     name: "Loaded Cheese Curds",
     venueSlug: "target-field",
+    vendorSlug: "state-fair-stand",
     itemType: "Food",
     category: "Snack",
     location: "Main concourse",
     price: 13.99,
+    reportedPrice: 13.99,
+    priceLastConfirmedLabel: "May 2026",
+    priceReportCount: 9,
     rating: 4.6,
     worthItScore: 91,
-    slopScore: 4.6,
+    slopScore: 8.8,
     verdict: "Starter Every Game",
     runItBackPercent: 91,
     valueLabel: "Fair Deal",
@@ -191,6 +267,7 @@ export const foodItems: FoodItem[] = [
     venueBadge: "Fan Favorite",
     freshReviewCount: 6,
     freshWindowLabel: "today",
+    freshSignalScore: 8.4,
     freshSignal: "Holding Strong",
     freshSignalReason: "Fans still say it is worth the line."
   },
@@ -198,13 +275,17 @@ export const foodItems: FoodItem[] = [
     slug: "brisket-sandwich",
     name: "Brisket Sandwich",
     venueSlug: "us-bank-stadium",
+    vendorSlug: "smokehouse-counter",
     itemType: "Food",
     category: "BBQ",
     location: "Lower concourse",
     price: 16.99,
+    reportedPrice: 16.99,
+    priceLastConfirmedLabel: "2026 season",
+    priceReportCount: 5,
     rating: 4.4,
     worthItScore: 84,
-    slopScore: 4.4,
+    slopScore: 8.4,
     verdict: "Starter Every Game",
     runItBackPercent: 88,
     valueLabel: "Stadium Tax",
@@ -227,6 +308,7 @@ export const foodItems: FoodItem[] = [
     venueBadge: "New This Season",
     freshReviewCount: 4,
     freshWindowLabel: "last 20 minutes",
+    freshSignalScore: 6.7,
     freshSignal: "Falling Fast",
     freshSignalReason:
       "Recent reviews mention long lines and cooler-than-expected servings."
@@ -235,13 +317,17 @@ export const foodItems: FoodItem[] = [
     slug: "walleye-basket",
     name: "Walleye Basket",
     venueSlug: "xcel-energy-center",
+    vendorSlug: "north-star-fish-fry",
     itemType: "Food",
     category: "Seafood",
     location: "Club level",
     price: 15.49,
+    reportedPrice: 15.49,
+    priceLastConfirmedLabel: "2026 season",
+    priceReportCount: 4,
     rating: 4.3,
     worthItScore: 82,
-    slopScore: 4.3,
+    slopScore: 8.2,
     verdict: "Solid Role Player",
     runItBackPercent: 82,
     valueLabel: "Fair Deal",
@@ -260,6 +346,7 @@ export const foodItems: FoodItem[] = [
     venueBadge: "Venue MVP",
     freshReviewCount: 3,
     freshWindowLabel: "today",
+    freshSignalScore: 8.7,
     freshSignal: "Hot Today",
     freshSignalReason:
       "Fresh batches and quick line reports are trending positive."
@@ -268,13 +355,17 @@ export const foodItems: FoodItem[] = [
     slug: "cold-stadium-nachos",
     name: "Cold Stadium Nachos",
     venueSlug: "us-bank-stadium",
+    vendorSlug: "upper-deck-nachos",
     itemType: "Food",
     category: "Nachos",
     location: "Upper deck",
     price: 11.99,
+    reportedPrice: 11.99,
+    priceLastConfirmedLabel: "May 2026",
+    priceReportCount: 7,
     rating: 2.1,
     worthItScore: 29,
-    slopScore: 2.1,
+    slopScore: 3.1,
     verdict: "Slop Alert",
     runItBackPercent: 18,
     valueLabel: "Robbery",
@@ -293,6 +384,7 @@ export const foodItems: FoodItem[] = [
     venueBadge: "Slop Alert",
     freshReviewCount: 5,
     freshWindowLabel: "last 30 minutes",
+    freshSignalScore: 2.4,
     freshSignal: "Fans Say Skip",
     freshSignalReason:
       "Recent fans reported cold cheese, stale chips, and poor value."
@@ -301,6 +393,7 @@ export const foodItems: FoodItem[] = [
     slug: "north-loop-old-fashioned",
     name: "North Loop Old Fashioned",
     venueSlug: "target-field",
+    vendorSlug: "north-loop-bar",
     itemType: "Alcoholic Drink",
     alcoholic: true,
     ageRestricted: true,
@@ -308,9 +401,12 @@ export const foodItems: FoodItem[] = [
     category: "Cocktail",
     location: "Main concourse",
     price: 17.99,
+    reportedPrice: 17.99,
+    priceLastConfirmedLabel: "May 2026",
+    priceReportCount: 3,
     rating: 4.1,
     worthItScore: 72,
-    slopScore: 4.1,
+    slopScore: 7.6,
     verdict: "Solid Role Player",
     runItBackPercent: 76,
     valueLabel: "Stadium Tax",
@@ -328,6 +424,7 @@ export const foodItems: FoodItem[] = [
     venueBadge: "Hidden Gem",
     freshReviewCount: 2,
     freshWindowLabel: "today",
+    freshSignalScore: 7.1,
     freshSignal: "Mixed Signals",
     freshSignalReason: "Fans like the flavor but say the price is steep."
   },
@@ -335,6 +432,7 @@ export const foodItems: FoodItem[] = [
     slug: "frozen-lemonade",
     name: "Frozen Lemonade",
     venueSlug: "target-field",
+    vendorSlug: "family-freeze",
     itemType: "Non-Alcoholic Drink",
     alcoholic: false,
     ageRestricted: false,
@@ -342,9 +440,12 @@ export const foodItems: FoodItem[] = [
     category: "Drink",
     location: "Family concourse",
     price: 7.99,
+    reportedPrice: 7.99,
+    priceLastConfirmedLabel: "May 2026",
+    priceReportCount: 8,
     rating: 4.2,
     worthItScore: 86,
-    slopScore: 4.2,
+    slopScore: 8.1,
     verdict: "Solid Role Player",
     runItBackPercent: 84,
     valueLabel: "Fair Deal",
@@ -362,6 +463,7 @@ export const foodItems: FoodItem[] = [
     venueBadge: "Best Value",
     freshReviewCount: 7,
     freshWindowLabel: "today",
+    freshSignalScore: 8.9,
     freshSignal: "Hot Today",
     freshSignalReason: "A strong non-alcoholic pick with quick lines."
   }
@@ -462,8 +564,20 @@ export function getVenueBySlug(slug: string) {
   return venues.find((venue) => venue.slug === slug);
 }
 
+export function getVendorBySlug(slug: string) {
+  return vendors.find((vendor) => vendor.slug === slug);
+}
+
+export function getVendorsByVenueSlug(venueSlug: string) {
+  return vendors.filter((vendor) => vendor.venueSlug === venueSlug);
+}
+
 export function getFoodItemsByVenueSlug(venueSlug: string) {
   return foodItems.filter((item) => item.venueSlug === venueSlug);
+}
+
+export function getFoodItemsByVendorSlug(vendorSlug: string) {
+  return foodItems.filter((item) => item.vendorSlug === vendorSlug);
 }
 
 export function getFoodItemBySlug(slug: string) {
@@ -472,6 +586,10 @@ export function getFoodItemBySlug(slug: string) {
 
 export function getVenueForFoodItem(item: FoodItem) {
   return getVenueBySlug(item.venueSlug);
+}
+
+export function getVendorForFoodItem(item: FoodItem) {
+  return getVendorBySlug(item.vendorSlug);
 }
 
 export function getPhotosForFoodItem(venueSlug: string, foodSlug: string) {

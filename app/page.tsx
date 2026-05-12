@@ -10,7 +10,7 @@ export default function Home() {
       <section className="mx-auto flex min-h-[calc(100vh-160px)] w-full max-w-3xl flex-col justify-center px-5 py-12 sm:px-8">
         <header>
           <p className="mb-5 inline-flex rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
-            Venue-first food intel
+            Eats in the Seats
           </p>
           <h1 className="text-5xl font-black leading-none tracking-tight sm:text-7xl">
             STADIUM SLOP

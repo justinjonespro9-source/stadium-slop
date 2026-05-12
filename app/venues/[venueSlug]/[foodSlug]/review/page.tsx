@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import { getFoodItemBySlug, getVenueBySlug } from "@/lib/sample-data";
 
-const slopScoreOptions = [1, 2, 3, 4, 5];
+const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const runItBackOptions = ["Run It Back", "Maybe", "Bench It"];
 const valueOptions = ["Steal", "Fair Deal", "Stadium Tax", "Robbery"];
 const servedRightOptions = ["Game Ready", "Fine", "Sat on the Bench", "N/A"];
@@ -126,13 +126,17 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </p>
           <h2 className="mt-2 text-3xl font-black">Build your fan scorecard</h2>
           <p className="mt-4 text-zinc-400">
-            Signal ratings are required because they power venue scoreboards.
-            Photos are optional, and short written notes are optional.
+            Slop Score and Napkin Rating are required because structured signals
+            power Slop Standings. Photos are optional, and short food notes are
+            optional.
           </p>
 
           <div className="mt-8 space-y-8">
             <div>
-              <h3 className="font-bold">Slop Score</h3>
+              <h3 className="font-bold">Slop Score Required</h3>
+              <p className="mt-2 text-sm text-zinc-500">
+                Rate the item from 1-10 based on what arrived at the seat.
+              </p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {slopScoreOptions.map((score) => (
                   <OptionPill key={score} label={`${score}`} />
@@ -177,7 +181,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             </div>
 
             <div>
-              <h3 className="font-bold">Napkin Rating</h3>
+              <h3 className="font-bold">Napkin Rating Required</h3>
               <div className="mt-3 flex flex-wrap gap-2">
                 {napkinOptions.map((option) => (
                   <OptionPill key={option} label={option} />
@@ -186,10 +190,11 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             </div>
 
             <div>
-              <h3 className="font-bold">Short Review Optional</h3>
+              <h3 className="font-bold">Optional Food Note</h3>
               <p className="mt-2 text-sm text-zinc-500">
-                Conceptual limit: 280 characters. Keep it useful. Review the
-                food, not the staff or other fans.
+                Conceptual limit: 280-300 characters. Keep it useful. Review
+                the food, not the staff or other fans. Stadium Slop has no
+                comments or thumbs-down.
               </p>
               <textarea
                 disabled
@@ -219,10 +224,10 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </div>
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Venue Scoreboards
+              Slop Standings
             </p>
             <p className="mt-3 text-xl font-black">
-              Verified reviews help keep scoreboards honest.
+              Verified reviews help keep Slop Standings honest.
             </p>
           </div>
         </section>

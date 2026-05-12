@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import {
   getFoodItemBySlug,
   getPhotosForFoodItem,
+  getVendorForFoodItem,
   getVenueBySlug
 } from "@/lib/sample-data";
 
@@ -11,38 +12,44 @@ const mockReviews = [
   {
     author: "Section 128 Regular",
     initials: "SR",
-    rating: 4.8,
+    rating: 9.2,
     runItBack: "Run It Back",
     value: "Fair Deal",
     servedRight: "Game Ready",
     lineWait: "Worth the Wait",
     napkins: "3/5 napkins",
+    helpfulCount: 18,
+    verifiedGameDay: true,
     imagePlaceholder: "🧀",
-    comment: "Hot, salty, and still crisp by the time I got back to my seat."
+    note: "Hot, salty, and still crisp by the time I got back to my seat."
   },
   {
     author: "Late Inning Snack Scout",
     initials: "LS",
-    rating: 4.2,
+    rating: 7.8,
     runItBack: "Maybe",
     value: "Stadium Tax",
     servedRight: "Fine",
     lineWait: "Too Long",
     napkins: "4/5 napkins",
+    helpfulCount: 11,
+    verifiedGameDay: true,
     imagePlaceholder: "🥪",
-    comment: "Good bite, but the line made it feel like a bigger commitment."
+    note: "Good bite, but the line made it feel like a bigger commitment."
   },
   {
     author: "Upper Deck Critic",
     initials: "UC",
-    rating: 3.9,
+    rating: 6.1,
     runItBack: "Bench It",
     value: "Fair Deal",
     servedRight: "Sat on the Bench",
     lineWait: "Quick Stop",
     napkins: "2/5 napkins",
+    helpfulCount: 6,
+    verifiedGameDay: false,
     imagePlaceholder: "🍟",
-    comment: "Fine if you are close, but not worth crossing sections for."
+    note: "Fine if you are close, but not worth crossing sections for."
   }
 ];
 
@@ -67,6 +74,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
     notFound();
   }
 
+  const vendor = getVendorForFoodItem(foodItem);
   const foodPhotos = getPhotosForFoodItem(venue.slug, foodItem.slug);
 
   return (
@@ -79,65 +87,61 @@ export default async function FoodPage({ params }: FoodPageProps) {
           Back to {venue.name}
         </Link>
 
-        <header className="grid gap-8 py-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+        <header className="py-8">
           <div>
-            <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
+            <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
               {foodItem.itemType} · {foodItem.category}
             </p>
             {foodItem.ageRestricted ? (
-              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                 21+
               </p>
             ) : null}
             {foodItem.isPromoted ? (
-              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                 Promoted
               </p>
             ) : null}
             {foodItem.isNewThisSeason ? (
-              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                 New This Season
               </p>
             ) : null}
             {foodItem.venueBadge ? (
-              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+              <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                 {foodItem.venueBadge}
               </p>
             ) : null}
-            <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
+            <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight sm:text-6xl">
               {foodItem.name}
             </h1>
             <p className="mt-5 text-lg text-zinc-300">{foodItem.description}</p>
-            <p className="mt-6 text-zinc-400">
-              {venue.name} · {venue.city}, {venue.state}
+            <p className="mt-4 text-zinc-400">
+              {venue.name} · {vendor ? vendor.name : "Vendor TBD"} ·{" "}
+              {foodItem.location}
             </p>
           </div>
 
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Overall Slop Score</p>
-                <p className="mt-1 text-2xl font-black">
-                  {foodItem.slopScore.toFixed(1)}
-                </p>
-              </div>
-              <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Verdict</p>
-                <p className="mt-1 text-xl font-black">{foodItem.verdict}</p>
-              </div>
-              <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Run It Back</p>
-                <p className="mt-1 text-2xl font-black">
-                  {foodItem.runItBackPercent}%
-                </p>
-              </div>
-              <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Reviews</p>
-                <p className="mt-1 text-2xl font-black">
-                  {foodItem.reviewCount}
-                </p>
-              </div>
-            </div>
+          <div className="mt-6 rounded-3xl border border-zinc-800 bg-zinc-950 p-4">
+            <p className="text-sm font-bold leading-6 text-zinc-200">
+              Slop Score {foodItem.slopScore.toFixed(1)} · Fresh Signal{" "}
+              {foodItem.freshSignalScore
+                ? `${foodItem.freshSignalScore.toFixed(1)} ${foodItem.freshWindowLabel}`
+                : "pending"}{" "}
+              · {foodItem.reviewCount} reviews · {foodItem.napkinRating} Napkins
+            </p>
+            <p className="mt-2 text-sm text-zinc-500">
+              Reported price{" "}
+              {foodItem.reportedPrice
+                ? `$${foodItem.reportedPrice.toFixed(2)}`
+                : "pending"}{" "}
+              {foodItem.priceLastConfirmedLabel
+                ? `· ${foodItem.priceLastConfirmedLabel}`
+                : ""}
+              {foodItem.priceReportCount
+                ? ` · ${foodItem.priceReportCount} price reports`
+                : ""}
+            </p>
           </div>
         </header>
 
@@ -145,9 +149,11 @@ export default async function FoodPage({ params }: FoodPageProps) {
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Review this item
           </p>
-          <h2 className="mt-2 text-3xl font-black">Help move the scoreboard</h2>
+          <h2 className="mt-2 text-3xl font-black">
+            Help move the Slop Standings
+          </h2>
           <p className="mt-4 max-w-3xl text-zinc-400">
-            Help move the venue scoreboard. Verified reviews require a free
+            Help move the venue Slop Standings. Verified reviews require a free
             profile and an on-site location check.
           </p>
           <Link
@@ -242,7 +248,8 @@ export default async function FoodPage({ params }: FoodPageProps) {
             <p className="max-w-2xl text-sm leading-6 text-zinc-400">
               Swipe fan cards to see what verified on-site reviewers actually
               got. Photos and written notes are optional; structured signals
-              power the scoreboards.
+              power Slop Standings. Slop Cards combine the food photo, verified
+              on-site status, and structured review signals.
             </p>
           </div>
 
@@ -260,7 +267,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     {review.initials}
                   </div>
                   <span className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                    {review.rating.toFixed(1)}
+                    {review.rating.toFixed(1)}/10
                   </span>
                 </div>
 
@@ -270,10 +277,15 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                       Verified on-site
                     </span>
+                    {review.verifiedGameDay ? (
+                      <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                        Verified game-day
+                      </span>
+                    ) : null}
                   </div>
                   <p className="mt-2 text-sm text-zinc-500">{review.author}</p>
                   <p className="mt-4 text-sm leading-6 text-zinc-300">
-                    {review.comment}
+                    {review.note}
                   </p>
 
                   <div className="mt-5 rounded-3xl bg-black p-4">
@@ -307,8 +319,15 @@ export default async function FoodPage({ params }: FoodPageProps) {
                       </div>
                     </div>
                     <p className="mt-4 text-sm leading-6 text-zinc-400">
-                      {review.comment}
+                      {review.note}
                     </p>
+                    <button
+                      type="button"
+                      disabled
+                      className="mt-4 cursor-not-allowed rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
+                    >
+                      Helpful · {review.helpfulCount}
+                    </button>
                   </div>
                 </div>
               </article>
@@ -321,38 +340,44 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </p>
         </section>
 
-        <section className="border-t border-zinc-800 py-10">
+        <section className="border-t border-zinc-800 py-8">
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Fan Photos
+                More Fan Photos
               </p>
-              <h2 className="mt-2 text-3xl font-black">
-                What showed up at the seat
+              <h2 className="mt-2 text-2xl font-black">
+                Photo roll
               </h2>
             </div>
-            <p className="text-sm text-zinc-400">
-              Text placeholders until real uploads are added.
+            <p className="max-w-xl text-sm leading-6 text-zinc-400">
+              A quick look at additional fan-uploaded photos. Full review
+              context lives on Slop Cards.
             </p>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <div className="mt-6 flex gap-3 overflow-x-auto pb-2">
             {foodPhotos.map((photo) => (
               <article
                 key={photo.id}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-5"
+                className="min-w-52 rounded-3xl border border-zinc-800 bg-zinc-950 p-3"
               >
                 <div
                   aria-label={photo.alt}
-                  className="flex aspect-video items-center justify-center rounded-2xl bg-black text-7xl"
+                  className="flex aspect-square items-center justify-center rounded-2xl bg-black text-6xl"
                 >
                   {photo.imagePlaceholder}
                 </div>
-                <div className="mt-5 flex flex-wrap items-center gap-2">
-                  <h3 className="font-bold">{photo.caption}</h3>
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <h3 className="text-sm font-bold">{photo.caption}</h3>
                   {photo.verifiedOnSite ? (
                     <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
                       Verified on-site
+                    </span>
+                  ) : null}
+                  {photo.verifiedOnSite && photo.createdAt === "May 2026" ? (
+                    <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
+                      Fresh today
                     </span>
                   ) : null}
                 </div>
@@ -384,6 +409,12 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 <div className="rounded-2xl bg-black p-4">
                   <p className="text-zinc-500">Venue</p>
                   <p className="mt-1 font-bold text-white">{venue.name}</p>
+                </div>
+                <div className="rounded-2xl bg-black p-4">
+                  <p className="text-zinc-500">Vendor</p>
+                  <p className="mt-1 font-bold text-white">
+                    {vendor ? vendor.name : "Vendor TBD"}
+                  </p>
                 </div>
                 <div className="rounded-2xl bg-black p-4">
                   <p className="text-zinc-500">City</p>
@@ -422,6 +453,27 @@ export default async function FoodPage({ params }: FoodPageProps) {
                   <p className="mt-1 font-bold text-white">
                     {foodItem.location}
                   </p>
+                </div>
+                <div className="rounded-2xl bg-black p-4">
+                  <p className="text-zinc-500">Reported Price</p>
+                  <p className="mt-1 font-bold text-white">
+                    {foodItem.reportedPrice
+                      ? `$${foodItem.reportedPrice.toFixed(2)}`
+                      : "Price pending"}
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-black p-4">
+                  <p className="text-zinc-500">Price Confidence</p>
+                  <p className="mt-1 font-bold text-white">
+                    {foodItem.priceReportCount
+                      ? `${foodItem.priceReportCount} fan reports`
+                      : "Not enough reports"}
+                  </p>
+                  {foodItem.priceLastConfirmedLabel ? (
+                    <p className="mt-1 text-xs text-zinc-500">
+                      Last confirmed {foodItem.priceLastConfirmedLabel}
+                    </p>
+                  ) : null}
                 </div>
                 <div className="rounded-2xl bg-black p-4">
                   <p className="text-zinc-500">Availability</p>

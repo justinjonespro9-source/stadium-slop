@@ -14,8 +14,8 @@ export function SiteFooter() {
         <div>
           <p className="text-xl font-black tracking-tight">STADIUM SLOP</p>
           <p className="mt-3 max-w-xl text-sm leading-6 text-zinc-400">
-            Fan-powered concession intel for finding what is worth eating before
-            you hit the line.
+            Eats in the Seats. Fan-powered concession intel for finding what is
+            worth eating before you hit the line.
           </p>
           <p className="mt-5 text-sm text-zinc-500">
             Fan ratings stay independent. Promoted placements are clearly
