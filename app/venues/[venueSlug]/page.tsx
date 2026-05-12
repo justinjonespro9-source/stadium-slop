@@ -88,60 +88,69 @@ export default async function VenuePage({ params }: VenuePageProps) {
 
           <div className="mt-8 grid gap-4 lg:grid-cols-2">
             {venueFoodItems.map((item) => (
-              <article
+              <Link
                 key={item.slug}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
+                href={`/venues/${venue.slug}/${item.slug}`}
+                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                      {item.category}
-                    </p>
-                    <h3 className="mt-2 text-2xl font-black">{item.name}</h3>
+                <article>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                        {item.category}
+                      </p>
+                      <h3 className="mt-2 text-2xl font-black">{item.name}</h3>
+                    </div>
+                    <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+                      {item.rating.toFixed(1)}
+                    </div>
                   </div>
-                  <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                    {item.rating.toFixed(1)}
-                  </div>
-                </div>
 
-                <p className="mt-4 text-zinc-300">{item.description}</p>
+                  <p className="mt-4 text-zinc-300">{item.description}</p>
 
-                <div className="mt-6 grid gap-3 text-sm text-zinc-400 sm:grid-cols-2">
-                  <div className="rounded-2xl bg-black p-4">
-                    <p className="text-zinc-500">Location</p>
-                    <p className="mt-1 font-bold text-white">{item.location}</p>
+                  <div className="mt-6 grid gap-3 text-sm text-zinc-400 sm:grid-cols-2">
+                    <div className="rounded-2xl bg-black p-4">
+                      <p className="text-zinc-500">Location</p>
+                      <p className="mt-1 font-bold text-white">
+                        {item.location}
+                      </p>
+                    </div>
+                    <div className="rounded-2xl bg-black p-4">
+                      <p className="text-zinc-500">Price</p>
+                      <p className="mt-1 font-bold text-white">
+                        ${item.price.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="rounded-2xl bg-black p-4">
+                      <p className="text-zinc-500">Worth It Score</p>
+                      <p className="mt-1 font-bold text-white">
+                        {item.worthItScore}
+                      </p>
+                    </div>
+                    <div className="rounded-2xl bg-black p-4">
+                      <p className="text-zinc-500">Reviews</p>
+                      <p className="mt-1 font-bold text-white">
+                        {item.reviewCount}
+                      </p>
+                    </div>
                   </div>
-                  <div className="rounded-2xl bg-black p-4">
-                    <p className="text-zinc-500">Price</p>
-                    <p className="mt-1 font-bold text-white">
-                      ${item.price.toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="rounded-2xl bg-black p-4">
-                    <p className="text-zinc-500">Worth It Score</p>
-                    <p className="mt-1 font-bold text-white">
-                      {item.worthItScore}
-                    </p>
-                  </div>
-                  <div className="rounded-2xl bg-black p-4">
-                    <p className="text-zinc-500">Reviews</p>
-                    <p className="mt-1 font-bold text-white">
-                      {item.reviewCount}
-                    </p>
-                  </div>
-                </div>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {item.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-zinc-800 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </article>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {item.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-zinc-800 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+                    View food details
+                  </p>
+                </article>
+              </Link>
             ))}
           </div>
         </section>
