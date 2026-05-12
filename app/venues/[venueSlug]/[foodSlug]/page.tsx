@@ -7,18 +7,27 @@ const mockReviews = [
   {
     author: "Section 128 Regular",
     rating: 4.8,
+    runItBack: "Yes",
+    value: "Fair Deal",
+    napkins: "3/5",
     comment:
       "Exactly the kind of concession stand win you hope for when the lines are moving."
   },
   {
     author: "Late Inning Snack Scout",
     rating: 4.2,
+    runItBack: "Maybe",
+    value: "Stadium Tax",
+    napkins: "4/5",
     comment:
       "Pricey, but it feels more memorable than the usual backup-plan stadium food."
   },
   {
     author: "Upper Deck Critic",
     rating: 3.9,
+    runItBack: "If nearby",
+    value: "Fair Deal",
+    napkins: "2/5",
     comment:
       "Worth trying once, especially if you are already nearby and hungry."
   }
@@ -99,21 +108,19 @@ export default async function FoodPage({ params }: FoodPageProps) {
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Rating</p>
+                <p className="text-zinc-500">Slop Score</p>
                 <p className="mt-1 text-2xl font-black">
-                  {foodItem.rating.toFixed(1)}
+                  {foodItem.slopScore.toFixed(1)}
                 </p>
               </div>
               <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Worth It</p>
-                <p className="mt-1 text-2xl font-black">
-                  {foodItem.worthItScore}
-                </p>
+                <p className="text-zinc-500">Verdict</p>
+                <p className="mt-1 text-xl font-black">{foodItem.verdict}</p>
               </div>
               <div className="rounded-2xl bg-black p-4">
-                <p className="text-zinc-500">Price</p>
+                <p className="text-zinc-500">Run It Back</p>
                 <p className="mt-1 text-2xl font-black">
-                  ${foodItem.price.toFixed(2)}
+                  {foodItem.runItBackPercent}%
                 </p>
               </div>
               <div className="rounded-2xl bg-black p-4">
@@ -139,6 +146,57 @@ export default async function FoodPage({ params }: FoodPageProps) {
             ) : null}
           </section>
         ) : null}
+
+        <section className="border-t border-zinc-800 py-10">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Fan Signals
+          </p>
+          <h2 className="mt-2 text-3xl font-black">What fans are saying</h2>
+
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+              <p className="text-sm text-zinc-500">Slop Score</p>
+              <p className="mt-2 text-3xl font-black">
+                {foodItem.slopScore.toFixed(1)}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+              <p className="text-sm text-zinc-500">Verdict</p>
+              <p className="mt-2 text-xl font-black">{foodItem.verdict}</p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+              <p className="text-sm text-zinc-500">Run It Back</p>
+              <p className="mt-2 text-3xl font-black">
+                {foodItem.runItBackPercent}%
+              </p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+              <p className="text-sm text-zinc-500">Value</p>
+              <p className="mt-2 text-xl font-black">{foodItem.valueLabel}</p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+              <p className="text-sm text-zinc-500">Served Right</p>
+              <p className="mt-2 text-xl font-black">
+                {foodItem.servedRightLabel}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+              <p className="text-sm text-zinc-500">Line Wait</p>
+              <p className="mt-2 text-xl font-black">
+                {foodItem.lineWaitLabel}
+              </p>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5 sm:col-span-2">
+              <p className="text-sm text-zinc-500">Napkin Rating</p>
+              <p className="mt-2 text-xl font-black">
+                {foodItem.napkinRating}/5 napkins
+              </p>
+              <p className="mt-1 text-sm text-zinc-400">
+                {foodItem.napkinLabel}
+              </p>
+            </div>
+          </div>
+        </section>
 
         <section className="border-t border-zinc-800 py-10">
           <div className="grid gap-4 lg:grid-cols-3">
@@ -295,6 +353,20 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 <p className="mt-4 text-sm leading-6 text-zinc-400">
                   {review.comment}
                 </p>
+                <div className="mt-5 grid gap-2 text-xs text-zinc-400">
+                  <p>
+                    <span className="text-zinc-600">Run It Back:</span>{" "}
+                    {review.runItBack}
+                  </p>
+                  <p>
+                    <span className="text-zinc-600">Value:</span>{" "}
+                    {review.value}
+                  </p>
+                  <p>
+                    <span className="text-zinc-600">Napkins:</span>{" "}
+                    {review.napkins}
+                  </p>
+                </div>
               </article>
             ))}
           </div>

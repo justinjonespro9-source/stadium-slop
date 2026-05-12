@@ -7,7 +7,7 @@ const topFoodItemByVenueSlug = foodItems.reduce<
 >((topItems, item) => {
   const currentTopItem = topItems[item.venueSlug];
 
-  if (!currentTopItem || item.rating > currentTopItem.rating) {
+  if (!currentTopItem || item.slopScore > currentTopItem.slopScore) {
     topItems[item.venueSlug] = item;
   }
 
@@ -110,7 +110,8 @@ export default function VenuesPage() {
                     </div>
                     {topItem ? (
                       <p className="mt-1 text-sm text-zinc-500">
-                        {topItem.rating.toFixed(1)} rating
+                        Slop Score {topItem.slopScore.toFixed(1)} ·{" "}
+                        {topItem.verdict}
                       </p>
                     ) : null}
                   </div>

@@ -1,13 +1,15 @@
 import { foodItems, venues } from "@/lib/sample-data";
 
-const leaderboardItems = [...foodItems].sort((a, b) => b.rating - a.rating);
+const leaderboardItems = [...foodItems].sort(
+  (a, b) => b.slopScore - a.slopScore
+);
 
 const topFoodItemByVenueSlug = foodItems.reduce<
   Record<string, (typeof foodItems)[number]>
 >((topItems, item) => {
   const currentTopItem = topItems[item.venueSlug];
 
-  if (!currentTopItem || item.rating > currentTopItem.rating) {
+  if (!currentTopItem || item.slopScore > currentTopItem.slopScore) {
     topItems[item.venueSlug] = item;
   }
 
@@ -115,7 +117,33 @@ export default function Home() {
                           </p>
                         </div>
                         <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                          {item.rating.toFixed(1)}
+                          Slop Score {item.slopScore.toFixed(1)}
+                        </div>
+                      </div>
+                      <div className="mt-4 grid gap-2 text-sm text-zinc-400 sm:grid-cols-3">
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
+                            Verdict
+                          </p>
+                          <p className="mt-1 font-bold text-white">
+                            {item.verdict}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
+                            Run It Back
+                          </p>
+                          <p className="mt-1 font-bold text-white">
+                            {item.runItBackPercent}%
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs uppercase tracking-[0.15em] text-zinc-600">
+                            Napkins
+                          </p>
+                          <p className="mt-1 font-bold text-white">
+                            {item.napkinRating}/5
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -198,7 +226,8 @@ export default function Home() {
                     </div>
                     {topItem ? (
                       <p className="mt-1 text-sm text-zinc-500">
-                        {topItem.rating.toFixed(1)} rating
+                        {topItem.slopScore.toFixed(1)} Slop Score ·{" "}
+                        {topItem.verdict}
                       </p>
                     ) : null}
                   </div>

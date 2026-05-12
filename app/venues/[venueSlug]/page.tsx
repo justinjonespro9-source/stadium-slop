@@ -18,7 +18,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
   }
 
   const venueFoodItems = getFoodItemsByVenueSlug(venue.slug).sort(
-    (a, b) => b.rating - a.rating
+    (a, b) => b.slopScore - a.slopScore
   );
   const newThisSeasonItems = venueFoodItems.filter(
     (item) => item.isNewThisSeason
@@ -142,7 +142,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
               </h2>
             </div>
             <p className="text-sm text-zinc-400">
-              Sorted by highest fan rating first.
+              Sorted by highest Slop Score first.
             </p>
           </div>
 
@@ -174,11 +174,14 @@ export default async function VenuePage({ params }: VenuePageProps) {
                       </div>
                     </div>
                     <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                      {item.rating.toFixed(1)}
+                      Slop Score {item.slopScore.toFixed(1)}
                     </div>
                   </div>
 
-                  <p className="mt-4 text-zinc-300">{item.description}</p>
+                  <p className="mt-4 font-bold text-zinc-300">
+                    {item.verdict}
+                  </p>
+                  <p className="mt-2 text-zinc-400">{item.description}</p>
 
                   <div className="mt-6 grid gap-3 text-sm text-zinc-400 sm:grid-cols-2">
                     <div className="rounded-2xl bg-black p-4">
@@ -194,15 +197,21 @@ export default async function VenuePage({ params }: VenuePageProps) {
                       </p>
                     </div>
                     <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Worth It Score</p>
+                      <p className="text-zinc-500">Run It Back</p>
                       <p className="mt-1 font-bold text-white">
-                        {item.worthItScore}
+                        {item.runItBackPercent}%
                       </p>
                     </div>
                     <div className="rounded-2xl bg-black p-4">
-                      <p className="text-zinc-500">Reviews</p>
+                      <p className="text-zinc-500">Value</p>
                       <p className="mt-1 font-bold text-white">
-                        {item.reviewCount}
+                        {item.valueLabel}
+                      </p>
+                    </div>
+                    <div className="rounded-2xl bg-black p-4">
+                      <p className="text-zinc-500">Napkin Rating</p>
+                      <p className="mt-1 font-bold text-white">
+                        {item.napkinRating}/5 napkins
                       </p>
                     </div>
                   </div>

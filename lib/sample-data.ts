@@ -23,6 +23,33 @@ export type FoodItem = {
   price: number;
   rating: number;
   worthItScore: number;
+  slopScore: number;
+  verdict:
+    | "Hall of Fame Bite"
+    | "Starter Every Game"
+    | "Solid Role Player"
+    | "Bench It"
+    | "Slop Alert";
+  runItBackPercent: number;
+  valueLabel: "Steal" | "Fair Deal" | "Stadium Tax" | "Overpaid" | "Robbery";
+  servedRightLabel:
+    | "Game Ready"
+    | "Fine"
+    | "Sat on the Bench"
+    | "Not Applicable";
+  lineWaitLabel:
+    | "Quick Stop"
+    | "Worth the Wait"
+    | "Too Long"
+    | "Missed the Action"
+    | "Not Applicable";
+  napkinRating: 1 | 2 | 3 | 4 | 5;
+  napkinLabel:
+    | "Clean Win"
+    | "Safe at Your Seat"
+    | "Two-Handed Problem"
+    | "Jersey Danger"
+    | "Full Cleanup Crew";
   reviewCount: number;
   tags: string[];
   description: string;
@@ -98,6 +125,14 @@ export const foodItems: FoodItem[] = [
     price: 13.99,
     rating: 4.6,
     worthItScore: 91,
+    slopScore: 4.6,
+    verdict: "Starter Every Game",
+    runItBackPercent: 91,
+    valueLabel: "Fair Deal",
+    servedRightLabel: "Game Ready",
+    lineWaitLabel: "Worth the Wait",
+    napkinRating: 3,
+    napkinLabel: "Two-Handed Problem",
     reviewCount: 128,
     tags: ["Shareable", "Salty", "Fan Favorite"],
     description:
@@ -114,6 +149,14 @@ export const foodItems: FoodItem[] = [
     price: 16.99,
     rating: 4.4,
     worthItScore: 84,
+    slopScore: 4.4,
+    verdict: "Starter Every Game",
+    runItBackPercent: 88,
+    valueLabel: "Stadium Tax",
+    servedRightLabel: "Game Ready",
+    lineWaitLabel: "Too Long",
+    napkinRating: 4,
+    napkinLabel: "Jersey Danger",
     reviewCount: 96,
     tags: ["Filling", "Smoky", "Worth the Line"],
     description:
@@ -135,6 +178,14 @@ export const foodItems: FoodItem[] = [
     price: 15.49,
     rating: 4.3,
     worthItScore: 82,
+    slopScore: 4.3,
+    verdict: "Solid Role Player",
+    runItBackPercent: 82,
+    valueLabel: "Fair Deal",
+    servedRightLabel: "Game Ready",
+    lineWaitLabel: "Quick Stop",
+    napkinRating: 2,
+    napkinLabel: "Safe at Your Seat",
     reviewCount: 74,
     tags: ["Local Flavor", "Crispy", "Arena Classic"],
     description:
@@ -151,6 +202,14 @@ export const foodItems: FoodItem[] = [
     price: 11.99,
     rating: 2.1,
     worthItScore: 29,
+    slopScore: 2.1,
+    verdict: "Slop Alert",
+    runItBackPercent: 18,
+    valueLabel: "Robbery",
+    servedRightLabel: "Sat on the Bench",
+    lineWaitLabel: "Missed the Action",
+    napkinRating: 5,
+    napkinLabel: "Full Cleanup Crew",
     reviewCount: 51,
     tags: ["Overpriced", "Skip It", "Slop Candidate"],
     description:
