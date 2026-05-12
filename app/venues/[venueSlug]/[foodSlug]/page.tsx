@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import {
   getFoodItemBySlug,
+  getFoodItemsByVendorSlug,
   getPhotosForFoodItem,
   getVendorForFoodItem,
   getVenueBySlug
@@ -77,6 +78,11 @@ export default async function FoodPage({ params }: FoodPageProps) {
   const vendor = getVendorForFoodItem(foodItem);
   const foodPhotos = getPhotosForFoodItem(venue.slug, foodItem.slug);
   const heroPhoto = foodPhotos[0];
+  const moreFromVendor = vendor
+    ? getFoodItemsByVendorSlug(vendor.slug).filter(
+        (item) => item.slug !== foodItem.slug
+      )
+    : [];
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -423,6 +429,45 @@ export default async function FoodPage({ params }: FoodPageProps) {
             </p>
           </article>
         </section>
+
+        {vendor && moreFromVendor.length > 0 ? (
+          <section className="border-t border-zinc-800 py-8">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                  More from this vendor
+                </p>
+                <h2 className="mt-2 text-2xl font-black">{vendor.name}</h2>
+              </div>
+              <Link
+                href={`/venues/${venue.slug}/vendors/${vendor.slug}`}
+                className="text-sm font-bold text-zinc-400 hover:text-white"
+              >
+                Open vendor
+              </Link>
+            </div>
+
+            <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
+              {moreFromVendor.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/venues/${venue.slug}/${item.slug}`}
+                  className="flex items-center justify-between gap-3 border-b border-zinc-800 px-4 py-4 transition last:border-b-0 hover:bg-black"
+                >
+                  <div>
+                    <p className="font-bold">{item.name}</p>
+                    <p className="mt-1 text-sm text-zinc-500">
+                      {item.itemType} · {item.location}
+                    </p>
+                  </div>
+                  <span className="text-sm font-black">
+                    {item.slopScore.toFixed(1)}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section className="border-t border-zinc-800 py-10">
           <div className="grid gap-4 lg:grid-cols-3">

@@ -10,83 +10,219 @@ import {
 } from "@/lib/sample-data";
 
 type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
-type FreshSignal = NonNullable<FoodItem["freshSignal"]>;
+type StandingsMode = "all-time" | "season" | "fresh";
+type CategoryFilter =
+  | "all"
+  | "food"
+  | "sweet"
+  | "alcoholic"
+  | "non-alcoholic";
 
-const filterChips = [
-  "All",
-  "Food",
-  "Sweet Treats",
-  "Alcoholic Drinks",
-  "Non-Alcoholic Drinks"
+const modeOptions: { label: string; value: StandingsMode }[] = [
+  { label: "All-Time", value: "all-time" },
+  { label: "Season", value: "season" },
+  { label: "Game Day Fresh", value: "fresh" }
 ];
 
-const freshSignalPriority: Record<FreshSignal, number> = {
-  "Fans Say Skip": 0,
-  "Falling Fast": 1,
-  "Cold Streak": 2,
-  "Line Trouble": 3,
-  "Hot Today": 4,
-  "Holding Strong": 5,
-  "Mixed Signals": 6
-};
+const categoryOptions: { label: string; value: CategoryFilter }[] = [
+  { label: "All", value: "all" },
+  { label: "Food", value: "food" },
+  { label: "Sweet Treats", value: "sweet" },
+  { label: "Alcoholic Drinks", value: "alcoholic" },
+  { label: "Non-Alcoholic Drinks", value: "non-alcoholic" }
+];
 
 type VenuePageProps = {
   params: Promise<{
     venueSlug: string;
   }>;
+  searchParams?: Promise<{
+    mode?: string;
+    category?: string;
+    vendor?: string;
+  }>;
 };
 
 function sortOverallScoreboardItems(items: FoodItem[]) {
-  return [...items].sort((a, b) => {
-    const rankA = a.scoreboardRank;
-    const rankB = b.scoreboardRank;
-
-    if (rankA !== undefined && rankB !== undefined) {
-      return rankA - rankB;
-    }
-
-    if (rankA !== undefined) {
-      return -1;
-    }
-
-    if (rankB !== undefined) {
-      return 1;
-    }
-
-    return b.slopScore - a.slopScore;
-  });
+  return [...items].sort((a, b) => b.slopScore - a.slopScore);
 }
 
 function sortGameDayScoreboardItems(items: FoodItem[]) {
   return items
     .filter((item) => item.freshSignal && item.freshReviewCount !== undefined)
     .sort((a, b) => {
-      const priorityA = a.freshSignal
-        ? freshSignalPriority[a.freshSignal]
-        : Number.POSITIVE_INFINITY;
-      const priorityB = b.freshSignal
-        ? freshSignalPriority[b.freshSignal]
-        : Number.POSITIVE_INFINITY;
-
-      if (priorityA !== priorityB) {
-        return priorityA - priorityB;
+      if ((a.freshSignalScore ?? 0) !== (b.freshSignalScore ?? 0)) {
+        return (b.freshSignalScore ?? 0) - (a.freshSignalScore ?? 0);
       }
 
       return (b.freshReviewCount ?? 0) - (a.freshReviewCount ?? 0);
     });
 }
 
-function FilterChips() {
+function getMode(value?: string): StandingsMode {
+  if (value === "season" || value === "fresh" || value === "all-time") {
+    return value;
+  }
+
+  return "season";
+}
+
+function getCategory(value?: string): CategoryFilter {
+  if (
+    value === "food" ||
+    value === "sweet" ||
+    value === "alcoholic" ||
+    value === "non-alcoholic"
+  ) {
+    return value;
+  }
+
+  return "all";
+}
+
+function filterByCategory(item: FoodItem, category: CategoryFilter) {
+  if (category === "all") {
+    return true;
+  }
+
+  if (category === "food") {
+    return item.itemType === "Food";
+  }
+
+  if (category === "alcoholic") {
+    return item.itemType === "Alcoholic Drink";
+  }
+
+  if (category === "non-alcoholic") {
+    return item.itemType === "Non-Alcoholic Drink";
+  }
+
+  return ["sweet", "dessert", "treat"].some((keyword) =>
+    `${item.category} ${item.tags.join(" ")}`.toLowerCase().includes(keyword)
+  );
+}
+
+function buildVenueHref(
+  venueSlug: string,
+  mode: StandingsMode,
+  category: CategoryFilter,
+  vendorSlug: string
+) {
+  const params = new URLSearchParams();
+
+  if (mode !== "season") {
+    params.set("mode", mode);
+  }
+
+  if (category !== "all") {
+    params.set("category", category);
+  }
+
+  if (vendorSlug !== "all") {
+    params.set("vendor", vendorSlug);
+  }
+
+  const query = params.toString();
+  return `/venues/${venueSlug}${query ? `?${query}` : ""}`;
+}
+
+function FilterChips({
+  venueSlug,
+  mode,
+  category,
+  vendorSlug
+}: {
+  venueSlug: string;
+  mode: StandingsMode;
+  category: CategoryFilter;
+  vendorSlug: string;
+}) {
   return (
     <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-      {filterChips.map((chip) => (
-        <button
-          key={chip}
-          type="button"
-          className="shrink-0 rounded-full border border-zinc-800 bg-black px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
+      {categoryOptions.map((option) => (
+        <Link
+          key={option.value}
+          href={buildVenueHref(venueSlug, mode, option.value, vendorSlug)}
+          className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
+            category === option.value
+              ? "border-white bg-white text-black"
+              : "border-zinc-800 bg-black text-zinc-400"
+          }`}
         >
-          {chip}
-        </button>
+          {option.label}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function ModeChips({
+  venueSlug,
+  mode,
+  category,
+  vendorSlug
+}: {
+  venueSlug: string;
+  mode: StandingsMode;
+  category: CategoryFilter;
+  vendorSlug: string;
+}) {
+  return (
+    <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+      {modeOptions.map((option) => (
+        <Link
+          key={option.value}
+          href={buildVenueHref(venueSlug, option.value, category, vendorSlug)}
+          className={`shrink-0 rounded-full border px-4 py-2 text-sm font-black ${
+            mode === option.value
+              ? "border-white bg-white text-black"
+              : "border-zinc-800 bg-zinc-950 text-zinc-300"
+          }`}
+        >
+          {option.label}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function VendorChips({
+  venueSlug,
+  mode,
+  category,
+  vendorSlug,
+  vendors
+}: {
+  venueSlug: string;
+  mode: StandingsMode;
+  category: CategoryFilter;
+  vendorSlug: string;
+  vendors: ReturnType<typeof getVendorsByVenueSlug>;
+}) {
+  return (
+    <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
+      <Link
+        href={buildVenueHref(venueSlug, mode, category, "all")}
+        className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
+          vendorSlug === "all"
+            ? "border-white bg-white text-black"
+            : "border-zinc-800 bg-black text-zinc-400"
+        }`}
+      >
+        All Vendors
+      </Link>
+      {vendors.map((vendor) => (
+        <Link
+          key={vendor.slug}
+          href={buildVenueHref(venueSlug, mode, category, vendor.slug)}
+          className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
+            vendorSlug === vendor.slug
+              ? "border-white bg-white text-black"
+              : "border-zinc-800 bg-black text-zinc-400"
+          }`}
+        >
+          {vendor.name}
+        </Link>
       ))}
     </div>
   );
@@ -170,8 +306,9 @@ function ItemStandingRow({
   );
 }
 
-export default async function VenuePage({ params }: VenuePageProps) {
+export default async function VenuePage({ params, searchParams }: VenuePageProps) {
   const { venueSlug } = await params;
+  const query = await searchParams;
   const venue = getVenueBySlug(venueSlug);
 
   if (!venue) {
@@ -182,8 +319,26 @@ export default async function VenuePage({ params }: VenuePageProps) {
     (a, b) => b.slopScore - a.slopScore
   );
   const venueVendors = getVendorsByVenueSlug(venue.slug);
-  const overallScoreboardItems = sortOverallScoreboardItems(venueFoodItems);
-  const gameDayScoreboardItems = sortGameDayScoreboardItems(venueFoodItems);
+  const mode = getMode(query?.mode);
+  const category = getCategory(query?.category);
+  const vendorSlug = query?.vendor ?? "all";
+  const selectedVendor = venueVendors.find((vendor) => vendor.slug === vendorSlug);
+  const filteredItems = venueFoodItems.filter(
+    (item) =>
+      filterByCategory(item, category) &&
+      (vendorSlug === "all" || item.vendorSlug === vendorSlug)
+  );
+  const standingsItems =
+    mode === "fresh"
+      ? sortGameDayScoreboardItems(filteredItems)
+      : sortOverallScoreboardItems(filteredItems);
+  const modeLabel =
+    mode === "fresh"
+      ? "Game Day Fresh"
+      : mode === "all-time"
+        ? "All-Time"
+        : "Season";
+  const scoreLabel = mode === "fresh" ? "Fresh" : "Slop";
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -217,114 +372,93 @@ export default async function VenuePage({ params }: VenuePageProps) {
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Season Standings
+                Standings
               </p>
               <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-                Long-term Slop Score rankings from verified fan reviews.
+                {modeLabel} items at {venue.name}
               </h2>
+              <p className="mt-2 text-sm text-zinc-500">
+                Sorted by {scoreLabel} Score. Pick a mode, category, or vendor.
+              </p>
             </div>
-            <FilterChips />
+            <ModeChips
+              venueSlug={venue.slug}
+              mode={mode}
+              category={category}
+              vendorSlug={vendorSlug}
+            />
+            <FilterChips
+              venueSlug={venue.slug}
+              mode={mode}
+              category={category}
+              vendorSlug={vendorSlug}
+            />
+            <VendorChips
+              venueSlug={venue.slug}
+              mode={mode}
+              category={category}
+              vendorSlug={vendorSlug}
+              vendors={venueVendors}
+            />
+            {selectedVendor ? (
+              <Link
+                href={`/venues/${venue.slug}/vendors/${selectedVendor.slug}`}
+                className="mt-3 inline-flex text-sm font-bold text-zinc-400 hover:text-white"
+              >
+                Open {selectedVendor.name} vendor page
+              </Link>
+            ) : null}
           </div>
 
           <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
-            {overallScoreboardItems.map((item, index) => (
-              <ItemStandingRow
-                key={item.slug}
-                item={item}
-                rank={item.scoreboardRank ?? index + 1}
-                venueSlug={venue.slug}
-              />
-            ))}
-          </div>
-        </section>
-
-        <section className="border-t border-zinc-800 py-5 sm:py-8">
-          <div>
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Game Day Fresh
+            {standingsItems.length > 0 ? (
+              standingsItems.map((item, index) => (
+                <ItemStandingRow
+                  key={item.slug}
+                  item={item}
+                  rank={index + 1}
+                  venueSlug={venue.slug}
+                  showFresh={mode === "fresh"}
+                />
+              ))
+            ) : (
+              <p className="px-4 py-6 text-sm text-zinc-500">
+                No items match these filters yet.
               </p>
-              <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-                Today&apos;s Fresh Signal from current-event verified reviews.
-              </h2>
-            </div>
-            <FilterChips />
-          </div>
-
-          <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
-            {gameDayScoreboardItems.map((item, index) => (
-              <ItemStandingRow
-                key={item.slug}
-                item={item}
-                rank={index + 1}
-                venueSlug={venue.slug}
-                showFresh
-              />
-            ))}
+            )}
           </div>
         </section>
 
         <section className="border-t border-zinc-800 py-5 sm:py-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Vendors / Menu
+              Vendors
             </p>
-            <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-              Venue to vendor to item.
-            </h2>
+            <h2 className="mt-2 text-2xl font-black sm:text-3xl">Browse stands.</h2>
           </div>
 
-          <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          <div className="mt-4 grid gap-2">
             {venueVendors.map((vendor) => {
               const vendorItems = getFoodItemsByVendorSlug(vendor.slug);
 
               return (
-                <article
+                <Link
                   key={vendor.slug}
-                  className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6"
+                  href={`/venues/${venue.slug}/vendors/${vendor.slug}`}
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4 transition hover:border-zinc-500"
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3">
                     <div>
-                      <h3 className="text-xl font-black sm:text-2xl">
-                        {vendor.name}
-                      </h3>
+                      <h3 className="font-black">{vendor.name}</h3>
                       <p className="mt-1 text-sm text-zinc-400">
                         {vendor.section} · {vendor.location}
                       </p>
                     </div>
-                    <span className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                      {vendor.averageSlopScore.toFixed(1)}
+                    <span className="shrink-0 text-sm font-bold text-zinc-500">
+                      {vendorItems.length} items
                     </span>
                   </div>
-
-                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                    <span>{vendorItems.length} items</span>
-                    <span>Avg {vendor.averageSlopScore.toFixed(1)}</span>
-                  </div>
-                  <p className="mt-3 rounded-2xl bg-black p-3 text-sm leading-6 text-zinc-400">
-                    {vendor.lineIntel ?? "Line intel coming soon"}
-                  </p>
-
-                  <div className="mt-4 space-y-2">
-                    {vendorItems.map((item) => (
-                      <Link
-                        key={item.slug}
-                        href={`/venues/${venue.slug}/${item.slug}`}
-                        className="flex items-center justify-between gap-3 rounded-2xl bg-black p-3 transition hover:bg-zinc-900"
-                      >
-                        <div>
-                          <p className="font-bold">{item.name}</p>
-                          <p className="mt-1 text-sm text-zinc-500">
-                            {item.itemType} · {formatSections(item)}
-                          </p>
-                        </div>
-                        <span className="text-sm font-black text-white">
-                          {item.slopScore.toFixed(1)}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </article>
+                </Link>
               );
             })}
           </div>
