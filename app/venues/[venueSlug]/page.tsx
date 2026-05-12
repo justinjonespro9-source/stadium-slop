@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getFoodItemsByVenueSlug, getVenueBySlug } from "@/lib/sample-data";
+import {
+  getFoodItemBySlug,
+  getFoodItemsByVenueSlug,
+  getPhotosForVenue,
+  getVenueBySlug
+} from "@/lib/sample-data";
 
 type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
 
@@ -67,6 +72,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
   const newThisSeasonItems = venueFoodItems.filter(
     (item) => item.isNewThisSeason
   );
+  const latestPhotos = getPhotosForVenue(venue.slug).slice(0, 6);
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -176,6 +182,55 @@ export default async function VenuePage({ params }: VenuePageProps) {
                     className={`text-sm font-black uppercase tracking-[0.2em] ${movement.className}`}
                   >
                     {movement.label}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="border-t border-zinc-800 py-10">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Latest Fan Photos
+              </p>
+              <h2 className="mt-2 text-3xl font-black">
+                What fans are seeing at {venue.name}
+              </h2>
+            </div>
+            <p className="text-sm text-zinc-400">
+              Placeholder gallery until real uploads are added.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {latestPhotos.map((photo) => {
+              const item = getFoodItemBySlug(photo.foodSlug);
+
+              return (
+                <Link
+                  key={photo.id}
+                  href={`/venues/${photo.venueSlug}/${photo.foodSlug}`}
+                  className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-4 transition hover:border-zinc-500"
+                >
+                  <div
+                    aria-label={photo.alt}
+                    className="flex aspect-video items-center justify-center rounded-2xl bg-black text-6xl"
+                  >
+                    {photo.imagePlaceholder}
+                  </div>
+                  <p className="mt-4 font-bold">
+                    {item ? item.name : "Unknown item"}
+                  </p>
+                  <p className="mt-1 text-sm text-zinc-400">{photo.caption}</p>
+                  <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
+                    <span>{photo.createdAt}</span>
+                    {photo.verifiedOnSite ? (
+                      <span className="rounded-full border border-zinc-800 px-2 py-0.5 font-bold uppercase tracking-[0.15em] text-zinc-400">
+                        Verified on-site
+                      </span>
+                    ) : null}
                   </div>
                 </Link>
               );

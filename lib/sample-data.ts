@@ -80,6 +80,18 @@ export type FoodItem = {
     | "Falling Fast";
 };
 
+export type FoodPhoto = {
+  id: string;
+  foodSlug: string;
+  venueSlug: string;
+  alt: string;
+  caption: string;
+  uploadedBy: string;
+  verifiedOnSite: boolean;
+  createdAt: string;
+  imagePlaceholder: string;
+};
+
 export const venues: Venue[] = [
   {
     slug: "target-field",
@@ -243,6 +255,97 @@ export const foodItems: FoodItem[] = [
   }
 ];
 
+export const foodPhotos: FoodPhoto[] = [
+  {
+    id: "photo-loaded-cheese-curds-1",
+    foodSlug: "loaded-cheese-curds",
+    venueSlug: "target-field",
+    alt: "Loaded Cheese Curds placeholder photo",
+    caption: "Basket of curds that actually showed up hot.",
+    uploadedBy: "Section 126 Snack Scout",
+    verifiedOnSite: true,
+    createdAt: "May 2026",
+    imagePlaceholder: "🧀"
+  },
+  {
+    id: "photo-loaded-cheese-curds-2",
+    foodSlug: "loaded-cheese-curds",
+    venueSlug: "target-field",
+    alt: "Cheese curds concession placeholder",
+    caption: "Good cheese pull, slightly chaotic basket.",
+    uploadedBy: "Twins Home Stand",
+    verifiedOnSite: false,
+    createdAt: "May 2026",
+    imagePlaceholder: "🧀"
+  },
+  {
+    id: "photo-brisket-sandwich-1",
+    foodSlug: "brisket-sandwich",
+    venueSlug: "us-bank-stadium",
+    alt: "Brisket Sandwich placeholder photo",
+    caption: "Stacked enough to need both hands.",
+    uploadedBy: "Lower Bowl BBQ Watch",
+    verifiedOnSite: true,
+    createdAt: "2026 season",
+    imagePlaceholder: "🥪"
+  },
+  {
+    id: "photo-brisket-sandwich-2",
+    foodSlug: "brisket-sandwich",
+    venueSlug: "us-bank-stadium",
+    alt: "Smoky brisket sandwich placeholder",
+    caption: "Worth photographing before kickoff.",
+    uploadedBy: "Vikings Tailgate Transfer",
+    verifiedOnSite: true,
+    createdAt: "2026 season",
+    imagePlaceholder: "🥪"
+  },
+  {
+    id: "photo-walleye-basket-1",
+    foodSlug: "walleye-basket",
+    venueSlug: "xcel-energy-center",
+    alt: "Walleye Basket placeholder photo",
+    caption: "Crispy basket from the club level.",
+    uploadedBy: "Hockey Night Plate Cam",
+    verifiedOnSite: true,
+    createdAt: "2026 season",
+    imagePlaceholder: "🐟"
+  },
+  {
+    id: "photo-walleye-basket-2",
+    foodSlug: "walleye-basket",
+    venueSlug: "xcel-energy-center",
+    alt: "Arena walleye basket placeholder",
+    caption: "Fries survived the walk back to the seats.",
+    uploadedBy: "Wild Intermission Eats",
+    verifiedOnSite: false,
+    createdAt: "2026 season",
+    imagePlaceholder: "🐟"
+  },
+  {
+    id: "photo-cold-stadium-nachos-1",
+    foodSlug: "cold-stadium-nachos",
+    venueSlug: "us-bank-stadium",
+    alt: "Cold Stadium Nachos placeholder photo",
+    caption: "The cheese situation speaks for itself.",
+    uploadedBy: "Upper Deck Auditor",
+    verifiedOnSite: true,
+    createdAt: "May 2026",
+    imagePlaceholder: "🧂"
+  },
+  {
+    id: "photo-cold-stadium-nachos-2",
+    foodSlug: "cold-stadium-nachos",
+    venueSlug: "us-bank-stadium",
+    alt: "Questionable stadium nachos placeholder",
+    caption: "A cautionary tray from the upper deck.",
+    uploadedBy: "Slop Alert Desk",
+    verifiedOnSite: true,
+    createdAt: "May 2026",
+    imagePlaceholder: "🧂"
+  }
+];
+
 export function getVenueBySlug(slug: string) {
   return venues.find((venue) => venue.slug === slug);
 }
@@ -257,4 +360,14 @@ export function getFoodItemBySlug(slug: string) {
 
 export function getVenueForFoodItem(item: FoodItem) {
   return getVenueBySlug(item.venueSlug);
+}
+
+export function getPhotosForFoodItem(venueSlug: string, foodSlug: string) {
+  return foodPhotos.filter(
+    (photo) => photo.venueSlug === venueSlug && photo.foodSlug === foodSlug
+  );
+}
+
+export function getPhotosForVenue(venueSlug: string) {
+  return foodPhotos.filter((photo) => photo.venueSlug === venueSlug);
 }

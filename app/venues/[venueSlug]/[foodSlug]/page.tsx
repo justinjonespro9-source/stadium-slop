@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getFoodItemBySlug, getVenueBySlug } from "@/lib/sample-data";
+import {
+  getFoodItemBySlug,
+  getPhotosForFoodItem,
+  getVenueBySlug
+} from "@/lib/sample-data";
 
 const mockReviews = [
   {
@@ -53,6 +57,8 @@ export default async function FoodPage({ params }: FoodPageProps) {
   if (!foodItem || foodItem.venueSlug !== venue.slug) {
     notFound();
   }
+
+  const foodPhotos = getPhotosForFoodItem(venue.slug, foodItem.slug);
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -201,6 +207,59 @@ export default async function FoodPage({ params }: FoodPageProps) {
               </p>
             </div>
           </div>
+        </section>
+
+        <section className="border-t border-zinc-800 py-10">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Fan Photos
+              </p>
+              <h2 className="mt-2 text-3xl font-black">
+                What showed up at the seat
+              </h2>
+            </div>
+            <p className="text-sm text-zinc-400">
+              Text placeholders until real uploads are added.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {foodPhotos.map((photo) => (
+              <article
+                key={photo.id}
+                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-5"
+              >
+                <div
+                  aria-label={photo.alt}
+                  className="flex aspect-video items-center justify-center rounded-2xl bg-black text-7xl"
+                >
+                  {photo.imagePlaceholder}
+                </div>
+                <div className="mt-5 flex flex-wrap items-center gap-2">
+                  <h3 className="font-bold">{photo.caption}</h3>
+                  {photo.verifiedOnSite ? (
+                    <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
+                      Verified on-site
+                    </span>
+                  ) : null}
+                </div>
+                <p className="mt-2 text-sm text-zinc-500">
+                  Uploaded by {photo.uploadedBy} · {photo.createdAt}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <article className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Photo uploads coming soon
+            </p>
+            <p className="mt-3 max-w-3xl text-zinc-400">
+              Fans will be able to add verified on-site food photos so everyone
+              can see what actually showed up at the seat.
+            </p>
+          </article>
         </section>
 
         <section className="border-t border-zinc-800 py-10">
