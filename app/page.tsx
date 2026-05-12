@@ -18,6 +18,7 @@ const quickActionChips = [
 ];
 
 const topSlopScores = [...foodItems].sort((a, b) => b.slopScore - a.slopScore);
+const freshSlopWatch = foodItems.filter((item) => item.freshSignal);
 const newThisSeasonItems = foodItems.filter((item) => item.isNewThisSeason);
 const napkinNightmares = [...foodItems].sort(
   (a, b) => b.napkinRating - a.napkinRating
@@ -29,6 +30,11 @@ const discoveryRows = [
     title: "Top Slop Scores",
     description: "The highest-rated bites in the sample dataset.",
     items: topSlopScores
+  },
+  {
+    title: "Fresh Slop Watch",
+    description: "Game day pulse from recent verified on-site reports.",
+    items: freshSlopWatch
   },
   {
     title: "New This Season",
@@ -62,10 +68,15 @@ function FoodDiscoveryCard({ item }: { item: FoodItem }) {
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
-            {item.category}
+            {item.itemType} · {item.category}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <h3 className="text-xl font-black">{item.name}</h3>
+            {item.ageRestricted ? (
+              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                21+
+              </span>
+            ) : null}
             {item.isPromoted ? (
               <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                 Promoted
@@ -86,6 +97,15 @@ function FoodDiscoveryCard({ item }: { item: FoodItem }) {
       <p className="mt-3 text-sm text-zinc-400">
         {venue ? `${venue.name} · ${venue.city}, ${venue.state}` : "Unknown venue"}
       </p>
+
+      {item.freshSignal ? (
+        <div className="mt-4 rounded-2xl bg-black p-3 text-sm">
+          <p className="font-bold text-white">{item.freshSignal}</p>
+          <p className="mt-1 text-zinc-500">
+            {item.freshReviewCount} fresh reviews {item.freshWindowLabel}
+          </p>
+        </div>
+      ) : null}
 
       <div className="mt-5 grid grid-cols-3 gap-2 text-sm">
         <div className="rounded-2xl bg-black p-3">

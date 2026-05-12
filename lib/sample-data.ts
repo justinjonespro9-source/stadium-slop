@@ -88,6 +88,17 @@ export type FoodItem = {
     | "Hidden Gem"
     | "Most Improved"
     | "Falling Fast";
+  freshReviewCount?: number;
+  freshWindowLabel?: string;
+  freshSignal?:
+    | "Hot Today"
+    | "Holding Strong"
+    | "Mixed Signals"
+    | "Falling Fast"
+    | "Fans Say Skip"
+    | "Cold Streak"
+    | "Line Trouble";
+  freshSignalReason?: string;
 };
 
 export type FoodPhoto = {
@@ -177,7 +188,11 @@ export const foodItems: FoodItem[] = [
     lastConfirmed: "May 2026",
     scoreboardRank: 1,
     previousScoreboardRank: 3,
-    venueBadge: "Fan Favorite"
+    venueBadge: "Fan Favorite",
+    freshReviewCount: 6,
+    freshWindowLabel: "today",
+    freshSignal: "Holding Strong",
+    freshSignalReason: "Fans still say it is worth the line."
   },
   {
     slug: "brisket-sandwich",
@@ -209,7 +224,12 @@ export const foodItems: FoodItem[] = [
     availabilityStatus: "Venue verified",
     lastConfirmed: "2026 season",
     scoreboardRank: 2,
-    venueBadge: "New This Season"
+    venueBadge: "New This Season",
+    freshReviewCount: 4,
+    freshWindowLabel: "last 20 minutes",
+    freshSignal: "Falling Fast",
+    freshSignalReason:
+      "Recent reviews mention long lines and cooler-than-expected servings."
   },
   {
     slug: "walleye-basket",
@@ -237,7 +257,12 @@ export const foodItems: FoodItem[] = [
     lastConfirmed: "2026 season",
     scoreboardRank: 1,
     previousScoreboardRank: 1,
-    venueBadge: "Venue MVP"
+    venueBadge: "Venue MVP",
+    freshReviewCount: 3,
+    freshWindowLabel: "today",
+    freshSignal: "Hot Today",
+    freshSignalReason:
+      "Fresh batches and quick line reports are trending positive."
   },
   {
     slug: "cold-stadium-nachos",
@@ -265,7 +290,12 @@ export const foodItems: FoodItem[] = [
     lastConfirmed: "May 2026",
     scoreboardRank: 2,
     previousScoreboardRank: 1,
-    venueBadge: "Slop Alert"
+    venueBadge: "Slop Alert",
+    freshReviewCount: 5,
+    freshWindowLabel: "last 30 minutes",
+    freshSignal: "Fans Say Skip",
+    freshSignalReason:
+      "Recent fans reported cold cheese, stale chips, and poor value."
   },
   {
     slug: "north-loop-old-fashioned",
@@ -295,7 +325,11 @@ export const foodItems: FoodItem[] = [
     availabilityStatus: "Fan reported",
     lastConfirmed: "May 2026",
     scoreboardRank: 2,
-    venueBadge: "Hidden Gem"
+    venueBadge: "Hidden Gem",
+    freshReviewCount: 2,
+    freshWindowLabel: "today",
+    freshSignal: "Mixed Signals",
+    freshSignalReason: "Fans like the flavor but say the price is steep."
   },
   {
     slug: "frozen-lemonade",
@@ -325,7 +359,11 @@ export const foodItems: FoodItem[] = [
     availabilityStatus: "Fan reported",
     lastConfirmed: "May 2026",
     scoreboardRank: 3,
-    venueBadge: "Best Value"
+    venueBadge: "Best Value",
+    freshReviewCount: 7,
+    freshWindowLabel: "today",
+    freshSignal: "Hot Today",
+    freshSignalReason: "A strong non-alcoholic pick with quick lines."
   }
 ];
 
