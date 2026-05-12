@@ -158,6 +158,26 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </section>
         ) : null}
 
+        {foodItem.freshSignal ? (
+          <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Fresh Review Signal
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <h2 className="text-3xl font-black">{foodItem.freshSignal}</h2>
+              <span className="rounded-full border border-zinc-700 px-3 py-1 text-sm font-bold text-zinc-300">
+                {foodItem.freshReviewCount} fresh reviews{" "}
+                {foodItem.freshWindowLabel}
+              </span>
+            </div>
+            <p className="mt-4 text-zinc-300">{foodItem.freshSignalReason}</p>
+            <p className="mt-4 max-w-3xl text-sm text-zinc-500">
+              Season scores show the long-term read. Fresh reviews show what
+              fans are seeing right now.
+            </p>
+          </section>
+        ) : null}
+
         <section className="border-t border-zinc-800 py-10">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Fan Signals
@@ -341,6 +361,17 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     </p>
                   </div>
                 ) : null}
+              </div>
+
+              <div className="mt-5 rounded-2xl bg-black p-4">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                  Listing Note
+                </p>
+                <p className="mt-3 text-sm leading-6 text-zinc-400">
+                  This listing is based on fan-reported or verified concession
+                  intel. Descriptions are written by Stadium Slop, not copied
+                  from official menus.
+                </p>
               </div>
 
               <div className="mt-5 flex flex-wrap gap-2">

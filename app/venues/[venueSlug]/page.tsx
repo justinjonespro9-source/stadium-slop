@@ -9,6 +9,17 @@ import {
 } from "@/lib/sample-data";
 
 type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
+type FreshSignal = NonNullable<FoodItem["freshSignal"]>;
+
+const freshSignalPriority: Record<FreshSignal, number> = {
+  "Fans Say Skip": 0,
+  "Falling Fast": 1,
+  "Cold Streak": 2,
+  "Line Trouble": 3,
+  "Hot Today": 4,
+  "Holding Strong": 5,
+  "Mixed Signals": 6
+};
 
 type VenuePageProps = {
   params: Promise<{
@@ -46,6 +57,25 @@ function getScoreboardMovement(item: FoodItem) {
   };
 }
 
+function sortFreshPulseItems(items: FoodItem[]) {
+  return items
+    .filter((item) => item.freshSignal && item.freshReviewCount)
+    .sort((a, b) => {
+      const priorityA = a.freshSignal
+        ? freshSignalPriority[a.freshSignal]
+        : Number.POSITIVE_INFINITY;
+      const priorityB = b.freshSignal
+        ? freshSignalPriority[b.freshSignal]
+        : Number.POSITIVE_INFINITY;
+
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
+      }
+
+      return (b.freshReviewCount ?? 0) - (a.freshReviewCount ?? 0);
+    });
+}
+
 export default async function VenuePage({ params }: VenuePageProps) {
   const { venueSlug } = await params;
   const venue = getVenueBySlug(venueSlug);
@@ -73,6 +103,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
     (item) => item.isNewThisSeason
   );
   const latestPhotos = getPhotosForVenue(venue.slug).slice(0, 6);
+  const freshPulseItems = sortFreshPulseItems(venueFoodItems);
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -117,6 +148,16 @@ export default async function VenuePage({ params }: VenuePageProps) {
           <p className="mt-3 max-w-3xl text-zinc-400">
             Future official reviews will require fans to be near {venue.name}
             before submitting a rating. Browsing stays public for everyone.
+          </p>
+        </section>
+
+        <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Accuracy Note
+          </p>
+          <p className="mt-3 max-w-3xl text-zinc-400">
+            Menus change fast. Listings may be fan-reported, venue-verified,
+            seasonal, or retired. Check availability at the venue.
           </p>
         </section>
 
@@ -175,6 +216,53 @@ export default async function VenuePage({ params }: VenuePageProps) {
                 </Link>
               );
             })}
+          </div>
+        </section>
+
+        <section className="border-t border-zinc-800 py-10">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Game Day Pulse
+              </p>
+              <h2 className="mt-2 text-3xl font-black">
+                Fresh review signals from verified on-site fans.
+              </h2>
+            </div>
+            <p className="text-sm text-zinc-400">
+              Fresh reviews show what fans are seeing right now.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-4 lg:grid-cols-2">
+            {freshPulseItems.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/venues/${venue.slug}/${item.slug}`}
+                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
+              >
+                <article>
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                        {item.itemType} · {item.category}
+                      </p>
+                      <h3 className="mt-2 text-2xl font-black">{item.name}</h3>
+                    </div>
+                    <span className="rounded-full border border-zinc-700 px-3 py-1 text-sm font-black text-zinc-300">
+                      {item.freshSignal}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-sm text-zinc-500">
+                    {item.freshReviewCount} fresh reviews {item.freshWindowLabel}
+                  </p>
+                  <p className="mt-3 text-zinc-300">{item.freshSignalReason}</p>
+                  <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+                    View food details
+                  </p>
+                </article>
+              </Link>
+            ))}
           </div>
         </section>
 

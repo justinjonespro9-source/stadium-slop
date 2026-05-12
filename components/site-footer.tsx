@@ -21,6 +21,11 @@ export function SiteFooter() {
             Fan ratings stay independent. Promoted placements are clearly
             labeled.
           </p>
+          <p className="mt-3 max-w-2xl text-xs leading-5 text-zinc-600">
+            Stadium Slop is an independent fan-powered concessions review guide.
+            Venue, team, vendor, and item names are used for identification
+            only.
+          </p>
         </div>
 
         <nav className="flex flex-wrap gap-4 text-sm font-bold text-zinc-300 md:justify-end">
