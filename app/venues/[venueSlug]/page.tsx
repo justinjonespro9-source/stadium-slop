@@ -8,6 +8,11 @@ import {
   getVendorsByVenueSlug,
   getVenueBySlug
 } from "@/lib/sample-data";
+import {
+  getItemSlopStats,
+  type ItemSlopStats,
+  type SlopStatsMode
+} from "@/lib/slop-stats";
 
 type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
 type StandingsMode = "all-time" | "season" | "fresh";
@@ -43,19 +48,26 @@ type VenuePageProps = {
   }>;
 };
 
-function sortOverallScoreboardItems(items: FoodItem[]) {
-  return [...items].sort((a, b) => b.slopScore - a.slopScore);
+function sortOverallScoreboardItems(items: FoodItem[], mode: SlopStatsMode) {
+  return [...items].sort(
+    (a, b) =>
+      getItemSlopStats(b.slug, mode).averageSlopScore -
+      getItemSlopStats(a.slug, mode).averageSlopScore
+  );
 }
 
 function sortGameDayScoreboardItems(items: FoodItem[]) {
   return items
     .filter((item) => item.freshSignal && item.freshReviewCount !== undefined)
     .sort((a, b) => {
-      if ((a.freshSignalScore ?? 0) !== (b.freshSignalScore ?? 0)) {
-        return (b.freshSignalScore ?? 0) - (a.freshSignalScore ?? 0);
+      const statsA = getItemSlopStats(a.slug, "gameDayFresh");
+      const statsB = getItemSlopStats(b.slug, "gameDayFresh");
+
+      if (statsA.averageSlopScore !== statsB.averageSlopScore) {
+        return statsB.averageSlopScore - statsA.averageSlopScore;
       }
 
-      return (b.freshReviewCount ?? 0) - (a.freshReviewCount ?? 0);
+      return statsB.reviewCount - statsA.reviewCount;
     });
 }
 
@@ -243,11 +255,13 @@ function formatSections(item: FoodItem) {
 function ItemStandingRow({
   item,
   rank,
+  stats,
   venueSlug,
   showFresh = false
 }: {
   item: FoodItem;
   rank: number;
+  stats: ItemSlopStats;
   venueSlug: string;
   showFresh?: boolean;
 }) {
@@ -279,9 +293,7 @@ function ItemStandingRow({
             </div>
             <div className="text-right">
               <p className="text-lg font-black text-white">
-                {showFresh && item.freshSignalScore
-                  ? item.freshSignalScore.toFixed(1)
-                  : item.slopScore.toFixed(1)}
+                {stats.averageSlopScore.toFixed(1)}
               </p>
               <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
                 {showFresh ? "Fresh" : "Slop"}
@@ -291,8 +303,13 @@ function ItemStandingRow({
 
           <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
             <span>{item.itemType}</span>
-            <span>{item.reviewCount} reviews</span>
-            <span>{item.napkinRating}/5 napkins</span>
+            <span>{stats.reviewCount} reviews</span>
+            <span>{stats.roundedNapkinRating}/5 napkins</span>
+            {stats.topConsensus ? (
+              <span>
+                {stats.topConsensus.percentage}% {stats.topConsensus.label}
+              </span>
+            ) : null}
             {item.reportedPrice ? (
               <span>${item.reportedPrice.toFixed(2)}</span>
             ) : null}
@@ -323,6 +340,8 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   const category = getCategory(query?.category);
   const vendorSlug = query?.vendor ?? "all";
   const selectedVendor = venueVendors.find((vendor) => vendor.slug === vendorSlug);
+  const statsMode: SlopStatsMode =
+    mode === "fresh" ? "gameDayFresh" : mode === "season" ? "season" : "allTime";
   const filteredItems = venueFoodItems.filter(
     (item) =>
       filterByCategory(item, category) &&
@@ -331,7 +350,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   const standingsItems =
     mode === "fresh"
       ? sortGameDayScoreboardItems(filteredItems)
-      : sortOverallScoreboardItems(filteredItems);
+      : sortOverallScoreboardItems(filteredItems, statsMode);
   const modeLabel =
     mode === "fresh"
       ? "Game Day Fresh"
@@ -417,6 +436,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                   key={item.slug}
                   item={item}
                   rank={index + 1}
+                  stats={getItemSlopStats(item.slug, statsMode)}
                   venueSlug={venue.slug}
                   showFresh={mode === "fresh"}
                 />

@@ -129,6 +129,28 @@ export type FoodPhoto = {
   imagePlaceholder: string;
 };
 
+export type ReviewConsensusLabel =
+  | "Run It Back"
+  | "Worth the Walk"
+  | "Stadium Tax"
+  | "Steal"
+  | "Bench It";
+
+export type FoodReview = {
+  id: string;
+  foodSlug: string;
+  venueSlug: string;
+  slopScore: number;
+  napkinRating: 1 | 2 | 3 | 4 | 5;
+  labels: ReviewConsensusLabel[];
+  helpfulLikes: number;
+  verifiedGameDay: boolean;
+  seasonLabel: string;
+  dateLabel: string;
+  hasPhoto?: boolean;
+  note?: string;
+};
+
 export const venues: Venue[] = [
   {
     slug: "target-field",
@@ -564,6 +586,233 @@ export const foodPhotos: FoodPhoto[] = [
     verifiedOnSite: true,
     createdAt: "May 2026",
     imagePlaceholder: "🧂"
+  }
+];
+
+export const foodReviews: FoodReview[] = [
+  {
+    id: "review-loaded-curds-1",
+    foodSlug: "loaded-cheese-curds",
+    venueSlug: "target-field",
+    slopScore: 9.2,
+    napkinRating: 3,
+    labels: ["Run It Back", "Worth the Walk"],
+    helpfulLikes: 18,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today",
+    hasPhoto: true,
+    note: "Hot, salty, and still crisp by the time I got back to my seat."
+  },
+  {
+    id: "review-loaded-curds-2",
+    foodSlug: "loaded-cheese-curds",
+    venueSlug: "target-field",
+    slopScore: 8.7,
+    napkinRating: 4,
+    labels: ["Run It Back", "Stadium Tax"],
+    helpfulLikes: 12,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today",
+    hasPhoto: true
+  },
+  {
+    id: "review-loaded-curds-3",
+    foodSlug: "loaded-cheese-curds",
+    venueSlug: "target-field",
+    slopScore: 8.5,
+    napkinRating: 3,
+    labels: ["Worth the Walk"],
+    helpfulLikes: 9,
+    verifiedGameDay: false,
+    seasonLabel: "2026",
+    dateLabel: "May 2026"
+  },
+  {
+    id: "review-brisket-1",
+    foodSlug: "brisket-sandwich",
+    venueSlug: "us-bank-stadium",
+    slopScore: 8.6,
+    napkinRating: 4,
+    labels: ["Run It Back", "Stadium Tax"],
+    helpfulLikes: 14,
+    verifiedGameDay: false,
+    seasonLabel: "2026",
+    dateLabel: "2026 season",
+    hasPhoto: true
+  },
+  {
+    id: "review-brisket-2",
+    foodSlug: "brisket-sandwich",
+    venueSlug: "us-bank-stadium",
+    slopScore: 6.9,
+    napkinRating: 4,
+    labels: ["Stadium Tax", "Bench It"],
+    helpfulLikes: 11,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Last 20 minutes",
+    note: "Good bite, but the line made it feel like a bigger commitment."
+  },
+  {
+    id: "review-brisket-3",
+    foodSlug: "brisket-sandwich",
+    venueSlug: "us-bank-stadium",
+    slopScore: 7.1,
+    napkinRating: 5,
+    labels: ["Stadium Tax"],
+    helpfulLikes: 6,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today"
+  },
+  {
+    id: "review-walleye-1",
+    foodSlug: "walleye-basket",
+    venueSlug: "xcel-energy-center",
+    slopScore: 8.8,
+    napkinRating: 2,
+    labels: ["Run It Back", "Worth the Walk"],
+    helpfulLikes: 11,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today",
+    hasPhoto: true
+  },
+  {
+    id: "review-walleye-2",
+    foodSlug: "walleye-basket",
+    venueSlug: "xcel-energy-center",
+    slopScore: 8.3,
+    napkinRating: 2,
+    labels: ["Worth the Walk"],
+    helpfulLikes: 8,
+    verifiedGameDay: false,
+    seasonLabel: "2026",
+    dateLabel: "2026 season"
+  },
+  {
+    id: "review-walleye-3",
+    foodSlug: "walleye-basket",
+    venueSlug: "xcel-energy-center",
+    slopScore: 7.9,
+    napkinRating: 3,
+    labels: ["Run It Back"],
+    helpfulLikes: 5,
+    verifiedGameDay: false,
+    seasonLabel: "2026",
+    dateLabel: "2026 season"
+  },
+  {
+    id: "review-nachos-1",
+    foodSlug: "cold-stadium-nachos",
+    venueSlug: "us-bank-stadium",
+    slopScore: 2.2,
+    napkinRating: 5,
+    labels: ["Bench It", "Stadium Tax"],
+    helpfulLikes: 16,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Last 30 minutes",
+    hasPhoto: true
+  },
+  {
+    id: "review-nachos-2",
+    foodSlug: "cold-stadium-nachos",
+    venueSlug: "us-bank-stadium",
+    slopScore: 3.0,
+    napkinRating: 5,
+    labels: ["Bench It"],
+    helpfulLikes: 10,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today"
+  },
+  {
+    id: "review-nachos-3",
+    foodSlug: "cold-stadium-nachos",
+    venueSlug: "us-bank-stadium",
+    slopScore: 4.1,
+    napkinRating: 4,
+    labels: ["Stadium Tax"],
+    helpfulLikes: 4,
+    verifiedGameDay: false,
+    seasonLabel: "2026",
+    dateLabel: "May 2026"
+  },
+  {
+    id: "review-old-fashioned-1",
+    foodSlug: "north-loop-old-fashioned",
+    venueSlug: "target-field",
+    slopScore: 7.5,
+    napkinRating: 1,
+    labels: ["Stadium Tax", "Run It Back"],
+    helpfulLikes: 7,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today"
+  },
+  {
+    id: "review-old-fashioned-2",
+    foodSlug: "north-loop-old-fashioned",
+    venueSlug: "target-field",
+    slopScore: 6.8,
+    napkinRating: 1,
+    labels: ["Stadium Tax"],
+    helpfulLikes: 5,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today"
+  },
+  {
+    id: "review-old-fashioned-3",
+    foodSlug: "north-loop-old-fashioned",
+    venueSlug: "target-field",
+    slopScore: 8.1,
+    napkinRating: 1,
+    labels: ["Run It Back"],
+    helpfulLikes: 4,
+    verifiedGameDay: false,
+    seasonLabel: "2026",
+    dateLabel: "May 2026"
+  },
+  {
+    id: "review-lemonade-1",
+    foodSlug: "frozen-lemonade",
+    venueSlug: "target-field",
+    slopScore: 9.0,
+    napkinRating: 2,
+    labels: ["Steal", "Run It Back"],
+    helpfulLikes: 13,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today",
+    hasPhoto: true
+  },
+  {
+    id: "review-lemonade-2",
+    foodSlug: "frozen-lemonade",
+    venueSlug: "target-field",
+    slopScore: 8.8,
+    napkinRating: 2,
+    labels: ["Steal", "Worth the Walk"],
+    helpfulLikes: 9,
+    verifiedGameDay: true,
+    seasonLabel: "2026",
+    dateLabel: "Today"
+  },
+  {
+    id: "review-lemonade-3",
+    foodSlug: "frozen-lemonade",
+    venueSlug: "target-field",
+    slopScore: 8.1,
+    napkinRating: 3,
+    labels: ["Run It Back"],
+    helpfulLikes: 6,
+    verifiedGameDay: false,
+    seasonLabel: "2026",
+    dateLabel: "May 2026"
   }
 ];
 

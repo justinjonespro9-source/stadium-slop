@@ -8,6 +8,7 @@ import {
   getVendorForFoodItem,
   getVenueBySlug
 } from "@/lib/sample-data";
+import { getItemSlopStats } from "@/lib/slop-stats";
 
 const mockReviews = [
   {
@@ -78,6 +79,9 @@ export default async function FoodPage({ params }: FoodPageProps) {
   const vendor = getVendorForFoodItem(foodItem);
   const foodPhotos = getPhotosForFoodItem(venue.slug, foodItem.slug);
   const heroPhoto = foodPhotos[0];
+  const careerStats = getItemSlopStats(foodItem.slug, "allTime");
+  const seasonStats = getItemSlopStats(foodItem.slug, "season");
+  const freshStats = getItemSlopStats(foodItem.slug, "gameDayFresh");
   const moreFromVendor = vendor
     ? getFoodItemsByVendorSlug(vendor.slug).filter(
         (item) => item.slug !== foodItem.slug
@@ -143,12 +147,13 @@ export default async function FoodPage({ params }: FoodPageProps) {
 
             <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-3">
               <p className="text-sm font-bold leading-6 text-zinc-200">
-                Slop Score {foodItem.slopScore.toFixed(1)} · Fresh Signal{" "}
-                {foodItem.freshSignalScore
-                  ? `${foodItem.freshSignalScore.toFixed(1)} ${foodItem.freshWindowLabel}`
+                Slop Score {seasonStats.averageSlopScore.toFixed(1)} · Fresh
+                Signal{" "}
+                {freshStats.reviewCount > 0
+                  ? `${freshStats.averageSlopScore.toFixed(1)} today`
                   : "pending"}{" "}
-                · {foodItem.reviewCount} reviews · {foodItem.napkinRating}{" "}
-                Napkins
+                · {seasonStats.reviewCount} reviews ·{" "}
+                {seasonStats.roundedNapkinRating} Napkins
               </p>
               <p className="mt-1 text-xs leading-5 text-zinc-500 sm:text-sm">
                 Reported price{" "}
@@ -209,6 +214,62 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </section>
         ) : null}
 
+        <section className="mt-3 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Fan Consensus
+          </p>
+          <h2 className="mt-2 text-2xl font-black sm:text-3xl">
+            Career stats from fan signals
+          </h2>
+
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-sm text-zinc-500">Slop Score Avg</p>
+              <p className="mt-1 text-2xl font-black">
+                {careerStats.averageSlopScore.toFixed(1)}
+              </p>
+            </div>
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-sm text-zinc-500">Napkin Avg</p>
+              <p className="mt-1 text-2xl font-black">
+                {careerStats.averageNapkinRating.toFixed(1)}
+              </p>
+              <p className="mt-1 text-xs text-zinc-500">
+                Displays as {careerStats.roundedNapkinRating}/5
+              </p>
+            </div>
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-sm text-zinc-500">Reviews</p>
+              <p className="mt-1 text-2xl font-black">
+                {careerStats.reviewCount}
+              </p>
+            </div>
+            <div className="rounded-2xl bg-black p-3">
+              <p className="text-sm text-zinc-500">Helpful Likes</p>
+              <p className="mt-1 text-2xl font-black">
+                {careerStats.helpfulLikesTotal}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-5 space-y-3">
+            {careerStats.consensus.slice(0, 4).map((stat) => (
+              <div key={stat.label}>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-bold text-zinc-300">{stat.label}</span>
+                  <span className="text-zinc-500">{stat.percentage}%</span>
+                </div>
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-black">
+                  <div
+                    className="h-full rounded-full bg-white"
+                    style={{ width: `${stat.percentage}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="border-t border-zinc-800 py-7 sm:py-10">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
             Fan Signals
@@ -221,7 +282,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:p-5">
               <p className="text-sm text-zinc-500">Slop Score</p>
               <p className="mt-1 text-2xl font-black sm:text-3xl">
-                {foodItem.slopScore.toFixed(1)}
+                {seasonStats.averageSlopScore.toFixed(1)}
               </p>
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:p-5">
@@ -257,7 +318,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
             <div className="col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:col-span-2 sm:p-5">
               <p className="text-sm text-zinc-500">Napkin Rating</p>
               <p className="mt-1 text-base font-black sm:text-xl">
-                {foodItem.napkinRating}/5 napkins
+                {seasonStats.roundedNapkinRating}/5 napkins
               </p>
               <p className="mt-1 text-sm text-zinc-400">
                 {foodItem.napkinLabel}

@@ -6,6 +6,7 @@ import {
   getVendorBySlug,
   getVenueBySlug
 } from "@/lib/sample-data";
+import { getItemSlopStats } from "@/lib/slop-stats";
 
 type VendorPageProps = {
   params: Promise<{
@@ -36,7 +37,9 @@ export default async function VendorPage({ params }: VendorPageProps) {
   }
 
   const vendorItems = getFoodItemsByVendorSlug(vendor.slug).sort(
-    (a, b) => b.slopScore - a.slopScore
+    (a, b) =>
+      getItemSlopStats(b.slug, "season").averageSlopScore -
+      getItemSlopStats(a.slug, "season").averageSlopScore
   );
 
   return (
@@ -68,43 +71,60 @@ export default async function VendorPage({ params }: VendorPageProps) {
 
         <section className="border-t border-zinc-800 py-5">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Items at this stand
+            Vendor Lineup
           </p>
           <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
-            {vendorItems.map((item, index) => (
-              <Link
-                key={item.slug}
-                href={`/venues/${venue.slug}/${item.slug}`}
-                className="block border-b border-zinc-800 px-4 py-4 transition last:border-b-0 hover:bg-black"
-              >
-                <article className="grid grid-cols-[auto_1fr_auto] gap-3">
-                  <span className="pt-1 text-sm font-black text-zinc-500">
-                    #{index + 1}
-                  </span>
-                  <div>
-                    <h2 className="font-black">{item.name}</h2>
-                    <p className="mt-1 text-sm text-zinc-400">
-                      {item.itemType} · {formatSections(item)}
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
-                      <span>{item.reviewCount} reviews</span>
-                      <span>{item.napkinRating}/5 napkins</span>
-                      {item.reportedPrice ? (
-                        <span>${item.reportedPrice.toFixed(2)}</span>
-                      ) : null}
+            {vendorItems.map((item, index) => {
+              const stats = getItemSlopStats(item.slug, "season");
+
+              return (
+                <Link
+                  key={item.slug}
+                  href={`/venues/${venue.slug}/${item.slug}`}
+                  className="block border-b border-zinc-800 px-4 py-4 transition last:border-b-0 hover:bg-black"
+                >
+                  <article className="grid grid-cols-[auto_1fr_auto] gap-3">
+                    <span className="pt-1 text-sm font-black text-zinc-500">
+                      #{index + 1}
+                    </span>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="font-black">{item.name}</h2>
+                        {index === 0 ? (
+                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-300">
+                            Top Performer
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="mt-1 text-sm text-zinc-400">
+                        {item.itemType} · {formatSections(item)}
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
+                        <span>{stats.reviewCount} reviews</span>
+                        <span>{stats.roundedNapkinRating}/5 napkins</span>
+                        {stats.topConsensus ? (
+                          <span>
+                            {stats.topConsensus.percentage}%{" "}
+                            {stats.topConsensus.label}
+                          </span>
+                        ) : null}
+                        {item.reportedPrice ? (
+                          <span>${item.reportedPrice.toFixed(2)}</span>
+                        ) : null}
+                      </div>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-black">
-                      {item.slopScore.toFixed(1)}
-                    </p>
-                    <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                      Slop
-                    </p>
-                  </div>
-                </article>
-              </Link>
-            ))}
+                    <div className="text-right">
+                      <p className="text-lg font-black">
+                        {stats.averageSlopScore.toFixed(1)}
+                      </p>
+                      <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
+                        Slop
+                      </p>
+                    </div>
+                  </article>
+                </Link>
+              );
+            })}
           </div>
         </section>
       </section>
