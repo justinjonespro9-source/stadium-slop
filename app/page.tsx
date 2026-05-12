@@ -1,26 +1,18 @@
-const featuredVenues = [
-  {
-    name: "Target Field",
-    city: "Minneapolis, MN",
-    team: "Minnesota Twins",
-    topItem: "Loaded cheese curds",
-    rating: "4.6"
-  },
-  {
-    name: "U.S. Bank Stadium",
-    city: "Minneapolis, MN",
-    team: "Minnesota Vikings",
-    topItem: "Brisket sandwich",
-    rating: "4.4"
-  },
-  {
-    name: "Xcel Energy Center",
-    city: "St. Paul, MN",
-    team: "Minnesota Wild",
-    topItem: "Walleye basket",
-    rating: "4.3"
+import { foodItems, venues } from "@/lib/sample-data";
+
+const leaderboardItems = [...foodItems].sort((a, b) => b.rating - a.rating);
+
+const topFoodItemByVenueSlug = foodItems.reduce<
+  Record<string, (typeof foodItems)[number]>
+>((topItems, item) => {
+  const currentTopItem = topItems[item.venueSlug];
+
+  if (!currentTopItem || item.rating > currentTopItem.rating) {
+    topItems[item.venueSlug] = item;
   }
-];
+
+  return topItems;
+}, {});
 
 const categories = [
   "Best Overall",
@@ -90,25 +82,33 @@ export default function Home() {
               <h2 className="mt-3 text-3xl font-black">Top Stadium Bites</h2>
 
               <div className="mt-6 space-y-4">
-                {featuredVenues.map((venue, index) => (
-                  <div
-                    key={venue.name}
-                    className="rounded-2xl border border-zinc-800 bg-black p-4"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className="text-sm text-zinc-500">#{index + 1}</p>
-                        <h3 className="text-lg font-bold">{venue.topItem}</h3>
-                        <p className="mt-1 text-sm text-zinc-400">
-                          {venue.name} · {venue.city}
-                        </p>
-                      </div>
-                      <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
-                        {venue.rating}
+                {leaderboardItems.map((item, index) => {
+                  const venue = venues.find(
+                    (venue) => venue.slug === item.venueSlug
+                  );
+
+                  return (
+                    <div
+                      key={item.slug}
+                      className="rounded-2xl border border-zinc-800 bg-black p-4"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-sm text-zinc-500">#{index + 1}</p>
+                          <h3 className="text-lg font-bold">{item.name}</h3>
+                          <p className="mt-1 text-sm text-zinc-400">
+                            {venue
+                              ? `${venue.name} · ${venue.city}, ${venue.state}`
+                              : "Unknown venue"}
+                          </p>
+                        </div>
+                        <div className="rounded-full bg-white px-3 py-1 text-sm font-black text-black">
+                          {item.rating.toFixed(1)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -129,20 +129,38 @@ export default function Home() {
           </div>
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {featuredVenues.map((venue) => (
-              <article
-                key={venue.name}
-                className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
-              >
-                <h3 className="text-xl font-black">{venue.name}</h3>
-                <p className="mt-2 text-sm text-zinc-400">{venue.city}</p>
-                <p className="mt-4 text-sm text-zinc-500">{venue.team}</p>
-                <div className="mt-6 rounded-2xl bg-black p-4">
-                  <p className="text-sm text-zinc-500">Top item</p>
-                  <p className="mt-1 font-bold">{venue.topItem}</p>
-                </div>
-              </article>
-            ))}
+            {venues.map((venue) => {
+              const topItem = topFoodItemByVenueSlug[venue.slug];
+
+              return (
+                <article
+                  key={venue.slug}
+                  className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6"
+                >
+                  <h3 className="text-xl font-black">{venue.name}</h3>
+                  <p className="mt-2 text-sm text-zinc-400">
+                    {venue.city}, {venue.state}
+                  </p>
+                  <p className="mt-4 text-sm text-zinc-500">{venue.team}</p>
+                  <div className="mt-3 flex gap-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                    <span>{venue.league}</span>
+                    <span>·</span>
+                    <span>{venue.venueType}</span>
+                  </div>
+                  <div className="mt-6 rounded-2xl bg-black p-4">
+                    <p className="text-sm text-zinc-500">Top item</p>
+                    <p className="mt-1 font-bold">
+                      {topItem ? topItem.name : "No food items yet"}
+                    </p>
+                    {topItem ? (
+                      <p className="mt-1 text-sm text-zinc-500">
+                        {topItem.rating.toFixed(1)} rating
+                      </p>
+                    ) : null}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
