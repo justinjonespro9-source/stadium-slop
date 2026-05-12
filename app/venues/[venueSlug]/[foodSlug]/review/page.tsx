@@ -111,6 +111,33 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
           <div className="rounded-2xl bg-black p-4">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Sign-in required
+            </p>
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              You must be signed in to submit a Stadium Slop review. Reviews are
+              saved to your reviewer profile so fans can trust who contributed
+              the score.
+            </p>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              <button
+                type="button"
+                disabled
+                className="cursor-not-allowed rounded-full bg-white px-5 py-3 text-sm font-black text-black opacity-70"
+              >
+                Sign in coming soon
+              </button>
+              <button
+                type="button"
+                disabled
+                className="cursor-not-allowed rounded-full border border-zinc-700 px-5 py-3 text-sm font-black text-zinc-500"
+              >
+                Create profile coming soon
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-2xl bg-black p-4">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Verified game-day
             </p>
             <p className="mt-2 text-sm leading-6 text-zinc-400">
@@ -127,8 +154,8 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               Tap it, snap it, move on.
             </h2>
             <p className="mt-3 text-sm leading-6 text-zinc-400">
-              Slop Score and Napkin Rating are required. Photo and note are
-              optional.
+              Slop Score and Napkin Rating are required because structured
+              signals power Season Standings. Photo and note are optional.
             </p>
           </div>
 
@@ -208,7 +235,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             disabled
             className="mt-7 w-full cursor-not-allowed rounded-full bg-white px-6 py-4 text-sm font-black text-black opacity-60"
           >
-            Submit review coming soon
+            Sign in to submit review
           </button>
         </section>
 

@@ -5,6 +5,7 @@ import {
 } from "@/lib/sample-data";
 
 const mockProfile = {
+  signedIn: true,
   displayName: "Section 126 Snack Scout",
   handle: "@seat126snacks",
   homeVenue: "Target Field",
@@ -15,6 +16,11 @@ const mockProfile = {
     verifiedGameDayReviews: 14,
     photosUploaded: 11
   }
+};
+
+const mockSignedOutState = {
+  headline: "Create your fan profile",
+  copy: "Sign in or sign up to submit verified reviews, receive helpful likes, and keep your review history tied to one profile."
 };
 
 const mockReviewHistory = [
@@ -46,7 +52,7 @@ export default function AccountPage() {
     <main className="min-h-screen bg-[#111111] text-white">
       <section className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8 lg:px-10">
         <p className="inline-flex rounded-full border border-zinc-800 bg-zinc-950 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-zinc-400">
-          Reviewer profile
+          {mockProfile.signedIn ? "Signed-in profile" : "Signed out"}
         </p>
 
         <header className="mt-5 rounded-[2rem] border border-zinc-800 bg-zinc-950 p-5">
@@ -77,6 +83,14 @@ export default function AccountPage() {
                 location check are required to leave verified reviews and move
                 venue Season Standings.
               </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="rounded-full bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-black">
+                  Mock signed in
+                </span>
+                <span className="rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
+                  Owner of {mockProfile.stats.totalReviews} reviews
+                </span>
+              </div>
             </div>
           </div>
         </header>
@@ -159,10 +173,17 @@ export default function AccountPage() {
 
         <section className="mt-6 rounded-3xl border border-zinc-800 bg-zinc-950 p-5">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Sign-in placeholder
+            Sign-in / sign-up placeholder
+          </p>
+          <h2 className="mt-3 text-2xl font-black">
+            {mockSignedOutState.headline}
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-zinc-400">
+            {mockSignedOutState.copy}
           </p>
           <div className="mt-4 grid gap-3">
             {[
+              "Sign up with email",
               "Continue with email",
               "Continue with Google",
               "Continue with Apple"

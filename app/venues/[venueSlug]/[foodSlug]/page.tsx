@@ -12,7 +12,9 @@ import { getItemSlopStats } from "@/lib/slop-stats";
 
 const mockReviews = [
   {
+    reviewerId: "user-section128regular",
     author: "Section 128 Regular",
+    handle: "@section128regular",
     initials: "SR",
     rating: 9.2,
     runItBack: "Run It Back",
@@ -26,7 +28,9 @@ const mockReviews = [
     note: "Hot, salty, and still crisp by the time I got back to my seat."
   },
   {
+    reviewerId: "user-lateinningsnacks",
     author: "Late Inning Snack Scout",
+    handle: "@lateinningsnacks",
     initials: "LS",
     rating: 7.8,
     runItBack: "Maybe",
@@ -40,7 +44,9 @@ const mockReviews = [
     note: "Good bite, but the line made it feel like a bigger commitment."
   },
   {
+    reviewerId: "user-upperdeckcritic",
     author: "Upper Deck Critic",
+    handle: "@upperdeckcritic",
     initials: "UC",
     rating: 6.1,
     runItBack: "Bench It",
@@ -375,7 +381,9 @@ export default async function FoodPage({ params }: FoodPageProps) {
                       </span>
                     ) : null}
                   </div>
-                  <p className="mt-2 text-sm text-zinc-500">{review.author}</p>
+                  <p className="mt-2 text-sm text-zinc-500">
+                    {review.author} · {review.handle}
+                  </p>
                   <p className="mt-4 text-sm leading-6 text-zinc-300">
                     {review.note}
                   </p>
@@ -418,7 +426,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
                       disabled
                       className="mt-4 cursor-not-allowed rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
                     >
-                      Helpful · {review.helpfulCount}
+                      Sign in to mark helpful · {review.helpfulCount}
                     </button>
                   </div>
                 </div>
@@ -428,7 +436,9 @@ export default async function FoodPage({ params }: FoodPageProps) {
 
           <p className="text-sm leading-6 text-zinc-500">
             Official scores are built from structured signals. Written notes are
-            optional and should stay focused on the food.
+            optional and should stay focused on the food. Helpful likes require
+            a signed-in profile and do not create comments, dislikes, DMs, or
+            follower counts.
           </p>
         </section>
 

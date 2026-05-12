@@ -140,6 +140,9 @@ export type FoodReview = {
   id: string;
   foodSlug: string;
   venueSlug: string;
+  reviewerId?: string;
+  reviewerName?: string;
+  reviewerHandle?: string;
   slopScore: number;
   napkinRating: 1 | 2 | 3 | 4 | 5;
   labels: ReviewConsensusLabel[];
@@ -594,6 +597,9 @@ export const foodReviews: FoodReview[] = [
     id: "review-loaded-curds-1",
     foodSlug: "loaded-cheese-curds",
     venueSlug: "target-field",
+    reviewerId: "user-seat126snacks",
+    reviewerName: "Section 126 Snack Scout",
+    reviewerHandle: "@seat126snacks",
     slopScore: 9.2,
     napkinRating: 3,
     labels: ["Run It Back", "Worth the Walk"],
@@ -608,6 +614,9 @@ export const foodReviews: FoodReview[] = [
     id: "review-loaded-curds-2",
     foodSlug: "loaded-cheese-curds",
     venueSlug: "target-field",
+    reviewerId: "user-upperdeckeats",
+    reviewerName: "Upper Deck Eats",
+    reviewerHandle: "@upperdeckeats",
     slopScore: 8.7,
     napkinRating: 4,
     labels: ["Run It Back", "Stadium Tax"],
@@ -621,6 +630,9 @@ export const foodReviews: FoodReview[] = [
     id: "review-loaded-curds-3",
     foodSlug: "loaded-cheese-curds",
     venueSlug: "target-field",
+    reviewerId: "user-napkinmath",
+    reviewerName: "Napkin Math",
+    reviewerHandle: "@napkinmath",
     slopScore: 8.5,
     napkinRating: 3,
     labels: ["Worth the Walk"],

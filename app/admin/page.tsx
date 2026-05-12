@@ -28,20 +28,20 @@ const adminSections = [
   {
     title: "Reviews",
     count: foodReviews.length,
-    action: "Hide/remove review",
-    detail: "Moderate verified game-day review signals and notes."
+    action: "Hide review",
+    detail: "Moderate verified game-day review signals, notes, and photo context."
   },
   {
     title: "Users",
     count: 3,
-    action: "Manage user",
-    detail: "Review sample profiles, reputation, and account status."
+    action: "Suspend user",
+    detail: "Review sample profiles, reputation, ownership, and account status."
   },
   {
     title: "Reports / flags",
     count: 4,
     action: "Review flags",
-    detail: "Triage flagged reviews, duplicate content, and bad intel."
+    detail: "Triage duplicate reviews, suspicious activity, and bad intel."
   },
   {
     title: "Price updates",
@@ -59,14 +59,14 @@ const adminSections = [
 
 const moderationQueue = [
   {
-    title: "Flagged reviews",
+    title: "Hide flagged review",
     count: 2,
     copy: "Check food-focused notes, photo context, and verified status."
   },
   {
-    title: "Duplicate items",
+    title: "Duplicate or suspicious activity",
     count: 1,
-    copy: "Merge likely duplicate item listings before they split reviews."
+    copy: "Review repeated scores, duplicate submissions, and unusual helpful-like patterns."
   },
   {
     title: "Outdated prices",
@@ -74,9 +74,9 @@ const moderationQueue = [
     copy: "Prioritize low-confidence reported prices."
   },
   {
-    title: "Vendor/location corrections",
+    title: "User suspension review",
     count: 3,
-    copy: "Review section moves, renamed stands, and stale line intel."
+    copy: "Escalate users with repeated suspicious reviews or abusive profile details."
   }
 ];
 
