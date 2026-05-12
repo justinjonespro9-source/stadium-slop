@@ -77,26 +77,9 @@ export default async function VenuePage({ params }: VenuePageProps) {
   return (
     <main className="min-h-screen bg-[#111111] text-white">
       <section className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-10">
-        <nav className="flex items-center justify-between">
-          <Link href="/" className="text-xl font-black tracking-tight">
-            STADIUM SLOP
-          </Link>
-          <div className="hidden gap-6 text-sm text-zinc-300 sm:flex">
-            <Link href="/venues" className="hover:text-white">
-              Venues
-            </Link>
-            <Link href="/#rankings" className="hover:text-white">
-              Rankings
-            </Link>
-            <Link href="/#submit" className="hover:text-white">
-              Submit Food
-            </Link>
-          </div>
-        </nav>
-
         <Link
           href="/venues"
-          className="mt-10 inline-flex text-sm font-bold text-zinc-400 hover:text-white"
+          className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
         >
           Back to venues
         </Link>

@@ -119,24 +119,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-[#111111] text-white">
       <section className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-10 sm:px-8 lg:px-10">
-        <nav className="flex items-center justify-between">
-          <Link href="/" className="text-xl font-black tracking-tight">
-            STADIUM SLOP
-          </Link>
-          <div className="hidden gap-6 text-sm text-zinc-300 sm:flex">
-            <Link href="/venues" className="hover:text-white">
-              Venues
-            </Link>
-            <Link href="#discover" className="hover:text-white">
-              Discover
-            </Link>
-            <Link href="#trust" className="hover:text-white">
-              Trust
-            </Link>
-          </div>
-        </nav>
-
-        <header className="py-20 text-center">
+        <header className="py-16 text-center">
           <p className="mb-5 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
             Fan-powered concession intel for every league
           </p>

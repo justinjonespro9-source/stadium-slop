@@ -18,24 +18,7 @@ export default function VenuesPage() {
   return (
     <main className="min-h-screen bg-[#111111] text-white">
       <section className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-10">
-        <nav className="flex items-center justify-between">
-          <Link href="/" className="text-xl font-black tracking-tight">
-            STADIUM SLOP
-          </Link>
-          <div className="hidden gap-6 text-sm text-zinc-300 sm:flex">
-            <Link href="/venues" className="text-white">
-              Venues
-            </Link>
-            <Link href="/#rankings" className="hover:text-white">
-              Rankings
-            </Link>
-            <Link href="/#submit" className="hover:text-white">
-              Submit Food
-            </Link>
-          </div>
-        </nav>
-
-        <header className="py-16">
+        <header className="py-12">
           <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
             Browse Venues
           </p>
