@@ -90,8 +90,8 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </h2>
           <p className="mt-4 text-zinc-400">
             Official Stadium Slop ratings are designed to come from fans near
-            the stadium, arena, or ballpark. Location will be checked only when
-            submitting a review — never in the background.
+            the stadium, arena, or ballpark. A free profile and location check
+            will be required when submitting a review, never in the background.
           </p>
           <div className="mt-5 rounded-2xl bg-black p-4">
             <p className="text-sm text-zinc-500">Review radius</p>
@@ -104,7 +104,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             disabled
             className="mt-6 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
           >
-            Location verification coming soon
+            Sign-in and location check coming soon
           </button>
         </section>
 
@@ -211,7 +211,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </div>
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Scoreboards
+              Venue Scoreboards
             </p>
             <p className="mt-3 text-xl font-black">
               Verified reviews help keep scoreboards honest.

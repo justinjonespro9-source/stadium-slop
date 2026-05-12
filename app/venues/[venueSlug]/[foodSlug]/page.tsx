@@ -404,11 +404,12 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 Review This Item
               </p>
               <h2 className="mt-2 text-3xl font-black">
-                Verify you&apos;re at the venue
+                Sign in and verify you&apos;re at the venue
               </h2>
               <p className="mt-4 max-w-3xl text-zinc-400">
-                To keep ratings legit, Stadium Slop will check your current
-                location before accepting an official review.
+                To keep ratings legit, Stadium Slop will require a free profile
+                and an on-site location check before accepting an official
+                review.
               </p>
               <Link
                 href={`/venues/${venue.slug}/${foodItem.slug}/review`}
@@ -417,7 +418,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 Review this item
               </Link>
               <p className="mt-3 text-sm text-zinc-500">
-                Location verification coming soon.
+                Sign-in and location verification coming soon.
               </p>
             </article>
 

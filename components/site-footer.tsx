@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 const footerLinks = [
-  { href: "/venues", label: "Venues" },
-  { href: "/venues", label: "Scoreboards" },
+  { href: "/", label: "Home" },
+  { href: "/account", label: "Account" },
   { href: "/#trust", label: "Verified Reviews" },
   { href: "/venues", label: "Fan Photos" }
 ];
