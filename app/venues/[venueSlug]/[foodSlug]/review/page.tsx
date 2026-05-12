@@ -6,19 +6,12 @@ import { getFoodItemBySlug, getVenueBySlug } from "@/lib/sample-data";
 const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const runItBackOptions = ["Run It Back", "Maybe", "Bench It"];
 const valueOptions = ["Steal", "Fair Deal", "Stadium Tax", "Robbery"];
-const servedRightOptions = ["Game Ready", "Fine", "Sat on the Bench", "N/A"];
-const lineWaitOptions = [
-  "Quick Stop",
-  "Worth the Wait",
-  "Too Long",
-  "Missed the Action"
-];
 const napkinOptions = [
-  "1 napkin · Clean Win",
-  "2 napkins · Safe at Your Seat",
-  "3 napkins · Two-Handed Problem",
-  "4 napkins · Jersey Danger",
-  "5 napkins · Full Cleanup Crew"
+  { value: 1, label: "Clean Win" },
+  { value: 2, label: "Safe at Your Seat" },
+  { value: 3, label: "Two-Handed Problem" },
+  { value: 4, label: "Jersey Danger" },
+  { value: 5, label: "Full Cleanup Crew" }
 ];
 
 type ReviewPageProps = {
@@ -40,6 +33,40 @@ function OptionPill({ label }: { label: string }) {
   );
 }
 
+function ScoreButton({ score }: { score: number }) {
+  return (
+    <button
+      type="button"
+      disabled
+      className="flex h-12 w-12 cursor-not-allowed items-center justify-center rounded-2xl border border-zinc-800 bg-black text-lg font-black text-zinc-300"
+    >
+      {score}
+    </button>
+  );
+}
+
+function NapkinButton({
+  value,
+  label
+}: {
+  value: number;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      disabled
+      className="cursor-not-allowed rounded-2xl border border-zinc-800 bg-black p-3 text-left"
+    >
+      <span className="block text-lg">{"▰".repeat(value)}</span>
+      <span className="mt-1 block text-sm font-bold text-zinc-300">
+        {value}/5 napkins
+      </span>
+      <span className="mt-1 block text-xs text-zinc-500">{label}</span>
+    </button>
+  );
+}
+
 export default async function ReviewPage({ params }: ReviewPageProps) {
   const { venueSlug, foodSlug } = await params;
   const venue = getVenueBySlug(venueSlug);
@@ -56,7 +83,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
-      <section className="mx-auto w-full max-w-4xl px-6 py-10 sm:px-8 lg:px-10">
+      <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
         <Link
           href={`/venues/${venue.slug}/${foodItem.slug}`}
           className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
@@ -64,161 +91,145 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           Back to food details
         </Link>
 
-        <header className="py-12">
-          <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
+        <header className="py-6 sm:py-10">
+          <p className="mb-3 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
             Mock Review Flow · {foodItem.itemType}
           </p>
           {foodItem.ageRestricted ? (
-            <p className="mb-4 ml-2 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-bold uppercase tracking-[0.15em] text-zinc-300">
+            <p className="mb-3 ml-2 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
               21+
             </p>
           ) : null}
-          <h1 className="text-5xl font-black leading-tight tracking-tight sm:text-6xl">
+          <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
             Review {foodItem.name}
           </h1>
-          <p className="mt-5 text-lg text-zinc-300">
+          <p className="mt-3 text-base text-zinc-300 sm:text-lg">
             {venue.name} · {venue.city}, {venue.state}
           </p>
         </header>
 
-        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Location Check
-          </p>
-          <h2 className="mt-2 text-3xl font-black">
-            Verify you&apos;re at the venue
-          </h2>
-          <p className="mt-4 text-zinc-400">
-            Official Stadium Slop ratings are designed to come from fans near
-            the stadium, arena, or ballpark. A free profile and location check
-            will be required when submitting a review, never in the background.
-          </p>
-          <div className="mt-5 rounded-2xl bg-black p-4">
-            <p className="text-sm text-zinc-500">Review radius</p>
-            <p className="mt-1 text-2xl font-black">
-              {venue.reviewRadiusMeters} meters
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+          <div className="rounded-2xl bg-black p-4">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Verified game-day
+            </p>
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              Today&apos;s reviews help power Game Day Fresh. Verified game-day
+              reviews carry more weight.
             </p>
           </div>
+
+          <div className="mt-6">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+              Quick scorecard
+            </p>
+            <h2 className="mt-2 text-2xl font-black sm:text-3xl">
+              Tap it, snap it, move on.
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-zinc-400">
+              Slop Score and Napkin Rating are required. Photo and note are
+              optional.
+            </p>
+          </div>
+
+          <div className="mt-6 space-y-7">
+            <div>
+              <h3 className="text-lg font-black">1. Slop Score</h3>
+              <p className="mt-2 text-sm text-zinc-500">
+                Overall quality, 1-10. Think fan score, not restaurant review.
+              </p>
+              <div className="mt-3 grid grid-cols-5 gap-2 sm:flex sm:flex-wrap">
+                {slopScoreOptions.map((score) => (
+                  <ScoreButton key={score} score={score} />
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-black">2. Napkin Rating</h3>
+              <p className="mt-2 text-sm text-zinc-500">
+                How sloppy was it? This measures messiness, not quality.
+              </p>
+              <div className="mt-3 grid gap-2 sm:grid-cols-5">
+                {napkinOptions.map((option) => (
+                  <NapkinButton
+                    key={option.value}
+                    value={option.value}
+                    label={option.label}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-3xl border border-zinc-800 bg-black p-5">
+              <h3 className="text-lg font-black">3. Optional photo</h3>
+              <p className="mt-2 text-sm leading-6 text-zinc-500">
+                Show fans what actually arrived at the seat. Totally optional.
+              </p>
+              <button
+                type="button"
+                disabled
+                className="mt-4 flex aspect-video w-full cursor-not-allowed items-center justify-center rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 text-sm font-bold text-zinc-500"
+              >
+                Photo upload coming soon
+              </button>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-black">4. Optional food note</h3>
+              <p className="mt-2 text-sm text-zinc-500">
+                One quick food-focused reaction is enough. Aim for 280-300
+                characters max. No comment threads, no dislikes.
+              </p>
+              <textarea
+                disabled
+                placeholder="Optional: hot, cold, worth it, messy, would run it back?"
+                className="mt-3 min-h-24 w-full cursor-not-allowed rounded-2xl border border-zinc-800 bg-black p-4 text-sm text-zinc-400 outline-none placeholder:text-zinc-600"
+              />
+            </div>
+
+            <div className="rounded-2xl bg-black p-4">
+              <p className="text-sm font-bold text-zinc-300">
+                Want to add more signals later?
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {runItBackOptions.map((option) => (
+                  <OptionPill key={option} label={option} />
+                ))}
+                {valueOptions.slice(0, 3).map((option) => (
+                  <OptionPill key={option} label={option} />
+                ))}
+              </div>
+            </div>
+          </div>
+
           <button
             type="button"
             disabled
-            className="mt-6 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
+            className="mt-7 w-full cursor-not-allowed rounded-full bg-white px-6 py-4 text-sm font-black text-black opacity-60"
           >
-            Sign-in and location check coming soon
+            Submit review coming soon
           </button>
         </section>
 
         {foodItem.alcoholic ? (
-          <section className="mt-8 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
+          <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Responsible Drinking
             </p>
-            <p className="mt-3 text-zinc-300">
+            <p className="mt-2 text-sm leading-6 text-zinc-300">
               Alcohol availability varies by venue. Must be 21+ to purchase.
               Please drink responsibly.
             </p>
           </section>
         ) : null}
 
-        <section className="mt-8 rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Review Signals
-          </p>
-          <h2 className="mt-2 text-3xl font-black">Build your fan scorecard</h2>
-          <p className="mt-4 text-zinc-400">
-            Slop Score and Napkin Rating are required because structured signals
-            power Season Standings. Photos are optional, and short food notes are
-            optional.
-          </p>
-
-          <div className="mt-8 space-y-8">
-            <div>
-              <h3 className="font-bold">Slop Score Required</h3>
-              <p className="mt-2 text-sm text-zinc-500">
-                Rate the item from 1-10 based on what arrived at the seat.
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {slopScoreOptions.map((score) => (
-                  <OptionPill key={score} label={`${score}`} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold">Would Eat Again</h3>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {runItBackOptions.map((option) => (
-                  <OptionPill key={option} label={option} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold">Value</h3>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {valueOptions.map((option) => (
-                  <OptionPill key={option} label={option} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold">Served Right</h3>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {servedRightOptions.map((option) => (
-                  <OptionPill key={option} label={option} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold">Line Wait</h3>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {lineWaitOptions.map((option) => (
-                  <OptionPill key={option} label={option} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold">Napkin Rating Required</h3>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {napkinOptions.map((option) => (
-                  <OptionPill key={option} label={option} />
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold">Optional Food Note</h3>
-              <p className="mt-2 text-sm text-zinc-500">
-                Conceptual limit: 280-300 characters. Keep it useful. Review
-                the food, not the staff or other fans. Stadium Slop has no
-                comments or thumbs-down.
-              </p>
-              <textarea
-                disabled
-                placeholder="Optional: what actually showed up at the seat? 280 characters max."
-                className="mt-3 min-h-32 w-full cursor-not-allowed rounded-2xl border border-zinc-800 bg-black p-4 text-sm text-zinc-400 outline-none placeholder:text-zinc-600"
-              />
-            </div>
-
-            <div className="rounded-2xl border border-zinc-800 bg-black p-5">
-              <p className="font-bold">Optional photo upload coming soon</p>
-              <p className="mt-2 text-sm text-zinc-500">
-                Fans will be able to attach verified on-site food photos when
-                real submissions are added.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-8 grid gap-4 md:grid-cols-2">
+        <section className="mt-4 grid gap-3 md:grid-cols-2">
           <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Trust
             </p>
-            <p className="mt-3 text-xl font-black">
+            <p className="mt-3 text-lg font-black">
               Promoted placements can buy visibility, not ratings.
             </p>
           </div>
@@ -226,7 +237,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Season Standings
             </p>
-            <p className="mt-3 text-xl font-black">
+            <p className="mt-3 text-lg font-black">
               Verified reviews help keep Season Standings honest.
             </p>
           </div>

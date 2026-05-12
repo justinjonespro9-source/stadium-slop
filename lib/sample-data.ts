@@ -41,6 +41,7 @@ export type FoodItem = {
     | "Other";
   category: string;
   location: string;
+  sections?: string[];
   price: number;
   reportedPrice?: number;
   priceLastConfirmedLabel?: string;
@@ -242,6 +243,7 @@ export const foodItems: FoodItem[] = [
     itemType: "Food",
     category: "Snack",
     location: "Main concourse",
+    sections: ["126", "214"],
     price: 13.99,
     reportedPrice: 13.99,
     priceLastConfirmedLabel: "May 2026",
@@ -279,6 +281,7 @@ export const foodItems: FoodItem[] = [
     itemType: "Food",
     category: "BBQ",
     location: "Lower concourse",
+    sections: ["118"],
     price: 16.99,
     reportedPrice: 16.99,
     priceLastConfirmedLabel: "2026 season",
@@ -321,6 +324,7 @@ export const foodItems: FoodItem[] = [
     itemType: "Food",
     category: "Seafood",
     location: "Club level",
+    sections: ["C26"],
     price: 15.49,
     reportedPrice: 15.49,
     priceLastConfirmedLabel: "2026 season",
@@ -359,6 +363,7 @@ export const foodItems: FoodItem[] = [
     itemType: "Food",
     category: "Nachos",
     location: "Upper deck",
+    sections: ["332", "346"],
     price: 11.99,
     reportedPrice: 11.99,
     priceLastConfirmedLabel: "May 2026",
@@ -400,6 +405,7 @@ export const foodItems: FoodItem[] = [
     beverageStyle: "Cocktail",
     category: "Cocktail",
     location: "Main concourse",
+    sections: ["131"],
     price: 17.99,
     reportedPrice: 17.99,
     priceLastConfirmedLabel: "May 2026",
@@ -439,6 +445,7 @@ export const foodItems: FoodItem[] = [
     beverageStyle: "Non-Alcoholic",
     category: "Drink",
     location: "Family concourse",
+    sections: ["229", "230"],
     price: 7.99,
     reportedPrice: 7.99,
     priceLastConfirmedLabel: "May 2026",

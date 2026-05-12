@@ -2,10 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import {
-  getFoodItemBySlug,
   getFoodItemsByVenueSlug,
   getFoodItemsByVendorSlug,
-  getPhotosForVenue,
   getVendorForFoodItem,
   getVendorsByVenueSlug,
   getVenueBySlug
@@ -80,12 +78,12 @@ function sortGameDayScoreboardItems(items: FoodItem[]) {
 
 function FilterChips() {
   return (
-    <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
+    <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
       {filterChips.map((chip) => (
         <button
           key={chip}
           type="button"
-          className="shrink-0 rounded-full border border-zinc-800 bg-black px-3 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
+          className="shrink-0 rounded-full border border-zinc-800 bg-black px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
         >
           {chip}
         </button>
@@ -94,90 +92,78 @@ function FilterChips() {
   );
 }
 
-function LeaderboardCard({
+function formatSections(item: FoodItem) {
+  if (!item.sections || item.sections.length === 0) {
+    return item.location;
+  }
+
+  if (item.sections.length > 2) {
+    return "Multiple sections";
+  }
+
+  return `Sections ${item.sections.join(", ")}`;
+}
+
+function ItemStandingRow({
   item,
   rank,
-  venueSlug
+  venueSlug,
+  showFresh = false
 }: {
   item: FoodItem;
   rank: number;
   venueSlug: string;
+  showFresh?: boolean;
 }) {
   const vendor = getVendorForFoodItem(item);
 
   return (
     <Link
       href={`/venues/${venueSlug}/${item.slug}`}
-      className="group block rounded-3xl border border-zinc-800 bg-zinc-950 p-4 transition hover:border-zinc-500 sm:p-5"
+      className="group block border-b border-zinc-800 bg-zinc-950 px-4 py-4 transition last:border-b-0 hover:bg-black sm:px-5"
     >
-      <article className="grid gap-3 sm:grid-cols-[auto_1fr]">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-base font-black text-black sm:h-12 sm:w-12 sm:text-lg">
-          #{rank}
-        </div>
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-xl font-black sm:text-2xl">{item.name}</h3>
-            {item.ageRestricted ? (
-              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                21+
-              </span>
-            ) : null}
-            {item.venueBadge ? (
-              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                {item.venueBadge}
-              </span>
-            ) : null}
-          </div>
-
-          <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-500 sm:text-sm">
-            {item.itemType} · {vendor ? vendor.name : "Vendor TBD"}
-          </p>
-
-          <div className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
-            <div className="rounded-2xl bg-black p-3">
-              <p className="text-zinc-500">Slop Score</p>
-              <p className="mt-1 text-lg font-black text-white">
-                {item.slopScore.toFixed(1)}
+      <article className="grid grid-cols-[auto_1fr] gap-3">
+        <div className="pt-1 text-sm font-black text-zinc-500">#{rank}</div>
+        <div className="min-w-0">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-base font-black text-white sm:text-lg">
+                  {item.name}
+                </h3>
+                {item.ageRestricted ? (
+                  <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-300">
+                    21+
+                  </span>
+                ) : null}
+              </div>
+              <p className="mt-1 text-sm text-zinc-400">
+                {vendor ? vendor.name : "Vendor TBD"} · {formatSections(item)}
               </p>
             </div>
-            <div className="rounded-2xl bg-black p-3">
-              <p className="text-zinc-500">Verdict</p>
-              <p className="mt-1 font-bold text-white">{item.verdict}</p>
-            </div>
-            <div className="rounded-2xl bg-black p-3">
-              <p className="text-zinc-500">Run It Back</p>
-              <p className="mt-1 text-lg font-black text-white">
-                {item.runItBackPercent}%
+            <div className="text-right">
+              <p className="text-lg font-black text-white">
+                {showFresh && item.freshSignalScore
+                  ? item.freshSignalScore.toFixed(1)
+                  : item.slopScore.toFixed(1)}
               </p>
-            </div>
-            <div className="rounded-2xl bg-black p-3">
-              <p className="text-zinc-500">Fresh Signal</p>
-              <p className="mt-1 font-bold text-white">
-                {item.freshSignalScore
-                  ? `${item.freshSignalScore.toFixed(1)}`
-                  : "No fresh signal"}
+              <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
+                {showFresh ? "Fresh" : "Slop"}
               </p>
             </div>
           </div>
 
-          <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
+            <span>{item.itemType}</span>
             <span>{item.reviewCount} reviews</span>
             <span>{item.napkinRating}/5 napkins</span>
             {item.reportedPrice ? (
-              <span>${item.reportedPrice.toFixed(2)} reported</span>
+              <span>${item.reportedPrice.toFixed(2)}</span>
+            ) : null}
+            {item.freshSignal ? (
+              <span>{item.freshSignal}</span>
             ) : null}
           </div>
-
-          {item.freshSignal ? (
-            <p className="mt-3 text-sm text-zinc-400">
-              {item.freshSignal} · {item.freshReviewCount} fresh reviews{" "}
-              {item.freshWindowLabel}
-            </p>
-          ) : null}
-
-          <p className="mt-4 text-sm font-bold text-zinc-300 transition group-hover:text-white">
-            View item details
-          </p>
         </div>
       </article>
     </Link>
@@ -198,10 +184,6 @@ export default async function VenuePage({ params }: VenuePageProps) {
   const venueVendors = getVendorsByVenueSlug(venue.slug);
   const overallScoreboardItems = sortOverallScoreboardItems(venueFoodItems);
   const gameDayScoreboardItems = sortGameDayScoreboardItems(venueFoodItems);
-  const newThisSeasonItems = venueFoodItems.filter(
-    (item) => item.isNewThisSeason
-  );
-  const latestPhotos = getPhotosForVenue(venue.slug).slice(0, 6);
 
   return (
     <main className="min-h-screen bg-[#111111] text-white">
@@ -213,53 +195,25 @@ export default async function VenuePage({ params }: VenuePageProps) {
           Back to venues
         </Link>
 
-        <header className="py-6 sm:py-10">
-          <p className="mb-3 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-            {venue.venueType}
-          </p>
+        <header className="py-4 sm:py-8">
           <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight sm:text-6xl">
             {venue.name}
           </h1>
-          <p className="mt-3 text-base text-zinc-300 sm:text-lg">
-            {venue.city}, {venue.state}
+          <p className="mt-2 text-sm text-zinc-400 sm:text-base">
+            {venue.city}, {venue.state} · {venue.venueType}
           </p>
-          <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold uppercase tracking-[0.18em] text-zinc-400 sm:text-sm">
-            <span className="rounded-full border border-zinc-800 px-3 py-1.5">
-              {venue.leagues.join(", ")}
-            </span>
-            <span className="rounded-full border border-zinc-800 px-3 py-1.5">
-              {venue.teams.join(", ")}
-            </span>
-            <span className="rounded-full border border-zinc-800 px-3 py-1.5">
-              {venue.sports.join(", ")}
-            </span>
-          </div>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.16em] text-zinc-500">
+            {venue.leagues.join(", ")} · {venue.teams.join(", ")} ·{" "}
+            {venue.sports.join(", ")}
+          </p>
         </header>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Verified Review Zone
-            </p>
-            <h2 className="mt-2 text-xl font-black">
-              {venue.reviewRadiusMeters} meters
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-              Official reviews will require fans to be near {venue.name}.
-            </p>
-          </section>
+        <p className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-xs leading-5 text-zinc-500">
+          Verified reviews require fans to be within {venue.reviewRadiusMeters}m.
+          Menus change fast, so check availability at the venue.
+        </p>
 
-          <section className="rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Accuracy Note
-            </p>
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-              Menus change fast. Check availability at the venue.
-            </p>
-          </section>
-        </div>
-
-        <section className="border-t border-zinc-800 py-7 sm:py-10">
+        <section className="border-t border-zinc-800 py-5 sm:py-8">
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -272,9 +226,9 @@ export default async function VenuePage({ params }: VenuePageProps) {
             <FilterChips />
           </div>
 
-          <div className="mt-5 grid gap-3 sm:gap-4">
+          <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
             {overallScoreboardItems.map((item, index) => (
-              <LeaderboardCard
+              <ItemStandingRow
                 key={item.slug}
                 item={item}
                 rank={item.scoreboardRank ?? index + 1}
@@ -284,7 +238,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
           </div>
         </section>
 
-        <section className="border-t border-zinc-800 py-7 sm:py-10">
+        <section className="border-t border-zinc-800 py-5 sm:py-8">
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -297,19 +251,20 @@ export default async function VenuePage({ params }: VenuePageProps) {
             <FilterChips />
           </div>
 
-          <div className="mt-5 grid gap-3 sm:gap-4">
+          <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
             {gameDayScoreboardItems.map((item, index) => (
-              <LeaderboardCard
+              <ItemStandingRow
                 key={item.slug}
                 item={item}
                 rank={index + 1}
                 venueSlug={venue.slug}
+                showFresh
               />
             ))}
           </div>
         </section>
 
-        <section className="border-t border-zinc-800 py-7 sm:py-10">
+        <section className="border-t border-zinc-800 py-5 sm:py-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Vendors / Menu
@@ -317,13 +272,9 @@ export default async function VenuePage({ params }: VenuePageProps) {
             <h2 className="mt-2 text-2xl font-black sm:text-3xl">
               Venue to vendor to item.
             </h2>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
-              Vendors organize reviewable items. Vendor updates do not count as
-              fan reviews or move Season Standings.
-            </p>
           </div>
 
-          <div className="mt-5 grid gap-3 lg:grid-cols-2">
+          <div className="mt-4 grid gap-3 lg:grid-cols-2">
             {venueVendors.map((vendor) => {
               const vendorItems = getFoodItemsByVendorSlug(vendor.slug);
 
@@ -364,7 +315,7 @@ export default async function VenuePage({ params }: VenuePageProps) {
                         <div>
                           <p className="font-bold">{item.name}</p>
                           <p className="mt-1 text-sm text-zinc-500">
-                            {item.itemType} · {item.location}
+                            {item.itemType} · {formatSections(item)}
                           </p>
                         </div>
                         <span className="text-sm font-black text-white">
@@ -395,109 +346,6 @@ export default async function VenuePage({ params }: VenuePageProps) {
               Add item coming soon
             </button>
           </article>
-        </section>
-
-        <section className="border-t border-zinc-800 py-10">
-          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Latest Fan Photos
-              </p>
-              <h2 className="mt-2 text-3xl font-black">
-                What fans are seeing at {venue.name}
-              </h2>
-            </div>
-            <p className="text-sm text-zinc-400">
-              Recent verified seat shots from this venue.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {latestPhotos.map((photo) => {
-              const item = getFoodItemBySlug(photo.foodSlug);
-
-              return (
-                <Link
-                  key={photo.id}
-                  href={`/venues/${photo.venueSlug}/${photo.foodSlug}`}
-                  className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-4 transition hover:border-zinc-500"
-                >
-                  <div
-                    aria-label={photo.alt}
-                    className="flex aspect-video items-center justify-center rounded-2xl bg-black text-6xl"
-                  >
-                    {photo.imagePlaceholder}
-                  </div>
-                  <p className="mt-4 font-bold">
-                    {item ? item.name : "Unknown item"}
-                  </p>
-                  <p className="mt-1 text-sm text-zinc-400">{photo.caption}</p>
-                  <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
-                    <span>{photo.createdAt}</span>
-                    {photo.verifiedOnSite ? (
-                      <span className="rounded-full border border-zinc-800 px-2 py-0.5 font-bold uppercase tracking-[0.15em] text-zinc-400">
-                        Verified on-site
-                      </span>
-                    ) : null}
-                    {photo.verifiedOnSite && photo.createdAt === "May 2026" ? (
-                      <span className="rounded-full border border-zinc-800 px-2 py-0.5 font-bold uppercase tracking-[0.15em] text-zinc-400">
-                        Verified today
-                      </span>
-                    ) : null}
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="border-t border-zinc-800 py-10">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              New This Season
-            </p>
-            <h2 className="mt-2 text-3xl font-black">
-              Fresh concession reports
-            </h2>
-          </div>
-
-          {newThisSeasonItems.length > 0 ? (
-            <div className="mt-6 grid gap-4 lg:grid-cols-2">
-              {newThisSeasonItems.map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/venues/${venue.slug}/${item.slug}`}
-                  className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
-                >
-                  <article>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-xl font-black">{item.name}</h3>
-                      {item.ageRestricted ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          21+
-                        </span>
-                      ) : null}
-                      <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                        New This Season
-                      </span>
-                    </div>
-                    <p className="mt-3 text-sm text-zinc-400">
-                      {item.itemType} · {item.category} · {item.location}
-                    </p>
-                    {item.seasonIntroduced ? (
-                      <p className="mt-2 text-sm text-zinc-500">
-                        Introduced: {item.seasonIntroduced}
-                      </p>
-                    ) : null}
-                  </article>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="mt-6 text-sm text-zinc-500">
-              No new items reported yet.
-            </p>
-          )}
         </section>
 
       </section>
