@@ -30,7 +30,7 @@ export default function Home() {
         <nav className="flex items-center justify-between">
           <div className="text-xl font-black tracking-tight">STADIUM SLOP</div>
           <div className="hidden gap-6 text-sm text-zinc-300 sm:flex">
-            <a href="#venues" className="hover:text-white">
+            <a href="/venues" className="hover:text-white">
               Venues
             </a>
             <a href="#rankings" className="hover:text-white">
@@ -60,7 +60,7 @@ export default function Home() {
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="#venues"
+                href="/venues"
                 className="rounded-full bg-white px-6 py-3 text-center text-sm font-bold text-black transition hover:bg-zinc-200"
               >
                 Browse Venues

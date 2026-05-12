@@ -1,0 +1,109 @@
+import Link from "next/link";
+
+import { foodItems, venues } from "@/lib/sample-data";
+
+const topFoodItemByVenueSlug = foodItems.reduce<
+  Record<string, (typeof foodItems)[number]>
+>((topItems, item) => {
+  const currentTopItem = topItems[item.venueSlug];
+
+  if (!currentTopItem || item.rating > currentTopItem.rating) {
+    topItems[item.venueSlug] = item;
+  }
+
+  return topItems;
+}, {});
+
+export default function VenuesPage() {
+  return (
+    <main className="min-h-screen bg-[#111111] text-white">
+      <section className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-10">
+        <nav className="flex items-center justify-between">
+          <Link href="/" className="text-xl font-black tracking-tight">
+            STADIUM SLOP
+          </Link>
+          <div className="hidden gap-6 text-sm text-zinc-300 sm:flex">
+            <Link href="/venues" className="text-white">
+              Venues
+            </Link>
+            <Link href="/#rankings" className="hover:text-white">
+              Rankings
+            </Link>
+            <Link href="/#submit" className="hover:text-white">
+              Submit Food
+            </Link>
+          </div>
+        </nav>
+
+        <header className="py-16">
+          <p className="mb-4 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-300">
+            Browse Venues
+          </p>
+          <h1 className="max-w-3xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
+            Start with the venues in the Stadium Slop sample set.
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
+            This MVP keeps the venue list intentionally small while the routing,
+            layout, and food ranking flows take shape.
+          </p>
+        </header>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          {venues.map((venue) => {
+            const venueFoodItems = foodItems.filter(
+              (item) => item.venueSlug === venue.slug
+            );
+            const topItem = topFoodItemByVenueSlug[venue.slug];
+
+            return (
+              <Link
+                key={venue.slug}
+                href={`/venues/${venue.slug}`}
+                className="group rounded-3xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-zinc-500"
+              >
+                <article>
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h2 className="text-xl font-black">{venue.name}</h2>
+                      <p className="mt-2 text-sm text-zinc-400">
+                        {venue.city}, {venue.state}
+                      </p>
+                    </div>
+                    <span className="rounded-full border border-zinc-800 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
+                      {venue.venueType}
+                    </span>
+                  </div>
+
+                  <p className="mt-5 text-sm text-zinc-500">{venue.team}</p>
+                  <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                    {venue.league}
+                  </p>
+
+                  <div className="mt-6 rounded-2xl bg-black p-4">
+                    <p className="text-sm text-zinc-500">
+                      {venueFoodItems.length} food{" "}
+                      {venueFoodItems.length === 1 ? "item" : "items"}
+                    </p>
+                    <p className="mt-3 text-sm text-zinc-500">Top item</p>
+                    <p className="mt-1 font-bold">
+                      {topItem ? topItem.name : "No food items yet"}
+                    </p>
+                    {topItem ? (
+                      <p className="mt-1 text-sm text-zinc-500">
+                        {topItem.rating.toFixed(1)} rating
+                      </p>
+                    ) : null}
+                  </div>
+
+                  <p className="mt-5 text-sm font-bold text-zinc-300 transition group-hover:text-white">
+                    View venue
+                  </p>
+                </article>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+    </main>
+  );
+}
