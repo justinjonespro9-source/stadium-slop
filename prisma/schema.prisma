@@ -127,6 +127,19 @@ enum ConsensusLabel {
   BENCH_IT
 }
 
+enum ReplayValue {
+  GAME_DAY_STARTER
+  SOLID_ROTATION_PICK
+  BENCH_OPTION
+  CUT_FROM_THE_ROSTER
+}
+
+enum PriceCheck {
+  WORTH_THE_PRICE_OF_ADMISSION
+  FAIR_DEAL
+  STADIUM_TAX
+}
+
 enum PhotoType {
   FOOD
   PROFILE
@@ -301,6 +314,8 @@ model Review {
   slopScore       Decimal          @db.Decimal(3, 1)
   napkinRating    Int
   labels          ConsensusLabel[]
+  replayValue     ReplayValue?
+  priceCheck      PriceCheck?
   verifiedGameDay Boolean          @default(false)
   seasonLabel     String
   note            String?

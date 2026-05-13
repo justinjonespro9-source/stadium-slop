@@ -11,7 +11,7 @@ import {
   getPublicVenueBySlug
 } from "@/lib/public-data";
 import { prisma } from "@/lib/prisma";
-import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
+import { getDbBackedItemSlopStats, getSlopScoreTier } from "@/lib/slop-stats";
 import {
   MOCK_REVIEWER_USER_ID,
   MOCK_USER_COOKIE_NAME,
@@ -264,6 +264,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
     foodItem.slug,
     "season"
   );
+  const slopTier = getSlopScoreTier(seasonStats.averageSlopScore);
   const freshStats = await getDbBackedItemSlopStats(
     venue.slug,
     foodItem.slug,
@@ -351,6 +352,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 <span className="text-[var(--slop-orange)]">
                   Slop Score {seasonStats.averageSlopScore.toFixed(1)}
                 </span>{" "}
+                · {slopTier}
                 · Fresh
                 Signal{" "}
                 {freshStats.reviewCount > 0
@@ -479,18 +481,19 @@ export default async function FoodPage({ params }: FoodPageProps) {
 
         <section className="mt-3 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Fan Consensus
+            Fan Signals
           </p>
           <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-            Career stats from fan signals
+            Slop Score, replay, and value
           </h2>
 
           <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
             <div className="rounded-2xl bg-black p-3">
-              <p className="text-sm text-zinc-500">Slop Score Avg</p>
+              <p className="text-sm text-zinc-500">Slop Score</p>
               <p className="mt-1 text-2xl font-black">
                 {careerStats.averageSlopScore.toFixed(1)}
               </p>
+              <p className="mt-1 text-xs text-zinc-500">{slopTier}</p>
             </div>
             <div className="rounded-2xl bg-black p-3">
               <p className="text-sm text-zinc-500">Napkin Avg</p>
@@ -515,18 +518,30 @@ export default async function FoodPage({ params }: FoodPageProps) {
             </div>
           </div>
 
-          <div className="mt-5 space-y-3">
-            {careerStats.consensus.map((stat) => (
-              <div key={stat.label}>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="font-bold text-zinc-300">{stat.label}</span>
-                  <span className="text-zinc-500">{stat.percentage}%</span>
-                </div>
-                <div className="mt-2 h-2 overflow-hidden rounded-full bg-black">
-                  <div
-                    className="h-full rounded-full bg-white"
-                    style={{ width: `${stat.percentage}%` }}
-                  />
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+            {[
+              ["Replay Value", careerStats.replayValue],
+              ["Price Check", careerStats.priceCheck]
+            ].map(([title, stats]) => (
+              <div key={title as string} className="rounded-3xl bg-black p-4">
+                <h3 className="font-black">{title as string}</h3>
+                <div className="mt-4 space-y-3">
+                  {(stats as typeof careerStats.replayValue).map((stat) => (
+                    <div key={stat.label}>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="font-bold text-zinc-300">
+                          {stat.label}
+                        </span>
+                        <span className="text-zinc-500">{stat.percentage}%</span>
+                      </div>
+                      <div className="mt-2 h-2 overflow-hidden rounded-full bg-zinc-950">
+                        <div
+                          className="h-full rounded-full bg-white"
+                          style={{ width: `${stat.percentage}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ))}
@@ -547,6 +562,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
               <p className="mt-1 text-2xl font-black sm:text-3xl">
                 {seasonStats.averageSlopScore.toFixed(1)}
               </p>
+              <p className="mt-1 text-xs font-bold text-zinc-500">{slopTier}</p>
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:p-5">
               <p className="text-sm text-zinc-500">Verdict</p>
@@ -555,16 +571,26 @@ export default async function FoodPage({ params }: FoodPageProps) {
               </p>
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:p-5">
-              <p className="text-sm text-zinc-500">Run It Back</p>
-              <p className="mt-1 text-2xl font-black sm:text-3xl">
-                {foodItem.runItBackPercent}%
+              <p className="text-sm text-zinc-500">Replay Value</p>
+              <p className="mt-1 text-base font-black sm:text-xl">
+                {seasonStats.topReplayValue?.label ?? "Pending"}
               </p>
+              {seasonStats.topReplayValue ? (
+                <p className="mt-1 text-xs text-zinc-500">
+                  {seasonStats.topReplayValue.percentage}% of signals
+                </p>
+              ) : null}
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:p-5">
-              <p className="text-sm text-zinc-500">Value</p>
+              <p className="text-sm text-zinc-500">Price Check</p>
               <p className="mt-1 text-base font-black sm:text-xl">
-                {foodItem.valueLabel}
+                {seasonStats.topPriceCheck?.label ?? "Pending"}
               </p>
+              {seasonStats.topPriceCheck ? (
+                <p className="mt-1 text-xs text-zinc-500">
+                  {seasonStats.topPriceCheck.percentage}% of signals
+                </p>
+              ) : null}
             </div>
             <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:p-5">
               <p className="text-sm text-zinc-500">Served Right</p>

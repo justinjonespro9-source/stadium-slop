@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ConsensusLabel } from "@prisma/client";
+import { PriceCheck, ReplayValue } from "@prisma/client";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
@@ -14,12 +14,19 @@ import {
 } from "@/lib/user-auth";
 
 const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const consensusOptions = [
-  { label: "Run It Back", value: ConsensusLabel.RUN_IT_BACK },
-  { label: "Worth the Walk", value: ConsensusLabel.WORTH_THE_WALK },
-  { label: "Steal", value: ConsensusLabel.STEAL },
-  { label: "Stadium Tax", value: ConsensusLabel.STADIUM_TAX },
-  { label: "Bench It", value: ConsensusLabel.BENCH_IT }
+const replayValueOptions = [
+  { label: "Game Day Starter", value: ReplayValue.GAME_DAY_STARTER },
+  { label: "Solid Rotation Pick", value: ReplayValue.SOLID_ROTATION_PICK },
+  { label: "Bench Option", value: ReplayValue.BENCH_OPTION },
+  { label: "Cut From the Roster", value: ReplayValue.CUT_FROM_THE_ROSTER }
+];
+const priceCheckOptions = [
+  {
+    label: "Worth the Price of Admission",
+    value: PriceCheck.WORTH_THE_PRICE_OF_ADMISSION
+  },
+  { label: "Fair Deal", value: PriceCheck.FAIR_DEAL },
+  { label: "Stadium Tax", value: PriceCheck.STADIUM_TAX }
 ];
 const napkinOptions = [
   { value: 1, label: "Clean Win" },
@@ -36,16 +43,18 @@ type ReviewPageProps = {
   }>;
 };
 
-function ConsensusOption({
+function SignalOption({
   label,
+  name,
   value
 }: {
   label: string;
-  value: ConsensusLabel;
+  name: string;
+  value: string;
 }) {
   return (
     <label className="cursor-pointer">
-      <input className="peer sr-only" type="radio" name="consensusLabel" value={value} />
+      <input className="peer sr-only" type="radio" name={name} value={value} />
       <span className="block rounded-full border border-zinc-800 bg-black px-4 py-2 text-sm font-bold text-zinc-400 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)]">
         {label}
       </span>
@@ -114,7 +123,8 @@ async function submitReview(formData: FormData) {
 
   const slopScore = Number(formData.get("slopScore"));
   const napkinRating = Number(formData.get("napkinRating"));
-  const consensusLabel = formData.get("consensusLabel");
+  const replayValue = formData.get("replayValue");
+  const priceCheck = formData.get("priceCheck");
   const noteValue = String(formData.get("note") ?? "").trim();
 
   if (
@@ -167,10 +177,14 @@ async function submitReview(formData: FormData) {
   const today = new Date();
   const seasonLabel = String(today.getFullYear());
   const gameDayKey = `${seasonLabel}-${venueSlug}-${today.toISOString().slice(0, 10)}`;
-  const labels =
-    typeof consensusLabel === "string" && consensusLabel in ConsensusLabel
-      ? [consensusLabel as ConsensusLabel]
-      : [];
+  const replayValueData =
+    typeof replayValue === "string" && replayValue in ReplayValue
+      ? (replayValue as ReplayValue)
+      : null;
+  const priceCheckData =
+    typeof priceCheck === "string" && priceCheck in PriceCheck
+      ? (priceCheck as PriceCheck)
+      : null;
 
   await prisma.review.upsert({
     where: {
@@ -183,7 +197,9 @@ async function submitReview(formData: FormData) {
     update: {
       slopScore,
       napkinRating,
-      labels,
+      labels: [],
+      replayValue: replayValueData,
+      priceCheck: priceCheckData,
       verifiedGameDay: true,
       seasonLabel,
       note: noteValue ? noteValue.slice(0, 300) : null
@@ -195,7 +211,9 @@ async function submitReview(formData: FormData) {
       gameDayKey,
       slopScore,
       napkinRating,
-      labels,
+      labels: [],
+      replayValue: replayValueData,
+      priceCheck: priceCheckData,
       verifiedGameDay: true,
       seasonLabel,
       note: noteValue ? noteValue.slice(0, 300) : null
@@ -420,13 +438,32 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
             <div className="rounded-2xl bg-black p-4">
               <p className="text-sm font-bold text-zinc-300">
-                Optional consensus label
+                Replay Value
+              </p>
+              <p className="mt-1 text-xs text-zinc-500">
+                Would you get this again?
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {consensusOptions.map((option) => (
-                  <ConsensusOption
+                {replayValueOptions.map((option) => (
+                  <SignalOption
                     key={option.value}
                     label={option.label}
+                    name="replayValue"
+                    value={option.value}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-2xl bg-black p-4">
+              <p className="text-sm font-bold text-zinc-300">Price Check</p>
+              <p className="mt-1 text-xs text-zinc-500">How was the value?</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {priceCheckOptions.map((option) => (
+                  <SignalOption
+                    key={option.value}
+                    label={option.label}
+                    name="priceCheck"
                     value={option.value}
                   />
                 ))}

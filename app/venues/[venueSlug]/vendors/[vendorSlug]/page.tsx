@@ -9,7 +9,7 @@ import {
   getPublicVendorBySlug,
   getPublicVenueBySlug
 } from "@/lib/public-data";
-import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
+import { getDbBackedItemSlopStats, getSlopScoreTier } from "@/lib/slop-stats";
 
 type VendorPageProps = {
   params: Promise<{
@@ -107,10 +107,10 @@ export default async function VendorPage({ params }: VendorPageProps) {
                       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
                         <span>{stats.reviewCount} reviews</span>
                         <span>{stats.roundedNapkinRating}/5 napkins</span>
-                        {stats.topConsensus ? (
+                        {stats.topReplayValue ? (
                           <span>
-                            {stats.topConsensus.percentage}%{" "}
-                            {stats.topConsensus.label}
+                            {stats.topReplayValue.percentage}%{" "}
+                            {stats.topReplayValue.label}
                           </span>
                         ) : null}
                         {item.reportedPrice ? (
@@ -123,7 +123,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
                         {stats.averageSlopScore.toFixed(1)}
                       </p>
                       <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                        Slop
+                        {getSlopScoreTier(stats.averageSlopScore)}
                       </p>
                     </div>
                   </article>

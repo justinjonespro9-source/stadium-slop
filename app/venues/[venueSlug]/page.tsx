@@ -14,6 +14,7 @@ import {
 } from "@/lib/public-data";
 import {
   getDbBackedItemSlopStats,
+  getSlopScoreTier,
   type ItemSlopStats,
   type SlopStatsMode
 } from "@/lib/slop-stats";
@@ -334,7 +335,7 @@ function ItemStandingRow({
                 {stats.averageSlopScore.toFixed(1)}
               </p>
               <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                {showFresh ? "Fresh" : "Slop"}
+                {showFresh ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
               </p>
             </div>
           </div>
@@ -343,9 +344,9 @@ function ItemStandingRow({
             <span>{item.itemType}</span>
             <span>{stats.reviewCount} reviews</span>
             <span>{stats.roundedNapkinRating}/5 napkins</span>
-            {stats.topConsensus ? (
+            {stats.topReplayValue ? (
               <span>
-                {stats.topConsensus.percentage}% {stats.topConsensus.label}
+                {stats.topReplayValue.percentage}% {stats.topReplayValue.label}
               </span>
             ) : null}
             {item.reportedPrice ? (

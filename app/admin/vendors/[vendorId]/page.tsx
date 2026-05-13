@@ -1,4 +1,4 @@
-import { EntityStatus } from "@prisma/client";
+import { EntityStatus, ItemCategory, ItemType } from "@prisma/client";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
@@ -30,6 +30,66 @@ async function updateVendor(formData: FormData) {
   });
 
   revalidatePath("/admin/venues");
+  revalidatePath(`/admin/vendors/${vendorId}`);
+  redirect(`/admin/vendors/${vendorId}`);
+}
+
+async function createFoodItem(formData: FormData) {
+  "use server";
+
+  const vendorId = String(formData.get("vendorId") ?? "");
+  const name = String(formData.get("itemName") ?? "").trim();
+  const slug = String(formData.get("itemSlug") ?? "").trim();
+  const vendor = await prisma.vendor.findUnique({ where: { id: vendorId } });
+
+  if (!vendor || !name || !slug) {
+    redirect(`/admin/vendors/${vendorId}`);
+  }
+
+  const reportedPriceValue = String(formData.get("reportedPrice") ?? "").trim();
+  const reportedPrice = reportedPriceValue ? Number(reportedPriceValue) : null;
+
+  await prisma.foodItem.upsert({
+    where: {
+      venueId_slug: {
+        venueId: vendor.venueId,
+        slug
+      }
+    },
+    update: {
+      name,
+      vendorId,
+      customCategoryLabel: String(formData.get("customCategoryLabel") ?? "").trim(),
+      category: String(formData.get("category") ?? ItemCategory.OTHER) as ItemCategory,
+      description: String(formData.get("description") ?? "").trim(),
+      location: String(formData.get("location") ?? "").trim(),
+      sections: String(formData.get("sections") ?? "")
+        .split(",")
+        .map((section) => section.trim())
+        .filter(Boolean),
+      reportedPrice,
+      status: "ACTIVE"
+    },
+    create: {
+      name,
+      slug,
+      venueId: vendor.venueId,
+      vendorId,
+      itemType: ItemType.FOOD,
+      category: String(formData.get("category") ?? ItemCategory.OTHER) as ItemCategory,
+      customCategoryLabel: String(formData.get("customCategoryLabel") ?? "").trim(),
+      description: String(formData.get("description") ?? "").trim(),
+      location: String(formData.get("location") ?? "").trim(),
+      sections: String(formData.get("sections") ?? "")
+        .split(",")
+        .map((section) => section.trim())
+        .filter(Boolean),
+      reportedPrice,
+      tags: [],
+      status: "ACTIVE"
+    }
+  });
+
   revalidatePath(`/admin/vendors/${vendorId}`);
   redirect(`/admin/vendors/${vendorId}`);
 }
@@ -140,6 +200,71 @@ export default async function AdminVendorDetailPage({
 
           <section className="brand-card rounded-3xl border p-5">
             <h2 className="text-xl font-black">Items</h2>
+            <form action={createFoodItem} className="mt-4 grid gap-3 rounded-2xl bg-black p-4">
+              <input type="hidden" name="vendorId" value={vendor.id} />
+              <p className="text-sm font-bold uppercase tracking-[0.15em] text-zinc-500">
+                Add Food Item
+              </p>
+              <input
+                name="itemName"
+                required
+                placeholder="Item name"
+                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              />
+              <input
+                name="itemSlug"
+                required
+                placeholder="item-slug"
+                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              />
+              <input
+                name="customCategoryLabel"
+                placeholder="Display category"
+                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              />
+              <select
+                name="category"
+                defaultValue={ItemCategory.OTHER}
+                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              >
+                {Object.values(ItemCategory).map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+              <input
+                name="reportedPrice"
+                type="number"
+                step="0.01"
+                placeholder="Reported price"
+                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              />
+              <input
+                name="sections"
+                placeholder="Sections, comma-separated"
+                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              />
+              <input
+                name="location"
+                required
+                placeholder="Location"
+                defaultValue={vendor.location}
+                className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              />
+              <textarea
+                name="description"
+                required
+                placeholder="Description"
+                className="min-h-24 rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+              />
+              <button
+                type="submit"
+                className="brand-cta rounded-full px-5 py-3 text-sm font-black"
+              >
+                Add food item
+              </button>
+            </form>
             <div className="mt-4 grid gap-2">
               {vendor.items.map((item) => (
                 <Link

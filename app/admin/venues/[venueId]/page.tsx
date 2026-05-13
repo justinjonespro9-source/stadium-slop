@@ -46,6 +46,44 @@ async function updateVenue(formData: FormData) {
   redirect(`/admin/venues/${venueId}`);
 }
 
+async function createVendor(formData: FormData) {
+  "use server";
+
+  const venueId = String(formData.get("venueId") ?? "");
+  const name = String(formData.get("vendorName") ?? "").trim();
+  const slug = String(formData.get("vendorSlug") ?? "").trim();
+
+  if (!venueId || !name || !slug) {
+    redirect(`/admin/venues/${venueId}`);
+  }
+
+  await prisma.vendor.upsert({
+    where: {
+      venueId_slug: {
+        venueId,
+        slug
+      }
+    },
+    update: {
+      name,
+      section: String(formData.get("vendorSection") ?? "").trim(),
+      location: String(formData.get("vendorLocation") ?? "").trim(),
+      status: "ACTIVE"
+    },
+    create: {
+      venueId,
+      name,
+      slug,
+      section: String(formData.get("vendorSection") ?? "").trim(),
+      location: String(formData.get("vendorLocation") ?? "").trim(),
+      status: "ACTIVE"
+    }
+  });
+
+  revalidatePath(`/admin/venues/${venueId}`);
+  redirect(`/admin/venues/${venueId}`);
+}
+
 export default async function AdminVenueDetailPage({
   params
 }: AdminVenueDetailPageProps) {
@@ -148,6 +186,42 @@ export default async function AdminVenueDetailPage({
           <div className="grid gap-5">
             <section className="brand-card rounded-3xl border p-5">
               <h2 className="text-xl font-black">Vendors</h2>
+              <form action={createVendor} className="mt-4 grid gap-3 rounded-2xl bg-black p-4">
+                <input type="hidden" name="venueId" value={venue.id} />
+                <p className="text-sm font-bold uppercase tracking-[0.15em] text-zinc-500">
+                  Add Vendor
+                </p>
+                <input
+                  name="vendorName"
+                  required
+                  placeholder="Vendor name"
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                />
+                <input
+                  name="vendorSlug"
+                  required
+                  placeholder="vendor-slug"
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                />
+                <input
+                  name="vendorSection"
+                  required
+                  placeholder="Section or concourse"
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                />
+                <input
+                  name="vendorLocation"
+                  required
+                  placeholder="Location"
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none"
+                />
+                <button
+                  type="submit"
+                  className="brand-cta rounded-full px-5 py-3 text-sm font-black"
+                >
+                  Add vendor
+                </button>
+              </form>
               <div className="mt-4 grid gap-2">
                 {venue.vendors.map((vendor) => (
                   <Link

@@ -1,10 +1,16 @@
 import { prisma } from "./prisma";
-import { foodReviews, type FoodReview, type ReviewConsensusLabel } from "./sample-data";
+import {
+  foodReviews,
+  type FoodReview,
+  type PriceCheckLabel,
+  type ReplayValueLabel,
+  type ReviewConsensusLabel
+} from "./sample-data";
 
 export type SlopStatsMode = "allTime" | "season" | "gameDayFresh";
 
 export type ConsensusStat = {
-  label: ReviewConsensusLabel;
+  label: ReviewConsensusLabel | ReplayValueLabel | PriceCheckLabel;
   count: number;
   percentage: number;
 };
@@ -19,7 +25,11 @@ export type ItemSlopStats = {
   reviewCount: number;
   helpfulLikesTotal: number;
   consensus: ConsensusStat[];
+  replayValue: ConsensusStat[];
+  priceCheck: ConsensusStat[];
   topConsensus?: ConsensusStat;
+  topReplayValue?: ConsensusStat;
+  topPriceCheck?: ConsensusStat;
   freshSignalScore?: number;
 };
 
@@ -35,28 +45,60 @@ function roundNapkins(value: number): 1 | 2 | 3 | 4 | 5 {
   return Math.min(5, Math.max(1, Math.round(value || 1))) as 1 | 2 | 3 | 4 | 5;
 }
 
-const consensusLabels: ReviewConsensusLabel[] = [
-  "Run It Back",
-  "Worth the Walk",
-  "Stadium Tax",
-  "Steal",
-  "Bench It"
+const replayValueLabels: ReplayValueLabel[] = [
+  "Game Day Starter",
+  "Solid Rotation Pick",
+  "Bench Option",
+  "Cut From the Roster"
 ];
 
-function calculateConsensus(reviews: FoodReview[]) {
-  const labelCounts = new Map<ReviewConsensusLabel, number>();
+const priceCheckLabels: PriceCheckLabel[] = [
+  "Worth the Price of Admission",
+  "Fair Deal",
+  "Stadium Tax"
+];
 
-  consensusLabels.forEach((label) => {
+export function getSlopScoreTier(score: number) {
+  if (score >= 9.5) return "Legend of the Game";
+  if (score >= 9) return "Hall of Fame";
+  if (score >= 8) return "All-Star";
+  if (score >= 7) return "Starter Quality";
+  if (score >= 5.5) return "Bench Depth";
+  if (score >= 4.5) return "Needs a Rebuild";
+  if (score >= 3.5) return "On the Trading Block";
+  if (score >= 2.5) return "Sent to the Minors";
+  return "First-Round Bust";
+}
+
+function fallbackReplayValue(review: FoodReview): ReplayValueLabel {
+  if (review.slopScore >= 8) return "Game Day Starter";
+  if (review.slopScore >= 7) return "Solid Rotation Pick";
+  if (review.slopScore >= 5.5) return "Bench Option";
+  return "Cut From the Roster";
+}
+
+function fallbackPriceCheck(review: FoodReview): PriceCheckLabel {
+  if (review.labels.includes("Stadium Tax")) return "Stadium Tax";
+  if (review.labels.includes("Steal")) return "Worth the Price of Admission";
+  return "Fair Deal";
+}
+
+function calculateDistribution<TLabel extends string>(
+  labels: TLabel[],
+  reviews: FoodReview[],
+  getLabel: (review: FoodReview) => TLabel | undefined
+) {
+  const labelCounts = new Map<TLabel, number>();
+
+  labels.forEach((label) => {
     labelCounts.set(label, 0);
   });
 
   reviews.forEach((review) => {
-    const firstKnownLabel = review.labels.find((label) =>
-      consensusLabels.includes(label)
-    );
+    const label = getLabel(review);
 
-    if (firstKnownLabel) {
-      labelCounts.set(firstKnownLabel, (labelCounts.get(firstKnownLabel) ?? 0) + 1);
+    if (label && labels.includes(label)) {
+      labelCounts.set(label, (labelCounts.get(label) ?? 0) + 1);
     }
   });
 
@@ -66,14 +108,14 @@ function calculateConsensus(reviews: FoodReview[]) {
   );
 
   if (labeledReviewCount === 0) {
-    return consensusLabels.map((label) => ({
+    return labels.map((label) => ({
       label,
       count: 0,
       percentage: 0
     }));
   }
 
-  const stats = consensusLabels.map((label) => {
+  const stats = labels.map((label) => {
     const count = labelCounts.get(label) ?? 0;
     const rawPercentage = (count / labeledReviewCount) * 100;
 
@@ -103,6 +145,18 @@ function calculateConsensus(reviews: FoodReview[]) {
       percentage: stat.percentage
     }))
     .sort((a, b) => b.percentage - a.percentage || b.count - a.count);
+}
+
+function getReplayValueStats(reviews: FoodReview[]) {
+  return calculateDistribution(replayValueLabels, reviews, (review) =>
+    review.replayValue ?? fallbackReplayValue(review)
+  );
+}
+
+function getPriceCheckStats(reviews: FoodReview[]) {
+  return calculateDistribution(priceCheckLabels, reviews, (review) =>
+    review.priceCheck ?? fallbackPriceCheck(review)
+  );
 }
 
 function dedupeReviewsByUserItemGameDay(reviews: FoodReview[]) {
@@ -143,7 +197,8 @@ export function getItemSlopStats(
   const averageNapkinRating = average(
     fallbackReviews.map((review) => review.napkinRating)
   );
-  const consensus = calculateConsensus(fallbackReviews);
+  const replayValue = getReplayValueStats(fallbackReviews);
+  const priceCheck = getPriceCheckStats(fallbackReviews);
 
   return {
     itemSlug,
@@ -157,8 +212,12 @@ export function getItemSlopStats(
       (total, review) => total + review.helpfulLikes,
       0
     ),
-    consensus,
-    topConsensus: consensus[0],
+    consensus: replayValue,
+    replayValue,
+    priceCheck,
+    topConsensus: replayValue[0],
+    topReplayValue: replayValue[0],
+    topPriceCheck: priceCheck[0],
     freshSignalScore:
       mode === "gameDayFresh"
         ? average(fallbackReviews.map((review) => review.slopScore))
@@ -178,12 +237,35 @@ function consensusLabelFromDb(label: string): ReviewConsensusLabel {
   return labels[label] ?? "Run It Back";
 }
 
+function replayValueFromDb(label: string | null): ReplayValueLabel | undefined {
+  const labels: Record<string, ReplayValueLabel> = {
+    GAME_DAY_STARTER: "Game Day Starter",
+    SOLID_ROTATION_PICK: "Solid Rotation Pick",
+    BENCH_OPTION: "Bench Option",
+    CUT_FROM_THE_ROSTER: "Cut From the Roster"
+  };
+
+  return label ? labels[label] : undefined;
+}
+
+function priceCheckFromDb(label: string | null): PriceCheckLabel | undefined {
+  const labels: Record<string, PriceCheckLabel> = {
+    WORTH_THE_PRICE_OF_ADMISSION: "Worth the Price of Admission",
+    FAIR_DEAL: "Fair Deal",
+    STADIUM_TAX: "Stadium Tax"
+  };
+
+  return label ? labels[label] : undefined;
+}
+
 function getDbReviewsForMode(
   reviews: Array<{
     id: string;
     slopScore: unknown;
     napkinRating: number;
     labels: string[];
+    replayValue: string | null;
+    priceCheck: string | null;
     verifiedGameDay: boolean;
     seasonLabel: string;
     gameDayKey: string;
@@ -227,7 +309,8 @@ function getStatsFromReviews(
   const averageNapkinRating = average(
     dedupedReviews.map((review) => review.napkinRating)
   );
-  const consensus = calculateConsensus(dedupedReviews);
+  const replayValue = getReplayValueStats(dedupedReviews);
+  const priceCheck = getPriceCheckStats(dedupedReviews);
 
   return {
     itemSlug,
@@ -241,8 +324,12 @@ function getStatsFromReviews(
       (total, review) => total + review.helpfulLikes,
       0
     ),
-    consensus,
-    topConsensus: consensus[0],
+    consensus: replayValue,
+    replayValue,
+    priceCheck,
+    topConsensus: replayValue[0],
+    topReplayValue: replayValue[0],
+    topPriceCheck: priceCheck[0],
     freshSignalScore:
       mode === "gameDayFresh"
         ? average(dedupedReviews.map((review) => review.slopScore))
@@ -314,6 +401,8 @@ export async function getDbBackedItemSlopStats(
       slopScore: Number(review.slopScore),
       napkinRating: Math.min(5, Math.max(1, review.napkinRating)) as 1 | 2 | 3 | 4 | 5,
       labels: review.labels.map(consensusLabelFromDb),
+      replayValue: replayValueFromDb(review.replayValue),
+      priceCheck: priceCheckFromDb(review.priceCheck),
       helpfulLikes: review._count.helpfulLikes,
       verifiedGameDay: review.verifiedGameDay,
       seasonLabel: review.seasonLabel,

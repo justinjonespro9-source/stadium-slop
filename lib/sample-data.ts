@@ -160,6 +160,17 @@ export type ReviewConsensusLabel =
   | "Steal"
   | "Bench It";
 
+export type ReplayValueLabel =
+  | "Game Day Starter"
+  | "Solid Rotation Pick"
+  | "Bench Option"
+  | "Cut From the Roster";
+
+export type PriceCheckLabel =
+  | "Worth the Price of Admission"
+  | "Fair Deal"
+  | "Stadium Tax";
+
 export type FoodReview = {
   id: string;
   foodSlug: string;
@@ -170,6 +181,8 @@ export type FoodReview = {
   slopScore: number;
   napkinRating: 1 | 2 | 3 | 4 | 5;
   labels: ReviewConsensusLabel[];
+  replayValue?: ReplayValueLabel;
+  priceCheck?: PriceCheckLabel;
   helpfulLikes: number;
   verifiedGameDay: boolean;
   seasonLabel: string;
