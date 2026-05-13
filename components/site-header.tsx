@@ -11,7 +11,7 @@ export function SiteHeader() {
             <BrandLockup compact />
           </Link>
           <Link
-            href="/account"
+            href="/login"
             className="rounded-full border border-[var(--slop-line)] px-4 py-2 text-sm font-black text-[var(--slop-cream)] md:hidden"
           >
             Sign in

@@ -1,15 +1,20 @@
+import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 import {
   getFoodItemBySlug,
   getVendorForFoodItem,
   getVenueForFoodItem
 } from "@/lib/sample-data";
+import {
+  MOCK_USER_COOKIE_NAME,
+  hasMockUserAccess,
+  mockReviewerProfile
+} from "@/lib/user-auth";
 
 const mockProfile = {
-  signedIn: true,
-  displayName: "Section 126 Snack Scout",
-  handle: "@seat126snacks",
-  homeVenue: "Target Field",
-  initials: "SS",
+  ...mockReviewerProfile,
   stats: {
     totalReviews: 18,
     helpfulLikes: 142,
@@ -47,12 +52,72 @@ const mockReviewHistory = [
   }
 ];
 
-export default function AccountPage() {
+async function mockUserSignOut() {
+  "use server";
+
+  const cookieStore = await cookies();
+
+  cookieStore.delete(MOCK_USER_COOKIE_NAME);
+  redirect("/account");
+}
+
+function SignedOutAccount() {
+  return (
+    <main className="brand-page min-h-screen">
+      <section className="mx-auto w-full max-w-3xl px-5 py-8 sm:px-8 lg:px-10">
+        <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
+          Signed out
+        </p>
+
+        <section className="brand-panel mt-5 rounded-[2rem] border p-5 sm:p-7">
+          <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+            {mockSignedOutState.headline}
+          </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-400 sm:text-base">
+            {mockSignedOutState.copy} Profile photos, helpful likes, and review
+            history will belong to your mock reviewer account.
+          </p>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <Link
+              href="/login"
+              className="brand-cta rounded-full px-6 py-4 text-center text-sm font-black transition"
+            >
+              Sign in
+            </Link>
+            <Link
+              href="/signup"
+              className="rounded-full border border-[var(--slop-line)] px-6 py-4 text-center text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
+            >
+              Sign up
+            </Link>
+          </div>
+
+          <p className="mt-5 text-xs leading-5 text-zinc-500">
+            Temporary mock auth only. No real passwords, database records, or
+            external auth provider are connected yet.
+          </p>
+        </section>
+      </section>
+    </main>
+  );
+}
+
+export default async function AccountPage() {
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
+
+  if (!isSignedIn) {
+    return <SignedOutAccount />;
+  }
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8 lg:px-10">
         <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
-          {mockProfile.signedIn ? "Signed-in profile" : "Signed out"}
+          Signed-in profile
         </p>
 
         <header className="brand-panel mt-5 rounded-[2rem] border p-5">
@@ -180,32 +245,23 @@ export default function AccountPage() {
 
         <section className="brand-panel mt-6 rounded-3xl border p-5">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Sign-in / sign-up placeholder
+            Mock session
           </p>
           <h2 className="mt-3 text-2xl font-black">
-            {mockSignedOutState.headline}
+            Signed in with temporary user auth
           </h2>
           <p className="mt-2 text-sm leading-6 text-zinc-400">
-            {mockSignedOutState.copy}
+            This profile is powered by a local mock cookie for now. Real account
+            storage and password security can replace it later.
           </p>
-          <div className="mt-4 grid gap-3">
-            {[
-              "Sign up with email",
-              "Continue with email",
-              "Continue with Google",
-              "Continue with Apple"
-            ].map((label) => (
-              <button
-                key={label}
-                type="button"
-                disabled
-                className="cursor-not-allowed rounded-full border border-zinc-700 px-6 py-4 text-sm font-black text-zinc-500"
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          <p className="mt-4 text-sm text-zinc-500">Authentication coming soon.</p>
+          <form action={mockUserSignOut}>
+            <button
+              type="submit"
+              className="mt-4 rounded-full border border-zinc-700 px-6 py-3 text-sm font-black text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+            >
+              Sign out
+            </button>
+          </form>
         </section>
       </section>
     </main>

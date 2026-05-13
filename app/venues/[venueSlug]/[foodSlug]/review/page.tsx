@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { getFoodItemBySlug, getVenueBySlug } from "@/lib/sample-data";
+import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
 
 const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const runItBackOptions = ["Run It Back", "Maybe", "Bench It"];
@@ -81,6 +83,69 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
     notFound();
   }
 
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
+  const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
+
+  if (!isSignedIn) {
+    return (
+      <main className="brand-page min-h-screen">
+        <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
+          <Link
+            href={`/venues/${venue.slug}/${foodItem.slug}`}
+            className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
+          >
+            Back to food details
+          </Link>
+
+          <header className="py-6 sm:py-10">
+            <p className="brand-pill mb-3 inline-flex rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.15em]">
+              Sign-in required
+            </p>
+            <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+              Review {foodItem.name}
+            </h1>
+            <p className="mt-3 text-base text-zinc-300 sm:text-lg">
+              {venue.name} · {venue.city}, {venue.state}
+            </p>
+          </header>
+
+          <section className="brand-panel rounded-3xl border p-5 sm:p-6">
+            <h2 className="text-2xl font-black sm:text-3xl">
+              Sign in to submit a review
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-zinc-400">
+              Reviews belong to a reviewer profile so fans can trust who
+              contributed the Slop Score, photos, and game-day signals. You can
+              browse without signing in, but submitting reviews and marking
+              helpful likes requires a profile.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <Link
+                href={`/login?next=${encodeURIComponent(reviewPath)}`}
+                className="brand-cta rounded-full px-6 py-4 text-center text-sm font-black transition"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/signup"
+                className="rounded-full border border-[var(--slop-line)] px-6 py-4 text-center text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
+              >
+                Create profile
+              </Link>
+            </div>
+            <p className="mt-4 text-xs leading-5 text-zinc-500">
+              Temporary mock auth only. No real password security or database is
+              connected yet.
+            </p>
+          </section>
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
@@ -111,29 +176,12 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
         <section className="brand-panel rounded-3xl border p-4 sm:p-6">
           <div className="rounded-2xl bg-black p-4">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Sign-in required
+              Mock signed in
             </p>
             <p className="mt-2 text-sm leading-6 text-zinc-400">
-              You must be signed in to submit a Stadium Slop review. Reviews are
-              saved to your reviewer profile so fans can trust who contributed
-              the score.
+              This review will belong to your temporary reviewer profile. Real
+              submission storage is not wired up yet.
             </p>
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              <button
-                type="button"
-                disabled
-                className="brand-cta cursor-not-allowed rounded-full px-5 py-3 text-sm font-black opacity-70"
-              >
-                Sign in coming soon
-              </button>
-              <button
-                type="button"
-                disabled
-                className="cursor-not-allowed rounded-full border border-zinc-700 px-5 py-3 text-sm font-black text-zinc-500"
-              >
-                Create profile coming soon
-              </button>
-            </div>
           </div>
 
           <div className="mt-4 rounded-2xl bg-black p-4">
@@ -251,7 +299,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             disabled
             className="brand-cta mt-7 w-full cursor-not-allowed rounded-full px-6 py-4 text-sm font-black opacity-60"
           >
-            Sign in to submit review
+            Submit review coming soon
           </button>
         </section>
 
