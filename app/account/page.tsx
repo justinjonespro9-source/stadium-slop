@@ -1,6 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+
+import { isCloudinaryConfigured, uploadImageFile } from "@/lib/cloudinary";
+import { ensureMockReviewerUser } from "@/lib/mock-user";
 
 import {
   getFoodItemBySlug,
@@ -60,6 +65,47 @@ async function mockUserSignOut() {
   const cookieStore = await cookies();
 
   cookieStore.delete(MOCK_USER_COOKIE_NAME);
+  redirect("/account");
+}
+
+async function uploadProfileAvatar(formData: FormData) {
+  "use server";
+
+  const cookieStore = await cookies();
+  if (!hasMockUserAccess(cookieStore.get(MOCK_USER_COOKIE_NAME)?.value)) {
+    redirect("/login?next=/account");
+  }
+
+  const file = formData.get("avatar");
+  if (!(file instanceof File) || file.size === 0) {
+    redirect("/account?error=no-file");
+  }
+
+  if (!isCloudinaryConfigured()) {
+    redirect("/account?error=cloudinary");
+  }
+
+  await ensureMockReviewerUser();
+
+  try {
+    const { secureUrl } = await uploadImageFile(file, {
+      folder: `stadium-slop/profiles/${MOCK_REVIEWER_USER_ID}`,
+      publicId: `${MOCK_REVIEWER_USER_ID}-avatar`
+    });
+
+    await prisma.user.update({
+      where: { id: MOCK_REVIEWER_USER_ID },
+      data: {
+        avatarUrl: secureUrl,
+        photoUploadCount: { increment: 1 }
+      }
+    });
+  } catch (error) {
+    console.warn("Profile avatar upload failed", error);
+    redirect("/account?error=upload");
+  }
+
+  revalidatePath("/account");
   redirect("/account");
 }
 
@@ -131,6 +177,32 @@ export default async function AccountPage() {
   }
 
   const helpfulLikesReceived = await getHelpfulLikesReceived();
+  const cloudinaryReady = isCloudinaryConfigured();
+
+  let dbUser: {
+    avatarUrl: string | null;
+    photoUploadCount: number;
+    displayName: string;
+    handle: string;
+  } | null = null;
+
+  try {
+    dbUser = await prisma.user.findUnique({
+      where: { id: MOCK_REVIEWER_USER_ID },
+      select: {
+        avatarUrl: true,
+        photoUploadCount: true,
+        displayName: true,
+        handle: true
+      }
+    });
+  } catch (error) {
+    console.warn("Account user lookup failed", error);
+  }
+
+  const displayName = dbUser?.displayName ?? mockProfile.displayName;
+  const handle = dbUser?.handle ?? mockProfile.handle;
+  const photosUploaded = dbUser?.photoUploadCount ?? mockProfile.stats.photosUploaded;
 
   return (
     <main className="brand-page min-h-screen">
@@ -142,26 +214,55 @@ export default async function AccountPage() {
         <header className="brand-panel mt-5 rounded-[2rem] border p-5">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
             <div>
-              <div className="flex h-24 w-24 items-center justify-center rounded-[2rem] border-2 border-dashed border-[var(--slop-orange)] bg-[var(--slop-cream)] text-3xl font-black text-[var(--slop-ink)]">
-                {mockProfile.initials}
+              <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-[2rem] border-2 border-dashed border-[var(--slop-orange)] bg-[var(--slop-cream)] text-3xl font-black text-[var(--slop-ink)]">
+                {dbUser?.avatarUrl ? (
+                  <Image
+                    src={dbUser.avatarUrl}
+                    alt={`${displayName} profile`}
+                    fill
+                    className="object-cover"
+                    sizes="96px"
+                  />
+                ) : (
+                  mockProfile.initials
+                )}
               </div>
-              <button
-                type="button"
-                disabled
-                className="mt-3 cursor-not-allowed rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-500"
-              >
-                Upload photo soon
-              </button>
-              <p className="mt-2 max-w-40 text-xs leading-5 text-zinc-500">
-                Profile photos help fans trust the reviewer behind the score.
+              {cloudinaryReady ? (
+                <form action={uploadProfileAvatar} className="mt-3">
+                  <label className="block">
+                    <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                      Profile photo
+                    </span>
+                    <input
+                      name="avatar"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      className="mt-2 block w-full text-xs text-zinc-400 file:mr-2 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-2 file:text-xs file:font-black file:text-[var(--slop-ink)]"
+                    />
+                  </label>
+                  <button
+                    type="submit"
+                    className="brand-cta mt-3 w-full rounded-full px-4 py-2 text-xs font-black sm:w-auto"
+                  >
+                    Save profile photo
+                  </button>
+                </form>
+              ) : (
+                <p className="mt-3 max-w-40 text-xs leading-5 text-zinc-500">
+                  Add CLOUDINARY_* env vars to enable profile photo uploads.
+                </p>
+              )}
+              <p className="mt-2 max-w-48 text-xs leading-5 text-zinc-500">
+                Fan photos help power Game Day Fresh. Profile photos help fans
+                trust who reviewed the slop.
               </p>
             </div>
 
             <div className="min-w-0 flex-1">
               <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-                {mockProfile.displayName}
+                {displayName}
               </h1>
-              <p className="mt-2 text-zinc-400">{mockProfile.handle}</p>
+              <p className="mt-2 text-zinc-400">{handle}</p>
               <p className="mt-3 text-sm text-zinc-500">
                 Home venue: {mockProfile.homeVenue}
               </p>
@@ -187,7 +288,7 @@ export default async function AccountPage() {
             ["Total reviews", mockProfile.stats.totalReviews],
             ["Helpful likes received", helpfulLikesReceived],
             ["Verified game-day", mockProfile.stats.verifiedGameDayReviews],
-            ["Photos uploaded", mockProfile.stats.photosUploaded]
+            ["Photos uploaded", photosUploaded]
           ].map(([label, value]) => (
             <div
               key={label}

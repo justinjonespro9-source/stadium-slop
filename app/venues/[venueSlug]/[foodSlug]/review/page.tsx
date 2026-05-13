@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
 import { PriceCheck, ReplayValue } from "@prisma/client";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { getPublicFoodItemBySlug, getPublicVenueBySlug } from "@/lib/public-data";
+import { isCloudinaryConfigured, uploadImageFile } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
 import {
@@ -138,6 +140,7 @@ async function submitReview(formData: FormData) {
         select: {
           id: true,
           slug: true,
+          name: true,
           itemType: true,
           category: true,
           customCategoryLabel: true
@@ -177,6 +180,15 @@ async function submitReview(formData: FormData) {
     redirect(`${canonicalItemPath}/review?error=missing-score`);
   }
 
+  const photoFieldEarly = formData.get("reviewPhoto");
+  if (
+    photoFieldEarly instanceof File &&
+    photoFieldEarly.size > 0 &&
+    !isCloudinaryConfigured()
+  ) {
+    redirect(`${canonicalItemPath}/review?error=cloudinary`);
+  }
+
   const user = await prisma.user.upsert({
     where: { id: MOCK_REVIEWER_USER_ID },
     update: {
@@ -206,7 +218,7 @@ async function submitReview(formData: FormData) {
       ? (priceCheck as PriceCheck)
       : null;
 
-  await prisma.review.upsert({
+  const review = await prisma.review.upsert({
     where: {
       userId_foodItemId_gameDayKey: {
         userId: user.id,
@@ -240,6 +252,48 @@ async function submitReview(formData: FormData) {
     }
   });
 
+  const photoField = formData.get("reviewPhoto");
+
+  if (photoField instanceof File && photoField.size > 0) {
+    try {
+      const { secureUrl } = await uploadImageFile(photoField, {
+        folder: `stadium-slop/reviews/${foodItemRow.id}`,
+        publicId: `${review.id}-${Date.now()}`
+      });
+      const caption = String(formData.get("photoCaption") ?? "").trim().slice(0, 120);
+
+      await prisma.foodPhoto.deleteMany({
+        where: { reviewId: review.id }
+      });
+
+      await prisma.foodPhoto.create({
+        data: {
+          foodItemId: foodItemRow.id,
+          venueId: venue.id,
+          reviewId: review.id,
+          uploaderUserId: user.id,
+          photoType: "FOOD",
+          url: secureUrl,
+          alt: caption || `${foodItemRow.name} fan photo`,
+          caption: caption || null,
+          verifiedOnSite: true,
+          status: "ACTIVE"
+        }
+      });
+
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { photoUploadCount: { increment: 1 } }
+      });
+    } catch (error) {
+      console.warn("Review photo upload failed", error);
+      redirect(`${canonicalItemPath}/review?error=upload`);
+    }
+  }
+
+  revalidatePath(canonicalItemPath);
+  revalidatePath(`${canonicalItemPath}/review`);
+
   redirect(`${canonicalItemPath}?review=saved`);
 }
 
@@ -258,7 +312,7 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
   }
 
   const napkinEligible = isNapkinEligibleItem(foodItem);
-
+  const cloudinaryReady = isCloudinaryConfigured();
   const cookieStore = await cookies();
   const isSignedIn = hasMockUserAccess(
     cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
@@ -357,8 +411,9 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               Mock signed in
             </p>
             <p className="mt-2 text-sm leading-6 text-zinc-400">
-              This review will belong to your temporary reviewer profile. Real
-              photo upload is not wired up yet.
+              This review belongs to your temporary reviewer profile. Fan photos
+              help power Game Day Fresh when you upload a real shot from the
+              seats.
             </p>
           </div>
 
@@ -428,33 +483,43 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
 
             <div className="rounded-3xl border border-zinc-800 bg-black p-5">
               <h3 className="text-lg font-black">
-                {napkinEligible ? "3." : "2."} Optional photo
+                {napkinEligible ? "3." : "2."} Optional fan photo
               </h3>
               <p className="mt-2 text-sm leading-6 text-zinc-500">
-                Add a photo to make your review more trusted. Photos help other
-                fans know what actually showed up, and verified game-day photos
-                help power Game Day Fresh. Optional for now.
+                Fan photos help power Game Day Fresh. JPEG, PNG, WebP, or GIF up
+                to 4MB. No comments, followers, or DMs — just the shot.
               </p>
-              <button
-                type="button"
-                disabled
-                className="mt-4 flex aspect-video w-full cursor-not-allowed flex-col items-center justify-center rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 px-4 text-center text-sm font-bold text-zinc-500"
-              >
-                Food photo upload coming soon
-                <span className="mt-2 text-xs font-medium text-zinc-600">
-                  No polished vendor shots. Fan photos first.
-                </span>
-              </button>
-              <div className="mt-3 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
-                <p className="text-sm font-black text-zinc-300">
-                  Menu board / price proof
+              {cloudinaryReady ? (
+                <>
+                  <label className="mt-4 block">
+                    <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                      Upload
+                    </span>
+                    <input
+                      name="reviewPhoto"
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp,image/gif"
+                      className="mt-2 block w-full text-sm text-zinc-400 file:mr-3 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-4 file:py-2 file:text-sm file:font-black file:text-[var(--slop-ink)]"
+                    />
+                  </label>
+                  <label className="mt-3 block">
+                    <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                      Short caption (optional)
+                    </span>
+                    <input
+                      name="photoCaption"
+                      maxLength={120}
+                      placeholder="e.g. Curds at first pitch"
+                      className="mt-2 w-full rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                    />
+                  </label>
+                </>
+              ) : (
+                <p className="mt-4 rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-500">
+                  Photo upload needs Cloudinary env vars on the server. Slop
+                  Score and signals still save without a photo.
                 </p>
-                <p className="mt-2 text-xs leading-5 text-zinc-500">
-                  Optional later: snap the menu board or receipt-style price so
-                  fans can confirm price updates without making this a checkout
-                  form.
-                </p>
-              </div>
+              )}
             </div>
 
             <div>
