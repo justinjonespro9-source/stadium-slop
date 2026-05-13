@@ -6,7 +6,12 @@ import { notFound, redirect } from "next/navigation";
 
 import { getPublicFoodItemBySlug, getPublicVenueBySlug } from "@/lib/public-data";
 import { buildGameDayKey } from "@/lib/game-day";
-import { isCloudinaryConfigured, uploadImageFile } from "@/lib/cloudinary";
+import {
+  isCloudinaryConfigured,
+  logUploadFailure,
+  photoErrorQueryFromUploadFailure,
+  uploadImageFile
+} from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
 import {
@@ -268,13 +273,29 @@ async function submitReview(formData: FormData) {
   const photoField = formData.get("reviewPhoto");
 
   if (photoField instanceof File && photoField.size > 0) {
+    let secureUrl: string;
+
     try {
-      const { secureUrl } = await uploadImageFile(photoField, {
+      ({ secureUrl } = await uploadImageFile(photoField, {
         folder: `stadium-slop/reviews/${foodItemRow.id}`,
         publicId: `${review.id}-${Date.now()}`
-      });
-      const caption = String(formData.get("photoCaption") ?? "").trim().slice(0, 120);
+      }));
+    } catch (err) {
+      logUploadFailure("reviewPhotoUpload", photoField, err);
+      revalidateFoodItemSurfaces(
+        canonicalItemPath,
+        venue.slug,
+        foodItemRow.vendor.slug
+      );
+      const photoError = photoErrorQueryFromUploadFailure(err);
+      redirect(
+        `${canonicalItemPath}?reviewSubmitted=true&photoError=${photoError}`
+      );
+    }
 
+    const caption = String(formData.get("photoCaption") ?? "").trim().slice(0, 120);
+
+    try {
       await prisma.foodPhoto.deleteMany({
         where: { reviewId: review.id }
       });
@@ -298,14 +319,18 @@ async function submitReview(formData: FormData) {
         where: { id: user.id },
         data: { photoUploadCount: { increment: 1 } }
       });
-    } catch {
+    } catch (err) {
+      console.warn("[reviewPhotoSave] DB write after Cloudinary upload failed", {
+        message: err instanceof Error ? err.message : String(err),
+        reviewId: review.id
+      });
       revalidateFoodItemSurfaces(
         canonicalItemPath,
         venue.slug,
         foodItemRow.vendor.slug
       );
       redirect(
-        `${canonicalItemPath}?reviewSubmitted=true&photoError=upload`
+        `${canonicalItemPath}?reviewSubmitted=true&photoError=photo_save`
       );
     }
   }
@@ -509,7 +534,9 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               </h3>
               <p className="mt-2 text-sm leading-6 text-zinc-500">
                 Fan photos help power Game Day Fresh. JPEG, PNG, WebP, or GIF up
-                to 4MB. No comments, followers, or DMs — just the shot.
+                to 4MB. iPhone HEIC/HEIF is not supported yet — use “Most
+                Compatible” camera format or export as JPEG. No comments,
+                followers, or DMs — just the shot.
               </p>
               {cloudinaryReady ? (
                 <>

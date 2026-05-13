@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-import { isCloudinaryConfigured, uploadImageFile } from "@/lib/cloudinary";
+import { isCloudinaryConfigured, logUploadFailure, photoErrorQueryFromUploadFailure, uploadImageFile } from "@/lib/cloudinary";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 
 import {
@@ -100,9 +100,10 @@ async function uploadProfileAvatar(formData: FormData) {
         photoUploadCount: { increment: 1 }
       }
     });
-  } catch (error) {
-    console.warn("Profile avatar upload failed", error);
-    redirect("/account?error=upload");
+  } catch (err) {
+    logUploadFailure("accountAvatar", file, err);
+    const code = photoErrorQueryFromUploadFailure(err);
+    redirect(`/account?error=${encodeURIComponent(code)}`);
   }
 
   revalidatePath("/account");
@@ -166,7 +167,15 @@ function SignedOutAccount() {
   );
 }
 
-export default async function AccountPage() {
+type AccountPageProps = {
+  searchParams?: Promise<{
+    error?: string;
+  }>;
+};
+
+export default async function AccountPage({ searchParams }: AccountPageProps) {
+  const query = (await searchParams) ?? {};
+  const uploadError = query.error;
   const cookieStore = await cookies();
   const isSignedIn = hasMockUserAccess(
     cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
@@ -204,6 +213,21 @@ export default async function AccountPage() {
   const handle = dbUser?.handle ?? mockProfile.handle;
   const photosUploaded = dbUser?.photoUploadCount ?? mockProfile.stats.photosUploaded;
 
+  const uploadErrorMessage =
+    uploadError === "too_large"
+      ? "Photo was over the 4MB limit. Try a smaller JPEG or PNG."
+      : uploadError === "heic"
+        ? "HEIC/HEIF is not supported yet. Use “Most Compatible” in iPhone camera settings or export as JPEG."
+        : uploadError === "unsupported"
+          ? "That file type is not supported. Use JPEG, PNG, WebP, or GIF."
+          : uploadError === "cloudinary"
+            ? "Photo uploads are disabled until Cloudinary env vars are set on the server."
+            : uploadError === "upload"
+              ? "Photo upload failed. Check your connection and try a JPEG or PNG under 4MB."
+              : uploadError === "no-file"
+                ? "Choose a photo file before saving."
+                : null;
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8 lg:px-10">
@@ -212,6 +236,15 @@ export default async function AccountPage() {
         </p>
 
         <header className="brand-panel mt-5 rounded-[2rem] border p-5">
+          {uploadErrorMessage ? (
+            <div
+              role="alert"
+              className="mb-4 rounded-2xl border border-amber-800/80 bg-amber-950/50 px-4 py-3 text-sm text-amber-100"
+            >
+              <p className="font-bold">Profile photo</p>
+              <p className="mt-1 text-amber-100/95">{uploadErrorMessage}</p>
+            </div>
+          ) : null}
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
             <div>
               <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-[2rem] border-2 border-dashed border-[var(--slop-orange)] bg-[var(--slop-cream)] text-3xl font-black text-[var(--slop-ink)]">
@@ -253,6 +286,7 @@ export default async function AccountPage() {
                 </p>
               )}
               <p className="mt-2 max-w-48 text-xs leading-5 text-zinc-500">
+                JPEG, PNG, WebP, or GIF up to 4MB. HEIC/HEIF is not supported yet.
                 Fan photos help power Game Day Fresh. Profile photos help fans
                 trust who reviewed the slop.
               </p>

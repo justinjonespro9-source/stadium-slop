@@ -249,6 +249,22 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const query = (await searchParams) ?? {};
   const showReviewSaved = query.reviewSubmitted === "true";
   const photoError = query.photoError;
+
+  const photoErrorFollowUp =
+    photoError === "too_large"
+      ? "Your ratings are live, but the photo was over the 4MB limit. Try a smaller JPEG or PNG from your camera roll."
+      : photoError === "heic"
+        ? "Your ratings are live, but HEIC/HEIF is not supported yet. On iPhone use Settings → Camera → Formats → “Most Compatible”, or export the shot as JPEG, then add it from Review this item."
+        : photoError === "unsupported"
+          ? "Your ratings are live, but that file was not a supported image type. Use JPEG, PNG, WebP, or GIF."
+          : photoError === "cloudinary"
+            ? "Your ratings are live, but the server is not configured for photo uploads (missing Cloudinary env vars)."
+            : photoError === "photo_save"
+              ? "Your ratings are live and the image reached our host, but saving the photo link failed. Try submitting the photo again from Review this item."
+              : photoError === "upload" || photoError
+                ? "Your ratings are live, but the fan photo failed to upload. Check your connection and try again with JPEG or PNG under 4MB."
+                : null;
+
   const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
@@ -321,13 +337,20 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         {showReviewSaved ? (
           <div
             role="status"
-            className="mt-4 rounded-2xl border border-emerald-800/80 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-100"
+            className={
+              photoErrorFollowUp
+                ? "mt-4 rounded-2xl border border-amber-800/80 bg-amber-950/40 px-4 py-3 text-sm text-amber-100"
+                : "mt-4 rounded-2xl border border-emerald-800/80 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-100"
+            }
           >
             <p className="font-bold">Review saved</p>
-            <p className="mt-1 text-emerald-200/90">
-              {photoError === "upload"
-                ? "Your ratings are live, but the fan photo failed to upload. Try again from Review this item with a smaller image or different format."
-                : "Thanks — Season Standings and Game Day Fresh update from structured signals and any fan photos you added."}
+            <p
+              className={
+                photoErrorFollowUp ? "mt-1 text-amber-100/95" : "mt-1 text-emerald-200/90"
+              }
+            >
+              {photoErrorFollowUp ??
+                "Thanks — Season Standings and Game Day Fresh update from structured signals and any fan photos you added."}
             </p>
           </div>
         ) : null}
