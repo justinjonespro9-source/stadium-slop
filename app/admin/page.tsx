@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import {
@@ -11,6 +12,13 @@ import {
 import { MOCK_ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 async function mockAdminSignOut() {
   "use server";
 
@@ -18,6 +26,151 @@ async function mockAdminSignOut() {
 
   cookieStore.delete(MOCK_ADMIN_COOKIE_NAME);
   redirect("/admin/login");
+}
+
+async function approvePriceReport(formData: FormData) {
+  "use server";
+
+  const reportId = String(formData.get("reportId") ?? "");
+  const report = await prisma.priceReport.findUnique({
+    where: { id: reportId }
+  });
+
+  if (!report || report.status !== "PENDING") {
+    redirect("/admin");
+  }
+
+  await prisma.$transaction([
+    prisma.priceReport.update({
+      where: { id: report.id },
+      data: { status: "APPROVED" }
+    }),
+    prisma.foodItem.update({
+      where: { id: report.foodItemId },
+      data: {
+        reportedPrice: report.reportedPrice,
+        priceReportCount: {
+          increment: 1
+        },
+        priceLastConfirmedLabel: "Admin approved"
+      }
+    })
+  ]);
+
+  revalidatePath("/admin");
+  redirect("/admin");
+}
+
+async function rejectPriceReport(formData: FormData) {
+  "use server";
+
+  const reportId = String(formData.get("reportId") ?? "");
+
+  await prisma.priceReport.updateMany({
+    where: {
+      id: reportId,
+      status: "PENDING"
+    },
+    data: {
+      status: "REJECTED"
+    }
+  });
+
+  revalidatePath("/admin");
+  redirect("/admin");
+}
+
+async function approveSuggestedItem(formData: FormData) {
+  "use server";
+
+  const suggestionId = String(formData.get("suggestionId") ?? "");
+  const suggestion = await prisma.suggestedItem.findUnique({
+    where: { id: suggestionId },
+    include: {
+      venue: true,
+      vendor: true
+    }
+  });
+
+  if (!suggestion || suggestion.status !== "PENDING") {
+    redirect("/admin");
+  }
+
+  if (!suggestion.vendor) {
+    await prisma.suggestedItem.update({
+      where: { id: suggestion.id },
+      data: { status: "APPROVED" }
+    });
+    revalidatePath("/admin");
+    redirect("/admin");
+  }
+
+  const slug = slugify(suggestion.name);
+  const vendor = suggestion.vendor;
+
+  await prisma.$transaction(async (tx) => {
+    await tx.foodItem.upsert({
+      where: {
+        venueId_slug: {
+          venueId: suggestion.venueId,
+          slug
+        }
+      },
+      update: {
+        name: suggestion.name,
+        vendorId: vendor.id,
+        location: suggestion.locationHint ?? vendor.location,
+        customCategoryLabel: suggestion.category ? null : "Fan suggested",
+        availabilityStatus: "FAN_REPORTED",
+        status: "ACTIVE"
+      },
+      create: {
+        slug,
+        name: suggestion.name,
+        venueId: suggestion.venueId,
+        vendorId: vendor.id,
+        itemType: "FOOD",
+        category: suggestion.category ?? "OTHER",
+        customCategoryLabel: suggestion.category ? null : "Fan suggested",
+        location: suggestion.locationHint ?? vendor.location,
+        sections: [],
+        description:
+          suggestion.note ??
+          "Fan-suggested item pending richer Stadium Slop details.",
+        tags: ["Fan Suggested"],
+        availabilityStatus: "FAN_REPORTED",
+        status: "ACTIVE"
+      }
+    });
+
+    await tx.suggestedItem.update({
+      where: { id: suggestion.id },
+      data: { status: "APPROVED" }
+    });
+  });
+
+  revalidatePath("/admin");
+  revalidatePath(`/venues/${suggestion.venue.slug}`);
+  redirect("/admin");
+}
+
+async function rejectSuggestedItem(formData: FormData) {
+  "use server";
+
+  const suggestionId = String(formData.get("suggestionId") ?? "");
+
+  await prisma.suggestedItem.updateMany({
+    where: {
+      id: suggestionId,
+      status: "PENDING"
+    },
+    data: {
+      status: "REJECTED"
+    }
+  });
+
+  revalidatePath("/admin");
+  redirect("/admin");
 }
 
 const adminSections = [
@@ -142,9 +295,9 @@ export default async function AdminPage() {
                 Admin Console
               </h1>
               <p className="mt-4 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
-                Mock management dashboard for future Stadium Slop operations. No
-                real auth provider, database writes, moderation actions, or
-                mutations are wired up yet.
+                Mock-gated management dashboard for Stadium Slop operations.
+                Admin actions are logged conceptually; full audit log comes
+                later.
               </p>
             </div>
 
@@ -269,16 +422,24 @@ export default async function AdminPage() {
                         </span>
                       </div>
                       <div className="mt-3 flex gap-2">
-                        {["Approve", "Reject"].map((label) => (
+                        <form action={approvePriceReport}>
+                          <input type="hidden" name="reportId" value={report.id} />
                           <button
-                            key={label}
-                            type="button"
-                            disabled
-                            className="cursor-not-allowed rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-500"
+                            type="submit"
+                            className="rounded-full border border-[var(--slop-orange)] px-3 py-1.5 text-xs font-bold text-[var(--slop-orange)]"
                           >
-                            {label} soon
+                            Approve
                           </button>
-                        ))}
+                        </form>
+                        <form action={rejectPriceReport}>
+                          <input type="hidden" name="reportId" value={report.id} />
+                          <button
+                            type="submit"
+                            className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-400"
+                          >
+                            Reject
+                          </button>
+                        </form>
                       </div>
                     </article>
                   ))
@@ -300,7 +461,7 @@ export default async function AdminPage() {
                         <div>
                           <p className="font-black">{item.name}</p>
                           <p className="mt-1 text-sm text-zinc-500">
-                            {item.venue.name} · {item.vendor?.name ?? "Vendor unknown"}
+                            {item.venue.name} · {item.vendor?.name ?? "Vendor unclear"}
                           </p>
                           <p className="mt-1 text-xs text-zinc-600">
                             Needs review · {item.user.handle}
@@ -321,16 +482,32 @@ export default async function AdminPage() {
                         </span>
                       </div>
                       <div className="mt-3 flex gap-2">
-                        {["Approve", "Reject"].map((label) => (
+                        <form action={approveSuggestedItem}>
+                          <input
+                            type="hidden"
+                            name="suggestionId"
+                            value={item.id}
+                          />
                           <button
-                            key={label}
-                            type="button"
-                            disabled
-                            className="cursor-not-allowed rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-500"
+                            type="submit"
+                            className="rounded-full border border-[var(--slop-orange)] px-3 py-1.5 text-xs font-bold text-[var(--slop-orange)]"
                           >
-                            {label} soon
+                            Approve
                           </button>
-                        ))}
+                        </form>
+                        <form action={rejectSuggestedItem}>
+                          <input
+                            type="hidden"
+                            name="suggestionId"
+                            value={item.id}
+                          />
+                          <button
+                            type="submit"
+                            className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-400"
+                          >
+                            Reject
+                          </button>
+                        </form>
                       </div>
                     </article>
                   ))
