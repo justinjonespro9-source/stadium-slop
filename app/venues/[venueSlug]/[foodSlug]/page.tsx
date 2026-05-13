@@ -8,7 +8,7 @@ import {
   getVendorForFoodItem,
   getVenueBySlug
 } from "@/lib/sample-data";
-import { getItemSlopStats } from "@/lib/slop-stats";
+import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
 
 const mockReviews = [
   {
@@ -91,9 +91,21 @@ export default async function FoodPage({ params }: FoodPageProps) {
   const vendor = getVendorForFoodItem(foodItem);
   const foodPhotos = getPhotosForFoodItem(venue.slug, foodItem.slug);
   const heroPhoto = foodPhotos[0];
-  const careerStats = getItemSlopStats(foodItem.slug, "allTime");
-  const seasonStats = getItemSlopStats(foodItem.slug, "season");
-  const freshStats = getItemSlopStats(foodItem.slug, "gameDayFresh");
+  const careerStats = await getDbBackedItemSlopStats(
+    venue.slug,
+    foodItem.slug,
+    "allTime"
+  );
+  const seasonStats = await getDbBackedItemSlopStats(
+    venue.slug,
+    foodItem.slug,
+    "season"
+  );
+  const freshStats = await getDbBackedItemSlopStats(
+    venue.slug,
+    foodItem.slug,
+    "gameDayFresh"
+  );
   const reviewPhotoCards = careerStats.reviews
     .filter((review) => review.hasPhoto)
     .slice(0, 3);

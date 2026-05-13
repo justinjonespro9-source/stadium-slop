@@ -1,13 +1,26 @@
 import Link from "next/link";
+import { ConsensusLabel } from "@prisma/client";
 import { cookies } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { getFoodItemBySlug, getVenueBySlug } from "@/lib/sample-data";
-import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
+import { prisma } from "@/lib/prisma";
+import {
+  MOCK_REVIEWER_EMAIL,
+  MOCK_REVIEWER_USER_ID,
+  MOCK_USER_COOKIE_NAME,
+  hasMockUserAccess,
+  mockReviewerProfile
+} from "@/lib/user-auth";
 
 const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const runItBackOptions = ["Run It Back", "Maybe", "Bench It"];
-const valueOptions = ["Steal", "Fair Deal", "Stadium Tax", "Robbery"];
+const consensusOptions = [
+  { label: "Run It Back", value: ConsensusLabel.RUN_IT_BACK },
+  { label: "Worth the Walk", value: ConsensusLabel.WORTH_THE_WALK },
+  { label: "Steal", value: ConsensusLabel.STEAL },
+  { label: "Stadium Tax", value: ConsensusLabel.STADIUM_TAX },
+  { label: "Bench It", value: ConsensusLabel.BENCH_IT }
+];
 const napkinOptions = [
   { value: 1, label: "Clean Win" },
   { value: 2, label: "Safe at Your Seat" },
@@ -23,27 +36,37 @@ type ReviewPageProps = {
   }>;
 };
 
-function OptionPill({ label }: { label: string }) {
+function ConsensusOption({
+  label,
+  value
+}: {
+  label: string;
+  value: ConsensusLabel;
+}) {
   return (
-    <button
-      type="button"
-      disabled
-      className="cursor-not-allowed rounded-full border border-zinc-800 bg-black px-4 py-2 text-sm font-bold text-zinc-400"
-    >
-      {label}
-    </button>
+    <label className="cursor-pointer">
+      <input className="peer sr-only" type="radio" name="consensusLabel" value={value} />
+      <span className="block rounded-full border border-zinc-800 bg-black px-4 py-2 text-sm font-bold text-zinc-400 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)]">
+        {label}
+      </span>
+    </label>
   );
 }
 
 function ScoreButton({ score }: { score: number }) {
   return (
-    <button
-      type="button"
-      disabled
-      className="flex h-12 w-12 cursor-not-allowed items-center justify-center rounded-2xl border border-zinc-800 bg-black text-lg font-black text-zinc-300"
-    >
-      {score}
-    </button>
+    <label className="cursor-pointer">
+      <input
+        className="peer sr-only"
+        type="radio"
+        name="slopScore"
+        value={score}
+        required
+      />
+      <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-800 bg-black text-lg font-black text-zinc-300 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)]">
+        {score}
+      </span>
+    </label>
   );
 }
 
@@ -55,18 +78,131 @@ function NapkinButton({
   label: string;
 }) {
   return (
-    <button
-      type="button"
-      disabled
-      className="cursor-not-allowed rounded-2xl border border-zinc-800 bg-black p-3 text-left"
-    >
-      <span className="block text-lg">{"▰".repeat(value)}</span>
-      <span className="mt-1 block text-sm font-bold text-zinc-300">
-        {value}/5 napkins
+    <label className="cursor-pointer">
+      <input
+        className="peer sr-only"
+        type="radio"
+        name="napkinRating"
+        value={value}
+        required
+      />
+      <span className="block rounded-2xl border border-zinc-800 bg-black p-3 text-left peer-checked:border-[var(--slop-orange)] peer-checked:bg-[color:rgba(255,159,28,0.14)]">
+        <span className="block text-lg">{"▰".repeat(value)}</span>
+        <span className="mt-1 block text-sm font-bold text-zinc-300">
+          {value}/5 napkins
+        </span>
+        <span className="mt-1 block text-xs text-zinc-500">{label}</span>
       </span>
-      <span className="mt-1 block text-xs text-zinc-500">{label}</span>
-    </button>
+    </label>
   );
+}
+
+async function submitReview(formData: FormData) {
+  "use server";
+
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
+  const venueSlug = String(formData.get("venueSlug") ?? "");
+  const foodSlug = String(formData.get("foodSlug") ?? "");
+  const itemPath = `/venues/${venueSlug}/${foodSlug}`;
+
+  if (!isSignedIn) {
+    redirect(`/login?next=${encodeURIComponent(`${itemPath}/review`)}`);
+  }
+
+  const slopScore = Number(formData.get("slopScore"));
+  const napkinRating = Number(formData.get("napkinRating"));
+  const consensusLabel = formData.get("consensusLabel");
+  const noteValue = String(formData.get("note") ?? "").trim();
+
+  if (
+    !Number.isFinite(slopScore) ||
+    slopScore < 1 ||
+    slopScore > 10 ||
+    !Number.isInteger(napkinRating) ||
+    napkinRating < 1 ||
+    napkinRating > 5
+  ) {
+    redirect(`${itemPath}/review?error=missing-score`);
+  }
+
+  const venue = await prisma.venue.findUnique({
+    where: { slug: venueSlug }
+  });
+
+  const foodItem = venue
+    ? await prisma.foodItem.findUnique({
+        where: {
+          venueId_slug: {
+            venueId: venue.id,
+            slug: foodSlug
+          }
+        }
+      })
+    : null;
+
+  if (!venue || !foodItem) {
+    redirect(itemPath);
+  }
+
+  const user = await prisma.user.upsert({
+    where: { id: MOCK_REVIEWER_USER_ID },
+    update: {
+      email: MOCK_REVIEWER_EMAIL,
+      displayName: mockReviewerProfile.displayName,
+      handle: mockReviewerProfile.handle,
+      homeVenueId: venue.id
+    },
+    create: {
+      id: MOCK_REVIEWER_USER_ID,
+      email: MOCK_REVIEWER_EMAIL,
+      displayName: mockReviewerProfile.displayName,
+      handle: mockReviewerProfile.handle,
+      homeVenueId: venue.id
+    }
+  });
+
+  const today = new Date();
+  const seasonLabel = String(today.getFullYear());
+  const gameDayKey = `${seasonLabel}-${venueSlug}-${today.toISOString().slice(0, 10)}`;
+  const labels =
+    typeof consensusLabel === "string" && consensusLabel in ConsensusLabel
+      ? [consensusLabel as ConsensusLabel]
+      : [];
+
+  await prisma.review.upsert({
+    where: {
+      userId_foodItemId_gameDayKey: {
+        userId: user.id,
+        foodItemId: foodItem.id,
+        gameDayKey
+      }
+    },
+    update: {
+      slopScore,
+      napkinRating,
+      labels,
+      verifiedGameDay: true,
+      seasonLabel,
+      note: noteValue ? noteValue.slice(0, 300) : null
+    },
+    create: {
+      userId: user.id,
+      foodItemId: foodItem.id,
+      venueId: venue.id,
+      gameDayKey,
+      slopScore,
+      napkinRating,
+      labels,
+      verifiedGameDay: true,
+      seasonLabel,
+      note: noteValue ? noteValue.slice(0, 300) : null
+    }
+  });
+
+  redirect(`${itemPath}?review=saved`);
 }
 
 export default async function ReviewPage({ params }: ReviewPageProps) {
@@ -173,14 +309,16 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           </p>
         </header>
 
-        <section className="brand-panel rounded-3xl border p-4 sm:p-6">
+        <form action={submitReview} className="brand-panel rounded-3xl border p-4 sm:p-6">
+          <input type="hidden" name="venueSlug" value={venue.slug} />
+          <input type="hidden" name="foodSlug" value={foodItem.slug} />
           <div className="rounded-2xl bg-black p-4">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Mock signed in
             </p>
             <p className="mt-2 text-sm leading-6 text-zinc-400">
               This review will belong to your temporary reviewer profile. Real
-              submission storage is not wired up yet.
+              photo upload is not wired up yet.
             </p>
           </div>
 
@@ -273,35 +411,36 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
                 characters max. No comment threads, no dislikes.
               </p>
               <textarea
-                disabled
+                name="note"
+                maxLength={300}
                 placeholder="Optional: hot, cold, worth it, messy, would run it back?"
-                className="mt-3 min-h-24 w-full cursor-not-allowed rounded-2xl border border-zinc-800 bg-black p-4 text-sm text-zinc-400 outline-none placeholder:text-zinc-600"
+                className="mt-3 min-h-24 w-full rounded-2xl border border-zinc-800 bg-black p-4 text-sm text-zinc-400 outline-none placeholder:text-zinc-600"
               />
             </div>
 
             <div className="rounded-2xl bg-black p-4">
               <p className="text-sm font-bold text-zinc-300">
-                Want to add more signals later?
+                Optional consensus label
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {runItBackOptions.map((option) => (
-                  <OptionPill key={option} label={option} />
-                ))}
-                {valueOptions.slice(0, 3).map((option) => (
-                  <OptionPill key={option} label={option} />
+                {consensusOptions.map((option) => (
+                  <ConsensusOption
+                    key={option.value}
+                    label={option.label}
+                    value={option.value}
+                  />
                 ))}
               </div>
             </div>
           </div>
 
           <button
-            type="button"
-            disabled
-            className="brand-cta mt-7 w-full cursor-not-allowed rounded-full px-6 py-4 text-sm font-black opacity-60"
+            type="submit"
+            className="brand-cta mt-7 w-full rounded-full px-6 py-4 text-sm font-black"
           >
-            Submit review coming soon
+            Submit review
           </button>
-        </section>
+        </form>
 
         {foodItem.alcoholic ? (
           <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
