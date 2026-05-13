@@ -1,0 +1,425 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  REVIEWER
+  MODERATOR
+  ADMIN
+}
+
+enum EntityStatus {
+  ACTIVE
+  HIDDEN
+  ARCHIVED
+  SUSPENDED
+}
+
+enum VenueType {
+  BALLPARK
+  STADIUM
+  ARENA
+}
+
+enum ItemType {
+  FOOD
+  NON_ALCOHOLIC_DRINK
+  ALCOHOLIC_DRINK
+}
+
+enum ItemCategory {
+  SAVORY
+  SWEET
+  BEVERAGE
+  ALCOHOLIC_BEVERAGE
+  SNACK
+  OTHER
+}
+
+enum BeverageStyle {
+  BEER
+  COCKTAIL
+  WINE
+  SELTZER
+  NON_ALCOHOLIC
+  OTHER
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  SEASONAL
+  RETIRED
+  FAN_REPORTED
+  VENUE_VERIFIED
+}
+
+enum Verdict {
+  HALL_OF_FAME_BITE
+  STARTER_EVERY_GAME
+  SOLID_ROLE_PLAYER
+  BENCH_IT
+  SLOP_ALERT
+}
+
+enum ValueLabel {
+  STEAL
+  FAIR_DEAL
+  STADIUM_TAX
+  OVERPAID
+  ROBBERY
+}
+
+enum ServedRightLabel {
+  GAME_READY
+  FINE
+  SAT_ON_THE_BENCH
+  NOT_APPLICABLE
+}
+
+enum LineWaitLabel {
+  QUICK_STOP
+  WORTH_THE_WAIT
+  TOO_LONG
+  MISSED_THE_ACTION
+  NOT_APPLICABLE
+}
+
+enum NapkinLabel {
+  CLEAN_WIN
+  SAFE_AT_YOUR_SEAT
+  TWO_HANDED_PROBLEM
+  JERSEY_DANGER
+  FULL_CLEANUP_CREW
+}
+
+enum VenueBadge {
+  VENUE_MVP
+  FAN_FAVORITE
+  BEST_VALUE
+  WORTH_THE_LINE
+  NEW_THIS_SEASON
+  NAPKIN_NIGHTMARE
+  SLOP_ALERT
+  HIDDEN_GEM
+  MOST_IMPROVED
+  FALLING_FAST
+}
+
+enum FreshSignal {
+  HOT_TODAY
+  HOLDING_STRONG
+  MIXED_SIGNALS
+  FALLING_FAST
+  FANS_SAY_SKIP
+  COLD_STREAK
+  LINE_TROUBLE
+}
+
+enum ConsensusLabel {
+  RUN_IT_BACK
+  WORTH_THE_WALK
+  STADIUM_TAX
+  STEAL
+  BENCH_IT
+}
+
+enum PhotoType {
+  FOOD
+  PROFILE
+  MENU_PRICE_PROOF
+}
+
+enum PriceReportStatus {
+  PENDING
+  APPROVED
+  MERGED
+  REJECTED
+}
+
+enum SuggestedItemStatus {
+  PENDING
+  APPROVED
+  MERGED
+  REJECTED
+}
+
+enum ReportTargetType {
+  REVIEW
+  PHOTO
+  ITEM
+  PRICE_REPORT
+  USER
+}
+
+enum ReportReason {
+  DUPLICATE
+  SUSPICIOUS_ACTIVITY
+  BAD_INTEL
+  INAPPROPRIATE_PHOTO
+  OTHER
+}
+
+enum ReportStatus {
+  OPEN
+  REVIEWING
+  RESOLVED
+  DISMISSED
+}
+
+model User {
+  id                         String          @id @default(cuid())
+  email                      String          @unique
+  displayName                String
+  handle                     String          @unique
+  homeVenueId                String?
+  avatarPhotoId              String?
+  role                       UserRole        @default(REVIEWER)
+  status                     EntityStatus    @default(ACTIVE)
+  helpfulLikesReceived       Int             @default(0)
+  verifiedGameDayReviewCount Int             @default(0)
+  photoUploadCount           Int             @default(0)
+  createdAt                  DateTime        @default(now())
+  updatedAt                  DateTime        @updatedAt
+
+  homeVenue                  Venue?          @relation("UserHomeVenue", fields: [homeVenueId], references: [id])
+  reviews                    Review[]
+  helpfulLikes               HelpfulLike[]
+  photos                     FoodPhoto[]     @relation("UserPhotos")
+  priceReports               PriceReport[]
+  suggestedItems             SuggestedItem[]
+  reportFlags                ReportFlag[]    @relation("ReporterFlags")
+
+  @@index([homeVenueId])
+}
+
+model Venue {
+  id                 String          @id @default(cuid())
+  slug               String          @unique
+  name               String
+  city               String
+  state              String
+  country            String
+  region             String
+  leagues            String[]
+  teams              String[]
+  sports             String[]
+  latitude           Float
+  longitude          Float
+  reviewRadiusMeters Int
+  venueType          VenueType
+  status             EntityStatus    @default(ACTIVE)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+
+  vendors            Vendor[]
+  items              FoodItem[]
+  reviews            Review[]
+  photos             FoodPhoto[]
+  priceReports       PriceReport[]
+  suggestedItems     SuggestedItem[]
+  homeUsers          User[]          @relation("UserHomeVenue")
+
+  @@index([city, state])
+}
+
+model Vendor {
+  id        String       @id @default(cuid())
+  slug      String
+  name      String
+  venueId   String
+  section   String
+  location  String
+  lineIntel String?
+  status    EntityStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  venue     Venue        @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  items     FoodItem[]
+  suggestedItems SuggestedItem[]
+
+  @@unique([venueId, slug])
+  @@index([venueId])
+}
+
+model FoodItem {
+  id                      String              @id @default(cuid())
+  slug                    String
+  name                    String
+  venueId                 String
+  vendorId                String
+  itemType                ItemType
+  category                ItemCategory
+  customCategoryLabel     String?
+  alcoholic               Boolean             @default(false)
+  ageRestricted           Boolean             @default(false)
+  beverageStyle           BeverageStyle?
+  location                String
+  sections                String[]
+  description             String
+  basePrice               Decimal?            @db.Decimal(8, 2)
+  reportedPrice           Decimal?            @db.Decimal(8, 2)
+  priceLastConfirmedLabel String?
+  priceReportCount        Int                 @default(0)
+  tags                    String[]
+  isPromoted              Boolean             @default(false)
+  sponsorName             String?
+  sponsorDisclosure       String?
+  isNewThisSeason         Boolean             @default(false)
+  seasonIntroduced        String?
+  availabilityStatus      AvailabilityStatus?
+  lastConfirmed           String?
+  venueBadge              VenueBadge?
+  freshWindowLabel        String?
+  freshSignal             FreshSignal?
+  freshSignalReason       String?
+  status                  EntityStatus        @default(ACTIVE)
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+
+  venue                   Venue               @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  vendor                  Vendor              @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  reviews                 Review[]
+  photos                  FoodPhoto[]
+  priceReports            PriceReport[]
+
+  @@unique([venueId, slug])
+  @@index([vendorId])
+  @@index([venueId, itemType])
+}
+
+model Review {
+  id              String           @id @default(cuid())
+  userId          String
+  foodItemId      String
+  venueId         String
+  gameDayKey      String
+  slopScore       Decimal          @db.Decimal(3, 1)
+  napkinRating    Int
+  labels          ConsensusLabel[]
+  verifiedGameDay Boolean          @default(false)
+  seasonLabel     String
+  note            String?
+  status          EntityStatus     @default(ACTIVE)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  foodItem        FoodItem         @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+  venue           Venue            @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  helpfulLikes    HelpfulLike[]
+  photos          FoodPhoto[]
+  reportFlags     ReportFlag[]     @relation("ReviewFlags")
+
+  @@unique([userId, foodItemId, gameDayKey])
+  @@index([foodItemId, seasonLabel])
+  @@index([foodItemId, verifiedGameDay, createdAt])
+  @@index([venueId])
+}
+
+model HelpfulLike {
+  id        String   @id @default(cuid())
+  userId    String
+  reviewId  String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reviewId])
+  @@index([reviewId])
+}
+
+model FoodPhoto {
+  id             String       @id @default(cuid())
+  foodItemId     String?
+  venueId        String?
+  reviewId       String?
+  uploaderUserId String
+  photoType      PhotoType
+  url            String?
+  placeholder    String?
+  alt            String
+  caption        String?
+  verifiedOnSite Boolean      @default(false)
+  status         EntityStatus @default(ACTIVE)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  foodItem       FoodItem?    @relation(fields: [foodItemId], references: [id], onDelete: SetNull)
+  venue          Venue?       @relation(fields: [venueId], references: [id], onDelete: SetNull)
+  review         Review?      @relation(fields: [reviewId], references: [id], onDelete: SetNull)
+  uploader       User         @relation("UserPhotos", fields: [uploaderUserId], references: [id], onDelete: Cascade)
+  priceReports   PriceReport[]
+  suggestedItems SuggestedItem[]
+
+  @@index([foodItemId])
+  @@index([reviewId])
+  @@index([uploaderUserId])
+}
+
+model PriceReport {
+  id            String            @id @default(cuid())
+  foodItemId    String
+  venueId       String
+  userId        String
+  reportedPrice Decimal           @db.Decimal(8, 2)
+  photoId       String?
+  status        PriceReportStatus @default(PENDING)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  foodItem      FoodItem          @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+  venue         Venue             @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photo         FoodPhoto?        @relation(fields: [photoId], references: [id], onDelete: SetNull)
+
+  @@index([foodItemId, status])
+  @@index([venueId])
+  @@index([userId])
+}
+
+model SuggestedItem {
+  id             String              @id @default(cuid())
+  venueId        String
+  vendorId       String?
+  userId         String
+  name           String
+  category       ItemCategory?
+  locationHint   String?
+  photoId        String?
+  status         SuggestedItemStatus @default(PENDING)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+
+  venue          Venue               @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  vendor         Vendor?             @relation(fields: [vendorId], references: [id], onDelete: SetNull)
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photo          FoodPhoto?          @relation(fields: [photoId], references: [id], onDelete: SetNull)
+
+  @@index([venueId, status])
+  @@index([userId])
+}
+
+model ReportFlag {
+  id             String           @id @default(cuid())
+  reporterUserId String
+  targetType     ReportTargetType
+  targetId       String
+  reviewId       String?
+  reason         ReportReason
+  status         ReportStatus     @default(OPEN)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  reporter       User             @relation("ReporterFlags", fields: [reporterUserId], references: [id], onDelete: Cascade)
+  review         Review?          @relation("ReviewFlags", fields: [reviewId], references: [id], onDelete: SetNull)
+
+  @@index([targetType, targetId])
+  @@index([status])
+  @@index([reporterUserId])
+}
