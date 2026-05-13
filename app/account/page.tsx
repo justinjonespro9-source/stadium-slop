@@ -215,7 +215,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   const uploadErrorMessage =
     uploadError === "too_large"
-      ? "Photo was over the 4MB limit. Try a smaller JPEG or PNG."
+      ? "Photo was over the upload limit (about 8MB). Try a smaller JPEG or PNG."
       : uploadError === "heic"
         ? "HEIC/HEIF is not supported yet. Use “Most Compatible” in iPhone camera settings or export as JPEG."
         : uploadError === "unsupported"
@@ -223,7 +223,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           : uploadError === "cloudinary"
             ? "Photo uploads are disabled until Cloudinary env vars are set on the server."
             : uploadError === "upload"
-              ? "Photo upload failed. Check your connection and try a JPEG or PNG under 4MB."
+              ? "Photo upload failed. Check your connection and try a JPEG or PNG under about 8MB."
               : uploadError === "no-file"
                 ? "Choose a photo file before saving."
                 : null;
@@ -286,7 +286,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                 </p>
               )}
               <p className="mt-2 max-w-48 text-xs leading-5 text-zinc-500">
-                JPEG, PNG, WebP, or GIF up to 4MB. HEIC/HEIF is not supported yet.
+                JPEG, PNG, WebP, or GIF up to about 8MB. HEIC/HEIF is not supported yet.
                 Fan photos help power Game Day Fresh. Profile photos help fans
                 trust who reviewed the slop.
               </p>

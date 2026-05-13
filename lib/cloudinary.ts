@@ -1,7 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
 import type { UploadApiResponse } from "cloudinary";
 
-const MAX_BYTES = 4 * 1024 * 1024;
+/** Matches `experimental.serverActions.bodySizeLimit` in next.config.ts (8mb). */
+export const MAX_IMAGE_UPLOAD_BYTES = 8 * 1024 * 1024;
+const MAX_BYTES = MAX_IMAGE_UPLOAD_BYTES;
 
 /** Allowed once MIME is normalized or extension matches (iPhone sometimes omits MIME). */
 const ALLOWED_MIME = /^image\/(jpeg|pjpeg|png|x-png|webp|gif)$/i;
@@ -134,7 +136,7 @@ function ensureConfigured(file: File): void {
 }
 
 /**
- * Validate image-only uploads (4MB max). HEIC/HEIF is rejected with a clear message
+ * Validate image-only uploads (8MB max). HEIC/HEIF is rejected with a clear message
  * (no silent failure or opaque Cloudinary errors).
  */
 export function validateImageFile(file: File): void {

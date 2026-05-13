@@ -10,7 +10,8 @@ import {
   isCloudinaryConfigured,
   logUploadFailure,
   photoErrorQueryFromUploadFailure,
-  uploadImageFile
+  uploadImageFile,
+  validateImageFile
 } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
@@ -49,6 +50,11 @@ type ReviewPageProps = {
   params: Promise<{
     venueSlug: string;
     foodSlug: string;
+  }>;
+  searchParams?: Promise<{
+    photoRetry?: string;
+    photoError?: string;
+    error?: string;
   }>;
 };
 
@@ -198,13 +204,17 @@ async function submitReview(formData: FormData) {
     redirect(`${canonicalItemPath}/review?error=missing-score`);
   }
 
-  const photoFieldEarly = formData.get("reviewPhoto");
-  if (
-    photoFieldEarly instanceof File &&
-    photoFieldEarly.size > 0 &&
-    !isCloudinaryConfigured()
-  ) {
-    redirect(`${canonicalItemPath}/review?error=cloudinary`);
+  const photoFieldPre = formData.get("reviewPhoto");
+  if (photoFieldPre instanceof File && photoFieldPre.size > 0) {
+    if (!isCloudinaryConfigured()) {
+      redirect(`${canonicalItemPath}/review?error=cloudinary`);
+    }
+    try {
+      validateImageFile(photoFieldPre);
+    } catch (err) {
+      const code = photoErrorQueryFromUploadFailure(err);
+      redirect(`${canonicalItemPath}/review?error=${code}`);
+    }
   }
 
   const user = await prisma.user.upsert({
@@ -289,7 +299,7 @@ async function submitReview(formData: FormData) {
       );
       const photoError = photoErrorQueryFromUploadFailure(err);
       redirect(
-        `${canonicalItemPath}?reviewSubmitted=true&photoError=${photoError}`
+        `${canonicalItemPath}/review?photoRetry=1&photoError=${photoError}`
       );
     }
 
@@ -330,7 +340,7 @@ async function submitReview(formData: FormData) {
         foodItemRow.vendor.slug
       );
       redirect(
-        `${canonicalItemPath}?reviewSubmitted=true&photoError=photo_save`
+        `${canonicalItemPath}/review?photoRetry=1&photoError=photo_save`
       );
     }
   }
@@ -344,8 +354,26 @@ async function submitReview(formData: FormData) {
   redirect(`${canonicalItemPath}?reviewSubmitted=true`);
 }
 
-export default async function ReviewPage({ params }: ReviewPageProps) {
+export default async function ReviewPage({ params, searchParams }: ReviewPageProps) {
   const { venueSlug, foodSlug } = await params;
+  const query = (await searchParams) ?? {};
+  const showPhotoRetryHint = query.photoRetry === "1";
+  const urlPhotoError = query.photoError;
+  const urlError = query.error;
+
+  const reviewFormErrorMessage =
+    urlError === "too_large"
+      ? "Image must be about 8MB or smaller. Shrink the file and try again."
+      : urlError === "heic"
+        ? "HEIC/HEIF is not supported. Export as JPEG or use “Most Compatible” camera format."
+        : urlError === "unsupported"
+          ? "Use JPEG, PNG, WebP, or GIF."
+          : urlError === "cloudinary"
+            ? "Photo uploads need Cloudinary configured on the server."
+            : urlError === "upload"
+              ? "Upload failed. Check connection and try again."
+              : null;
+
   const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
@@ -433,7 +461,35 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
           Back to food details
         </Link>
 
-        <header className="py-6 sm:py-10">
+        <header className="py-5 sm:py-8">
+          {showPhotoRetryHint || urlPhotoError ? (
+            <div
+              role="status"
+              className="mb-4 rounded-2xl border border-sky-800/80 bg-sky-950/40 px-4 py-3 text-sm text-sky-100"
+            >
+              <p className="font-bold">Add or retry a fan photo</p>
+              <p className="mt-1 text-sky-100/90">
+                Your Slop Score and signals for today are already saved. Submit
+                again with a photo (JPEG/PNG/WebP/GIF, up to about 8MB) — the
+                same-day form updates your existing review; nothing is double
+                counted.
+              </p>
+              {urlPhotoError ? (
+                <p className="mt-2 text-xs text-amber-200/95">
+                  Last attempt: photo issue ({urlPhotoError.replace(/_/g, " ")}).
+                </p>
+              ) : null}
+            </div>
+          ) : null}
+          {reviewFormErrorMessage ? (
+            <div
+              role="alert"
+              className="mb-4 rounded-2xl border border-amber-800/80 bg-amber-950/40 px-4 py-3 text-sm text-amber-100"
+            >
+              <p className="font-bold">Photo not accepted</p>
+              <p className="mt-1 text-amber-100/95">{reviewFormErrorMessage}</p>
+            </div>
+          ) : null}
           <p className="mb-3 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
             Mock Review Flow · {foodItem.itemType}
           </p>
@@ -534,9 +590,10 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               </h3>
               <p className="mt-2 text-sm leading-6 text-zinc-500">
                 Fan photos help power Game Day Fresh. JPEG, PNG, WebP, or GIF up
-                to 4MB. iPhone HEIC/HEIF is not supported yet — use “Most
-                Compatible” camera format or export as JPEG. No comments,
-                followers, or DMs — just the shot.
+                to about 8MB (same limit as the server upload cap). iPhone
+                HEIC/HEIF is not supported yet — use “Most Compatible” camera
+                format or export as JPEG. No comments, followers, or DMs —
+                just the shot.
               </p>
               {cloudinaryReady ? (
                 <>
