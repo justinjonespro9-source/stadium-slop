@@ -1,11 +1,11 @@
 import Link from "next/link";
 
 import { BrandLockup } from "@/components/brand-lockup";
-import { venues } from "@/lib/sample-data";
+import { getPublicVenues } from "@/lib/public-data";
 
-const popularSearches = venues.slice(0, 3);
+export default async function Home() {
+  const popularSearches = (await getPublicVenues()).slice(0, 3);
 
-export default function Home() {
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto flex min-h-[calc(100vh-160px)] w-full max-w-3xl flex-col justify-center px-5 py-12 sm:px-8">

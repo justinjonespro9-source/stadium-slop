@@ -1,20 +1,22 @@
 import Link from "next/link";
 
-import { foodItems, venues } from "@/lib/sample-data";
+import {
+  getPublicFoodItemsByVenueSlug,
+  getPublicVenues
+} from "@/lib/public-data";
 
-const topFoodItemByVenueSlug = foodItems.reduce<
-  Record<string, (typeof foodItems)[number]>
->((topItems, item) => {
-  const currentTopItem = topItems[item.venueSlug];
+export default async function VenuesPage() {
+  const venues = await getPublicVenues();
+  const venueItems = await Promise.all(
+    venues.map(async (venue) => ({
+      venueSlug: venue.slug,
+      items: await getPublicFoodItemsByVenueSlug(venue.slug)
+    }))
+  );
+  const itemsByVenueSlug = new Map(
+    venueItems.map(({ venueSlug, items }) => [venueSlug, items])
+  );
 
-  if (!currentTopItem || item.slopScore > currentTopItem.slopScore) {
-    topItems[item.venueSlug] = item;
-  }
-
-  return topItems;
-}, {});
-
-export default function VenuesPage() {
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-10">
@@ -33,10 +35,10 @@ export default function VenuesPage() {
 
         <div className="grid gap-4 md:grid-cols-3">
           {venues.map((venue) => {
-            const venueFoodItems = foodItems.filter(
-              (item) => item.venueSlug === venue.slug
-            );
-            const topItem = topFoodItemByVenueSlug[venue.slug];
+            const venueFoodItems = itemsByVenueSlug.get(venue.slug) ?? [];
+            const topItem = [...venueFoodItems].sort(
+              (a, b) => b.slopScore - a.slopScore
+            )[0];
 
             return (
               <Link

@@ -4,14 +4,16 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import {
-  getFoodItemsByVenueSlug,
-  getFoodItemsByVendorSlug,
-  getVendorForFoodItem,
-  getVendorsByVenueSlug,
-  getVenueBySlug
+  type FoodItem,
+  type Vendor
 } from "@/lib/sample-data";
 import {
-  getItemSlopStats,
+  getPublicFoodItemsByVenueSlug,
+  getPublicVenueBySlug,
+  getPublicVendorsByVenueSlug
+} from "@/lib/public-data";
+import {
+  getDbBackedItemSlopStats,
   type ItemSlopStats,
   type SlopStatsMode
 } from "@/lib/slop-stats";
@@ -19,7 +21,6 @@ import { prisma } from "@/lib/prisma";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
 
-type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
   | "all"
@@ -106,29 +107,6 @@ async function suggestMissingItem(formData: FormData) {
 
   revalidatePath(venuePath);
   redirect(`${venuePath}?suggestion=submitted`);
-}
-
-function sortOverallScoreboardItems(items: FoodItem[], mode: SlopStatsMode) {
-  return [...items].sort(
-    (a, b) =>
-      getItemSlopStats(b.slug, mode).averageSlopScore -
-      getItemSlopStats(a.slug, mode).averageSlopScore
-  );
-}
-
-function sortGameDayScoreboardItems(items: FoodItem[]) {
-  return items
-    .filter((item) => item.freshSignal && item.freshReviewCount !== undefined)
-    .sort((a, b) => {
-      const statsA = getItemSlopStats(a.slug, "gameDayFresh");
-      const statsB = getItemSlopStats(b.slug, "gameDayFresh");
-
-      if (statsA.averageSlopScore !== statsB.averageSlopScore) {
-        return statsB.averageSlopScore - statsA.averageSlopScore;
-      }
-
-      return statsB.reviewCount - statsA.reviewCount;
-    });
 }
 
 function getMode(value?: string): StandingsMode {
@@ -269,7 +247,7 @@ function VendorChips({
   mode: StandingsMode;
   category: CategoryFilter;
   vendorSlug: string;
-  vendors: ReturnType<typeof getVendorsByVenueSlug>;
+  vendors: Vendor[];
 }) {
   return (
     <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
@@ -317,16 +295,16 @@ function ItemStandingRow({
   rank,
   stats,
   venueSlug,
+  vendor,
   showFresh = false
 }: {
   item: FoodItem;
   rank: number;
   stats: ItemSlopStats;
   venueSlug: string;
+  vendor?: Vendor;
   showFresh?: boolean;
 }) {
-  const vendor = getVendorForFoodItem(item);
-
   return (
     <Link
       href={`/venues/${venueSlug}/${item.slug}`}
@@ -386,16 +364,14 @@ function ItemStandingRow({
 export default async function VenuePage({ params, searchParams }: VenuePageProps) {
   const { venueSlug } = await params;
   const query = await searchParams;
-  const venue = getVenueBySlug(venueSlug);
+  const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
     notFound();
   }
 
-  const venueFoodItems = getFoodItemsByVenueSlug(venue.slug).sort(
-    (a, b) => b.slopScore - a.slopScore
-  );
-  const venueVendors = getVendorsByVenueSlug(venue.slug);
+  const venueFoodItems = await getPublicFoodItemsByVenueSlug(venue.slug);
+  const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
   const vendorSlug = query?.vendor ?? "all";
@@ -407,10 +383,23 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       filterByCategory(item, category) &&
       (vendorSlug === "all" || item.vendorSlug === vendorSlug)
   );
-  const standingsItems =
-    mode === "fresh"
-      ? sortGameDayScoreboardItems(filteredItems)
-      : sortOverallScoreboardItems(filteredItems, statsMode);
+  const itemStats = await Promise.all(
+    filteredItems.map(async (item) => ({
+      item,
+      stats: await getDbBackedItemSlopStats(venue.slug, item.slug, statsMode)
+    }))
+  );
+  const standingsItems = itemStats
+    .filter(({ item, stats }) =>
+      mode === "fresh" ? item.freshSignal || stats.reviewCount > 0 : true
+    )
+    .sort((a, b) => {
+      if (b.stats.averageSlopScore !== a.stats.averageSlopScore) {
+        return b.stats.averageSlopScore - a.stats.averageSlopScore;
+      }
+
+      return b.stats.reviewCount - a.stats.reviewCount;
+    });
   const modeLabel =
     mode === "fresh"
       ? "Game Day Fresh"
@@ -495,12 +484,15 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
           <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
             {standingsItems.length > 0 ? (
-              standingsItems.map((item, index) => (
+              standingsItems.map(({ item, stats }, index) => (
                 <ItemStandingRow
                   key={item.slug}
                   item={item}
                   rank={index + 1}
-                  stats={getItemSlopStats(item.slug, statsMode)}
+                  stats={stats}
+                  vendor={venueVendors.find(
+                    (vendor) => vendor.slug === item.vendorSlug
+                  )}
                   venueSlug={venue.slug}
                   showFresh={mode === "fresh"}
                 />
@@ -523,7 +515,9 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
           <div className="mt-4 grid gap-2">
             {venueVendors.map((vendor) => {
-              const vendorItems = getFoodItemsByVendorSlug(vendor.slug);
+              const vendorItems = venueFoodItems.filter(
+                (item) => item.vendorSlug === vendor.slug
+              );
 
               return (
                 <Link

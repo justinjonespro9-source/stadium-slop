@@ -2,11 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import {
-  getFoodItemsByVendorSlug,
-  getVendorBySlug,
-  getVenueBySlug
+  type FoodItem
 } from "@/lib/sample-data";
-import { getItemSlopStats } from "@/lib/slop-stats";
+import {
+  getPublicFoodItemsByVendorSlug,
+  getPublicVendorBySlug,
+  getPublicVenueBySlug
+} from "@/lib/public-data";
+import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
 
 type VendorPageProps = {
   params: Promise<{
@@ -15,7 +18,7 @@ type VendorPageProps = {
   }>;
 };
 
-function formatSections(item: ReturnType<typeof getFoodItemsByVendorSlug>[number]) {
+function formatSections(item: FoodItem) {
   if (!item.sections || item.sections.length === 0) {
     return item.location;
   }
@@ -29,18 +32,22 @@ function formatSections(item: ReturnType<typeof getFoodItemsByVendorSlug>[number
 
 export default async function VendorPage({ params }: VendorPageProps) {
   const { venueSlug, vendorSlug } = await params;
-  const venue = getVenueBySlug(venueSlug);
-  const vendor = getVendorBySlug(vendorSlug);
+  const venue = await getPublicVenueBySlug(venueSlug);
+  const vendor = await getPublicVendorBySlug(venueSlug, vendorSlug);
 
   if (!venue || !vendor || vendor.venueSlug !== venue.slug) {
     notFound();
   }
 
-  const vendorItems = getFoodItemsByVendorSlug(vendor.slug).sort(
-    (a, b) =>
-      getItemSlopStats(b.slug, "season").averageSlopScore -
-      getItemSlopStats(a.slug, "season").averageSlopScore
+  const vendorItems = await Promise.all(
+    (await getPublicFoodItemsByVendorSlug(venue.slug, vendor.slug)).map(
+      async (item) => ({
+        item,
+        stats: await getDbBackedItemSlopStats(venue.slug, item.slug, "season")
+      })
+    )
   );
+  vendorItems.sort((a, b) => b.stats.averageSlopScore - a.stats.averageSlopScore);
 
   return (
     <main className="brand-page min-h-screen">
@@ -74,9 +81,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
             Vendor Lineup
           </p>
           <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
-            {vendorItems.map((item, index) => {
-              const stats = getItemSlopStats(item.slug, "season");
-
+            {vendorItems.map(({ item, stats }, index) => {
               return (
                 <Link
                   key={item.slug}

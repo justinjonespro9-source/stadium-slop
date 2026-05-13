@@ -4,18 +4,18 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import {
-  getFoodItemBySlug,
-  getFoodItemsByVendorSlug,
-  getPhotosForFoodItem,
-  getVendorForFoodItem,
-  getVenueBySlug
-} from "@/lib/sample-data";
+  getPublicFoodItemBySlug,
+  getPublicFoodItemsByVendorSlug,
+  getPublicPhotosForFoodItem,
+  getPublicVendorForFoodItem,
+  getPublicVenueBySlug
+} from "@/lib/public-data";
 import { prisma } from "@/lib/prisma";
 import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
 import {
   MOCK_REVIEWER_USER_ID,
   MOCK_USER_COOKIE_NAME,
-  hasMockUserAccess,
+  hasMockUserAccess
 } from "@/lib/user-auth";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 
@@ -238,20 +238,20 @@ async function getLikedReviewIds(reviewIds: string[]) {
 
 export default async function FoodPage({ params }: FoodPageProps) {
   const { venueSlug, foodSlug } = await params;
-  const venue = getVenueBySlug(venueSlug);
+  const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
     notFound();
   }
 
-  const foodItem = getFoodItemBySlug(foodSlug);
+  const foodItem = await getPublicFoodItemBySlug(venue.slug, foodSlug);
 
   if (!foodItem || foodItem.venueSlug !== venue.slug) {
     notFound();
   }
 
-  const vendor = getVendorForFoodItem(foodItem);
-  const foodPhotos = getPhotosForFoodItem(venue.slug, foodItem.slug);
+  const vendor = await getPublicVendorForFoodItem(foodItem);
+  const foodPhotos = await getPublicPhotosForFoodItem(venue.slug, foodItem.slug);
   const heroPhoto = foodPhotos[0];
   const priceIntel = await getPriceIntel(venue.slug, foodItem.slug, foodItem);
   const careerStats = await getDbBackedItemSlopStats(
@@ -284,7 +284,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
     ? await getLikedReviewIds(reviewPhotoCards.map((review) => review.id))
     : new Set<string>();
   const moreFromVendor = vendor
-    ? getFoodItemsByVendorSlug(vendor.slug).filter(
+    ? (await getPublicFoodItemsByVendorSlug(venue.slug, vendor.slug)).filter(
         (item) => item.slug !== foodItem.slug
       )
     : [];
