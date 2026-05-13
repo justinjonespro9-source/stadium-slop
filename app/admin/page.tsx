@@ -1,3 +1,6 @@
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
 import {
   foodItems,
   foodReviews,
@@ -5,6 +8,16 @@ import {
   venues,
   foodPhotos
 } from "@/lib/sample-data";
+import { MOCK_ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
+
+async function mockAdminSignOut() {
+  "use server";
+
+  const cookieStore = await cookies();
+
+  cookieStore.delete(MOCK_ADMIN_COOKIE_NAME);
+  redirect("/admin/login");
+}
 
 const adminSections = [
   {
@@ -84,17 +97,37 @@ export default function AdminPage() {
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:px-10">
-        <header>
-          <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
-            Admin foundation
-          </p>
-          <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-            Stadium Slop Admin
-          </h1>
-          <p className="mt-4 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
-            Mock management dashboard for future site operations. No real auth,
-            database writes, moderation actions, or mutations are wired up yet.
-          </p>
+        <header className="brand-panel rounded-[2rem] border p-5">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+            <div>
+              <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
+                SNG LABS
+              </p>
+              <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+                Admin Console
+              </h1>
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
+                Mock management dashboard for future Stadium Slop operations. No
+                real auth provider, database writes, moderation actions, or
+                mutations are wired up yet.
+              </p>
+            </div>
+
+            <div className="rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-ink)] p-4 sm:min-w-56">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--slop-blue)]">
+                Mock signed-in admin
+              </p>
+              <p className="mt-2 font-black">SNG LABS Operator</p>
+              <form action={mockAdminSignOut}>
+                <button
+                  type="submit"
+                  className="mt-4 w-full rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                >
+                  Sign out
+                </button>
+              </form>
+            </div>
+          </div>
         </header>
 
         <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
