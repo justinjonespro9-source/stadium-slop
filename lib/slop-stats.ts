@@ -35,6 +35,87 @@ function roundNapkins(value: number): 1 | 2 | 3 | 4 | 5 {
   return Math.min(5, Math.max(1, Math.round(value || 1))) as 1 | 2 | 3 | 4 | 5;
 }
 
+const consensusLabels: ReviewConsensusLabel[] = [
+  "Run It Back",
+  "Worth the Walk",
+  "Stadium Tax",
+  "Steal",
+  "Bench It"
+];
+
+function calculateConsensus(reviews: FoodReview[]) {
+  const labelCounts = new Map<ReviewConsensusLabel, number>();
+
+  consensusLabels.forEach((label) => {
+    labelCounts.set(label, 0);
+  });
+
+  reviews.forEach((review) => {
+    const firstKnownLabel = review.labels.find((label) =>
+      consensusLabels.includes(label)
+    );
+
+    if (firstKnownLabel) {
+      labelCounts.set(firstKnownLabel, (labelCounts.get(firstKnownLabel) ?? 0) + 1);
+    }
+  });
+
+  const labeledReviewCount = Array.from(labelCounts.values()).reduce(
+    (total, count) => total + count,
+    0
+  );
+
+  if (labeledReviewCount === 0) {
+    return consensusLabels.map((label) => ({
+      label,
+      count: 0,
+      percentage: 0
+    }));
+  }
+
+  const stats = consensusLabels.map((label) => {
+    const count = labelCounts.get(label) ?? 0;
+    const rawPercentage = (count / labeledReviewCount) * 100;
+
+    return {
+      label,
+      count,
+      rawPercentage,
+      percentage: Math.floor(rawPercentage)
+    };
+  });
+  const remainder = 100 - stats.reduce((total, stat) => total + stat.percentage, 0);
+  const fractionalRemainders = stats
+    .map((stat, index) => ({
+      index,
+      remainder: stat.rawPercentage - stat.percentage
+    }))
+    .sort((a, b) => b.remainder - a.remainder);
+
+  fractionalRemainders.slice(0, remainder).forEach(({ index }) => {
+    stats[index].percentage += 1;
+  });
+
+  return stats
+    .map((stat) => ({
+      label: stat.label,
+      count: stat.count,
+      percentage: stat.percentage
+    }))
+    .sort((a, b) => b.percentage - a.percentage || b.count - a.count);
+}
+
+function dedupeReviewsByUserItemGameDay(reviews: FoodReview[]) {
+  const reviewsByKey = new Map<string, FoodReview>();
+
+  reviews.forEach((review) => {
+    const key = `${review.reviewerId ?? review.id}:${review.foodSlug}:${review.gameDayKey ?? review.dateLabel}`;
+    reviewsByKey.set(key, review);
+  });
+
+  return Array.from(reviewsByKey.values());
+}
+
 export function getReviewsForItem(itemSlug: string, mode: SlopStatsMode = "allTime") {
   const itemReviews = foodReviews.filter((review) => review.foodSlug === itemSlug);
 
@@ -54,27 +135,15 @@ export function getItemSlopStats(
   mode: SlopStatsMode = "allTime"
 ): ItemSlopStats {
   const reviews = getReviewsForItem(itemSlug, mode);
-  const fallbackReviews = reviews.length > 0 ? reviews : getReviewsForItem(itemSlug);
+  const fallbackReviews = dedupeReviewsByUserItemGameDay(
+    reviews.length > 0 ? reviews : getReviewsForItem(itemSlug)
+  );
   const reviewCount = fallbackReviews.length;
   const averageSlopScore = average(fallbackReviews.map((review) => review.slopScore));
   const averageNapkinRating = average(
     fallbackReviews.map((review) => review.napkinRating)
   );
-  const labelCounts = new Map<ReviewConsensusLabel, number>();
-
-  fallbackReviews.forEach((review) => {
-    review.labels.forEach((label) => {
-      labelCounts.set(label, (labelCounts.get(label) ?? 0) + 1);
-    });
-  });
-
-  const consensus = Array.from(labelCounts.entries())
-    .map(([label, count]) => ({
-      label,
-      count,
-      percentage: reviewCount > 0 ? Math.round((count / reviewCount) * 100) : 0
-    }))
-    .sort((a, b) => b.percentage - a.percentage || b.count - a.count);
+  const consensus = calculateConsensus(fallbackReviews);
 
   return {
     itemSlug,
@@ -117,8 +186,14 @@ function getDbReviewsForMode(
     labels: string[];
     verifiedGameDay: boolean;
     seasonLabel: string;
+    gameDayKey: string;
     note: string | null;
     createdAt: Date;
+    photos: {
+      placeholder: string | null;
+      alt: string;
+      caption: string | null;
+    }[];
     user: {
       id: string;
       displayName: string;
@@ -146,34 +221,23 @@ function getStatsFromReviews(
   mode: SlopStatsMode,
   reviews: FoodReview[]
 ): ItemSlopStats {
-  const reviewCount = reviews.length;
-  const averageSlopScore = average(reviews.map((review) => review.slopScore));
-  const averageNapkinRating = average(reviews.map((review) => review.napkinRating));
-  const labelCounts = new Map<ReviewConsensusLabel, number>();
-
-  reviews.forEach((review) => {
-    review.labels.forEach((label) => {
-      labelCounts.set(label, (labelCounts.get(label) ?? 0) + 1);
-    });
-  });
-
-  const consensus = Array.from(labelCounts.entries())
-    .map(([label, count]) => ({
-      label,
-      count,
-      percentage: reviewCount > 0 ? Math.round((count / reviewCount) * 100) : 0
-    }))
-    .sort((a, b) => b.percentage - a.percentage || b.count - a.count);
+  const dedupedReviews = dedupeReviewsByUserItemGameDay(reviews);
+  const reviewCount = dedupedReviews.length;
+  const averageSlopScore = average(dedupedReviews.map((review) => review.slopScore));
+  const averageNapkinRating = average(
+    dedupedReviews.map((review) => review.napkinRating)
+  );
+  const consensus = calculateConsensus(dedupedReviews);
 
   return {
     itemSlug,
     mode,
-    reviews,
+    reviews: dedupedReviews,
     averageSlopScore,
     averageNapkinRating,
     roundedNapkinRating: roundNapkins(averageNapkinRating),
     reviewCount,
-    helpfulLikesTotal: reviews.reduce(
+    helpfulLikesTotal: dedupedReviews.reduce(
       (total, review) => total + review.helpfulLikes,
       0
     ),
@@ -181,7 +245,7 @@ function getStatsFromReviews(
     topConsensus: consensus[0],
     freshSignalScore:
       mode === "gameDayFresh"
-        ? average(reviews.map((review) => review.slopScore))
+        ? average(dedupedReviews.map((review) => review.slopScore))
         : undefined
   };
 }
@@ -216,6 +280,16 @@ export async function getDbBackedItemSlopStats(
               select: {
                 helpfulLikes: true
               }
+            },
+            photos: {
+              where: {
+                status: "ACTIVE"
+              },
+              select: {
+                placeholder: true,
+                alt: true,
+                caption: true
+              }
             }
           }
         }
@@ -243,11 +317,16 @@ export async function getDbBackedItemSlopStats(
       helpfulLikes: review._count.helpfulLikes,
       verifiedGameDay: review.verifiedGameDay,
       seasonLabel: review.seasonLabel,
+      gameDayKey: review.gameDayKey,
       dateLabel: review.createdAt.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
         year: "numeric"
       }),
+      hasPhoto: review.photos.length > 0,
+      photoAlt: review.photos[0]?.alt,
+      photoLabel: review.photos[0]?.caption ?? undefined,
+      photoPlaceholder: review.photos[0]?.placeholder ?? undefined,
       note: review.note ?? undefined
     }));
 

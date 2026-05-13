@@ -173,6 +173,7 @@ export type FoodReview = {
   helpfulLikes: number;
   verifiedGameDay: boolean;
   seasonLabel: string;
+  gameDayKey?: string;
   dateLabel: string;
   hasPhoto?: boolean;
   photoAlt?: string;

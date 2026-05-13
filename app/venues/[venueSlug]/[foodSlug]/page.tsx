@@ -10,69 +10,29 @@ import {
 } from "@/lib/sample-data";
 import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
 
-const mockReviews = [
-  {
-    reviewerId: "user-section128regular",
-    author: "Section 128 Regular",
-    handle: "@section128regular",
-    initials: "SR",
-    rating: 9.2,
-    runItBack: "Run It Back",
-    value: "Fair Deal",
-    servedRight: "Game Ready",
-    lineWait: "Worth the Wait",
-    napkins: "3/5 napkins",
-    helpfulCount: 18,
-    verifiedGameDay: true,
-    imagePlaceholder: "🧀",
-    imageAlt: "Fan-uploaded loaded cheese curds in a paper tray at the seat",
-    photoLabel: "Seat photo",
-    note: "Hot, salty, and still crisp by the time I got back to my seat."
-  },
-  {
-    reviewerId: "user-lateinningsnacks",
-    author: "Late Inning Snack Scout",
-    handle: "@lateinningsnacks",
-    initials: "LS",
-    rating: 7.8,
-    runItBack: "Maybe",
-    value: "Stadium Tax",
-    servedRight: "Fine",
-    lineWait: "Too Long",
-    napkins: "4/5 napkins",
-    helpfulCount: 11,
-    verifiedGameDay: true,
-    imagePlaceholder: "🥪",
-    imageAlt: "Fan-uploaded stadium sandwich photo from the concourse",
-    photoLabel: "Game-day photo",
-    note: "Good bite, but the line made it feel like a bigger commitment."
-  },
-  {
-    reviewerId: "user-upperdeckcritic",
-    author: "Upper Deck Critic",
-    handle: "@upperdeckcritic",
-    initials: "UC",
-    rating: 6.1,
-    runItBack: "Bench It",
-    value: "Fair Deal",
-    servedRight: "Sat on the Bench",
-    lineWait: "Quick Stop",
-    napkins: "2/5 napkins",
-    helpfulCount: 6,
-    verifiedGameDay: false,
-    imagePlaceholder: "🍟",
-    imageAlt: "Fan-uploaded fries photo from the upper deck",
-    photoLabel: "Fan photo",
-    note: "Fine if you are close, but not worth crossing sections for."
-  }
-];
-
 type FoodPageProps = {
   params: Promise<{
     venueSlug: string;
     foodSlug: string;
   }>;
 };
+
+function getReviewerInitials(review: {
+  reviewerName?: string;
+  reviewerHandle?: string;
+}) {
+  const label = review.reviewerName ?? review.reviewerHandle ?? "Fan";
+  const words = label.replace("@", "").split(/\s+/).filter(Boolean);
+
+  return words
+    .slice(0, 2)
+    .map((word) => word[0]?.toUpperCase())
+    .join("");
+}
+
+function getPrimaryConsensusLabel(review: { labels: string[] }) {
+  return review.labels[0] ?? "Fan Rating";
+}
 
 export default async function FoodPage({ params }: FoodPageProps) {
   const { venueSlug, foodSlug } = await params;
@@ -107,7 +67,11 @@ export default async function FoodPage({ params }: FoodPageProps) {
     "gameDayFresh"
   );
   const reviewPhotoCards = careerStats.reviews
-    .filter((review) => review.hasPhoto)
+    .filter(
+      (review) =>
+        review.hasPhoto ||
+        Boolean(review.photoPlaceholder || review.photoAlt || review.photoLabel)
+    )
     .slice(0, 3);
   const moreFromVendor = vendor
     ? getFoodItemsByVendorSlug(vendor.slug).filter(
@@ -342,7 +306,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </div>
 
           <div className="mt-5 space-y-3">
-            {careerStats.consensus.slice(0, 4).map((stat) => (
+            {careerStats.consensus.map((stat) => (
               <div key={stat.label}>
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-bold text-zinc-300">{stat.label}</span>
@@ -428,39 +392,42 @@ export default async function FoodPage({ params }: FoodPageProps) {
             </div>
             <p className="max-w-2xl text-sm leading-6 text-zinc-400">
               Swipe fan cards to see what verified on-site reviewers actually
-              got. Photos and written notes are optional; structured signals
-              power Season Standings. Slop Cards combine the food photo, verified
-              on-site status, and structured review signals.
+              got. Photo-backed reviews appear in the fan card strip. Text-only
+              ratings still power the stats.
             </p>
           </div>
 
           <div className="mt-5 flex snap-x gap-4 overflow-x-auto pb-4">
-            {mockReviews.map((review) => (
+            {reviewPhotoCards.length > 0 ? reviewPhotoCards.map((review) => (
               <article
-                key={review.author}
+                key={review.id}
                 className="min-w-[82vw] snap-start overflow-hidden rounded-[2rem] border border-zinc-800 bg-zinc-950 sm:min-w-[24rem]"
               >
                 <div className="relative">
                   <div
-                    aria-label={review.imageAlt}
+                    aria-label={
+                      review.photoAlt ?? `Fan-uploaded photo for ${foodItem.name}`
+                    }
                     className="flex aspect-[4/3] items-center justify-center bg-black text-7xl sm:text-8xl"
                   >
-                    {review.imagePlaceholder}
+                    {review.photoPlaceholder ?? heroPhoto?.imagePlaceholder ?? "🍔"}
                   </div>
                   <div className="absolute -bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border-4 border-[var(--slop-surface)] bg-[var(--slop-cream)] text-sm font-black text-[var(--slop-ink)]">
-                    {review.initials}
+                    {getReviewerInitials(review)}
                   </div>
                   <span className="absolute right-4 top-4 rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
-                    {review.rating.toFixed(1)}/10
+                    {review.slopScore.toFixed(1)}/10
                   </span>
                   <span className="absolute left-4 top-4 rounded-full border border-zinc-700 bg-black/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                    {review.photoLabel}
+                    {review.photoLabel ?? "Fan photo"}
                   </span>
                 </div>
 
                 <div className="p-4 pt-8 sm:p-5 sm:pt-8">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-xl font-black">{review.runItBack}</h3>
+                    <h3 className="text-xl font-black">
+                      {getPrimaryConsensusLabel(review)}
+                    </h3>
                     <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
                       Verified on-site
                     </span>
@@ -471,11 +438,14 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     ) : null}
                   </div>
                   <p className="mt-2 text-sm text-zinc-500">
-                    {review.author} · {review.handle}
+                    {review.reviewerName ?? "Fan"} ·{" "}
+                    {review.reviewerHandle ?? "reviewer"}
                   </p>
-                  <p className="mt-4 text-sm leading-6 text-zinc-300">
-                    {review.note}
-                  </p>
+                  {review.note ? (
+                    <p className="mt-4 text-sm leading-6 text-zinc-300">
+                      {review.note}
+                    </p>
+                  ) : null}
 
                   <div className="mt-4 rounded-3xl bg-black p-4">
                     <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-600">
@@ -483,44 +453,46 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     </p>
                     <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                       <div>
-                        <p className="text-zinc-600">Value</p>
+                        <p className="text-zinc-600">Consensus</p>
                         <p className="mt-1 font-bold text-white">
-                          {review.value}
+                          {getPrimaryConsensusLabel(review)}
                         </p>
                       </div>
                       <div>
-                        <p className="text-zinc-600">Served Right</p>
+                        <p className="text-zinc-600">Slop Score</p>
                         <p className="mt-1 font-bold text-white">
-                          {review.servedRight}
+                          {review.slopScore.toFixed(1)}
                         </p>
                       </div>
                       <div>
-                        <p className="text-zinc-600">Line Wait</p>
+                        <p className="text-zinc-600">Review Date</p>
                         <p className="mt-1 font-bold text-white">
-                          {review.lineWait}
+                          {review.dateLabel}
                         </p>
                       </div>
                       <div>
                         <p className="text-zinc-600">Napkins</p>
                         <p className="mt-1 font-bold text-white">
-                          {review.napkins}
+                          {review.napkinRating}/5
                         </p>
                       </div>
                     </div>
-                    <p className="mt-4 text-sm leading-6 text-zinc-400">
-                      {review.note}
-                    </p>
                     <button
                       type="button"
                       disabled
                       className="mt-4 cursor-not-allowed rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
                     >
-                      Sign in to mark helpful · {review.helpfulCount}
+                      Sign in to mark helpful · {review.helpfulLikes}
                     </button>
                   </div>
                 </div>
               </article>
-            ))}
+            )) : (
+              <p className="rounded-3xl border border-zinc-800 bg-zinc-950 p-5 text-sm leading-6 text-zinc-500">
+                No photo-backed review cards yet. Text-only ratings still power
+                the stats and Season Standings.
+              </p>
+            )}
           </div>
 
           <p className="text-sm leading-6 text-zinc-500">
