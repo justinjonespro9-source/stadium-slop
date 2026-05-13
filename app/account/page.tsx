@@ -7,7 +7,9 @@ import {
   getVendorForFoodItem,
   getVenueForFoodItem
 } from "@/lib/sample-data";
+import { prisma } from "@/lib/prisma";
 import {
+  MOCK_REVIEWER_USER_ID,
   MOCK_USER_COOKIE_NAME,
   hasMockUserAccess,
   mockReviewerProfile
@@ -59,6 +61,21 @@ async function mockUserSignOut() {
 
   cookieStore.delete(MOCK_USER_COOKIE_NAME);
   redirect("/account");
+}
+
+async function getHelpfulLikesReceived() {
+  try {
+    return await prisma.helpfulLike.count({
+      where: {
+        review: {
+          userId: MOCK_REVIEWER_USER_ID
+        }
+      }
+    });
+  } catch (error) {
+    console.warn("Falling back to mock helpful-like total", error);
+    return mockProfile.stats.helpfulLikes;
+  }
 }
 
 function SignedOutAccount() {
@@ -113,6 +130,8 @@ export default async function AccountPage() {
     return <SignedOutAccount />;
   }
 
+  const helpfulLikesReceived = await getHelpfulLikesReceived();
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8 lg:px-10">
@@ -166,7 +185,7 @@ export default async function AccountPage() {
         <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
             ["Total reviews", mockProfile.stats.totalReviews],
-            ["Helpful likes", mockProfile.stats.helpfulLikes],
+            ["Helpful likes received", helpfulLikesReceived],
             ["Verified game-day", mockProfile.stats.verifiedGameDayReviews],
             ["Photos uploaded", mockProfile.stats.photosUploaded]
           ].map(([label, value]) => (
@@ -196,6 +215,10 @@ export default async function AccountPage() {
             <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400 sm:col-span-2">
               No polished vendor shots. Fan profile photos and food photos help
               other fans know who reviewed it and what actually showed up.
+            </p>
+            <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400 sm:col-span-2">
+              Helpful likes received are read from the database when available.
+              Remaining profile totals are still mock placeholders.
             </p>
           </div>
         </section>

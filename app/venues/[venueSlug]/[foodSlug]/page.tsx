@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 
 import {
   getFoodItemBySlug,
@@ -8,7 +10,15 @@ import {
   getVendorForFoodItem,
   getVenueBySlug
 } from "@/lib/sample-data";
+import { prisma } from "@/lib/prisma";
 import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
+import {
+  MOCK_REVIEWER_EMAIL,
+  MOCK_REVIEWER_USER_ID,
+  MOCK_USER_COOKIE_NAME,
+  hasMockUserAccess,
+  mockReviewerProfile
+} from "@/lib/user-auth";
 
 type FoodPageProps = {
   params: Promise<{
@@ -32,6 +42,102 @@ function getReviewerInitials(review: {
 
 function getPrimaryConsensusLabel(review: { labels: string[] }) {
   return review.labels[0] ?? "Fan Rating";
+}
+
+async function markReviewHelpful(formData: FormData) {
+  "use server";
+
+  const venueSlug = String(formData.get("venueSlug") ?? "");
+  const foodSlug = String(formData.get("foodSlug") ?? "");
+  const reviewId = String(formData.get("reviewId") ?? "");
+  const itemPath = `/venues/${venueSlug}/${foodSlug}`;
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
+
+  if (!isSignedIn) {
+    redirect(`/login?next=${encodeURIComponent(itemPath)}`);
+  }
+
+  const review = await prisma.review.findFirst({
+    where: {
+      id: reviewId,
+      status: "ACTIVE",
+      foodItem: {
+        slug: foodSlug,
+        venue: {
+          slug: venueSlug
+        }
+      }
+    },
+    include: {
+      venue: true
+    }
+  });
+
+  if (!review) {
+    redirect(itemPath);
+  }
+
+  const user = await prisma.user.upsert({
+    where: { id: MOCK_REVIEWER_USER_ID },
+    update: {
+      email: MOCK_REVIEWER_EMAIL,
+      displayName: mockReviewerProfile.displayName,
+      handle: mockReviewerProfile.handle,
+      homeVenueId: review.venueId
+    },
+    create: {
+      id: MOCK_REVIEWER_USER_ID,
+      email: MOCK_REVIEWER_EMAIL,
+      displayName: mockReviewerProfile.displayName,
+      handle: mockReviewerProfile.handle,
+      homeVenueId: review.venueId
+    }
+  });
+
+  await prisma.helpfulLike.upsert({
+    where: {
+      userId_reviewId: {
+        userId: user.id,
+        reviewId: review.id
+      }
+    },
+    update: {},
+    create: {
+      userId: user.id,
+      reviewId: review.id
+    }
+  });
+
+  revalidatePath(itemPath);
+  redirect(`${itemPath}?helpful=marked`);
+}
+
+async function getLikedReviewIds(reviewIds: string[]) {
+  if (reviewIds.length === 0) {
+    return new Set<string>();
+  }
+
+  try {
+    const helpfulLikes = await prisma.helpfulLike.findMany({
+      where: {
+        userId: MOCK_REVIEWER_USER_ID,
+        reviewId: {
+          in: reviewIds
+        }
+      },
+      select: {
+        reviewId: true
+      }
+    });
+
+    return new Set(helpfulLikes.map((like) => like.reviewId));
+  } catch (error) {
+    console.warn("Falling back to unliked review cards", error);
+    return new Set<string>();
+  }
 }
 
 export default async function FoodPage({ params }: FoodPageProps) {
@@ -73,6 +179,13 @@ export default async function FoodPage({ params }: FoodPageProps) {
         Boolean(review.photoPlaceholder || review.photoAlt || review.photoLabel)
     )
     .slice(0, 3);
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
+  const likedReviewIds = isSignedIn
+    ? await getLikedReviewIds(reviewPhotoCards.map((review) => review.id))
+    : new Set<string>();
   const moreFromVendor = vendor
     ? getFoodItemsByVendorSlug(vendor.slug).filter(
         (item) => item.slug !== foodItem.slug
@@ -477,13 +590,42 @@ export default async function FoodPage({ params }: FoodPageProps) {
                         </p>
                       </div>
                     </div>
-                    <button
-                      type="button"
-                      disabled
-                      className="mt-4 cursor-not-allowed rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400"
-                    >
-                      Sign in to mark helpful · {review.helpfulLikes}
-                    </button>
+                    {isSignedIn ? (
+                      likedReviewIds.has(review.id) ? (
+                        <button
+                          type="button"
+                          disabled
+                          className="mt-4 cursor-not-allowed rounded-full border border-[var(--slop-orange)] px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-[var(--slop-orange)]"
+                        >
+                          Marked helpful · {review.helpfulLikes}
+                        </button>
+                      ) : (
+                        <form action={markReviewHelpful}>
+                          <input type="hidden" name="venueSlug" value={venue.slug} />
+                          <input
+                            type="hidden"
+                            name="foodSlug"
+                            value={foodItem.slug}
+                          />
+                          <input type="hidden" name="reviewId" value={review.id} />
+                          <button
+                            type="submit"
+                            className="mt-4 rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                          >
+                            Mark helpful · {review.helpfulLikes}
+                          </button>
+                        </form>
+                      )
+                    ) : (
+                      <Link
+                        href={`/login?next=${encodeURIComponent(
+                          `/venues/${venue.slug}/${foodItem.slug}`
+                        )}`}
+                        className="mt-4 inline-flex rounded-full border border-zinc-800 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                      >
+                        Sign in to mark helpful · {review.helpfulLikes}
+                      </Link>
+                    )}
                   </div>
                 </div>
               </article>
