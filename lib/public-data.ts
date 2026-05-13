@@ -405,7 +405,21 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
   const normalizedVenueSlug = venueSlug.trim();
   const normalizedFoodSlug = decodeURIComponent(foodSlug).trim();
 
+  const sampleForSlug = foodPhotos.filter(
+    (photo) =>
+      photo.venueSlug === normalizedVenueSlug && photo.foodSlug === normalizedFoodSlug
+  );
+
   try {
+    const dbItem = await prisma.foodItem.findFirst({
+      where: {
+        slug: normalizedFoodSlug,
+        status: "ACTIVE",
+        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+      },
+      select: { id: true }
+    });
+
     const dbPhotos = await prisma.foodPhoto.findMany({
       where: {
         status: "ACTIVE",
@@ -438,21 +452,17 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
         month: "short",
         year: "numeric"
       }),
+      imageUrl: photo.url ?? undefined,
       imagePlaceholder: photo.placeholder ?? "🍔"
     }));
 
-    return fallback(
-      mappedPhotos,
-      foodPhotos.filter(
-        (photo) =>
-          photo.venueSlug === normalizedVenueSlug && photo.foodSlug === normalizedFoodSlug
-      )
-    );
+    if (dbItem) {
+      return mappedPhotos;
+    }
+
+    return fallback(mappedPhotos, sampleForSlug);
   } catch (error) {
     console.warn("Falling back to sample photos", error);
-    return foodPhotos.filter(
-      (photo) =>
-        photo.venueSlug === normalizedVenueSlug && photo.foodSlug === normalizedFoodSlug
-    );
+    return sampleForSlug;
   }
 }

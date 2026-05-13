@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { getPublicFoodItemBySlug, getPublicVenueBySlug } from "@/lib/public-data";
+import { buildGameDayKey } from "@/lib/game-day";
 import { isCloudinaryConfigured, uploadImageFile } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
@@ -45,6 +46,17 @@ type ReviewPageProps = {
     foodSlug: string;
   }>;
 };
+
+function revalidateFoodItemSurfaces(
+  canonicalItemPath: string,
+  venueSlug: string,
+  vendorSlug: string
+) {
+  revalidatePath(canonicalItemPath);
+  revalidatePath(`/venues/${venueSlug}`);
+  revalidatePath(`${canonicalItemPath}/review`);
+  revalidatePath(`/venues/${venueSlug}/vendors/${vendorSlug}`);
+}
 
 function SignalOption({
   label,
@@ -143,7 +155,8 @@ async function submitReview(formData: FormData) {
           name: true,
           itemType: true,
           category: true,
-          customCategoryLabel: true
+          customCategoryLabel: true,
+          vendor: { select: { slug: true } }
         }
       })
     : null;
@@ -208,7 +221,7 @@ async function submitReview(formData: FormData) {
 
   const today = new Date();
   const seasonLabel = String(today.getFullYear());
-  const gameDayKey = `${seasonLabel}-${venue.slug}-${today.toISOString().slice(0, 10)}`;
+  const gameDayKey = buildGameDayKey(venue.slug, today);
   const replayValueData =
     typeof replayValue === "string" && replayValue in ReplayValue
       ? (replayValue as ReplayValue)
@@ -285,16 +298,25 @@ async function submitReview(formData: FormData) {
         where: { id: user.id },
         data: { photoUploadCount: { increment: 1 } }
       });
-    } catch (error) {
-      console.warn("Review photo upload failed", error);
-      redirect(`${canonicalItemPath}/review?error=upload`);
+    } catch {
+      revalidateFoodItemSurfaces(
+        canonicalItemPath,
+        venue.slug,
+        foodItemRow.vendor.slug
+      );
+      redirect(
+        `${canonicalItemPath}?reviewSubmitted=true&photoError=upload`
+      );
     }
   }
 
-  revalidatePath(canonicalItemPath);
-  revalidatePath(`${canonicalItemPath}/review`);
+  revalidateFoodItemSurfaces(
+    canonicalItemPath,
+    venue.slug,
+    foodItemRow.vendor.slug
+  );
 
-  redirect(`${canonicalItemPath}?review=saved`);
+  redirect(`${canonicalItemPath}?reviewSubmitted=true`);
 }
 
 export default async function ReviewPage({ params }: ReviewPageProps) {

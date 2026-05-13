@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -20,10 +21,16 @@ import {
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 
+export const dynamic = "force-dynamic";
+
 type FoodPageProps = {
   params: Promise<{
     venueSlug: string;
     foodSlug: string;
+  }>;
+  searchParams?: Promise<{
+    reviewSubmitted?: string;
+    photoError?: string;
   }>;
 };
 
@@ -237,8 +244,11 @@ async function getLikedReviewIds(reviewIds: string[]) {
   }
 }
 
-export default async function FoodPage({ params }: FoodPageProps) {
+export default async function FoodPage({ params, searchParams }: FoodPageProps) {
   const { venueSlug, foodSlug } = await params;
+  const query = (await searchParams) ?? {};
+  const showReviewSaved = query.reviewSubmitted === "true";
+  const photoError = query.photoError;
   const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
@@ -255,7 +265,6 @@ export default async function FoodPage({ params }: FoodPageProps) {
 
   const vendor = await getPublicVendorForFoodItem(foodItem);
   const foodPhotos = await getPublicPhotosForFoodItem(venue.slug, foodItem.slug);
-  const heroPhoto = foodPhotos[0];
   const priceIntel = await getPriceIntel(venue.slug, foodItem.slug, foodItem);
   const careerStats = await getDbBackedItemSlopStats(
     venue.slug,
@@ -274,12 +283,18 @@ export default async function FoodPage({ params }: FoodPageProps) {
     "gameDayFresh"
   );
   const reviewPhotoCards = careerStats.reviews
-    .filter(
-      (review) =>
-        review.hasPhoto ||
-        Boolean(review.photoPlaceholder || review.photoAlt || review.photoLabel)
-    )
+    .filter((review) => Boolean(review.photoUrl))
     .slice(0, 3);
+  const heroImageUrl =
+    foodPhotos.find((p) => p.imageUrl)?.imageUrl ?? reviewPhotoCards[0]?.photoUrl;
+  const heroAlt =
+    foodPhotos.find((p) => p.imageUrl)?.alt ??
+    reviewPhotoCards[0]?.photoAlt ??
+    `${foodItem.name} fan photo`;
+  const heroEmoji =
+    foodPhotos.find((p) => !p.imageUrl)?.imagePlaceholder ??
+    foodPhotos[0]?.imagePlaceholder ??
+    "🍔";
   const cookieStore = await cookies();
   const isSignedIn = hasMockUserAccess(
     cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
@@ -303,15 +318,40 @@ export default async function FoodPage({ params }: FoodPageProps) {
           Back to {venue.name}
         </Link>
 
+        {showReviewSaved ? (
+          <div
+            role="status"
+            className="mt-4 rounded-2xl border border-emerald-800/80 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-100"
+          >
+            <p className="font-bold">Review saved</p>
+            <p className="mt-1 text-emerald-200/90">
+              {photoError === "upload"
+                ? "Your ratings are live, but the fan photo failed to upload. Try again from Review this item with a smaller image or different format."
+                : "Thanks — Season Standings and Game Day Fresh update from structured signals and any fan photos you added."}
+            </p>
+          </div>
+        ) : null}
+
         <header className="grid gap-5 py-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-          {heroPhoto ? (
-            <div
-              aria-label={heroPhoto.alt}
-              className="brand-card flex aspect-[16/10] items-center justify-center rounded-3xl border text-7xl sm:text-8xl lg:order-2"
-            >
-              {heroPhoto.imagePlaceholder}
-            </div>
-          ) : null}
+          <div
+            aria-label={heroAlt}
+            className="brand-card relative aspect-[16/10] overflow-hidden rounded-3xl border lg:order-2"
+          >
+            {heroImageUrl ? (
+              <Image
+                src={heroImageUrl}
+                alt={heroAlt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                priority
+              />
+            ) : (
+              <div className="flex h-full min-h-[12rem] items-center justify-center text-7xl sm:text-8xl">
+                {heroEmoji}
+              </div>
+            )}
+          </div>
 
           <div>
             <div className="mb-3 flex flex-wrap gap-2">
@@ -422,6 +462,12 @@ export default async function FoodPage({ params }: FoodPageProps) {
           </div>
 
           <div className="mt-5 flex gap-3 overflow-x-auto pb-2">
+            {reviewPhotoCards.length === 0 ? (
+              <p className="min-w-48 rounded-3xl border border-dashed border-zinc-700 bg-black px-4 py-6 text-sm text-zinc-500">
+                No fan-uploaded photos yet. Submit a review with a photo to show
+                what actually showed up. Text-only ratings still power stats.
+              </p>
+            ) : null}
             {reviewPhotoCards.map((review) => (
               <article
                 key={review.id}
@@ -432,9 +478,17 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     review.photoAlt ??
                     `Fan-uploaded photo for ${foodItem.name}`
                   }
-                  className="flex aspect-square items-center justify-center rounded-2xl bg-zinc-950 text-6xl"
+                  className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-zinc-950 text-6xl"
                 >
-                  {review.photoPlaceholder ?? heroPhoto?.imagePlaceholder ?? "🍔"}
+                  {review.photoUrl ? (
+                    <Image
+                      src={review.photoUrl}
+                      alt={review.photoAlt ?? `Fan photo for ${foodItem.name}`}
+                      fill
+                      className="object-cover"
+                      sizes="200px"
+                    />
+                  ) : null}
                 </div>
                 <h3 className="mt-3 text-sm font-bold">
                   {review.photoLabel ?? "Fan photo"}
@@ -658,9 +712,17 @@ export default async function FoodPage({ params }: FoodPageProps) {
                     aria-label={
                       review.photoAlt ?? `Fan-uploaded photo for ${foodItem.name}`
                     }
-                    className="flex aspect-[4/3] items-center justify-center bg-black text-7xl sm:text-8xl"
+                    className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-black text-7xl sm:text-8xl"
                   >
-                    {review.photoPlaceholder ?? heroPhoto?.imagePlaceholder ?? "🍔"}
+                    {review.photoUrl ? (
+                      <Image
+                        src={review.photoUrl}
+                        alt={review.photoAlt ?? `Fan photo for ${foodItem.name}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 82vw, 24rem"
+                      />
+                    ) : null}
                   </div>
                   <div className="absolute -bottom-5 left-5 flex h-12 w-12 items-center justify-center rounded-full border-4 border-[var(--slop-surface)] bg-[var(--slop-cream)] text-sm font-black text-[var(--slop-ink)]">
                     {getReviewerInitials(review)}
@@ -808,9 +870,19 @@ export default async function FoodPage({ params }: FoodPageProps) {
               >
                 <div
                   aria-label={photo.alt}
-                  className="flex aspect-square items-center justify-center rounded-2xl bg-black text-6xl"
+                  className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-black text-6xl"
                 >
-                  {photo.imagePlaceholder}
+                  {photo.imageUrl ? (
+                    <Image
+                      src={photo.imageUrl}
+                      alt={photo.alt}
+                      fill
+                      className="object-cover"
+                      sizes="208px"
+                    />
+                  ) : (
+                    photo.imagePlaceholder
+                  )}
                 </div>
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <h3 className="text-sm font-bold">{photo.caption}</h3>

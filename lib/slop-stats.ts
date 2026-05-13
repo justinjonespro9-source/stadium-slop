@@ -1,3 +1,4 @@
+import { localCalendarDateKey, utcCalendarDateKey } from "./game-day";
 import { prisma } from "./prisma";
 import {
   foodReviews,
@@ -272,6 +273,7 @@ function getDbReviewsForMode(
     note: string | null;
     createdAt: Date;
     photos: {
+      url: string | null;
       placeholder: string | null;
       alt: string;
       caption: string | null;
@@ -288,11 +290,19 @@ function getDbReviewsForMode(
   mode: SlopStatsMode
 ) {
   if (mode === "gameDayFresh") {
-    return reviews.filter((review) => review.verifiedGameDay);
+    const localD = localCalendarDateKey();
+    const utcD = utcCalendarDateKey();
+    return reviews.filter(
+      (review) =>
+        review.verifiedGameDay &&
+        (review.gameDayKey.endsWith(`-${localD}`) ||
+          review.gameDayKey.endsWith(`-${utcD}`))
+    );
   }
 
   if (mode === "season") {
-    return reviews.filter((review) => review.seasonLabel === "2026");
+    const year = String(new Date().getFullYear());
+    return reviews.filter((review) => review.seasonLabel === year);
   }
 
   return reviews;
@@ -342,13 +352,18 @@ export async function getDbBackedItemSlopStats(
   itemSlug: string,
   mode: SlopStatsMode = "allTime"
 ): Promise<ItemSlopStats> {
+  const normalizedVenue = venueSlug.trim();
+  const normalizedSlug = itemSlug.trim();
+
+  let item = null;
+
   try {
-    const item = await prisma.foodItem.findFirst({
+    item = await prisma.foodItem.findFirst({
       where: {
-        slug: itemSlug.trim(),
+        slug: normalizedSlug,
         status: "ACTIVE",
         venue: {
-          slug: venueSlug.trim(),
+          slug: normalizedVenue,
           status: "ACTIVE"
         }
       },
@@ -357,6 +372,7 @@ export async function getDbBackedItemSlopStats(
           where: {
             status: "ACTIVE"
           },
+          orderBy: { createdAt: "desc" },
           include: {
             user: {
               select: {
@@ -375,6 +391,7 @@ export async function getDbBackedItemSlopStats(
                 status: "ACTIVE"
               },
               select: {
+                url: true,
                 placeholder: true,
                 alt: true,
                 caption: true
@@ -384,46 +401,61 @@ export async function getDbBackedItemSlopStats(
         }
       }
     });
+  } catch (error) {
+    console.warn("Falling back to sample Slop stats (DB unavailable)", error);
+    return getItemSlopStats(normalizedSlug, mode);
+  }
 
-    if (!item || item.reviews.length === 0) {
-      return getItemSlopStats(itemSlug, mode);
-    }
+  if (!item) {
+    return getItemSlopStats(normalizedSlug, mode);
+  }
 
+  if (item.reviews.length === 0) {
+    return getStatsFromReviews(normalizedSlug, mode, []);
+  }
+
+  try {
     const reviewsForMode = getDbReviewsForMode(item.reviews, mode);
     const fallbackReviews =
       reviewsForMode.length > 0 ? reviewsForMode : getDbReviewsForMode(item.reviews, "allTime");
 
-    const reviews = fallbackReviews.map<FoodReview>((review) => ({
-      id: review.id,
-      foodSlug: itemSlug,
-      venueSlug,
-      reviewerId: review.user.id,
-      reviewerName: review.user.displayName,
-      reviewerHandle: review.user.handle,
-      slopScore: Number(review.slopScore),
-      napkinRating: Math.min(5, Math.max(1, review.napkinRating)) as 1 | 2 | 3 | 4 | 5,
-      labels: review.labels.map(consensusLabelFromDb),
-      replayValue: replayValueFromDb(review.replayValue),
-      priceCheck: priceCheckFromDb(review.priceCheck),
-      helpfulLikes: review._count.helpfulLikes,
-      verifiedGameDay: review.verifiedGameDay,
-      seasonLabel: review.seasonLabel,
-      gameDayKey: review.gameDayKey,
-      dateLabel: review.createdAt.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      }),
-      hasPhoto: review.photos.length > 0,
-      photoAlt: review.photos[0]?.alt,
-      photoLabel: review.photos[0]?.caption ?? undefined,
-      photoPlaceholder: review.photos[0]?.placeholder ?? undefined,
-      note: review.note ?? undefined
-    }));
+    const reviews = fallbackReviews.map<FoodReview>((review) => {
+      const primaryPhoto = review.photos.find((p) => p.url);
+      const photoUrl = primaryPhoto?.url ?? undefined;
 
-    return getStatsFromReviews(itemSlug, mode, reviews);
+      return {
+        id: review.id,
+        foodSlug: normalizedSlug,
+        venueSlug: normalizedVenue,
+        reviewerId: review.user.id,
+        reviewerName: review.user.displayName,
+        reviewerHandle: review.user.handle,
+        slopScore: Number(review.slopScore),
+        napkinRating: Math.min(5, Math.max(1, review.napkinRating)) as 1 | 2 | 3 | 4 | 5,
+        labels: review.labels.map(consensusLabelFromDb),
+        replayValue: replayValueFromDb(review.replayValue),
+        priceCheck: priceCheckFromDb(review.priceCheck),
+        helpfulLikes: review._count.helpfulLikes,
+        verifiedGameDay: review.verifiedGameDay,
+        seasonLabel: review.seasonLabel,
+        gameDayKey: review.gameDayKey,
+        dateLabel: review.createdAt.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        }),
+        hasPhoto: Boolean(photoUrl),
+        photoUrl,
+        photoAlt: primaryPhoto?.alt,
+        photoLabel: primaryPhoto?.caption ?? undefined,
+        photoPlaceholder: primaryPhoto?.placeholder ?? undefined,
+        note: review.note ?? undefined
+      };
+    });
+
+    return getStatsFromReviews(normalizedSlug, mode, reviews);
   } catch (error) {
-    console.warn("Falling back to sample Slop stats", error);
-    return getItemSlopStats(itemSlug, mode);
+    console.warn("Slop stats mapping failed; using empty rollups for DB item", error);
+    return getStatsFromReviews(normalizedSlug, mode, []);
   }
 }
