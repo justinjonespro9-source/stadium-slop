@@ -2,6 +2,7 @@ import { prisma } from "./prisma";
 import {
   foodItems,
   foodPhotos,
+  getFoodItemsByVenueSlug,
   vendors,
   venues,
   type FoodItem,
@@ -280,33 +281,40 @@ export async function getPublicVenues() {
 }
 
 export async function getPublicVenueBySlug(slug: string) {
+  const normalized = slug.trim();
+
   try {
     const venue = await prisma.venue.findFirst({
-      where: { slug, status: "ACTIVE" }
+      where: { slug: normalized, status: "ACTIVE" }
     });
 
-    return venue ? mapVenueFromDb(venue) : venues.find((item) => item.slug === slug);
+    return venue ? mapVenueFromDb(venue) : venues.find((item) => item.slug === normalized);
   } catch (error) {
     console.warn("Falling back to sample venue", error);
-    return venues.find((item) => item.slug === slug);
+    return venues.find((item) => item.slug === normalized);
   }
 }
 
 export async function getPublicVendorsByVenueSlug(venueSlug: string) {
+  const normalizedVenueSlug = venueSlug.trim();
+
   try {
     const dbVendors = await prisma.vendor.findMany({
-      where: { status: "ACTIVE", venue: { slug: venueSlug } },
+      where: {
+        status: "ACTIVE",
+        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+      },
       include: { venue: { select: { slug: true } } },
       orderBy: { name: "asc" }
     });
 
     return fallback(
       dbVendors.map(mapVendorFromDb),
-      vendors.filter((vendor) => vendor.venueSlug === venueSlug)
+      vendors.filter((vendor) => vendor.venueSlug === normalizedVenueSlug)
     );
   } catch (error) {
     console.warn("Falling back to sample vendors", error);
-    return vendors.filter((vendor) => vendor.venueSlug === venueSlug);
+    return vendors.filter((vendor) => vendor.venueSlug === normalizedVenueSlug);
   }
 }
 
@@ -316,9 +324,14 @@ export async function getPublicVendorBySlug(venueSlug: string, vendorSlug: strin
 }
 
 export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
+  const normalizedVenueSlug = venueSlug.trim();
+
   try {
     const dbItems = await prisma.foodItem.findMany({
-      where: { status: "ACTIVE", venue: { slug: venueSlug } },
+      where: {
+        status: "ACTIVE",
+        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+      },
       include: {
         venue: { select: { slug: true } },
         vendor: { select: { slug: true } },
@@ -329,11 +342,11 @@ export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
 
     return fallback(
       dbItems.map(mapFoodItemFromDb),
-      foodItems.filter((item) => item.venueSlug === venueSlug)
+      foodItems.filter((item) => item.venueSlug === normalizedVenueSlug)
     );
   } catch (error) {
     console.warn("Falling back to sample venue items", error);
-    return foodItems.filter((item) => item.venueSlug === venueSlug);
+    return foodItems.filter((item) => item.venueSlug === normalizedVenueSlug);
   }
 }
 
@@ -346,8 +359,41 @@ export async function getPublicFoodItemsByVendorSlug(
 }
 
 export async function getPublicFoodItemBySlug(venueSlug: string, foodSlug: string) {
-  const items = await getPublicFoodItemsByVenueSlug(venueSlug);
-  return items.find((item) => item.slug === foodSlug);
+  const normalizedVenueSlug = venueSlug.trim();
+  const normalizedFoodSlug = decodeURIComponent(foodSlug).trim();
+
+  try {
+    const row = await prisma.foodItem.findFirst({
+      where: {
+        slug: normalizedFoodSlug,
+        status: "ACTIVE",
+        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+      },
+      include: {
+        venue: { select: { slug: true } },
+        vendor: { select: { slug: true } },
+        reviews: { where: { status: "ACTIVE" } }
+      }
+    });
+
+    if (row) {
+      return mapFoodItemFromDb(row as DbFoodItem);
+    }
+  } catch (error) {
+    console.warn("DB food item by slug failed, trying sample", error);
+  }
+
+  const fromVenue = getFoodItemsByVenueSlug(normalizedVenueSlug).find(
+    (item) => item.slug === normalizedFoodSlug
+  );
+
+  if (fromVenue) {
+    return fromVenue;
+  }
+
+  return foodItems.find(
+    (item) => item.slug === normalizedFoodSlug && item.venueSlug === normalizedVenueSlug
+  );
 }
 
 export async function getPublicVendorForFoodItem(item: FoodItem) {
@@ -356,11 +402,17 @@ export async function getPublicVendorForFoodItem(item: FoodItem) {
 }
 
 export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: string) {
+  const normalizedVenueSlug = venueSlug.trim();
+  const normalizedFoodSlug = decodeURIComponent(foodSlug).trim();
+
   try {
     const dbPhotos = await prisma.foodPhoto.findMany({
       where: {
         status: "ACTIVE",
-        foodItem: { slug: foodSlug, venue: { slug: venueSlug } }
+        foodItem: {
+          slug: normalizedFoodSlug,
+          venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+        }
       },
       include: {
         foodItem: { select: { slug: true } },
@@ -372,8 +424,8 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
 
     const mappedPhotos: FoodPhoto[] = dbPhotos.map((photo) => ({
       id: photo.id,
-      foodSlug: photo.foodItem?.slug ?? foodSlug,
-      venueSlug: photo.venue?.slug ?? venueSlug,
+      foodSlug: photo.foodItem?.slug ?? normalizedFoodSlug,
+      venueSlug: photo.venue?.slug ?? normalizedVenueSlug,
       reviewId: photo.reviewId ?? undefined,
       uploaderUserId: photo.uploaderUserId,
       photoType:
@@ -392,13 +444,15 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
     return fallback(
       mappedPhotos,
       foodPhotos.filter(
-        (photo) => photo.venueSlug === venueSlug && photo.foodSlug === foodSlug
+        (photo) =>
+          photo.venueSlug === normalizedVenueSlug && photo.foodSlug === normalizedFoodSlug
       )
     );
   } catch (error) {
     console.warn("Falling back to sample photos", error);
     return foodPhotos.filter(
-      (photo) => photo.venueSlug === venueSlug && photo.foodSlug === foodSlug
+      (photo) =>
+        photo.venueSlug === normalizedVenueSlug && photo.foodSlug === normalizedFoodSlug
     );
   }
 }

@@ -345,9 +345,11 @@ export async function getDbBackedItemSlopStats(
   try {
     const item = await prisma.foodItem.findFirst({
       where: {
-        slug: itemSlug,
+        slug: itemSlug.trim(),
+        status: "ACTIVE",
         venue: {
-          slug: venueSlug
+          slug: venueSlug.trim(),
+          status: "ACTIVE"
         }
       },
       include: {

@@ -9,6 +9,7 @@ import {
   getPublicVendorBySlug,
   getPublicVenueBySlug
 } from "@/lib/public-data";
+import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { getDbBackedItemSlopStats, getSlopScoreTier } from "@/lib/slop-stats";
 
 type VendorPageProps = {
@@ -82,6 +83,8 @@ export default async function VendorPage({ params }: VendorPageProps) {
           </p>
           <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
             {vendorItems.map(({ item, stats }, index) => {
+              const napkinEligible = isNapkinEligibleItem(item);
+
               return (
                 <Link
                   key={item.slug}
@@ -106,7 +109,9 @@ export default async function VendorPage({ params }: VendorPageProps) {
                       </p>
                       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
                         <span>{stats.reviewCount} reviews</span>
-                        <span>{stats.roundedNapkinRating}/5 napkins</span>
+                        {napkinEligible ? (
+                          <span>{stats.roundedNapkinRating}/5 napkins</span>
+                        ) : null}
                         {stats.topReplayValue ? (
                           <span>
                             {stats.topReplayValue.percentage}%{" "}

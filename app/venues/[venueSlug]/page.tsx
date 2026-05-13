@@ -18,6 +18,7 @@ import {
   type ItemSlopStats,
   type SlopStatsMode
 } from "@/lib/slop-stats";
+import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { prisma } from "@/lib/prisma";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
@@ -306,6 +307,8 @@ function ItemStandingRow({
   vendor?: Vendor;
   showFresh?: boolean;
 }) {
+  const napkinEligible = isNapkinEligibleItem(item);
+
   return (
     <Link
       href={`/venues/${venueSlug}/${item.slug}`}
@@ -343,7 +346,9 @@ function ItemStandingRow({
           <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
             <span>{item.itemType}</span>
             <span>{stats.reviewCount} reviews</span>
-            <span>{stats.roundedNapkinRating}/5 napkins</span>
+            {napkinEligible ? (
+              <span>{stats.roundedNapkinRating}/5 napkins</span>
+            ) : null}
             {stats.topReplayValue ? (
               <span>
                 {stats.topReplayValue.percentage}% {stats.topReplayValue.label}

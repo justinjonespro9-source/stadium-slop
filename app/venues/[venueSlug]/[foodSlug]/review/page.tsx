@@ -3,8 +3,9 @@ import { PriceCheck, ReplayValue } from "@prisma/client";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
-import { getFoodItemBySlug, getVenueBySlug } from "@/lib/sample-data";
+import { getPublicFoodItemBySlug, getPublicVenueBySlug } from "@/lib/public-data";
 import { prisma } from "@/lib/prisma";
+import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
 import {
   MOCK_REVIEWER_EMAIL,
   MOCK_REVIEWER_USER_ID,
@@ -115,46 +116,65 @@ async function submitReview(formData: FormData) {
   );
   const venueSlug = String(formData.get("venueSlug") ?? "");
   const foodSlug = String(formData.get("foodSlug") ?? "");
-  const itemPath = `/venues/${venueSlug}/${foodSlug}`;
+  const normalizedVenueSlug = venueSlug.trim();
+  const normalizedFoodSlug = decodeURIComponent(foodSlug).trim();
+  const draftPath = `/venues/${normalizedVenueSlug}/${normalizedFoodSlug}`;
 
   if (!isSignedIn) {
-    redirect(`/login?next=${encodeURIComponent(`${itemPath}/review`)}`);
+    redirect(`/login?next=${encodeURIComponent(`${draftPath}/review`)}`);
   }
 
-  const slopScore = Number(formData.get("slopScore"));
-  const napkinRating = Number(formData.get("napkinRating"));
-  const replayValue = formData.get("replayValue");
-  const priceCheck = formData.get("priceCheck");
-  const noteValue = String(formData.get("note") ?? "").trim();
-
-  if (
-    !Number.isFinite(slopScore) ||
-    slopScore < 1 ||
-    slopScore > 10 ||
-    !Number.isInteger(napkinRating) ||
-    napkinRating < 1 ||
-    napkinRating > 5
-  ) {
-    redirect(`${itemPath}/review?error=missing-score`);
-  }
-
-  const venue = await prisma.venue.findUnique({
-    where: { slug: venueSlug }
+  const venue = await prisma.venue.findFirst({
+    where: { slug: normalizedVenueSlug, status: "ACTIVE" }
   });
 
-  const foodItem = venue
-    ? await prisma.foodItem.findUnique({
+  const foodItemRow = venue
+    ? await prisma.foodItem.findFirst({
         where: {
-          venueId_slug: {
-            venueId: venue.id,
-            slug: foodSlug
-          }
+          slug: normalizedFoodSlug,
+          venueId: venue.id,
+          status: "ACTIVE"
+        },
+        select: {
+          id: true,
+          slug: true,
+          itemType: true,
+          category: true,
+          customCategoryLabel: true
         }
       })
     : null;
 
-  if (!venue || !foodItem) {
-    redirect(itemPath);
+  if (!venue || !foodItemRow) {
+    redirect(normalizedVenueSlug ? `/venues/${normalizedVenueSlug}` : "/venues");
+  }
+
+  const napkinEligible = isNapkinEligibleFromPrisma(foodItemRow);
+  const canonicalItemPath = `/venues/${venue.slug}/${foodItemRow.slug}`;
+
+  const slopScore = Number(formData.get("slopScore"));
+  const napkinRaw = formData.get("napkinRating");
+  let napkinRating: number;
+
+  if (napkinEligible) {
+    napkinRating = Number(napkinRaw);
+  } else {
+    napkinRating = 1;
+  }
+
+  const replayValue = formData.get("replayValue");
+  const priceCheck = formData.get("priceCheck");
+  const noteValue = String(formData.get("note") ?? "").trim();
+
+  if (!Number.isFinite(slopScore) || slopScore < 1 || slopScore > 10) {
+    redirect(`${canonicalItemPath}/review?error=missing-score`);
+  }
+
+  if (
+    napkinEligible &&
+    (!Number.isInteger(napkinRating) || napkinRating < 1 || napkinRating > 5)
+  ) {
+    redirect(`${canonicalItemPath}/review?error=missing-score`);
   }
 
   const user = await prisma.user.upsert({
@@ -176,7 +196,7 @@ async function submitReview(formData: FormData) {
 
   const today = new Date();
   const seasonLabel = String(today.getFullYear());
-  const gameDayKey = `${seasonLabel}-${venueSlug}-${today.toISOString().slice(0, 10)}`;
+  const gameDayKey = `${seasonLabel}-${venue.slug}-${today.toISOString().slice(0, 10)}`;
   const replayValueData =
     typeof replayValue === "string" && replayValue in ReplayValue
       ? (replayValue as ReplayValue)
@@ -190,7 +210,7 @@ async function submitReview(formData: FormData) {
     where: {
       userId_foodItemId_gameDayKey: {
         userId: user.id,
-        foodItemId: foodItem.id,
+        foodItemId: foodItemRow.id,
         gameDayKey
       }
     },
@@ -206,7 +226,7 @@ async function submitReview(formData: FormData) {
     },
     create: {
       userId: user.id,
-      foodItemId: foodItem.id,
+      foodItemId: foodItemRow.id,
       venueId: venue.id,
       gameDayKey,
       slopScore,
@@ -220,22 +240,24 @@ async function submitReview(formData: FormData) {
     }
   });
 
-  redirect(`${itemPath}?review=saved`);
+  redirect(`${canonicalItemPath}?review=saved`);
 }
 
 export default async function ReviewPage({ params }: ReviewPageProps) {
   const { venueSlug, foodSlug } = await params;
-  const venue = getVenueBySlug(venueSlug);
+  const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
     notFound();
   }
 
-  const foodItem = getFoodItemBySlug(foodSlug);
+  const foodItem = await getPublicFoodItemBySlug(venue.slug, foodSlug);
 
   if (!foodItem || foodItem.venueSlug !== venue.slug) {
     notFound();
   }
+
+  const napkinEligible = isNapkinEligibleItem(foodItem);
 
   const cookieStore = await cookies();
   const isSignedIn = hasMockUserAccess(
@@ -359,8 +381,17 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               Tap it, snap it, move on.
             </h2>
             <p className="mt-3 text-sm leading-6 text-zinc-400">
-              Slop Score and Napkin Rating are required because structured
-              signals power Season Standings. Photo and note are optional.
+              {napkinEligible ? (
+                <>
+                  Slop Score and Napkin Rating are required because structured
+                  signals power Season Standings. Photo and note are optional.
+                </>
+              ) : (
+                <>
+                  Slop Score is required for drinks and beverages. Napkin Rating
+                  is for messy food only. Photo and note are optional.
+                </>
+              )}
             </p>
           </div>
 
@@ -377,24 +408,28 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-lg font-black">2. Napkin Rating</h3>
-              <p className="mt-2 text-sm text-zinc-500">
-                How sloppy was it? This measures messiness, not quality.
-              </p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-5">
-                {napkinOptions.map((option) => (
-                  <NapkinButton
-                    key={option.value}
-                    value={option.value}
-                    label={option.label}
-                  />
-                ))}
+            {napkinEligible ? (
+              <div>
+                <h3 className="text-lg font-black">2. Napkin Rating</h3>
+                <p className="mt-2 text-sm text-zinc-500">
+                  How sloppy was it? This measures messiness, not quality.
+                </p>
+                <div className="mt-3 grid gap-2 sm:grid-cols-5">
+                  {napkinOptions.map((option) => (
+                    <NapkinButton
+                      key={option.value}
+                      value={option.value}
+                      label={option.label}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : null}
 
             <div className="rounded-3xl border border-zinc-800 bg-black p-5">
-              <h3 className="text-lg font-black">3. Optional photo</h3>
+              <h3 className="text-lg font-black">
+                {napkinEligible ? "3." : "2."} Optional photo
+              </h3>
               <p className="mt-2 text-sm leading-6 text-zinc-500">
                 Add a photo to make your review more trusted. Photos help other
                 fans know what actually showed up, and verified game-day photos
@@ -423,7 +458,9 @@ export default async function ReviewPage({ params }: ReviewPageProps) {
             </div>
 
             <div>
-              <h3 className="text-lg font-black">4. Optional food note</h3>
+              <h3 className="text-lg font-black">
+                {napkinEligible ? "4." : "3."} Optional food note
+              </h3>
               <p className="mt-2 text-sm text-zinc-500">
                 One quick food-focused reaction is enough. Aim for 280-300
                 characters max. No comment threads, no dislikes.

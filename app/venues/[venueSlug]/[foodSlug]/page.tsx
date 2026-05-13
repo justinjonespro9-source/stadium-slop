@@ -18,6 +18,7 @@ import {
   hasMockUserAccess
 } from "@/lib/user-auth";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
+import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 
 type FoodPageProps = {
   params: Promise<{
@@ -250,6 +251,8 @@ export default async function FoodPage({ params }: FoodPageProps) {
     notFound();
   }
 
+  const napkinEligible = isNapkinEligibleItem(foodItem);
+
   const vendor = await getPublicVendorForFoodItem(foodItem);
   const foodPhotos = await getPublicPhotosForFoodItem(venue.slug, foodItem.slug);
   const heroPhoto = foodPhotos[0];
@@ -358,8 +361,13 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 {freshStats.reviewCount > 0
                   ? `${freshStats.averageSlopScore.toFixed(1)} today`
                   : "pending"}{" "}
-                · {seasonStats.reviewCount} reviews ·{" "}
-                {seasonStats.roundedNapkinRating} Napkins
+                · {seasonStats.reviewCount} reviews
+                {napkinEligible ? (
+                  <>
+                    {" "}
+                    · {seasonStats.roundedNapkinRating} Napkins
+                  </>
+                ) : null}
               </p>
               <p className="mt-1 text-xs leading-5 text-zinc-500 sm:text-sm">
                 Current price{" "}
@@ -487,7 +495,9 @@ export default async function FoodPage({ params }: FoodPageProps) {
             Slop Score, replay, and value
           </h2>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <div
+            className={`mt-5 grid grid-cols-2 gap-2 ${napkinEligible ? "sm:grid-cols-4" : "sm:grid-cols-3"}`}
+          >
             <div className="rounded-2xl bg-black p-3">
               <p className="text-sm text-zinc-500">Slop Score</p>
               <p className="mt-1 text-2xl font-black">
@@ -495,15 +505,17 @@ export default async function FoodPage({ params }: FoodPageProps) {
               </p>
               <p className="mt-1 text-xs text-zinc-500">{slopTier}</p>
             </div>
-            <div className="rounded-2xl bg-black p-3">
-              <p className="text-sm text-zinc-500">Napkin Avg</p>
-              <p className="mt-1 text-2xl font-black">
-                {careerStats.averageNapkinRating.toFixed(1)}
-              </p>
-              <p className="mt-1 text-xs text-zinc-500">
-                Displays as {careerStats.roundedNapkinRating}/5
-              </p>
-            </div>
+            {napkinEligible ? (
+              <div className="rounded-2xl bg-black p-3">
+                <p className="text-sm text-zinc-500">Napkin Avg</p>
+                <p className="mt-1 text-2xl font-black">
+                  {careerStats.averageNapkinRating.toFixed(1)}
+                </p>
+                <p className="mt-1 text-xs text-zinc-500">
+                  Displays as {careerStats.roundedNapkinRating}/5
+                </p>
+              </div>
+            ) : null}
             <div className="rounded-2xl bg-black p-3">
               <p className="text-sm text-zinc-500">Reviews</p>
               <p className="mt-1 text-2xl font-black">
@@ -604,15 +616,17 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 {foodItem.lineWaitLabel}
               </p>
             </div>
-            <div className="col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:col-span-2 sm:p-5">
-              <p className="text-sm text-zinc-500">Napkin Rating</p>
-              <p className="mt-1 text-base font-black sm:text-xl">
-                {seasonStats.roundedNapkinRating}/5 napkins
-              </p>
-              <p className="mt-1 text-sm text-zinc-400">
-                {foodItem.napkinLabel}
-              </p>
-            </div>
+            {napkinEligible ? (
+              <div className="col-span-2 rounded-2xl border border-zinc-800 bg-zinc-950 p-3 sm:col-span-2 sm:p-5">
+                <p className="text-sm text-zinc-500">Napkin Rating</p>
+                <p className="mt-1 text-base font-black sm:text-xl">
+                  {seasonStats.roundedNapkinRating}/5 napkins
+                </p>
+                <p className="mt-1 text-sm text-zinc-400">
+                  {foodItem.napkinLabel}
+                </p>
+              </div>
+            ) : null}
           </div>
         </section>
 
@@ -706,12 +720,14 @@ export default async function FoodPage({ params }: FoodPageProps) {
                           {review.dateLabel}
                         </p>
                       </div>
-                      <div>
-                        <p className="text-zinc-600">Napkins</p>
-                        <p className="mt-1 font-bold text-white">
-                          {review.napkinRating}/5
-                        </p>
-                      </div>
+                      {napkinEligible ? (
+                        <div>
+                          <p className="text-zinc-600">Napkins</p>
+                          <p className="mt-1 font-bold text-white">
+                            {review.napkinRating}/5
+                          </p>
+                        </div>
+                      ) : null}
                     </div>
                     {isSignedIn ? (
                       likedReviewIds.has(review.id) ? (
