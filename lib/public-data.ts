@@ -69,6 +69,10 @@ type DbFoodItem = {
   reviews?: { slopScore: unknown; napkinRating: number }[];
 };
 
+function slugFilterInsensitive(value: string) {
+  return { equals: value.trim(), mode: "insensitive" as const };
+}
+
 function titleCaseEnum(value: string) {
   return value
     .toLowerCase()
@@ -255,7 +259,9 @@ export function mapFoodItemFromDb(item: DbFoodItem): FoodItem {
     availabilityStatus: mapAvailability(item.availabilityStatus),
     lastConfirmed: item.lastConfirmed ?? undefined,
     venueBadge: mapVenueBadge(item.venueBadge),
-    freshReviewCount: item.reviews?.filter((review) => Number(review.slopScore) > 0).length,
+    freshReviewCount: (item.reviews ?? []).filter(
+      (review) => Number(review.slopScore) > 0
+    ).length,
     freshWindowLabel: item.freshWindowLabel ?? undefined,
     freshSignal: mapFreshSignal(item.freshSignal),
     freshSignalReason: item.freshSignalReason ?? undefined
@@ -285,13 +291,15 @@ export async function getPublicVenueBySlug(slug: string) {
 
   try {
     const venue = await prisma.venue.findFirst({
-      where: { slug: normalized, status: "ACTIVE" }
+      where: { slug: slugFilterInsensitive(normalized), status: "ACTIVE" }
     });
 
-    return venue ? mapVenueFromDb(venue) : venues.find((item) => item.slug === normalized);
+    return venue
+      ? mapVenueFromDb(venue)
+      : venues.find((item) => item.slug.toLowerCase() === normalized.toLowerCase());
   } catch (error) {
     console.warn("Falling back to sample venue", error);
-    return venues.find((item) => item.slug === normalized);
+    return venues.find((item) => item.slug.toLowerCase() === normalized.toLowerCase());
   }
 }
 
@@ -302,7 +310,7 @@ export async function getPublicVendorsByVenueSlug(venueSlug: string) {
     const dbVendors = await prisma.vendor.findMany({
       where: {
         status: "ACTIVE",
-        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+        venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
       },
       include: { venue: { select: { slug: true } } },
       orderBy: { name: "asc" }
@@ -310,11 +318,17 @@ export async function getPublicVendorsByVenueSlug(venueSlug: string) {
 
     return fallback(
       dbVendors.map(mapVendorFromDb),
-      vendors.filter((vendor) => vendor.venueSlug === normalizedVenueSlug)
+      vendors.filter(
+        (vendor) =>
+          vendor.venueSlug.toLowerCase() === normalizedVenueSlug.toLowerCase()
+      )
     );
   } catch (error) {
     console.warn("Falling back to sample vendors", error);
-    return vendors.filter((vendor) => vendor.venueSlug === normalizedVenueSlug);
+    return vendors.filter(
+      (vendor) =>
+        vendor.venueSlug.toLowerCase() === normalizedVenueSlug.toLowerCase()
+    );
   }
 }
 
@@ -330,7 +344,7 @@ export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
     const dbItems = await prisma.foodItem.findMany({
       where: {
         status: "ACTIVE",
-        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+        venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
       },
       include: {
         venue: { select: { slug: true } },
@@ -342,11 +356,15 @@ export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
 
     return fallback(
       dbItems.map(mapFoodItemFromDb),
-      foodItems.filter((item) => item.venueSlug === normalizedVenueSlug)
+      foodItems.filter(
+        (item) => item.venueSlug.toLowerCase() === normalizedVenueSlug.toLowerCase()
+      )
     );
   } catch (error) {
     console.warn("Falling back to sample venue items", error);
-    return foodItems.filter((item) => item.venueSlug === normalizedVenueSlug);
+    return foodItems.filter(
+      (item) => item.venueSlug.toLowerCase() === normalizedVenueSlug.toLowerCase()
+    );
   }
 }
 
@@ -365,9 +383,9 @@ export async function getPublicFoodItemBySlug(venueSlug: string, foodSlug: strin
   try {
     const row = await prisma.foodItem.findFirst({
       where: {
-        slug: normalizedFoodSlug,
+        slug: slugFilterInsensitive(normalizedFoodSlug),
         status: "ACTIVE",
-        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+        venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
       },
       include: {
         venue: { select: { slug: true } },
@@ -383,8 +401,12 @@ export async function getPublicFoodItemBySlug(venueSlug: string, foodSlug: strin
     console.warn("DB food item by slug failed, trying sample", error);
   }
 
+  const vKey = normalizedVenueSlug.toLowerCase();
+  const fKey = normalizedFoodSlug.toLowerCase();
+
   const fromVenue = getFoodItemsByVenueSlug(normalizedVenueSlug).find(
-    (item) => item.slug === normalizedFoodSlug
+    (item) =>
+      item.slug.toLowerCase() === fKey && item.venueSlug.toLowerCase() === vKey
   );
 
   if (fromVenue) {
@@ -392,7 +414,8 @@ export async function getPublicFoodItemBySlug(venueSlug: string, foodSlug: strin
   }
 
   return foodItems.find(
-    (item) => item.slug === normalizedFoodSlug && item.venueSlug === normalizedVenueSlug
+    (item) =>
+      item.slug.toLowerCase() === fKey && item.venueSlug.toLowerCase() === vKey
   );
 }
 
@@ -407,15 +430,16 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
 
   const sampleForSlug = foodPhotos.filter(
     (photo) =>
-      photo.venueSlug === normalizedVenueSlug && photo.foodSlug === normalizedFoodSlug
+      photo.venueSlug.toLowerCase() === normalizedVenueSlug.toLowerCase() &&
+      photo.foodSlug.toLowerCase() === normalizedFoodSlug.toLowerCase()
   );
 
   try {
     const dbItem = await prisma.foodItem.findFirst({
       where: {
-        slug: normalizedFoodSlug,
+        slug: slugFilterInsensitive(normalizedFoodSlug),
         status: "ACTIVE",
-        venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+        venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
       },
       select: { id: true }
     });
@@ -424,8 +448,8 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
       where: {
         status: "ACTIVE",
         foodItem: {
-          slug: normalizedFoodSlug,
-          venue: { slug: normalizedVenueSlug, status: "ACTIVE" }
+          slug: slugFilterInsensitive(normalizedFoodSlug),
+          venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
         }
       },
       include: {

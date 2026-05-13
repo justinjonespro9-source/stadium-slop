@@ -386,7 +386,10 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
   const foodItem = await getPublicFoodItemBySlug(venue.slug, foodSlug);
 
-  if (!foodItem || foodItem.venueSlug !== venue.slug) {
+  if (
+    !foodItem ||
+    foodItem.venueSlug.trim().toLowerCase() !== venue.slug.trim().toLowerCase()
+  ) {
     notFound();
   }
 
