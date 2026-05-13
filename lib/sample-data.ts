@@ -1,4 +1,23 @@
+export type EntityStatus = "active" | "hidden" | "archived";
+
+export type UserRole = "reviewer" | "moderator" | "admin";
+
+export type Reviewer = {
+  id: string;
+  displayName: string;
+  handle: string;
+  homeVenueSlug?: string;
+  avatarPhotoId?: string;
+  role: UserRole;
+  status: EntityStatus | "suspended";
+  joinedAt: string;
+  helpfulLikesReceived: number;
+  verifiedGameDayReviewCount: number;
+  photoUploadCount: number;
+};
+
 export type Venue = {
+  id?: string;
   slug: string;
   name: string;
   city: string;
@@ -15,6 +34,7 @@ export type Venue = {
 };
 
 export type Vendor = {
+  id?: string;
   slug: string;
   name: string;
   venueSlug: string;
@@ -25,6 +45,7 @@ export type Vendor = {
 };
 
 export type FoodItem = {
+  id?: string;
   slug: string;
   name: string;
   venueSlug: string;
@@ -121,6 +142,9 @@ export type FoodPhoto = {
   id: string;
   foodSlug: string;
   venueSlug: string;
+  reviewId?: string;
+  uploaderUserId?: string;
+  photoType?: "food" | "profile" | "menu-price-proof";
   alt: string;
   caption: string;
   uploadedBy: string;
@@ -157,6 +181,56 @@ export type FoodReview = {
   hasMenuPriceProof?: boolean;
   note?: string;
 };
+
+export type HelpfulLike = {
+  id: string;
+  reviewId: string;
+  userId: string;
+  createdAt: string;
+};
+
+export type PriceReport = {
+  id: string;
+  itemSlug: string;
+  venueSlug: string;
+  userId: string;
+  reportedPrice: number;
+  photoId?: string;
+  status: "pending" | "approved" | "merged" | "rejected";
+  createdAt: string;
+};
+
+export type SuggestedItem = {
+  id: string;
+  venueSlug: string;
+  vendorSlug?: string;
+  userId: string;
+  name: string;
+  category?: string;
+  locationHint?: string;
+  photoId?: string;
+  status: "pending" | "approved" | "merged" | "rejected";
+  createdAt: string;
+};
+
+export type ReportFlag = {
+  id: string;
+  reporterUserId: string;
+  targetType: "review" | "photo" | "item" | "price-report" | "user";
+  targetId: string;
+  reason:
+    | "duplicate"
+    | "suspicious-activity"
+    | "bad-intel"
+    | "inappropriate-photo"
+    | "other";
+  status: "open" | "reviewing" | "resolved" | "dismissed";
+  createdAt: string;
+};
+
+export type Item = FoodItem;
+export type Photo = FoodPhoto;
+export type Review = FoodReview;
 
 export const venues: Venue[] = [
   {
