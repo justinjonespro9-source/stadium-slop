@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import {
   foodItems,
@@ -178,19 +179,22 @@ const adminSections = [
     title: "Venues",
     count: venues.length,
     action: "Edit venue",
-    detail: "Manage venue basics, teams, leagues, and review radius."
+    detail: "Manage venue basics, teams, leagues, and review radius.",
+    href: "/admin/venues"
   },
   {
     title: "Vendors",
     count: vendors.length,
     action: "Add vendor",
-    detail: "Create or correct stand names, sections, and line intel."
+    detail: "Create or correct stand names, sections, and line intel.",
+    href: "/admin/venues"
   },
   {
     title: "Items",
     count: foodItems.length,
     action: "Add item",
-    detail: "Maintain reviewable food and drink listings."
+    detail: "Maintain reviewable food and drink listings.",
+    href: "/admin/venues"
   },
   {
     title: "Reviews",
@@ -358,13 +362,22 @@ export default async function AdminPage() {
                 <p className="mt-3 text-sm leading-6 text-zinc-400">
                   {section.detail}
                 </p>
-                <button
-                  type="button"
-                  disabled
-                  className="mt-5 cursor-not-allowed rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500"
-                >
-                  {section.action}
-                </button>
+                {section.href ? (
+                  <Link
+                    href={section.href}
+                    className="mt-5 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                  >
+                    {section.action}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    disabled
+                    className="mt-5 cursor-not-allowed rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500"
+                  >
+                    {section.action}
+                  </button>
+                )}
               </article>
             ))}
           </div>

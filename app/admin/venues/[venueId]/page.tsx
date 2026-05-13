@@ -1,0 +1,189 @@
+import { VenueType } from "@prisma/client";
+import Link from "next/link";
+import { revalidatePath } from "next/cache";
+import { notFound, redirect } from "next/navigation";
+
+import { prisma } from "@/lib/prisma";
+
+type AdminVenueDetailPageProps = {
+  params: Promise<{
+    venueId: string;
+  }>;
+};
+
+function parseList(value: FormDataEntryValue | null) {
+  return String(value ?? "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+async function updateVenue(formData: FormData) {
+  "use server";
+
+  const venueId = String(formData.get("venueId") ?? "");
+  const reviewRadiusMeters = Number(formData.get("reviewRadiusMeters"));
+
+  await prisma.venue.update({
+    where: { id: venueId },
+    data: {
+      name: String(formData.get("name") ?? "").trim(),
+      slug: String(formData.get("slug") ?? "").trim(),
+      city: String(formData.get("city") ?? "").trim(),
+      state: String(formData.get("state") ?? "").trim(),
+      leagues: parseList(formData.get("leagues")),
+      teams: parseList(formData.get("teams")),
+      sports: parseList(formData.get("sports")),
+      venueType: String(formData.get("venueType") ?? VenueType.STADIUM) as VenueType,
+      reviewRadiusMeters: Number.isFinite(reviewRadiusMeters)
+        ? reviewRadiusMeters
+        : 800
+    }
+  });
+
+  revalidatePath("/admin/venues");
+  revalidatePath(`/admin/venues/${venueId}`);
+  redirect(`/admin/venues/${venueId}`);
+}
+
+export default async function AdminVenueDetailPage({
+  params
+}: AdminVenueDetailPageProps) {
+  const { venueId } = await params;
+  const venue = await prisma.venue.findUnique({
+    where: { id: venueId },
+    include: {
+      vendors: {
+        orderBy: { name: "asc" },
+        include: {
+          _count: {
+            select: { items: true }
+          }
+        }
+      },
+      items: {
+        orderBy: { name: "asc" },
+        include: {
+          vendor: {
+            select: { name: true }
+          }
+        }
+      }
+    }
+  });
+
+  if (!venue) {
+    notFound();
+  }
+
+  return (
+    <main className="brand-page min-h-screen">
+      <section className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:px-10">
+        <Link
+          href="/admin/venues"
+          className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
+        >
+          Back to venues
+        </Link>
+
+        <header className="mt-5">
+          <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
+            Venue edit
+          </p>
+          <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+            {venue.name}
+          </h1>
+        </header>
+
+        <section className="mt-8 grid gap-5 lg:grid-cols-[1fr_0.9fr]">
+          <form action={updateVenue} className="brand-panel rounded-3xl border p-5">
+            <input type="hidden" name="venueId" value={venue.id} />
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                ["name", "Name", venue.name],
+                ["slug", "Slug", venue.slug],
+                ["city", "City", venue.city],
+                ["state", "State", venue.state],
+                ["leagues", "Leagues", venue.leagues.join(", ")],
+                ["teams", "Teams", venue.teams.join(", ")],
+                ["sports", "Sports", venue.sports.join(", ")],
+                [
+                  "reviewRadiusMeters",
+                  "Review radius meters",
+                  String(venue.reviewRadiusMeters)
+                ]
+              ].map(([name, label, value]) => (
+                <label key={name} className="grid gap-2 text-sm font-bold text-zinc-300">
+                  {label}
+                  <input
+                    name={name}
+                    defaultValue={value}
+                    className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
+                  />
+                </label>
+              ))}
+              <label className="grid gap-2 text-sm font-bold text-zinc-300">
+                Venue type
+                <select
+                  name="venueType"
+                  defaultValue={venue.venueType}
+                  className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
+                >
+                  {Object.values(VenueType).map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <button
+              type="submit"
+              className="brand-cta mt-5 rounded-full px-6 py-3 text-sm font-black"
+            >
+              Save venue
+            </button>
+          </form>
+
+          <div className="grid gap-5">
+            <section className="brand-card rounded-3xl border p-5">
+              <h2 className="text-xl font-black">Vendors</h2>
+              <div className="mt-4 grid gap-2">
+                {venue.vendors.map((vendor) => (
+                  <Link
+                    key={vendor.id}
+                    href={`/admin/vendors/${vendor.id}`}
+                    className="rounded-2xl border border-zinc-800 bg-black p-4 transition hover:border-[var(--slop-orange)]"
+                  >
+                    <p className="font-black">{vendor.name}</p>
+                    <p className="mt-1 text-sm text-zinc-500">
+                      {vendor.section} · {vendor.location} · {vendor._count.items} items
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
+            <section className="brand-card rounded-3xl border p-5">
+              <h2 className="text-xl font-black">Food items</h2>
+              <div className="mt-4 grid gap-2">
+                {venue.items.map((item) => (
+                  <Link
+                    key={item.id}
+                    href={`/admin/items/${item.id}`}
+                    className="rounded-2xl border border-zinc-800 bg-black p-4 transition hover:border-[var(--slop-orange)]"
+                  >
+                    <p className="font-black">{item.name}</p>
+                    <p className="mt-1 text-sm text-zinc-500">
+                      {item.vendor.name} · {item.status}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+  );
+}
