@@ -37,6 +37,7 @@ type DbVendor = {
 };
 
 type DbFoodItem = {
+  id: string;
   slug: string;
   name: string;
   itemType: string;
@@ -69,7 +70,7 @@ type DbFoodItem = {
   reviews?: { slopScore: unknown; napkinRating: number }[];
 };
 
-function slugFilterInsensitive(value: string) {
+export function slugFilterInsensitive(value: string) {
   return { equals: value.trim(), mode: "insensitive" as const };
 }
 
@@ -220,6 +221,7 @@ export function mapFoodItemFromDb(item: DbFoodItem): FoodItem {
   const price = Number(item.basePrice ?? item.reportedPrice ?? 0);
 
   return {
+    id: item.id,
     slug: item.slug,
     name: item.name,
     venueSlug: item.venue.slug,

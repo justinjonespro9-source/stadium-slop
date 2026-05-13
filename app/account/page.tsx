@@ -7,12 +7,8 @@ import { revalidatePath } from "next/cache";
 import { isCloudinaryConfigured, logUploadFailure, photoErrorQueryFromUploadFailure, uploadImageFile } from "@/lib/cloudinary";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 
-import {
-  getFoodItemBySlug,
-  getVendorForFoodItem,
-  getVenueForFoodItem
-} from "@/lib/sample-data";
 import { prisma } from "@/lib/prisma";
+import { isGameDayKeyTodayForVenue } from "@/lib/game-day";
 import {
   MOCK_REVIEWER_USER_ID,
   MOCK_USER_COOKIE_NAME,
@@ -34,30 +30,6 @@ const mockSignedOutState = {
   headline: "Create your fan profile",
   copy: "Sign in or sign up to submit verified reviews, receive helpful likes, and keep your review history tied to one profile."
 };
-
-const mockReviewHistory = [
-  {
-    foodSlug: "loaded-cheese-curds",
-    slopScore: 9.2,
-    napkinRating: 3,
-    helpfulLikes: 18,
-    dateLabel: "Today"
-  },
-  {
-    foodSlug: "frozen-lemonade",
-    slopScore: 8.6,
-    napkinRating: 2,
-    helpfulLikes: 11,
-    dateLabel: "Last homestand"
-  },
-  {
-    foodSlug: "north-loop-old-fashioned",
-    slopScore: 7.4,
-    napkinRating: 1,
-    helpfulLikes: 7,
-    dateLabel: "May 2026"
-  }
-];
 
 async function mockUserSignOut() {
   "use server";
@@ -188,6 +160,58 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   const helpfulLikesReceived = await getHelpfulLikesReceived();
   const cloudinaryReady = isCloudinaryConfigured();
 
+  let reviewHistory: {
+    id: string;
+    gameDayKey: string;
+    slopScore: number;
+    napkinRating: number;
+    helpfulLikes: number;
+    foodName: string;
+    foodSlug: string;
+    venueSlug: string;
+    venueName: string;
+    updatedAt: Date;
+  }[] = [];
+  let totalReviewCount = mockProfile.stats.totalReviews;
+
+  try {
+    const [rows, count] = await prisma.$transaction([
+      prisma.review.findMany({
+        where: { userId: MOCK_REVIEWER_USER_ID, status: "ACTIVE" },
+        orderBy: { updatedAt: "desc" },
+        take: 40,
+        include: {
+          foodItem: {
+            select: {
+              name: true,
+              slug: true,
+              venue: { select: { slug: true, name: true } }
+            }
+          },
+          _count: { select: { helpfulLikes: true } }
+        }
+      }),
+      prisma.review.count({
+        where: { userId: MOCK_REVIEWER_USER_ID, status: "ACTIVE" }
+      })
+    ]);
+    reviewHistory = rows.map((r) => ({
+      id: r.id,
+      gameDayKey: r.gameDayKey,
+      slopScore: Number(r.slopScore),
+      napkinRating: r.napkinRating,
+      helpfulLikes: r._count.helpfulLikes,
+      foodName: r.foodItem.name,
+      foodSlug: r.foodItem.slug,
+      venueSlug: r.foodItem.venue.slug,
+      venueName: r.foodItem.venue.name,
+      updatedAt: r.updatedAt
+    }));
+    totalReviewCount = count;
+  } catch (error) {
+    console.warn("Account review history DB read failed", error);
+  }
+
   let dbUser: {
     avatarUrl: string | null;
     photoUploadCount: number;
@@ -310,7 +334,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                   Mock signed in
                 </span>
                 <span className="rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
-                  Owner of {mockProfile.stats.totalReviews} reviews
+                  Owner of {totalReviewCount} reviews
                 </span>
               </div>
             </div>
@@ -319,7 +343,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
         <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {[
-            ["Total reviews", mockProfile.stats.totalReviews],
+            ["Total reviews", totalReviewCount],
             ["Helpful likes received", helpfulLikesReceived],
             ["Verified game-day", mockProfile.stats.verifiedGameDayReviews],
             ["Photos uploaded", photosUploaded]
@@ -353,7 +377,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </p>
             <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400 sm:col-span-2">
               Helpful likes received are read from the database when available.
-              Remaining profile totals are still mock placeholders.
+              Verified game-day totals still use mock placeholders until wired to
+              the same query.
             </p>
           </div>
         </section>
@@ -363,41 +388,64 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             Review history
           </p>
           <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
-            {mockReviewHistory.map((review) => {
-              const item = getFoodItemBySlug(review.foodSlug);
+            {reviewHistory.length === 0 ? (
+              <p className="px-4 py-8 text-sm leading-6 text-zinc-500">
+                No reviews in your profile yet. Open a food item and submit your
+                first scorecard.
+              </p>
+            ) : (
+              reviewHistory.map((review) => {
+                const itemUrl = `/venues/${review.venueSlug}/${review.foodSlug}`;
+                const reviewUrl = `${itemUrl}/review`;
+                const canEditToday = isGameDayKeyTodayForVenue(
+                  review.gameDayKey,
+                  review.venueSlug
+                );
+                const updatedLabel = review.updatedAt.toLocaleDateString(
+                  "en-US",
+                  { month: "short", day: "numeric", year: "numeric" }
+                );
 
-              if (!item) {
-                return null;
-              }
-
-              const venue = getVenueForFoodItem(item);
-              const vendor = getVendorForFoodItem(item);
-
-              return (
-                <article
-                  key={`${review.foodSlug}-${review.dateLabel}`}
-                  className="border-b border-zinc-800 px-4 py-4 last:border-b-0"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h2 className="font-black">{item.name}</h2>
-                      <p className="mt-1 text-sm text-zinc-400">
-                        {venue?.name ?? "Venue TBD"} ·{" "}
-                        {vendor?.name ?? "Vendor TBD"}
-                      </p>
+                return (
+                  <article
+                    key={review.id}
+                    className="border-b border-zinc-800 px-4 py-4 last:border-b-0"
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <h2 className="font-black">{review.foodName}</h2>
+                        <p className="mt-1 text-sm text-zinc-400">
+                          {review.venueName}
+                        </p>
+                      </div>
+                      <span className="shrink-0 rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
+                        {review.slopScore.toFixed(1)}
+                      </span>
                     </div>
-                    <span className="rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
-                      {review.slopScore.toFixed(1)}
-                    </span>
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
-                    <span>{review.napkinRating}/5 napkins</span>
-                    <span>{review.helpfulLikes} helpful</span>
-                    <span>{review.dateLabel}</span>
-                  </div>
-                </article>
-              );
-            })}
+                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-zinc-500">
+                      <span>{review.napkinRating}/5 napkins</span>
+                      <span>{review.helpfulLikes} helpful</span>
+                      <span>Updated {updatedLabel}</span>
+                      {canEditToday ? (
+                        <Link
+                          href={reviewUrl}
+                          className="font-bold text-[var(--slop-orange)] underline decoration-[var(--slop-orange)] underline-offset-2 hover:text-white"
+                        >
+                          Edit today&apos;s review
+                        </Link>
+                      ) : (
+                        <Link
+                          href={itemUrl}
+                          className="font-bold text-zinc-400 underline underline-offset-2 hover:text-white"
+                        >
+                          View item
+                        </Link>
+                      )}
+                    </div>
+                  </article>
+                );
+              })
+            )}
           </div>
         </section>
 

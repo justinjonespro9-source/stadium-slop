@@ -1,11 +1,13 @@
+import Image from "next/image";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { PriceCheck, ReplayValue } from "@prisma/client";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
-import { getPublicFoodItemBySlug, getPublicVenueBySlug } from "@/lib/public-data";
+import { getPublicFoodItemBySlug, getPublicVenueBySlug, slugFilterInsensitive } from "@/lib/public-data";
 import { buildGameDayKey } from "@/lib/game-day";
+import { findTodaysReviewForItem } from "@/lib/review-draft";
 import {
   isCloudinaryConfigured,
   logUploadFailure,
@@ -72,15 +74,23 @@ function revalidateFoodItemSurfaces(
 function SignalOption({
   label,
   name,
-  value
+  value,
+  defaultSelected
 }: {
   label: string;
   name: string;
   value: string;
+  defaultSelected?: boolean;
 }) {
   return (
     <label className="cursor-pointer">
-      <input className="peer sr-only" type="radio" name={name} value={value} />
+      <input
+        className="peer sr-only"
+        type="radio"
+        name={name}
+        value={value}
+        defaultChecked={defaultSelected}
+      />
       <span className="block rounded-full border border-zinc-800 bg-black px-4 py-2 text-sm font-bold text-zinc-400 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)]">
         {label}
       </span>
@@ -88,7 +98,13 @@ function SignalOption({
   );
 }
 
-function ScoreButton({ score }: { score: number }) {
+function ScoreButton({
+  score,
+  defaultSelected
+}: {
+  score: number;
+  defaultSelected?: boolean;
+}) {
   return (
     <label className="cursor-pointer">
       <input
@@ -97,6 +113,7 @@ function ScoreButton({ score }: { score: number }) {
         name="slopScore"
         value={score}
         required
+        defaultChecked={defaultSelected}
       />
       <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-800 bg-black text-lg font-black text-zinc-300 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)]">
         {score}
@@ -107,10 +124,12 @@ function ScoreButton({ score }: { score: number }) {
 
 function NapkinButton({
   value,
-  label
+  label,
+  defaultSelected
 }: {
   value: number;
   label: string;
+  defaultSelected?: boolean;
 }) {
   return (
     <label className="cursor-pointer">
@@ -120,6 +139,7 @@ function NapkinButton({
         name="napkinRating"
         value={value}
         required
+        defaultChecked={defaultSelected}
       />
       <span className="block rounded-2xl border border-zinc-800 bg-black p-3 text-left peer-checked:border-[var(--slop-orange)] peer-checked:bg-[color:rgba(255,159,28,0.14)]">
         <span className="block text-lg">{"▰".repeat(value)}</span>
@@ -150,13 +170,13 @@ async function submitReview(formData: FormData) {
   }
 
   const venue = await prisma.venue.findFirst({
-    where: { slug: normalizedVenueSlug, status: "ACTIVE" }
+    where: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
   });
 
   const foodItemRow = venue
     ? await prisma.foodItem.findFirst({
         where: {
-          slug: normalizedFoodSlug,
+          slug: slugFilterInsensitive(normalizedFoodSlug),
           venueId: venue.id,
           status: "ACTIVE"
         },
@@ -306,6 +326,10 @@ async function submitReview(formData: FormData) {
     const caption = String(formData.get("photoCaption") ?? "").trim().slice(0, 120);
 
     try {
+      const priorPhotoCount = await prisma.foodPhoto.count({
+        where: { reviewId: review.id, status: "ACTIVE" }
+      });
+
       await prisma.foodPhoto.deleteMany({
         where: { reviewId: review.id }
       });
@@ -325,10 +349,12 @@ async function submitReview(formData: FormData) {
         }
       });
 
-      await prisma.user.update({
-        where: { id: user.id },
-        data: { photoUploadCount: { increment: 1 } }
-      });
+      if (priorPhotoCount === 0) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { photoUploadCount: { increment: 1 } }
+        });
+      }
     } catch (err) {
       console.warn("[reviewPhotoSave] DB write after Cloudinary upload failed", {
         message: err instanceof Error ? err.message : String(err),
@@ -382,7 +408,10 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   const foodItem = await getPublicFoodItemBySlug(venue.slug, foodSlug);
 
-  if (!foodItem || foodItem.venueSlug !== venue.slug) {
+  if (
+    !foodItem ||
+    foodItem.venueSlug.trim().toLowerCase() !== venue.slug.trim().toLowerCase()
+  ) {
     notFound();
   }
 
@@ -451,6 +480,25 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     );
   }
 
+  const draft = foodItem.id
+    ? await findTodaysReviewForItem({
+        userId: MOCK_REVIEWER_USER_ID,
+        foodItemId: foodItem.id,
+        venueSlug: venue.slug
+      })
+    : null;
+
+  const draftSlop =
+    draft != null
+      ? Math.min(10, Math.max(1, Math.round(Number(draft.slopScore))))
+      : undefined;
+  const draftNapkin = draft?.napkinRating;
+  const draftReplay = draft?.replayValue ?? undefined;
+  const draftPrice = draft?.priceCheck ?? undefined;
+  const draftNote = draft?.note ?? "";
+  const existingPhoto = draft?.photos[0];
+  const draftCaption = existingPhoto?.caption ?? "";
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
@@ -499,10 +547,17 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
             </p>
           ) : null}
           <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-            Review {foodItem.name}
+            {draft
+              ? `Edit today’s review · ${foodItem.name}`
+              : `Review ${foodItem.name}`}
           </h1>
           <p className="mt-3 text-base text-zinc-300 sm:text-lg">
             {venue.name} · {venue.city}, {venue.state}
+          </p>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-500">
+            You can update today&apos;s review; it replaces your earlier score for
+            this item. Saving uses one row per fan per item per game day — no
+            duplicate scorecards.
           </p>
         </header>
 
@@ -561,7 +616,11 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               </p>
               <div className="mt-3 grid grid-cols-5 gap-2 sm:flex sm:flex-wrap">
                 {slopScoreOptions.map((score) => (
-                  <ScoreButton key={score} score={score} />
+                  <ScoreButton
+                    key={score}
+                    score={score}
+                    defaultSelected={draftSlop === score}
+                  />
                 ))}
               </div>
             </div>
@@ -578,6 +637,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                       key={option.value}
                       value={option.value}
                       label={option.label}
+                      defaultSelected={draftNapkin === option.value}
                     />
                   ))}
                 </div>
@@ -595,6 +655,26 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                 format or export as JPEG. No comments, followers, or DMs —
                 just the shot.
               </p>
+              {existingPhoto?.url ? (
+                <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-3">
+                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                    Current fan photo
+                  </p>
+                  <div className="relative mt-2 aspect-[4/3] max-h-52 w-full overflow-hidden rounded-xl bg-black sm:max-h-60">
+                    <Image
+                      src={existingPhoto.url}
+                      alt={existingPhoto.alt}
+                      fill
+                      className="object-contain object-center"
+                      sizes="(max-width: 768px) 100vw, 36rem"
+                    />
+                  </div>
+                  <p className="mt-2 text-xs text-zinc-500">
+                    Upload a new file below to replace this photo for today&apos;s
+                    review.
+                  </p>
+                </div>
+              ) : null}
               {cloudinaryReady ? (
                 <>
                   <label className="mt-4 block">
@@ -616,6 +696,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                       name="photoCaption"
                       maxLength={120}
                       placeholder="e.g. Curds at first pitch"
+                      defaultValue={draftCaption}
                       className="mt-2 w-full rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
                     />
                   </label>
@@ -640,6 +721,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                 name="note"
                 maxLength={300}
                 placeholder="Optional: hot, cold, worth it, messy, would run it back?"
+                defaultValue={draftNote}
                 className="mt-3 min-h-24 w-full rounded-2xl border border-zinc-800 bg-black p-4 text-sm text-zinc-400 outline-none placeholder:text-zinc-600"
               />
             </div>
@@ -658,6 +740,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                     label={option.label}
                     name="replayValue"
                     value={option.value}
+                    defaultSelected={draftReplay === option.value}
                   />
                 ))}
               </div>
@@ -673,6 +756,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                     label={option.label}
                     name="priceCheck"
                     value={option.value}
+                    defaultSelected={draftPrice === option.value}
                   />
                 ))}
               </div>
@@ -683,7 +767,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
             type="submit"
             className="brand-cta mt-7 w-full rounded-full px-6 py-4 text-sm font-black"
           >
-            Submit review
+            {draft ? "Update today’s review" : "Submit review"}
           </button>
         </form>
 

@@ -21,6 +21,7 @@ import {
 } from "@/lib/user-auth";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
+import { findTodaysReviewForItem } from "@/lib/review-draft";
 
 export const dynamic = "force-dynamic";
 
@@ -432,6 +433,15 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const isSignedIn = hasMockUserAccess(
     cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
   );
+  let hasTodaysReview = false;
+  if (isSignedIn && foodItem.id) {
+    const todaysRow = await findTodaysReviewForItem({
+      userId: MOCK_REVIEWER_USER_ID,
+      foodItemId: foodItem.id,
+      venueSlug: venue.slug
+    });
+    hasTodaysReview = Boolean(todaysRow);
+  }
   const likedReviewIds = isSignedIn
     ? await getLikedReviewIds(photoBackedReviews.map((review) => review.id))
     : new Set<string>();
@@ -488,14 +498,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         <header className="grid gap-4 py-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div
             aria-label={heroAlt}
-            className="brand-card relative aspect-[16/10] overflow-hidden rounded-3xl border lg:order-2"
+            className="brand-card relative aspect-[16/11] overflow-hidden rounded-3xl border bg-black lg:order-2"
           >
             {heroImageUrl ? (
               <Image
                 src={heroImageUrl}
                 alt={heroAlt}
                 fill
-                className="object-cover"
+                className="object-contain object-center"
                 sizes="(max-width: 1024px) 100vw, 42vw"
                 priority
               />
@@ -579,8 +589,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               href={`/venues/${venue.slug}/${foodItem.slug}/review`}
               className="brand-cta mt-3 inline-flex w-full justify-center rounded-full px-5 py-3 text-sm font-black transition sm:w-auto"
             >
-              Submit a Review
+              {hasTodaysReview ? "Edit Today’s Review" : "Submit a Review"}
             </Link>
+            {isSignedIn ? (
+              <p className="mt-2 max-w-xl text-xs leading-5 text-zinc-500">
+                You can update today&apos;s review; it replaces your earlier score for
+                this item (one saved review per item per game day).
+              </p>
+            ) : null}
           </div>
         </header>
 
@@ -697,7 +713,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                             review.photoAlt ??
                             `Fan-uploaded photo for ${foodItem.name}`
                           }
-                          className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-black"
+                          className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-zinc-950"
                         >
                           {review.photoUrl ? (
                             <Image
@@ -706,7 +722,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                                 review.photoAlt ?? `Fan photo for ${foodItem.name}`
                               }
                               fill
-                              className="object-cover"
+                              className="object-contain object-center"
                               sizes="(max-width: 640px) 90vw, 22rem"
                             />
                           ) : null}
