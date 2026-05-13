@@ -9,6 +9,7 @@ import {
   foodPhotos
 } from "@/lib/sample-data";
 import { MOCK_ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
+import { prisma } from "@/lib/prisma";
 
 async function mockAdminSignOut() {
   "use server";
@@ -93,7 +94,41 @@ const moderationQueue = [
   }
 ];
 
-export default function AdminPage() {
+async function getPendingAdminQueues() {
+  try {
+    const [priceReports, suggestedItems] = await Promise.all([
+      prisma.priceReport.findMany({
+        where: { status: "PENDING" },
+        orderBy: { createdAt: "desc" },
+        take: 6,
+        include: {
+          foodItem: { select: { name: true } },
+          venue: { select: { name: true } },
+          user: { select: { handle: true } }
+        }
+      }),
+      prisma.suggestedItem.findMany({
+        where: { status: "PENDING" },
+        orderBy: { createdAt: "desc" },
+        take: 6,
+        include: {
+          venue: { select: { name: true } },
+          vendor: { select: { name: true } },
+          user: { select: { handle: true } }
+        }
+      })
+    ]);
+
+    return { priceReports, suggestedItems };
+  } catch (error) {
+    console.warn("Falling back to empty admin queues", error);
+    return { priceReports: [], suggestedItems: [] };
+  }
+}
+
+export default async function AdminPage() {
+  const { priceReports, suggestedItems } = await getPendingAdminQueues();
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:px-10">
@@ -135,7 +170,9 @@ export default function AdminPage() {
             ["Venues", venues.length],
             ["Vendors", vendors.length],
             ["Items", foodItems.length],
-            ["Photos", foodPhotos.length]
+            ["Photos", foodPhotos.length],
+            ["Pending prices", priceReports.length],
+            ["Pending items", suggestedItems.length]
           ].map(([label, count]) => (
             <div
               key={label}
@@ -198,6 +235,112 @@ export default function AdminPage() {
                 </p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="brand-panel mt-8 rounded-[2rem] border p-5">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Pending approval
+          </p>
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+            <div>
+              <h2 className="text-xl font-black">Price reports</h2>
+              <div className="mt-3 grid gap-3">
+                {priceReports.length > 0 ? (
+                  priceReports.map((report) => (
+                    <article key={report.id} className="rounded-2xl bg-black p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="font-black">{report.foodItem.name}</p>
+                          <p className="mt-1 text-sm text-zinc-500">
+                            {report.venue.name} · ${Number(report.reportedPrice).toFixed(2)}
+                          </p>
+                          <p className="mt-1 text-xs text-zinc-600">
+                            Needs review · {report.user.handle}
+                          </p>
+                          {report.note ? (
+                            <p className="mt-2 text-sm leading-6 text-zinc-400">
+                              {report.note}
+                            </p>
+                          ) : null}
+                        </div>
+                        <span className="rounded-full border border-zinc-800 px-2 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                          Pending
+                        </span>
+                      </div>
+                      <div className="mt-3 flex gap-2">
+                        {["Approve", "Reject"].map((label) => (
+                          <button
+                            key={label}
+                            type="button"
+                            disabled
+                            className="cursor-not-allowed rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-500"
+                          >
+                            {label} soon
+                          </button>
+                        ))}
+                      </div>
+                    </article>
+                  ))
+                ) : (
+                  <p className="rounded-2xl bg-black p-4 text-sm text-zinc-500">
+                    No pending price reports.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-xl font-black">Suggested items</h2>
+              <div className="mt-3 grid gap-3">
+                {suggestedItems.length > 0 ? (
+                  suggestedItems.map((item) => (
+                    <article key={item.id} className="rounded-2xl bg-black p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <p className="font-black">{item.name}</p>
+                          <p className="mt-1 text-sm text-zinc-500">
+                            {item.venue.name} · {item.vendor?.name ?? "Vendor unknown"}
+                          </p>
+                          <p className="mt-1 text-xs text-zinc-600">
+                            Needs review · {item.user.handle}
+                          </p>
+                          {item.locationHint ? (
+                            <p className="mt-2 text-sm text-zinc-400">
+                              Location: {item.locationHint}
+                            </p>
+                          ) : null}
+                          {item.note ? (
+                            <p className="mt-2 text-sm leading-6 text-zinc-400">
+                              {item.note}
+                            </p>
+                          ) : null}
+                        </div>
+                        <span className="rounded-full border border-zinc-800 px-2 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                          Pending
+                        </span>
+                      </div>
+                      <div className="mt-3 flex gap-2">
+                        {["Approve", "Reject"].map((label) => (
+                          <button
+                            key={label}
+                            type="button"
+                            disabled
+                            className="cursor-not-allowed rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-500"
+                          >
+                            {label} soon
+                          </button>
+                        ))}
+                      </div>
+                    </article>
+                  ))
+                ) : (
+                  <p className="rounded-2xl bg-black p-4 text-sm text-zinc-500">
+                    No pending suggested items.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         </section>
       </section>

@@ -13,12 +13,11 @@ import {
 import { prisma } from "@/lib/prisma";
 import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
 import {
-  MOCK_REVIEWER_EMAIL,
   MOCK_REVIEWER_USER_ID,
   MOCK_USER_COOKIE_NAME,
   hasMockUserAccess,
-  mockReviewerProfile
 } from "@/lib/user-auth";
+import { ensureMockReviewerUser } from "@/lib/mock-user";
 
 type FoodPageProps = {
   params: Promise<{
@@ -80,22 +79,7 @@ async function markReviewHelpful(formData: FormData) {
     redirect(itemPath);
   }
 
-  const user = await prisma.user.upsert({
-    where: { id: MOCK_REVIEWER_USER_ID },
-    update: {
-      email: MOCK_REVIEWER_EMAIL,
-      displayName: mockReviewerProfile.displayName,
-      handle: mockReviewerProfile.handle,
-      homeVenueId: review.venueId
-    },
-    create: {
-      id: MOCK_REVIEWER_USER_ID,
-      email: MOCK_REVIEWER_EMAIL,
-      displayName: mockReviewerProfile.displayName,
-      handle: mockReviewerProfile.handle,
-      homeVenueId: review.venueId
-    }
-  });
+  const user = await ensureMockReviewerUser(review.venueId);
 
   await prisma.helpfulLike.upsert({
     where: {
@@ -113,6 +97,118 @@ async function markReviewHelpful(formData: FormData) {
 
   revalidatePath(itemPath);
   redirect(`${itemPath}?helpful=marked`);
+}
+
+async function submitPriceReport(formData: FormData) {
+  "use server";
+
+  const venueSlug = String(formData.get("venueSlug") ?? "");
+  const foodSlug = String(formData.get("foodSlug") ?? "");
+  const itemPath = `/venues/${venueSlug}/${foodSlug}`;
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
+
+  if (!isSignedIn) {
+    redirect(`/login?next=${encodeURIComponent(itemPath)}`);
+  }
+
+  const reportedPrice = Number(formData.get("reportedPrice"));
+  const note = String(formData.get("priceNote") ?? "").trim();
+
+  if (!Number.isFinite(reportedPrice) || reportedPrice <= 0) {
+    redirect(`${itemPath}?price=invalid`);
+  }
+
+  const venue = await prisma.venue.findUnique({ where: { slug: venueSlug } });
+  const foodItem = venue
+    ? await prisma.foodItem.findUnique({
+        where: {
+          venueId_slug: {
+            venueId: venue.id,
+            slug: foodSlug
+          }
+        }
+      })
+    : null;
+
+  if (!venue || !foodItem) {
+    redirect(itemPath);
+  }
+
+  const user = await ensureMockReviewerUser(venue.id);
+
+  await prisma.priceReport.create({
+    data: {
+      userId: user.id,
+      venueId: venue.id,
+      foodItemId: foodItem.id,
+      reportedPrice,
+      note: note ? note.slice(0, 240) : null
+    }
+  });
+
+  revalidatePath(itemPath);
+  redirect(`${itemPath}?price=reported`);
+}
+
+async function getPriceIntel(
+  venueSlug: string,
+  foodSlug: string,
+  fallbackItem: {
+    price: number;
+    reportedPrice?: number;
+    priceReportCount?: number;
+  }
+) {
+  try {
+    const item = await prisma.foodItem.findFirst({
+      where: {
+        slug: foodSlug,
+        venue: {
+          slug: venueSlug
+        }
+      },
+      include: {
+        priceReports: {
+          orderBy: {
+            createdAt: "desc"
+          },
+          select: {
+            reportedPrice: true,
+            status: true
+          }
+        },
+        _count: {
+          select: {
+            priceReports: true
+          }
+        }
+      }
+    });
+
+    const approvedReport = item?.priceReports.find(
+      (report) => report.status === "APPROVED" || report.status === "MERGED"
+    );
+
+    return {
+      displayPrice:
+        approvedReport?.reportedPrice ??
+        item?.reportedPrice ??
+        item?.basePrice ??
+        null,
+      reportCount: item?._count.priceReports ?? 0,
+      source: approvedReport ? "approved fan report" : "fan reported"
+    };
+  } catch (error) {
+    console.warn("Falling back to sample price intel", error);
+    return {
+      displayPrice: fallbackItem.reportedPrice ?? fallbackItem.price,
+      reportCount: fallbackItem.priceReportCount ?? 0,
+      source: "fan reported"
+    };
+  }
 }
 
 async function getLikedReviewIds(reviewIds: string[]) {
@@ -157,6 +253,7 @@ export default async function FoodPage({ params }: FoodPageProps) {
   const vendor = getVendorForFoodItem(foodItem);
   const foodPhotos = getPhotosForFoodItem(venue.slug, foodItem.slug);
   const heroPhoto = foodPhotos[0];
+  const priceIntel = await getPriceIntel(venue.slug, foodItem.slug, foodItem);
   const careerStats = await getDbBackedItemSlopStats(
     venue.slug,
     foodItem.slug,
@@ -263,15 +360,15 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 {seasonStats.roundedNapkinRating} Napkins
               </p>
               <p className="mt-1 text-xs leading-5 text-zinc-500 sm:text-sm">
-                Reported price{" "}
-                {foodItem.reportedPrice
-                  ? `$${foodItem.reportedPrice.toFixed(2)}`
+                Current price{" "}
+                {priceIntel.displayPrice
+                  ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
                   : "pending"}{" "}
                 {foodItem.priceLastConfirmedLabel
                   ? `· ${foodItem.priceLastConfirmedLabel}`
                   : ""}
-                {foodItem.priceReportCount
-                  ? ` · ${foodItem.priceReportCount} price reports`
+                {priceIntel.reportCount
+                  ? ` · ${priceIntel.reportCount} ${priceIntel.source} reports`
                   : ""}
               </p>
             </div>
@@ -801,16 +898,19 @@ export default async function FoodPage({ params }: FoodPageProps) {
                 <div className="rounded-2xl bg-black p-4">
                   <p className="text-zinc-500">Reported Price</p>
                   <p className="mt-1 font-bold text-white">
-                    {foodItem.reportedPrice
-                      ? `$${foodItem.reportedPrice.toFixed(2)}`
+                    {priceIntel.displayPrice
+                      ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
                       : "Price pending"}
+                  </p>
+                  <p className="mt-1 text-xs text-zinc-500">
+                    {priceIntel.source}
                   </p>
                 </div>
                 <div className="rounded-2xl bg-black p-4">
                   <p className="text-zinc-500">Price Confidence</p>
                   <p className="mt-1 font-bold text-white">
-                    {foodItem.priceReportCount
-                      ? `${foodItem.priceReportCount} fan reports`
+                    {priceIntel.reportCount
+                      ? `${priceIntel.reportCount} fan reports`
                       : "Not enough reports"}
                   </p>
                   {foodItem.priceLastConfirmedLabel ? (
@@ -860,6 +960,52 @@ export default async function FoodPage({ params }: FoodPageProps) {
                   intel. Descriptions are written by Stadium Slop, not copied
                   from official menus.
                 </p>
+              </div>
+
+              <div className="mt-5 rounded-2xl border border-zinc-800 bg-black p-4">
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                  Report Price
+                </p>
+                <p className="mt-2 text-sm leading-6 text-zinc-400">
+                  Help keep prices accurate. Reports stay pending approval until
+                  an admin reviews them.
+                </p>
+                {isSignedIn ? (
+                  <form action={submitPriceReport} className="mt-4 grid gap-3">
+                    <input type="hidden" name="venueSlug" value={venue.slug} />
+                    <input type="hidden" name="foodSlug" value={foodItem.slug} />
+                    <input
+                      name="reportedPrice"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      required
+                      placeholder="13.99"
+                      className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                    />
+                    <textarea
+                      name="priceNote"
+                      maxLength={240}
+                      placeholder="Optional: menu board, section, or date context"
+                      className="min-h-20 rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                    />
+                    <button
+                      type="submit"
+                      className="brand-cta rounded-full px-5 py-3 text-sm font-black"
+                    >
+                      Submit price report
+                    </button>
+                  </form>
+                ) : (
+                  <Link
+                    href={`/login?next=${encodeURIComponent(
+                      `/venues/${venue.slug}/${foodItem.slug}`
+                    )}`}
+                    className="mt-4 inline-flex rounded-full border border-zinc-700 px-5 py-3 text-sm font-black text-zinc-400"
+                  >
+                    Sign in to report price
+                  </Link>
+                )}
               </div>
 
               <div className="mt-5 flex flex-wrap gap-2">

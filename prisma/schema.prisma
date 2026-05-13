@@ -369,6 +369,7 @@ model PriceReport {
   userId        String
   reportedPrice Decimal           @db.Decimal(8, 2)
   photoId       String?
+  note          String?
   status        PriceReportStatus @default(PENDING)
   createdAt     DateTime          @default(now())
   updatedAt     DateTime          @updatedAt
@@ -391,6 +392,7 @@ model SuggestedItem {
   name           String
   category       ItemCategory?
   locationHint   String?
+  note           String?
   photoId        String?
   status         SuggestedItemStatus @default(PENDING)
   createdAt      DateTime            @default(now())

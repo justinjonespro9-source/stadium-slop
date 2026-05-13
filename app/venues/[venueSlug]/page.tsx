@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 
 import {
   getFoodItemsByVenueSlug,
@@ -13,6 +15,9 @@ import {
   type ItemSlopStats,
   type SlopStatsMode
 } from "@/lib/slop-stats";
+import { prisma } from "@/lib/prisma";
+import { ensureMockReviewerUser } from "@/lib/mock-user";
+import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
 
 type FoodItem = ReturnType<typeof getFoodItemsByVenueSlug>[number];
 type StandingsMode = "all-time" | "season" | "fresh";
@@ -47,6 +52,61 @@ type VenuePageProps = {
     vendor?: string;
   }>;
 };
+
+async function suggestMissingItem(formData: FormData) {
+  "use server";
+
+  const venueSlug = String(formData.get("venueSlug") ?? "");
+  const vendorSlug = String(formData.get("vendorSlug") ?? "");
+  const name = String(formData.get("itemName") ?? "").trim();
+  const locationHint = String(formData.get("locationHint") ?? "").trim();
+  const note = String(formData.get("suggestedItemNote") ?? "").trim();
+  const venuePath = `/venues/${venueSlug}`;
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
+
+  if (!isSignedIn) {
+    redirect(`/login?next=${encodeURIComponent(venuePath)}`);
+  }
+
+  if (!name) {
+    redirect(`${venuePath}?suggestion=missing-name`);
+  }
+
+  const venue = await prisma.venue.findUnique({ where: { slug: venueSlug } });
+
+  if (!venue) {
+    redirect(venuePath);
+  }
+
+  const vendor = vendorSlug
+    ? await prisma.vendor.findUnique({
+        where: {
+          venueId_slug: {
+            venueId: venue.id,
+            slug: vendorSlug
+          }
+        }
+      })
+    : null;
+  const user = await ensureMockReviewerUser(venue.id);
+
+  await prisma.suggestedItem.create({
+    data: {
+      venueId: venue.id,
+      vendorId: vendor?.id,
+      userId: user.id,
+      name: name.slice(0, 120),
+      locationHint: locationHint ? locationHint.slice(0, 160) : null,
+      note: note ? note.slice(0, 240) : null
+    }
+  });
+
+  revalidatePath(venuePath);
+  redirect(`${venuePath}?suggestion=submitted`);
+}
 
 function sortOverallScoreboardItems(items: FoodItem[], mode: SlopStatsMode) {
   return [...items].sort(
@@ -358,6 +418,10 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
         ? "All-Time"
         : "Season";
   const scoreLabel = mode === "fresh" ? "Fresh" : "Slop";
+  const cookieStore = await cookies();
+  const isSignedIn = hasMockUserAccess(
+    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
+  );
 
   return (
     <main className="brand-page min-h-screen">
@@ -487,18 +551,60 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Don&apos;t see your food?
             </p>
-            <h3 className="mt-2 text-xl font-black sm:text-2xl">Add it</h3>
+            <h3 className="mt-2 text-xl font-black sm:text-2xl">
+              Suggest a missing item
+            </h3>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
-              Fans will be able to suggest missing vendors, sections, prices,
-              and reviewable items after sign-in.
+              Fan suggestions are saved as pending approval so admins can review
+              duplicates, sections, and venue accuracy.
             </p>
-            <button
-              type="button"
-              disabled
-              className="mt-5 cursor-not-allowed rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-500"
-            >
-              Add item coming soon
-            </button>
+            {isSignedIn ? (
+              <form action={suggestMissingItem} className="mt-4 grid gap-3">
+                <input type="hidden" name="venueSlug" value={venue.slug} />
+                <input
+                  name="itemName"
+                  required
+                  placeholder="Missing item name"
+                  className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                />
+                <select
+                  name="vendorSlug"
+                  className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
+                  defaultValue=""
+                >
+                  <option value="">Vendor unknown</option>
+                  {venueVendors.map((vendor) => (
+                    <option key={vendor.slug} value={vendor.slug}>
+                      {vendor.name}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  name="locationHint"
+                  placeholder="Optional section or location"
+                  className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                />
+                <textarea
+                  name="suggestedItemNote"
+                  maxLength={240}
+                  placeholder="Optional: price, stand, or menu context"
+                  className="min-h-20 rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                />
+                <button
+                  type="submit"
+                  className="brand-cta rounded-full px-6 py-3 text-sm font-black"
+                >
+                  Submit suggestion
+                </button>
+              </form>
+            ) : (
+              <Link
+                href={`/login?next=${encodeURIComponent(`/venues/${venue.slug}`)}`}
+                className="mt-5 inline-flex rounded-full border border-zinc-700 px-6 py-3 text-sm font-bold text-zinc-400"
+              >
+                Sign in to suggest an item
+              </Link>
+            )}
           </article>
         </section>
 
