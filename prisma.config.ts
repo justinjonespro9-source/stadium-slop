@@ -9,6 +9,6 @@ export default defineConfig({
   },
   migrations: {
     path: "prisma/migrations",
-    seed: "echo \"Seed placeholder: wire prisma/seed.ts when database writes are enabled.\""
+    seed: "tsx prisma/seed.ts"
   }
 });
