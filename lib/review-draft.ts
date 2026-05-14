@@ -1,3 +1,5 @@
+import { PhotoType } from "@prisma/client";
+
 import { prisma } from "@/lib/prisma";
 import { buildGameDayKey } from "@/lib/game-day";
 
@@ -18,9 +20,9 @@ export async function findTodaysReviewForItem(options: {
     },
     include: {
       photos: {
-        where: { status: "ACTIVE" },
+        where: { status: "ACTIVE", photoType: PhotoType.FOOD },
         orderBy: { createdAt: "desc" },
-        take: 1
+        take: 3
       }
     }
   });

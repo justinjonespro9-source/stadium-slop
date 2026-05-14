@@ -1,3 +1,6 @@
+import { PhotoType } from "@prisma/client";
+
+import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import {
   foodItems,
@@ -449,6 +452,7 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
     const dbPhotos = await prisma.foodPhoto.findMany({
       where: {
         status: "ACTIVE",
+        photoType: PhotoType.FOOD,
         foodItem: {
           slug: slugFilterInsensitive(normalizedFoodSlug),
           venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
@@ -462,26 +466,27 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
       orderBy: { createdAt: "desc" }
     });
 
-    const mappedPhotos: FoodPhoto[] = dbPhotos.map((photo) => ({
-      id: photo.id,
-      foodSlug: photo.foodItem?.slug ?? normalizedFoodSlug,
-      venueSlug: photo.venue?.slug ?? normalizedVenueSlug,
-      reviewId: photo.reviewId ?? undefined,
-      uploaderUserId: photo.uploaderUserId,
-      photoType:
-        photo.photoType === "MENU_PRICE_PROOF" ? "menu-price-proof" : "food",
-      alt: photo.alt,
-      caption: photo.caption ?? "Fan-uploaded stadium food photo",
-      uploadedBy: photo.uploader.displayName,
-      verifiedOnSite: photo.verifiedOnSite,
-      createdAt: photo.createdAt.toLocaleDateString("en-US", {
-        month: "short",
-        year: "numeric"
-      }),
-      sortTimestamp: photo.createdAt.getTime(),
-      imageUrl: photo.url ?? undefined,
-      imagePlaceholder: photo.placeholder ?? "🍔"
-    }));
+    const mappedPhotos: FoodPhoto[] = dbPhotos
+      .map((photo) => ({
+        id: photo.id,
+        foodSlug: photo.foodItem?.slug ?? normalizedFoodSlug,
+        venueSlug: photo.venue?.slug ?? normalizedVenueSlug,
+        reviewId: photo.reviewId ?? undefined,
+        uploaderUserId: photo.uploaderUserId,
+        photoType: "food" as const,
+        alt: photo.alt,
+        caption: photo.caption ?? "Fan-uploaded stadium food photo",
+        uploadedBy: photo.uploader.displayName,
+        verifiedOnSite: photo.verifiedOnSite,
+        createdAt: photo.createdAt.toLocaleDateString("en-US", {
+          month: "short",
+          year: "numeric"
+        }),
+        sortTimestamp: photo.createdAt.getTime(),
+        imageUrl: normalizePublicImageUrl(photo.url),
+        imagePlaceholder: photo.placeholder ?? "🍔"
+      }))
+      .filter((p) => Boolean(p.imageUrl));
 
     if (dbItem) {
       return mappedPhotos;

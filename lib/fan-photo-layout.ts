@@ -1,4 +1,5 @@
 import type { FoodPhoto, FoodReview } from "@/lib/sample-data";
+import { normalizePublicImageUrl } from "@/lib/image-url";
 
 export type FanPhotoHeroEntry = {
   url: string;
@@ -33,7 +34,7 @@ function uniquePhotoBackedReviews(reviews: FoodReview[]): FoodReview[] {
   const byUrl = new Map<string, FoodReview>();
 
   for (const r of reviews) {
-    const url = r.photoUrl?.trim();
+    const url = normalizePublicImageUrl(r.photoUrl);
     if (!url) {
       continue;
     }
@@ -76,49 +77,59 @@ export function buildItemFanPhotoLayout(
 
   if (photoBacked.length > 0) {
     const top = photoBacked[0];
-    heroEntry = {
-      url: top.photoUrl!,
-      alt: top.photoAlt ?? `Fan-uploaded photo for ${foodName}`,
-      review: top
-    };
+    const heroUrl = normalizePublicImageUrl(top.photoUrl);
+    if (heroUrl) {
+      heroEntry = {
+        url: heroUrl,
+        alt: top.photoAlt ?? `Fan-uploaded photo for ${foodName}`,
+        review: top
+      };
+    }
   }
 
   if (!heroEntry) {
     const verified = foodPhotos
-      .filter((p) => p.imageUrl?.trim() && p.verifiedOnSite)
+      .filter((p) => normalizePublicImageUrl(p.imageUrl) && p.verifiedOnSite)
       .sort((a, b) => photoSortMs(b) - photoSortMs(a));
     const first = verified[0];
-    if (first?.imageUrl) {
-      heroEntry = { url: first.imageUrl, alt: first.alt, review: null };
+    const u = normalizePublicImageUrl(first?.imageUrl);
+    if (first && u) {
+      heroEntry = { url: u, alt: first.alt, review: null };
     }
   }
 
   if (!heroEntry) {
     const standalone = foodPhotos
-      .filter((p) => p.imageUrl?.trim() && !p.reviewId)
+      .filter((p) => normalizePublicImageUrl(p.imageUrl) && !p.reviewId)
       .sort((a, b) => photoSortMs(b) - photoSortMs(a));
     const first = standalone[0];
-    if (first?.imageUrl) {
-      heroEntry = { url: first.imageUrl, alt: first.alt, review: null };
+    const u = normalizePublicImageUrl(first?.imageUrl);
+    if (first && u) {
+      heroEntry = { url: u, alt: first.alt, review: null };
     }
   }
 
   if (!heroEntry) {
     const any = foodPhotos
-      .filter((p) => p.imageUrl?.trim())
+      .filter((p) => normalizePublicImageUrl(p.imageUrl))
       .sort((a, b) => photoSortMs(b) - photoSortMs(a));
     const first = any[0];
-    if (first?.imageUrl) {
-      heroEntry = { url: first.imageUrl, alt: first.alt, review: null };
+    const u = normalizePublicImageUrl(first?.imageUrl);
+    if (first && u) {
+      heroEntry = { url: u, alt: first.alt, review: null };
     }
   }
 
   const heroUrl = heroEntry?.url;
-  const cardUrls = new Set(photoBacked.map((r) => r.photoUrl!).filter(Boolean));
+  const cardUrls = new Set(
+    photoBacked
+      .map((r) => normalizePublicImageUrl(r.photoUrl))
+      .filter((u): u is string => Boolean(u))
+  );
 
   const additionalFanPhotos = foodPhotos
     .filter((p) => {
-      const u = p.imageUrl?.trim();
+      const u = normalizePublicImageUrl(p.imageUrl);
       if (!u) {
         return false;
       }
@@ -132,7 +143,7 @@ export function buildItemFanPhotoLayout(
     })
     .sort((a, b) => photoSortMs(b) - photoSortMs(a))
     .map((p) => ({
-      url: p.imageUrl!,
+      url: normalizePublicImageUrl(p.imageUrl)!,
       alt: p.alt,
       review: null as FoodReview | null
     }));

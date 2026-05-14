@@ -23,6 +23,7 @@ import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import { buildItemFanPhotoLayout } from "@/lib/fan-photo-layout";
+import { normalizePublicImageUrl } from "@/lib/image-url";
 
 export const dynamic = "force-dynamic";
 
@@ -373,7 +374,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     foodItem.name
   );
 
-  const heroImageUrl = heroEntry?.url;
+  const heroImageUrl = normalizePublicImageUrl(heroEntry?.url);
   const heroAlt =
     heroEntry?.alt ?? `${foodItem.name} fan photo`;
   const heroEmoji =
@@ -612,7 +613,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             {photoBackedReviews.length > 0 ? (
               photoBackedReviews.map((review) => {
                 const heroDup =
-                  Boolean(heroImageUrl) && review.photoUrl === heroImageUrl;
+                  Boolean(heroImageUrl) &&
+                  normalizePublicImageUrl(review.photoUrl) === heroImageUrl;
 
                 return (
                   <article
@@ -666,9 +668,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                           }
                           className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-zinc-950"
                         >
-                          {review.photoUrl ? (
+                          {normalizePublicImageUrl(review.photoUrl) ? (
                             <Image
-                              src={review.photoUrl}
+                              src={normalizePublicImageUrl(review.photoUrl)!}
                               alt={
                                 review.photoAlt ?? `Fan photo for ${foodItem.name}`
                               }

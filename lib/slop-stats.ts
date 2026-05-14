@@ -1,4 +1,7 @@
+import { PhotoType } from "@prisma/client";
+
 import { localCalendarDateKey, utcCalendarDateKey } from "./game-day";
+import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { slugFilterInsensitive } from "./public-data";
 import {
@@ -179,8 +182,8 @@ function dedupeReviewsByUserItemGameDay(reviews: FoodReview[]) {
       reviewsByKey.set(key, review);
       return;
     }
-    const nextHas = Boolean(review.photoUrl?.trim());
-    const prevHas = Boolean(existing.photoUrl?.trim());
+    const nextHas = Boolean(normalizePublicImageUrl(review.photoUrl));
+    const prevHas = Boolean(normalizePublicImageUrl(existing.photoUrl));
     let pick = existing;
     if (nextHas && !prevHas) {
       pick = review;
@@ -416,10 +419,10 @@ export async function getDbBackedItemSlopStats(
             },
             photos: {
               where: {
-                status: "ACTIVE"
+                status: "ACTIVE",
+                photoType: PhotoType.FOOD
               },
               orderBy: { createdAt: "desc" },
-              take: 12,
               select: {
                 url: true,
                 placeholder: true,
@@ -451,10 +454,14 @@ export async function getDbBackedItemSlopStats(
       reviewsForMode.length > 0 ? reviewsForMode : getDbReviewsForMode(item.reviews, "allTime");
 
     const reviews = fallbackReviews.map<FoodReview>((review) => {
-      const primaryPhoto = review.photos.find(
-        (p) => p.url != null && String(p.url).trim() !== ""
-      );
-      const photoUrl = primaryPhoto?.url?.trim() ?? undefined;
+      const usableFanPhotos = [...review.photos]
+        .filter((p) => normalizePublicImageUrl(p.url))
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      const primaryPhoto = usableFanPhotos[0];
+      const photoUrl = normalizePublicImageUrl(primaryPhoto?.url);
 
       return {
         id: review.id,

@@ -16,6 +16,7 @@ import {
   validateImageFile
 } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
+import { normalizePublicImageUrl } from "@/lib/image-url";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
 import {
   MOCK_REVIEWER_EMAIL,
@@ -325,6 +326,16 @@ async function submitReview(formData: FormData) {
 
     const caption = String(formData.get("photoCaption") ?? "").trim().slice(0, 120);
 
+    const publicUrl = normalizePublicImageUrl(secureUrl);
+    if (!publicUrl) {
+      revalidateFoodItemSurfaces(
+        canonicalItemPath,
+        venue.slug,
+        foodItemRow.vendor.slug
+      );
+      redirect(`${canonicalItemPath}/review?photoRetry=1&photoError=upload`);
+    }
+
     try {
       const priorPhotoCount = await prisma.foodPhoto.count({
         where: { reviewId: review.id, status: "ACTIVE" }
@@ -341,7 +352,7 @@ async function submitReview(formData: FormData) {
           reviewId: review.id,
           uploaderUserId: user.id,
           photoType: "FOOD",
-          url: secureUrl,
+          url: publicUrl,
           alt: caption || `${foodItemRow.name} fan photo`,
           caption: caption || null,
           verifiedOnSite: true,
@@ -496,7 +507,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const draftReplay = draft?.replayValue ?? undefined;
   const draftPrice = draft?.priceCheck ?? undefined;
   const draftNote = draft?.note ?? "";
-  const existingPhoto = draft?.photos[0];
+  const existingPhoto =
+    draft?.photos.find((p) => normalizePublicImageUrl(p.url)) ?? undefined;
   const draftCaption = existingPhoto?.caption ?? "";
 
   return (
