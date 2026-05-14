@@ -150,7 +150,11 @@ export type FoodPhoto = {
   uploadedBy: string;
   verifiedOnSite: boolean;
   createdAt: string;
+  /** Milliseconds since epoch for sorting (DB); optional for sample rows */
+  sortTimestamp?: number;
   imagePlaceholder: string;
+  /** Cloudinary (or other) HTTPS URL when stored */
+  imageUrl?: string;
 };
 
 export type ReviewConsensusLabel =
@@ -189,9 +193,13 @@ export type FoodReview = {
   gameDayKey?: string;
   dateLabel: string;
   hasPhoto?: boolean;
+  /** Real image URL when review has an uploaded photo */
+  photoUrl?: string;
   photoAlt?: string;
   photoLabel?: string;
   photoPlaceholder?: string;
+  /** ISO timestamp of the primary (newest) ACTIVE fan photo for tie-breaks */
+  reviewPhotoCreatedAt?: string;
   hasMenuPriceProof?: boolean;
   note?: string;
 };

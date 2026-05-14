@@ -478,6 +478,7 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
         month: "short",
         year: "numeric"
       }),
+      sortTimestamp: photo.createdAt.getTime(),
       imageUrl: photo.url ?? undefined,
       imagePlaceholder: photo.placeholder ?? "🍔"
     }));

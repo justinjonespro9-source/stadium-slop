@@ -1,5 +1,6 @@
 import { localCalendarDateKey, utcCalendarDateKey } from "./game-day";
 import { prisma } from "./prisma";
+import { slugFilterInsensitive } from "./public-data";
 import {
   foodReviews,
   type FoodReview,
@@ -163,9 +164,34 @@ function getPriceCheckStats(reviews: FoodReview[]) {
 function dedupeReviewsByUserItemGameDay(reviews: FoodReview[]) {
   const reviewsByKey = new Map<string, FoodReview>();
 
+  const photoTime = (review: FoodReview) => {
+    if (review.reviewPhotoCreatedAt) {
+      const t = Date.parse(review.reviewPhotoCreatedAt);
+      return Number.isFinite(t) ? t : 0;
+    }
+    return 0;
+  };
+
   reviews.forEach((review) => {
     const key = `${review.reviewerId ?? review.id}:${review.foodSlug}:${review.gameDayKey ?? review.dateLabel}`;
-    reviewsByKey.set(key, review);
+    const existing = reviewsByKey.get(key);
+    if (!existing) {
+      reviewsByKey.set(key, review);
+      return;
+    }
+    const nextHas = Boolean(review.photoUrl?.trim());
+    const prevHas = Boolean(existing.photoUrl?.trim());
+    let pick = existing;
+    if (nextHas && !prevHas) {
+      pick = review;
+    } else if (!nextHas && prevHas) {
+      pick = existing;
+    } else if (review.helpfulLikes !== existing.helpfulLikes) {
+      pick = review.helpfulLikes > existing.helpfulLikes ? review : existing;
+    } else {
+      pick = photoTime(review) >= photoTime(existing) ? review : existing;
+    }
+    reviewsByKey.set(key, pick);
   });
 
   return Array.from(reviewsByKey.values());
@@ -272,11 +298,13 @@ function getDbReviewsForMode(
     gameDayKey: string;
     note: string | null;
     createdAt: Date;
+    updatedAt: Date;
     photos: {
       url: string | null;
       placeholder: string | null;
       alt: string;
       caption: string | null;
+      createdAt: Date;
     }[];
     user: {
       id: string;
@@ -360,10 +388,10 @@ export async function getDbBackedItemSlopStats(
   try {
     item = await prisma.foodItem.findFirst({
       where: {
-        slug: normalizedSlug,
+        slug: slugFilterInsensitive(normalizedSlug),
         status: "ACTIVE",
         venue: {
-          slug: normalizedVenue,
+          slug: slugFilterInsensitive(normalizedVenue),
           status: "ACTIVE"
         }
       },
@@ -390,11 +418,14 @@ export async function getDbBackedItemSlopStats(
               where: {
                 status: "ACTIVE"
               },
+              orderBy: { createdAt: "desc" },
+              take: 12,
               select: {
                 url: true,
                 placeholder: true,
                 alt: true,
-                caption: true
+                caption: true,
+                createdAt: true
               }
             }
           }
@@ -420,8 +451,10 @@ export async function getDbBackedItemSlopStats(
       reviewsForMode.length > 0 ? reviewsForMode : getDbReviewsForMode(item.reviews, "allTime");
 
     const reviews = fallbackReviews.map<FoodReview>((review) => {
-      const primaryPhoto = review.photos.find((p) => p.url);
-      const photoUrl = primaryPhoto?.url ?? undefined;
+      const primaryPhoto = review.photos.find(
+        (p) => p.url != null && String(p.url).trim() !== ""
+      );
+      const photoUrl = primaryPhoto?.url?.trim() ?? undefined;
 
       return {
         id: review.id,
@@ -449,6 +482,7 @@ export async function getDbBackedItemSlopStats(
         photoAlt: primaryPhoto?.alt,
         photoLabel: primaryPhoto?.caption ?? undefined,
         photoPlaceholder: primaryPhoto?.placeholder ?? undefined,
+        reviewPhotoCreatedAt: primaryPhoto?.createdAt?.toISOString(),
         note: review.note ?? undefined
       };
     });

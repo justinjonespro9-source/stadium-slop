@@ -11,7 +11,7 @@ import {
   getPublicVendorForFoodItem,
   getPublicVenueBySlug
 } from "@/lib/public-data";
-import type { FoodPhoto, FoodReview } from "@/lib/sample-data";
+import type { FoodReview } from "@/lib/sample-data";
 import { prisma } from "@/lib/prisma";
 import { getDbBackedItemSlopStats, getSlopScoreTier, type ConsensusStat } from "@/lib/slop-stats";
 import {
@@ -22,6 +22,7 @@ import {
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
+import { buildItemFanPhotoLayout } from "@/lib/fan-photo-layout";
 
 export const dynamic = "force-dynamic";
 
@@ -51,56 +52,6 @@ function getReviewerInitials(review: {
 
 function getPrimaryConsensusLabel(review: { labels: string[] }) {
   return review.labels[0] ?? "Fan Rating";
-}
-
-/** Newest review photos first, then other fan photos; URLs deduped so the hero is not repeated downstream. */
-function buildFanPhotoLayout(
-  reviews: FoodReview[],
-  photos: FoodPhoto[],
-  foodName: string
-) {
-  const orderedUnique: {
-    url: string;
-    alt: string;
-    review: FoodReview | null;
-  }[] = [];
-  const seenUrls = new Set<string>();
-
-  for (const review of reviews) {
-    if (!review.photoUrl || seenUrls.has(review.photoUrl)) {
-      continue;
-    }
-    seenUrls.add(review.photoUrl);
-    orderedUnique.push({
-      url: review.photoUrl,
-      alt: review.photoAlt ?? `Fan-uploaded photo for ${foodName}`,
-      review
-    });
-  }
-
-  for (const photo of photos) {
-    if (!photo.imageUrl || seenUrls.has(photo.imageUrl)) {
-      continue;
-    }
-    seenUrls.add(photo.imageUrl);
-    orderedUnique.push({
-      url: photo.imageUrl,
-      alt: photo.alt,
-      review: null
-    });
-  }
-
-  const heroEntry = orderedUnique[0];
-  const additionalFanPhotos = orderedUnique.slice(1);
-  const photoBackedReviews = orderedUnique
-    .map((entry) => entry.review)
-    .filter((r): r is FoodReview => r != null);
-
-  return {
-    heroEntry,
-    additionalFanPhotos,
-    photoBackedReviews
-  };
 }
 
 function maxConsensusPercentage(stats: ConsensusStat[]) {
@@ -416,7 +367,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     "gameDayFresh"
   );
 
-  const { heroEntry, additionalFanPhotos, photoBackedReviews } = buildFanPhotoLayout(
+  const { heroEntry, additionalFanPhotos, photoBackedReviews } = buildItemFanPhotoLayout(
     careerStats.reviews,
     foodPhotos,
     foodItem.name
