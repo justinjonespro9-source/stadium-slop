@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "venues": [
+    {
+      "slug": "example-park-import",
+      "name": "Example Park (delete or replace)",
+      "city": "Example City",
+      "state": "IL",
+      "team": "Example MLB Club",
+      "league": "MLB",
+      "latitude": 41.9484,
+      "longitude": -87.6553,
+      "reviewRadiusMeters": 800,
+      "venueType": "BALLPARK",
+      "primarySport": "Baseball",
+      "recurringEvents": ["Regular season"],
+      "country": "USA",
+      "region": "North America"
+    }
+  ],
+  "vendors": [
+    {
+      "venueSlug": "example-park-import",
+      "slug": "example-stand",
+      "name": "Example Concession Stand",
+      "section": "Main concourse",
+      "location": "Near home plate gate",
+      "lineIntel": "Replace with real line intel after walkthrough."
+    }
+  ],
+  "items": [
+    {
+      "venueSlug": "example-park-import",
+      "vendorSlug": "example-stand",
+      "slug": "example-hot-dog",
+      "name": "Classic Ballpark Hot Dog",
+      "itemType": "Food",
+      "category": "Snack",
+      "location": "Main concourse",
+      "description": "Placeholder row for import testing.",
+      "price": 6.5,
+      "tags": ["MLB", "Import"]
+    }
+  ]
+}

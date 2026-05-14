@@ -1,10 +1,12 @@
 import Link from "next/link";
 
 import { BrandLockup } from "@/components/brand-lockup";
+import { HomeVenueSearch } from "@/components/home-venue-search";
 import { getPublicVenues } from "@/lib/public-data";
 
 export default async function Home() {
-  const popularSearches = (await getPublicVenues()).slice(0, 3);
+  const venues = await getPublicVenues();
+  const popularSearches = venues.slice(0, 3);
 
   return (
     <main className="brand-page min-h-screen">
@@ -17,20 +19,13 @@ export default async function Home() {
             Find your venue. Then find what&apos;s worth eating.
           </p>
           <p className="mt-5 text-base leading-7 text-[color:rgba(255,244,223,0.78)] sm:text-lg">
-            Search stadiums, arenas, ballparks, teams, or cities. Browse is
-            public. Verified game-day reviews require a free profile and an
-            on-site location check.
+            MLB ballparks first — then the rest of the league. Search by park,
+            city, team, or food. Browse is public. Verified game-day reviews need
+            a free profile and an on-site check.
           </p>
         </header>
 
-        <div className="brand-panel mt-10 rounded-[2rem] border p-2 shadow-2xl">
-          <input
-            aria-label="Search Stadium Slop"
-            readOnly
-            placeholder="Search for a venue, team, city, or stadium..."
-            className="w-full rounded-[1.5rem] bg-[var(--slop-ink)] px-5 py-5 text-base font-semibold text-[var(--slop-cream)] outline-none placeholder:text-[color:rgba(255,244,223,0.42)] sm:text-lg"
-          />
-        </div>
+        <HomeVenueSearch venues={venues} />
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <Link

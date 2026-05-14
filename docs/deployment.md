@@ -61,6 +61,7 @@ npm run build
 | Apply migrations in **development** | `npm run db:migrate` (runs `prisma migrate dev`) |
 | Apply migrations in **CI / Vercel / production DB** | `npm run db:migrate:deploy` (runs `prisma migrate deploy`) |
 | Seed sample data (dev/demo) | `npm run db:seed` |
+| MLB ballpark bulk import (JSON) | `npm run import:mlb -- ./path/to.json` — see `data/mlb/README.md` |
 
 Seed is configured in `prisma.config.ts` (`migrations.seed`). It upserts sample venues, vendors, items, reviews, and photos — safe to re-run in dev; **review before running against a production DB** (it overwrites/upserts by slug).
 

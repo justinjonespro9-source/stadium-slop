@@ -277,6 +277,7 @@ export const venues: Venue[] = [
     longitude: -93.2776,
     reviewRadiusMeters: 800,
     venueType: "Ballpark",
+    venueTypeKey: "BALLPARK",
     primarySport: "Baseball",
     recurringEvents: ["MLB season", "Postseason"]
   },
@@ -310,7 +311,44 @@ export const venues: Venue[] = [
     longitude: -93.1011,
     reviewRadiusMeters: 800,
     venueType: "Arena",
+    venueTypeKey: "ARENA",
     primarySport: "Hockey"
+  },
+  {
+    slug: "wrigley-field",
+    name: "Wrigley Field",
+    city: "Chicago",
+    state: "IL",
+    leagues: ["MLB"],
+    teams: ["Chicago Cubs"],
+    sports: ["Baseball"],
+    country: "USA",
+    region: "North America",
+    latitude: 41.9484,
+    longitude: -87.6553,
+    reviewRadiusMeters: 800,
+    venueType: "Ballpark",
+    venueTypeKey: "BALLPARK",
+    primarySport: "Baseball",
+    recurringEvents: ["MLB season", "Postseason"]
+  },
+  {
+    slug: "fenway-park",
+    name: "Fenway Park",
+    city: "Boston",
+    state: "MA",
+    leagues: ["MLB"],
+    teams: ["Boston Red Sox"],
+    sports: ["Baseball"],
+    country: "USA",
+    region: "North America",
+    latitude: 42.3467,
+    longitude: -71.0972,
+    reviewRadiusMeters: 800,
+    venueType: "Ballpark",
+    venueTypeKey: "BALLPARK",
+    primarySport: "Baseball",
+    recurringEvents: ["MLB season", "Postseason", "Green Monster seats"]
   }
 ];
 
@@ -368,6 +406,24 @@ export const vendors: Vendor[] = [
     location: "Club level market",
     averageSlopScore: 8.2,
     lineIntel: "Fresh batches trend positive around intermission."
+  },
+  {
+    slug: "wrigley-classics",
+    name: "Wrigley Classics",
+    venueSlug: "wrigley-field",
+    section: "Main concourse",
+    location: "Near Gate F",
+    averageSlopScore: 8,
+    lineIntel: "MLB seed stub — replace with walk-the-park line intel."
+  },
+  {
+    slug: "fenway-grill",
+    name: "Fenway Grill",
+    venueSlug: "fenway-park",
+    section: "Lower concourse",
+    location: "Near Gate D",
+    averageSlopScore: 8,
+    lineIntel: "MLB seed stub — replace with walk-the-park line intel."
   }
 ];
 
@@ -610,6 +666,78 @@ export const foodItems: FoodItem[] = [
     freshSignalScore: 8.9,
     freshSignal: "Hot Today",
     freshSignalReason: "A strong non-alcoholic pick with quick lines."
+  },
+  {
+    slug: "wrigley-stub-snack",
+    name: "Classic Ballpark Snack (stub)",
+    venueSlug: "wrigley-field",
+    vendorSlug: "wrigley-classics",
+    itemType: "Food",
+    category: "Snack",
+    location: "Main concourse",
+    sections: ["Main"],
+    price: 7.5,
+    reportedPrice: 7.5,
+    priceLastConfirmedLabel: "MLB seed",
+    priceReportCount: 0,
+    rating: 4,
+    worthItScore: 75,
+    slopScore: 7.5,
+    verdict: "Solid Role Player",
+    runItBackPercent: 75,
+    valueLabel: "Fair Deal",
+    servedRightLabel: "Fine",
+    lineWaitLabel: "Quick Stop",
+    napkinRating: 3,
+    napkinLabel: "Two-Handed Problem",
+    reviewCount: 0,
+    tags: ["MLB", "Stub", "Ballpark"],
+    description:
+      "Seed placeholder for MLB-first expansion; swap for real menu intel.",
+    availabilityStatus: "Fan reported",
+    lastConfirmed: "MLB seed",
+    scoreboardRank: 99,
+    freshReviewCount: 0,
+    freshWindowLabel: "stub",
+    freshSignalScore: 7,
+    freshSignal: "Mixed Signals",
+    freshSignalReason: "Placeholder until fan reviews land."
+  },
+  {
+    slug: "fenway-stub-snack",
+    name: "Ballpark Bites (stub)",
+    venueSlug: "fenway-park",
+    vendorSlug: "fenway-grill",
+    itemType: "Food",
+    category: "Snack",
+    location: "Lower concourse",
+    sections: ["Main"],
+    price: 8,
+    reportedPrice: 8,
+    priceLastConfirmedLabel: "MLB seed",
+    priceReportCount: 0,
+    rating: 4,
+    worthItScore: 76,
+    slopScore: 7.6,
+    verdict: "Solid Role Player",
+    runItBackPercent: 76,
+    valueLabel: "Fair Deal",
+    servedRightLabel: "Fine",
+    lineWaitLabel: "Quick Stop",
+    napkinRating: 3,
+    napkinLabel: "Two-Handed Problem",
+    reviewCount: 0,
+    tags: ["MLB", "Stub", "Ballpark"],
+    description:
+      "Seed placeholder for MLB-first expansion; swap for real menu intel.",
+    availabilityStatus: "Fan reported",
+    lastConfirmed: "MLB seed",
+    scoreboardRank: 99,
+    freshReviewCount: 0,
+    freshWindowLabel: "stub",
+    freshSignalScore: 7,
+    freshSignal: "Mixed Signals",
+    freshSignalReason: "Placeholder until fan reviews land."
   }
 ];
 

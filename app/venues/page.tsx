@@ -1,10 +1,9 @@
-import Link from "next/link";
-
+import { VenuesBrowseClient } from "@/components/venues-browse-client";
 import {
   getPublicFoodItemsByVenueSlug,
   getPublicVenues
 } from "@/lib/public-data";
-import { venueTypeGlyph } from "@/lib/venue-display";
+import type { FoodItem } from "@/lib/sample-data";
 
 export default async function VenuesPage() {
   const venues = await getPublicVenues();
@@ -14,9 +13,9 @@ export default async function VenuesPage() {
       items: await getPublicFoodItemsByVenueSlug(venue.slug)
     }))
   );
-  const itemsByVenueSlug = new Map(
+  const itemsByVenueSlug = Object.fromEntries(
     venueItems.map(({ venueSlug, items }) => [venueSlug, items])
-  );
+  ) as Record<string, FoodItem[]>;
 
   return (
     <main className="brand-page min-h-screen">
@@ -29,100 +28,12 @@ export default async function VenuesPage() {
             Start with the venues in the Stadium Slop sample set.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-            This MVP keeps the venue list intentionally small while the routing,
-            layout, and food ranking flows take shape.
+            MLB ballparks lead the list; NFL/NHL neighbors stay for demos. Use
+            search or open a venue card.
           </p>
         </header>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          {venues.map((venue) => {
-            const venueFoodItems = itemsByVenueSlug.get(venue.slug) ?? [];
-            const topItem = [...venueFoodItems].sort(
-              (a, b) => b.slopScore - a.slopScore
-            )[0];
-
-            return (
-              <Link
-                key={venue.slug}
-                href={`/venues/${venue.slug}`}
-                className="brand-card group rounded-3xl border p-6 transition hover:border-[var(--slop-blue)]"
-              >
-                <article>
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h2 className="text-xl font-black">{venue.name}</h2>
-                      <p className="mt-2 text-sm text-zinc-400">
-                        {venue.city}, {venue.state}
-                      </p>
-                    </div>
-                    <span
-                      className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-zinc-400"
-                      title={venue.venueType}
-                    >
-                      {venue.venueTypeKey ? (
-                        <span className="text-base leading-none opacity-85" aria-hidden>
-                          {venueTypeGlyph(venue.venueTypeKey) ?? ""}
-                        </span>
-                      ) : null}
-                      <span>{venue.venueType}</span>
-                    </span>
-                  </div>
-
-                  <p className="mt-5 text-sm text-zinc-500">
-                    {venue.teams.join(", ")}
-                  </p>
-                  <p className="mt-2 text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                    {venue.leagues.join(", ")}
-                  </p>
-                  <p className="mt-2 text-sm text-zinc-500">
-                    {venue.sports.join(", ")}
-                  </p>
-                  <p className="mt-3 text-xs font-bold uppercase tracking-[0.15em] text-zinc-600">
-                    {venue.reviewRadiusMeters}m verified review zone
-                  </p>
-
-                  <div className="mt-6 rounded-2xl bg-[var(--slop-ink)] p-4">
-                    <p className="text-sm text-zinc-500">
-                      {venueFoodItems.length}{" "}
-                      {venueFoodItems.length === 1 ? "item" : "items"}
-                    </p>
-                    <p className="mt-3 text-sm text-zinc-500">Top item</p>
-                    <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <p className="font-bold">
-                        {topItem ? topItem.name : "No food items yet"}
-                      </p>
-                      {topItem?.ageRestricted ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          21+
-                        </span>
-                      ) : null}
-                      {topItem?.isPromoted ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          Promoted
-                        </span>
-                      ) : null}
-                      {topItem?.isNewThisSeason ? (
-                        <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-                          New This Season
-                        </span>
-                      ) : null}
-                    </div>
-                    {topItem ? (
-                      <p className="mt-1 text-sm text-zinc-500">
-                        {topItem.itemType} · Slop Score{" "}
-                        {topItem.slopScore.toFixed(1)} · {topItem.verdict}
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <p className="mt-5 text-sm font-bold text-[var(--slop-orange)] transition group-hover:text-[var(--slop-blue)]">
-                    View venue
-                  </p>
-                </article>
-              </Link>
-            );
-          })}
-        </div>
+        <VenuesBrowseClient venues={venues} itemsByVenueSlug={itemsByVenueSlug} />
       </section>
     </main>
   );
