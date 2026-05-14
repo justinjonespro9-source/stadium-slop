@@ -484,14 +484,24 @@ import {
   wave4BallparkFoodItems,
   wave4BallparkVendors
 } from "./mlb-ballpark-concessions-parks-wave4";
+import {
+  wave5BallparkFoodItems,
+  wave5BallparkVendors
+} from "./mlb-ballpark-concessions-parks-wave5";
+import {
+  wave6BallparkFoodItems,
+  wave6BallparkVendors
+} from "./mlb-ballpark-concessions-parks-wave6";
 
-/** Merged into `lib/sample-data` — Target Field + MLB expansion waves 1–4. */
+/** Merged into `lib/sample-data` — Target Field + MLB expansion waves 1–6. */
 export const sixParkConcessionsVendors: Vendor[] = [
   ...targetFieldConcessionVendors,
   ...expansionBallparkVendors,
   ...wave2BallparkVendors,
   ...wave3BallparkVendors,
-  ...wave4BallparkVendors
+  ...wave4BallparkVendors,
+  ...wave5BallparkVendors,
+  ...wave6BallparkVendors
 ];
 
 export const sixParkConcessionsFoodItems: FoodItem[] = [
@@ -499,5 +509,7 @@ export const sixParkConcessionsFoodItems: FoodItem[] = [
   ...expansionBallparkFoodItems,
   ...wave2BallparkFoodItems,
   ...wave3BallparkFoodItems,
-  ...wave4BallparkFoodItems
+  ...wave4BallparkFoodItems,
+  ...wave5BallparkFoodItems,
+  ...wave6BallparkFoodItems
 ];
