@@ -4,9 +4,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
-import { isCloudinaryConfigured, logUploadFailure, photoErrorQueryFromUploadFailure, uploadImageFile } from "@/lib/cloudinary";
+import {
+  isCloudinaryConfigured,
+  logUploadFailure,
+  photoErrorQueryFromUploadFailure,
+  uploadImageFile
+} from "@/lib/cloudinary";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
-
 import { prisma } from "@/lib/prisma";
 import { isGameDayKeyTodayForVenue } from "@/lib/game-day";
 import {
@@ -15,21 +19,6 @@ import {
   hasMockUserAccess,
   mockReviewerProfile
 } from "@/lib/user-auth";
-
-const mockProfile = {
-  ...mockReviewerProfile,
-  stats: {
-    totalReviews: 18,
-    helpfulLikes: 142,
-    verifiedGameDayReviews: 14,
-    photosUploaded: 11
-  }
-};
-
-const mockSignedOutState = {
-  headline: "Create your fan profile",
-  copy: "Sign in or sign up to submit verified reviews, receive helpful likes, and keep your review history tied to one profile."
-};
 
 async function mockUserSignOut() {
   "use server";
@@ -68,8 +57,7 @@ async function uploadProfileAvatar(formData: FormData) {
     await prisma.user.update({
       where: { id: MOCK_REVIEWER_USER_ID },
       data: {
-        avatarUrl: secureUrl,
-        photoUploadCount: { increment: 1 }
+        avatarUrl: secureUrl
       }
     });
   } catch (err) {
@@ -82,58 +70,68 @@ async function uploadProfileAvatar(formData: FormData) {
   redirect("/account");
 }
 
-async function getHelpfulLikesReceived() {
-  try {
-    return await prisma.helpfulLike.count({
-      where: {
-        review: {
-          userId: MOCK_REVIEWER_USER_ID
-        }
-      }
-    });
-  } catch (error) {
-    console.warn("Falling back to mock helpful-like total", error);
-    return mockProfile.stats.helpfulLikes;
+function reviewRowDateLabel(
+  gameDayKey: string,
+  venueSlug: string,
+  verifiedGameDay: boolean,
+  updatedAt: Date
+): string {
+  if (isGameDayKeyTodayForVenue(gameDayKey, venueSlug)) {
+    return "Today · game day";
   }
+  const tail = gameDayKey.match(/(\d{4}-\d{2}-\d{2})$/);
+  let dateStr = updatedAt.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  });
+  if (tail) {
+    const [y, mo, da] = tail[1].split("-").map(Number);
+    dateStr = new Date(y, mo - 1, da).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    });
+  }
+  return verifiedGameDay
+    ? `${dateStr} · verified at park`
+    : `${dateStr} · logged`;
 }
 
 function SignedOutAccount() {
   return (
     <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-3xl px-5 py-8 sm:px-8 lg:px-10">
-        <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
-          Signed out
+      <section className="mx-auto w-full max-w-lg px-5 py-10 sm:px-8">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+          Stadium Slop
+        </p>
+        <h1 className="mt-2 text-3xl font-black leading-tight tracking-tight text-[var(--slop-cream)] sm:text-4xl">
+          Your reviewer dashboard
+        </h1>
+        <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+          Sign in to track Slop Scores, fan photos, helpful likes, and every park
+          you&apos;ve rated—verified when you&apos;re at the venue.
         </p>
 
-        <section className="brand-panel mt-5 rounded-[2rem] border p-5 sm:p-7">
-          <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-            {mockSignedOutState.headline}
-          </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-400 sm:text-base">
-            {mockSignedOutState.copy} Profile photos, helpful likes, and review
-            history will belong to your mock reviewer account.
-          </p>
+        <div className="mt-8 grid gap-3">
+          <Link
+            href="/login?next=/account"
+            className="brand-cta rounded-full px-6 py-3.5 text-center text-sm font-black"
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/signup?next=/account"
+            className="rounded-full border border-[var(--slop-line)] px-6 py-3.5 text-center text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
+          >
+            Create free profile
+          </Link>
+        </div>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <Link
-              href="/login"
-              className="brand-cta rounded-full px-6 py-4 text-center text-sm font-black transition"
-            >
-              Sign in
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-full border border-[var(--slop-line)] px-6 py-4 text-center text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
-            >
-              Sign up
-            </Link>
-          </div>
-
-          <p className="mt-5 text-xs leading-5 text-zinc-500">
-            Temporary mock auth only. No real passwords, database records, or
-            external auth provider are connected yet.
-          </p>
-        </section>
+        <p className="mt-8 text-xs leading-relaxed text-zinc-600">
+          Demo auth today—no passwords or email provider wired yet. Your history
+          still saves to the database while you test.
+        </p>
       </section>
     </main>
   );
@@ -157,29 +155,75 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     return <SignedOutAccount />;
   }
 
-  const helpfulLikesReceived = await getHelpfulLikesReceived();
   const cloudinaryReady = isCloudinaryConfigured();
+  const userId = MOCK_REVIEWER_USER_ID;
 
+  let dbUser: {
+    avatarUrl: string | null;
+    displayName: string;
+    handle: string;
+    homeVenue: { name: string } | null;
+  } | null = null;
+  let totalReviews = 0;
+  let helpfulLikesReceived = 0;
+  let fanPhotoUploads = 0;
+  let venuesReviewed = 0;
   let reviewHistory: {
     id: string;
     gameDayKey: string;
+    verifiedGameDay: boolean;
     slopScore: number;
     napkinRating: number;
     helpfulLikes: number;
+    photoCount: number;
     foodName: string;
     foodSlug: string;
     venueSlug: string;
     venueName: string;
     updatedAt: Date;
   }[] = [];
-  let totalReviewCount = mockProfile.stats.totalReviews;
 
   try {
-    const [rows, count] = await prisma.$transaction([
+    await ensureMockReviewerUser();
+    const [
+      userRow,
+      reviewCount,
+      likeCount,
+      photoCount,
+      venueGroups,
+      rows
+    ] = await prisma.$transaction([
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: {
+          avatarUrl: true,
+          displayName: true,
+          handle: true,
+          homeVenue: { select: { name: true } }
+        }
+      }),
+      prisma.review.count({
+        where: { userId, status: "ACTIVE" }
+      }),
+      prisma.helpfulLike.count({
+        where: { review: { userId, status: "ACTIVE" } }
+      }),
+      prisma.foodPhoto.count({
+        where: {
+          uploaderUserId: userId,
+          status: "ACTIVE",
+          photoType: { in: ["FOOD", "MENU_PRICE_PROOF"] }
+        }
+      }),
+      prisma.review.groupBy({
+        by: ["venueId"],
+        where: { userId, status: "ACTIVE" },
+        orderBy: { venueId: "asc" }
+      }),
       prisma.review.findMany({
-        where: { userId: MOCK_REVIEWER_USER_ID, status: "ACTIVE" },
+        where: { userId, status: "ACTIVE" },
         orderBy: { updatedAt: "desc" },
-        take: 40,
+        take: 50,
         include: {
           foodItem: {
             select: {
@@ -188,54 +232,43 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               venue: { select: { slug: true, name: true } }
             }
           },
-          _count: { select: { helpfulLikes: true } }
+          _count: {
+            select: {
+              helpfulLikes: true,
+              photos: { where: { status: "ACTIVE" } }
+            }
+          }
         }
-      }),
-      prisma.review.count({
-        where: { userId: MOCK_REVIEWER_USER_ID, status: "ACTIVE" }
       })
     ]);
+
+    dbUser = userRow;
+    totalReviews = reviewCount;
+    helpfulLikesReceived = likeCount;
+    fanPhotoUploads = photoCount;
+    venuesReviewed = venueGroups.length;
     reviewHistory = rows.map((r) => ({
       id: r.id,
       gameDayKey: r.gameDayKey,
+      verifiedGameDay: r.verifiedGameDay,
       slopScore: Number(r.slopScore),
       napkinRating: r.napkinRating,
       helpfulLikes: r._count.helpfulLikes,
+      photoCount: r._count.photos,
       foodName: r.foodItem.name,
       foodSlug: r.foodItem.slug,
       venueSlug: r.foodItem.venue.slug,
       venueName: r.foodItem.venue.name,
       updatedAt: r.updatedAt
     }));
-    totalReviewCount = count;
   } catch (error) {
-    console.warn("Account review history DB read failed", error);
+    console.warn("Account dashboard DB read failed", error);
   }
 
-  let dbUser: {
-    avatarUrl: string | null;
-    photoUploadCount: number;
-    displayName: string;
-    handle: string;
-  } | null = null;
-
-  try {
-    dbUser = await prisma.user.findUnique({
-      where: { id: MOCK_REVIEWER_USER_ID },
-      select: {
-        avatarUrl: true,
-        photoUploadCount: true,
-        displayName: true,
-        handle: true
-      }
-    });
-  } catch (error) {
-    console.warn("Account user lookup failed", error);
-  }
-
-  const displayName = dbUser?.displayName ?? mockProfile.displayName;
-  const handle = dbUser?.handle ?? mockProfile.handle;
-  const photosUploaded = dbUser?.photoUploadCount ?? mockProfile.stats.photosUploaded;
+  const displayName = dbUser?.displayName ?? mockReviewerProfile.displayName;
+  const handle = dbUser?.handle ?? mockReviewerProfile.handle;
+  const homeVenueLabel =
+    dbUser?.homeVenue?.name ?? mockReviewerProfile.homeVenue;
 
   const uploadErrorMessage =
     uploadError === "too_large"
@@ -252,146 +285,129 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                 ? "Choose a photo file before saving."
                 : null;
 
+  const statTiles = [
+    { label: "Reviews", value: totalReviews },
+    { label: "Venues", value: venuesReviewed },
+    { label: "Fan photos", value: fanPhotoUploads },
+    { label: "Helpful likes", value: helpfulLikesReceived }
+  ];
+
   return (
     <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-4xl px-5 py-8 sm:px-8 lg:px-10">
-        <p className="brand-pill inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
-          Signed-in profile
-        </p>
+      <section className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 lg:max-w-3xl lg:px-8">
+        {uploadErrorMessage ? (
+          <div
+            role="alert"
+            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
+          >
+            <p className="font-bold">Profile photo</p>
+            <p className="mt-0.5 text-amber-100/95">{uploadErrorMessage}</p>
+          </div>
+        ) : null}
 
-        <header className="brand-panel mt-5 rounded-[2rem] border p-5">
-          {uploadErrorMessage ? (
-            <div
-              role="alert"
-              className="mb-4 rounded-2xl border border-amber-800/80 bg-amber-950/50 px-4 py-3 text-sm text-amber-100"
-            >
-              <p className="font-bold">Profile photo</p>
-              <p className="mt-1 text-amber-100/95">{uploadErrorMessage}</p>
-            </div>
-          ) : null}
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-            <div>
-              <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-[2rem] border-2 border-dashed border-[var(--slop-orange)] bg-[var(--slop-cream)] text-3xl font-black text-[var(--slop-ink)]">
+        <header className="rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-4 sm:p-5">
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
+            Reviewer dashboard
+          </p>
+          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
+            <div className="flex shrink-0 gap-4 sm:flex-col sm:items-center">
+              <div className="relative h-16 w-16 overflow-hidden rounded-2xl border-2 border-dashed border-[var(--slop-orange)] bg-[var(--slop-cream)] text-xl font-black text-[var(--slop-ink)] sm:h-20 sm:w-20 sm:text-2xl">
                 {dbUser?.avatarUrl ? (
                   <Image
                     src={dbUser.avatarUrl}
-                    alt={`${displayName} profile`}
+                    alt={`${displayName} profile photo`}
                     fill
                     className="object-cover"
-                    sizes="96px"
+                    sizes="80px"
                   />
                 ) : (
-                  mockProfile.initials
+                  <span className="flex h-full w-full items-center justify-center">
+                    {mockReviewerProfile.initials}
+                  </span>
                 )}
               </div>
               {cloudinaryReady ? (
-                <form action={uploadProfileAvatar} className="mt-3">
+                <form action={uploadProfileAvatar} className="min-w-0 flex-1 sm:w-full">
                   <label className="block">
-                    <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                      Profile photo
-                    </span>
+                    <span className="sr-only">Upload profile photo</span>
                     <input
                       name="avatar"
                       type="file"
                       accept="image/jpeg,image/png,image/webp,image/gif"
-                      className="mt-2 block w-full text-xs text-zinc-400 file:mr-2 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-2 file:text-xs file:font-black file:text-[var(--slop-ink)]"
+                      className="w-full text-xs text-zinc-400 file:mr-2 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-1.5 file:text-xs file:font-black file:text-[var(--slop-ink)]"
                     />
                   </label>
                   <button
                     type="submit"
-                    className="brand-cta mt-3 w-full rounded-full px-4 py-2 text-xs font-black sm:w-auto"
+                    className="brand-cta mt-2 w-full rounded-full px-3 py-2 text-xs font-black sm:py-1.5"
                   >
-                    Save profile photo
+                    Save avatar
                   </button>
                 </form>
               ) : (
-                <p className="mt-3 max-w-40 text-xs leading-5 text-zinc-500">
-                  Add CLOUDINARY_* env vars to enable profile photo uploads.
+                <p className="max-w-[11rem] text-xs leading-snug text-zinc-500">
+                  Set Cloudinary env vars to upload a profile photo.
                 </p>
               )}
-              <p className="mt-2 max-w-48 text-xs leading-5 text-zinc-500">
-                JPEG, PNG, WebP, or GIF up to about 8MB. HEIC/HEIF is not supported yet.
-                Fan photos help power Game Day Fresh. Profile photos help fans
-                trust who reviewed the slop.
-              </p>
             </div>
 
             <div className="min-w-0 flex-1">
-              <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
+              <h1 className="text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl">
                 {displayName}
               </h1>
-              <p className="mt-2 text-zinc-400">{handle}</p>
-              <p className="mt-3 text-sm text-zinc-500">
-                Home venue: {mockProfile.homeVenue}
+              <p className="mt-1 text-sm text-zinc-400">{handle}</p>
+              <p className="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
+                Home park · {homeVenueLabel}
               </p>
-              <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-400">
-                Anyone can browse Stadium Slop. A free profile and on-site
-                location check are required to leave verified reviews and move
-                venue Season Standings.
+              <p className="mt-3 text-xs leading-relaxed text-zinc-500">
+                JPEG/PNG/WebP/GIF, ~8MB max. Fan photos on reviews stay separate
+                from this avatar.
               </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full bg-[var(--slop-orange)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-ink)]">
-                  Mock signed in
-                </span>
-                <span className="rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
-                  Owner of {totalReviewCount} reviews
-                </span>
-              </div>
             </div>
           </div>
         </header>
 
-        <section className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[
-            ["Total reviews", totalReviewCount],
-            ["Helpful likes received", helpfulLikesReceived],
-            ["Verified game-day", mockProfile.stats.verifiedGameDayReviews],
-            ["Photos uploaded", photosUploaded]
-          ].map(([label, value]) => (
-            <div
-              key={label}
-              className="brand-card rounded-3xl border p-4"
+        <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+          {statTiles.map((t) => (
+            <li
+              key={t.label}
+              className="rounded-xl border border-[var(--slop-line)] bg-[var(--slop-surface)] px-3 py-3 text-center sm:px-4 sm:py-3.5"
             >
-              <p className="text-2xl font-black">{value}</p>
-              <p className="mt-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                {label}
+              <p className="text-xl font-black tabular-nums text-white sm:text-2xl">
+                {t.value}
               </p>
-            </div>
+              <p className="mt-1 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-zinc-500 sm:text-[0.65rem]">
+                {t.label}
+              </p>
+            </li>
           ))}
-        </section>
+        </ul>
 
-        <section className="brand-panel mt-5 rounded-3xl border p-5">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Reputation
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400">
-              Helpful likes only. No public follower counts.
-            </p>
-            <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400">
-              Trusted reviewers earn visibility through useful game-day intel.
-            </p>
-            <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400 sm:col-span-2">
-              No polished vendor shots. Fan profile photos and food photos help
-              other fans know who reviewed it and what actually showed up.
-            </p>
-            <p className="rounded-2xl bg-black p-4 text-sm leading-6 text-zinc-400 sm:col-span-2">
-              Helpful likes received are read from the database when available.
-              Verified game-day totals still use mock placeholders until wired to
-              the same query.
-            </p>
+        <p className="mt-3 text-xs leading-relaxed text-zinc-600">
+          Helpful likes only—no followers, DMs, or comment threads. Stats pull
+          from your live reviews and photos.
+        </p>
+
+        <section className="mt-6" aria-labelledby="history-heading">
+          <div className="flex items-baseline justify-between gap-2">
+            <h2
+              id="history-heading"
+              className="text-sm font-black uppercase tracking-[0.16em] text-zinc-400"
+            >
+              Review history
+            </h2>
+            <Link
+              href="/venues"
+              className="shrink-0 text-xs font-bold text-[var(--slop-blue)] underline-offset-2 hover:underline"
+            >
+              Find food
+            </Link>
           </div>
-        </section>
 
-        <section className="mt-6">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Review history
-          </p>
-          <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
+          <div className="mt-3 divide-y divide-zinc-800 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
             {reviewHistory.length === 0 ? (
-              <p className="px-4 py-8 text-sm leading-6 text-zinc-500">
-                No reviews in your profile yet. Open a food item and submit your
-                first scorecard.
+              <p className="px-3 py-8 text-center text-sm text-zinc-500">
+                No reviews yet. Open any menu item and drop your first Slop Score.
               </p>
             ) : (
               reviewHistory.map((review) => {
@@ -401,46 +417,74 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                   review.gameDayKey,
                   review.venueSlug
                 );
-                const updatedLabel = review.updatedAt.toLocaleDateString(
-                  "en-US",
-                  { month: "short", day: "numeric", year: "numeric" }
+                const dateLine = reviewRowDateLabel(
+                  review.gameDayKey,
+                  review.venueSlug,
+                  review.verifiedGameDay,
+                  review.updatedAt
                 );
 
                 return (
-                  <article
-                    key={review.id}
-                    className="border-b border-zinc-800 px-4 py-4 last:border-b-0"
-                  >
-                    <div className="flex items-start justify-between gap-4">
+                  <article key={review.id} className="px-3 py-3 sm:px-4">
+                    <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <h2 className="font-black">{review.foodName}</h2>
-                        <p className="mt-1 text-sm text-zinc-400">
+                        <h3 className="text-sm font-black leading-snug text-white sm:text-base">
+                          {review.foodName}
+                        </h3>
+                        <p className="mt-0.5 truncate text-xs text-zinc-400">
                           {review.venueName}
                         </p>
                       </div>
-                      <span className="shrink-0 rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
-                        {review.slopScore.toFixed(1)}
+                      <div className="shrink-0 text-right">
+                        <p className="text-lg font-black tabular-nums text-[var(--slop-orange)]">
+                          {review.slopScore.toFixed(1)}
+                        </p>
+                        <p className="text-[0.6rem] font-bold uppercase tracking-[0.1em] text-zinc-600">
+                          Slop
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.65rem] text-zinc-500 sm:text-xs">
+                      <span className="truncate">{dateLine}</span>
+                      <span className="text-zinc-700" aria-hidden>
+                        ·
+                      </span>
+                      <span>{review.napkinRating}/5 napkins</span>
+                      {review.photoCount > 0 ? (
+                        <>
+                          <span className="text-zinc-700" aria-hidden>
+                            ·
+                          </span>
+                          <span className="font-bold text-zinc-300" title="Review includes a photo">
+                            Photo
+                          </span>
+                        </>
+                      ) : null}
+                      <span className="text-zinc-700" aria-hidden>
+                        ·
+                      </span>
+                      <span>
+                        {review.helpfulLikes}{" "}
+                        {review.helpfulLikes === 1 ? "helpful like" : "helpful likes"}
                       </span>
                     </div>
-                    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs text-zinc-500">
-                      <span>{review.napkinRating}/5 napkins</span>
-                      <span>{review.helpfulLikes} helpful</span>
-                      <span>Updated {updatedLabel}</span>
+
+                    <div className="mt-2.5 flex flex-wrap gap-2">
                       {canEditToday ? (
                         <Link
                           href={reviewUrl}
-                          className="font-bold text-[var(--slop-orange)] underline decoration-[var(--slop-orange)] underline-offset-2 hover:text-white"
+                          className="inline-flex rounded-full border border-[var(--slop-orange)] bg-[color:rgba(255,106,0,0.1)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-[var(--slop-orange)] transition hover:bg-[color:rgba(255,106,0,0.18)]"
                         >
                           Edit today&apos;s review
                         </Link>
-                      ) : (
-                        <Link
-                          href={itemUrl}
-                          className="font-bold text-zinc-400 underline underline-offset-2 hover:text-white"
-                        >
-                          View item
-                        </Link>
-                      )}
+                      ) : null}
+                      <Link
+                        href={itemUrl}
+                        className="inline-flex rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-zinc-300 transition hover:border-zinc-500 hover:text-white"
+                      >
+                        View item
+                      </Link>
                     </div>
                   </article>
                 );
@@ -449,26 +493,19 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </div>
         </section>
 
-        <section className="brand-panel mt-6 rounded-3xl border p-5">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Mock session
-          </p>
-          <h2 className="mt-3 text-2xl font-black">
-            Signed in with temporary user auth
-          </h2>
-          <p className="mt-2 text-sm leading-6 text-zinc-400">
-            This profile is powered by a local mock cookie for now. Real account
-            storage and password security can replace it later.
+        <footer className="mt-8 flex flex-col gap-3 border-t border-zinc-800 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-zinc-600">
+            Demo session cookie—swap for real auth when you ship it.
           </p>
           <form action={mockUserSignOut}>
             <button
               type="submit"
-              className="mt-4 rounded-full border border-zinc-700 px-6 py-3 text-sm font-black text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+              className="w-full rounded-full border border-zinc-700 px-5 py-2.5 text-xs font-black uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)] sm:w-auto"
             >
               Sign out
             </button>
           </form>
-        </section>
+        </footer>
       </section>
     </main>
   );
