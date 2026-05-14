@@ -21,15 +21,18 @@ cp .env.example .env
 npm run db:migrate
 npm run db:seed   # optional sample data
 npm run dev
+# Prefer http://127.0.0.1:3000 in the browser if localhost hangs (see docs/deployment.md)
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open **http://127.0.0.1:3000** (recommended) or [http://localhost:3000](http://localhost:3000).
 
 ## Scripts
 
 | Script | Purpose |
 |--------|---------|
-| `npm run dev` | Dev server |
+| `npm run dev` | Dev server (Turbopack, **127.0.0.1**) |
+| `npm run dev:webpack` | Dev server with **webpack** (if Turbopack stalls) |
+| `npm run dev:lan` | Dev on **0.0.0.0** (LAN / device testing; see `docs/deployment.md` if `localhost` hangs) |
 | `npm run build` / `npm run start` | Production build / serve |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run db:generate` | `prisma generate` |

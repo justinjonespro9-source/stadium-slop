@@ -24,6 +24,12 @@ Optional tuning:
 
 - `STADIUM_SLOP_DB_QUERY_TIMEOUT_MS` — Milliseconds for the home page venue list DB call before falling back to sample data (default **4000**). Helps local dev when `DATABASE_URL` points at an unreachable host (TCP hang) so `/` still responds.
 
+### Dev server appears “Ready” but `curl` / the browser hangs
+
+1. **Use the bound host** — Default `npm run dev` listens on **127.0.0.1** (see `package.json`). Open **http://127.0.0.1:3000** or run `curl -sS http://127.0.0.1:3000/health` (avoids some macOS **`localhost` → IPv6** stalls when the server is IPv4-only). Use **`npm run dev:lan`** to bind `0.0.0.0` if you need phone/other devices on the LAN.
+2. **Smoke test without DB** — `GET /health` returns `{"ok":true}` with no Prisma. If `/health` works but `/` is slow, investigate Postgres or raise `STADIUM_SLOP_DB_QUERY_TIMEOUT_MS` only while debugging.
+3. **Turbopack vs webpack** — If the first request never completes, try **`npm run dev:webpack`** (webpack dev server) as a comparison.
+
 ---
 
 ## Local setup
