@@ -200,6 +200,8 @@ export type FoodReview = {
   photoPlaceholder?: string;
   /** ISO timestamp of the primary (newest) ACTIVE fan photo for tie-breaks */
   reviewPhotoCreatedAt?: string;
+  /** DB id of the primary fan photo row (for reports), when loaded from Prisma */
+  primaryFoodPhotoId?: string;
   hasMenuPriceProof?: boolean;
   note?: string;
 };

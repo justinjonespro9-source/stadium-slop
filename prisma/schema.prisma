@@ -174,6 +174,9 @@ enum ReportReason {
   BAD_INTEL
   INAPPROPRIATE_PHOTO
   OTHER
+  WRONG_ITEM
+  SPAM_FAKE
+  OFFENSIVE_CONTENT
 }
 
 enum ReportStatus {
@@ -190,6 +193,7 @@ model User {
   handle                     String          @unique
   homeVenueId                String?
   avatarPhotoId              String?
+  avatarUrl                  String?
   role                       UserRole        @default(REVIEWER)
   status                     EntityStatus    @default(ACTIVE)
   helpfulLikesReceived       Int             @default(0)
@@ -371,6 +375,7 @@ model FoodPhoto {
   uploader       User         @relation("UserPhotos", fields: [uploaderUserId], references: [id], onDelete: Cascade)
   priceReports   PriceReport[]
   suggestedItems SuggestedItem[]
+  reportFlags    ReportFlag[] @relation("ReportedPhoto")
 
   @@index([foodItemId])
   @@index([reviewId])
@@ -428,13 +433,16 @@ model ReportFlag {
   targetType     ReportTargetType
   targetId       String
   reviewId       String?
+  photoId        String?
   reason         ReportReason
   status         ReportStatus     @default(OPEN)
+  note           String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 
   reporter       User             @relation("ReporterFlags", fields: [reporterUserId], references: [id], onDelete: Cascade)
   review         Review?          @relation("ReviewFlags", fields: [reviewId], references: [id], onDelete: SetNull)
+  photo          FoodPhoto?       @relation("ReportedPhoto", fields: [photoId], references: [id], onDelete: SetNull)
 
   @@index([targetType, targetId])
   @@index([status])

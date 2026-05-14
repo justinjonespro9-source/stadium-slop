@@ -10,8 +10,10 @@ import {
   venues,
   foodPhotos
 } from "@/lib/sample-data";
-import { MOCK_ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
+import { MOCK_ADMIN_COOKIE_NAME, hasMockAdminAccess } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
+import { FAN_REPORT_REASON_LABELS } from "@/lib/reports";
+import type { ReportReason } from "@prisma/client";
 
 function slugify(value: string) {
   return value
@@ -174,6 +176,138 @@ async function rejectSuggestedItem(formData: FormData) {
   redirect("/admin");
 }
 
+function labelForReportReason(reason: ReportReason): string {
+  const map = FAN_REPORT_REASON_LABELS as Partial<Record<ReportReason, string>>;
+  return map[reason] ?? reason.replace(/_/g, " ");
+}
+
+async function requireMockAdmin() {
+  const cookieStore = await cookies();
+  if (!hasMockAdminAccess(cookieStore.get(MOCK_ADMIN_COOKIE_NAME)?.value)) {
+    redirect("/admin/login");
+  }
+}
+
+async function markContentReportReviewed(formData: FormData) {
+  "use server";
+
+  await requireMockAdmin();
+  const flagId = String(formData.get("flagId") ?? "");
+  await prisma.reportFlag.updateMany({
+    where: { id: flagId, status: "OPEN" },
+    data: { status: "RESOLVED" }
+  });
+  revalidatePath("/admin");
+  redirect("/admin");
+}
+
+async function dismissContentReport(formData: FormData) {
+  "use server";
+
+  await requireMockAdmin();
+  const flagId = String(formData.get("flagId") ?? "");
+  await prisma.reportFlag.updateMany({
+    where: { id: flagId, status: "OPEN" },
+    data: { status: "DISMISSED" }
+  });
+  revalidatePath("/admin");
+  redirect("/admin");
+}
+
+async function hideReviewFromContentReport(formData: FormData) {
+  "use server";
+
+  await requireMockAdmin();
+  const flagId = String(formData.get("flagId") ?? "");
+  const flag = await prisma.reportFlag.findUnique({
+    where: { id: flagId },
+    include: {
+      review: {
+        include: {
+          foodItem: { include: { venue: { select: { slug: true } } } }
+        }
+      }
+    }
+  });
+
+  if (!flag?.reviewId || !flag.review) {
+    redirect("/admin");
+  }
+
+  const fi = flag.review.foodItem;
+  const itemPath =
+    fi?.venue?.slug && fi.slug ? `/venues/${fi.venue.slug}/${fi.slug}` : null;
+
+  await prisma.$transaction([
+    prisma.review.update({
+      where: { id: flag.reviewId },
+      data: { status: "HIDDEN" }
+    }),
+    prisma.reportFlag.updateMany({
+      where: {
+        OR: [
+          { reviewId: flag.reviewId, status: "OPEN" },
+          { targetType: "REVIEW", targetId: flag.reviewId, status: "OPEN" }
+        ]
+      },
+      data: { status: "RESOLVED" }
+    })
+  ]);
+
+  if (itemPath) {
+    revalidatePath(itemPath);
+  }
+  revalidatePath("/admin");
+  redirect("/admin");
+}
+
+async function hidePhotoFromContentReport(formData: FormData) {
+  "use server";
+
+  await requireMockAdmin();
+  const flagId = String(formData.get("flagId") ?? "");
+  const flag = await prisma.reportFlag.findUnique({
+    where: { id: flagId },
+    include: {
+      photo: {
+        include: {
+          foodItem: { include: { venue: { select: { slug: true } } } }
+        }
+      }
+    }
+  });
+
+  if (!flag?.photoId || !flag.photo) {
+    redirect("/admin");
+  }
+
+  const fi = flag.photo.foodItem;
+  const itemPath =
+    fi?.venue?.slug && fi.slug ? `/venues/${fi.venue.slug}/${fi.slug}` : null;
+
+  await prisma.$transaction([
+    prisma.foodPhoto.update({
+      where: { id: flag.photoId },
+      data: { status: "HIDDEN" }
+    }),
+    prisma.reportFlag.updateMany({
+      where: {
+        OR: [
+          { photoId: flag.photoId, status: "OPEN" },
+          { targetType: "PHOTO", targetId: flag.photoId, status: "OPEN" }
+        ]
+      },
+      data: { status: "RESOLVED" }
+    })
+  ]);
+
+  if (itemPath) {
+    revalidatePath(itemPath);
+  }
+  revalidatePath("/admin");
+  redirect("/admin");
+}
+
 const adminSections = [
   {
     title: "Venues",
@@ -253,7 +387,7 @@ const moderationQueue = [
 
 async function getPendingAdminQueues() {
   try {
-    const [priceReports, suggestedItems] = await Promise.all([
+    const [priceReports, suggestedItems, contentReports] = await Promise.all([
       prisma.priceReport.findMany({
         where: { status: "PENDING" },
         orderBy: { createdAt: "desc" },
@@ -273,18 +407,57 @@ async function getPendingAdminQueues() {
           vendor: { select: { name: true } },
           user: { select: { handle: true } }
         }
+      }),
+      prisma.reportFlag.findMany({
+        where: { status: "OPEN" },
+        orderBy: { createdAt: "asc" },
+        take: 12,
+        include: {
+          reporter: { select: { handle: true, displayName: true } },
+          review: {
+            select: {
+              id: true,
+              status: true,
+              slopScore: true,
+              note: true,
+              user: { select: { handle: true } },
+              foodItem: {
+                select: {
+                  name: true,
+                  slug: true,
+                  venue: { select: { slug: true, name: true } }
+                }
+              }
+            }
+          },
+          photo: {
+            select: {
+              id: true,
+              url: true,
+              status: true,
+              foodItem: {
+                select: {
+                  name: true,
+                  slug: true,
+                  venue: { select: { slug: true } }
+                }
+              }
+            }
+          }
+        }
       })
     ]);
 
-    return { priceReports, suggestedItems };
+    return { priceReports, suggestedItems, contentReports };
   } catch (error) {
     console.warn("Falling back to empty admin queues", error);
-    return { priceReports: [], suggestedItems: [] };
+    return { priceReports: [], suggestedItems: [], contentReports: [] };
   }
 }
 
 export default async function AdminPage() {
-  const { priceReports, suggestedItems } = await getPendingAdminQueues();
+  const { priceReports, suggestedItems, contentReports } =
+    await getPendingAdminQueues();
 
   return (
     <main className="brand-page min-h-screen">
@@ -329,7 +502,8 @@ export default async function AdminPage() {
             ["Items", foodItems.length],
             ["Photos", foodPhotos.length],
             ["Pending prices", priceReports.length],
-            ["Pending items", suggestedItems.length]
+            ["Pending items", suggestedItems.length],
+            ["Open fan reports", contentReports.length]
           ].map(([label, count]) => (
             <div
               key={label}
@@ -401,6 +575,123 @@ export default async function AdminPage() {
                 </p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="brand-panel mt-8 rounded-[2rem] border p-5">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Fan content reports
+          </p>
+          <div className="mt-3 grid gap-3">
+            {contentReports.length > 0 ? (
+              contentReports.map((flag) => {
+                const itemLink =
+                  flag.review?.foodItem?.venue?.slug && flag.review.foodItem.slug
+                    ? `/venues/${flag.review.foodItem.venue.slug}/${flag.review.foodItem.slug}`
+                    : flag.photo?.foodItem?.venue?.slug && flag.photo.foodItem.slug
+                      ? `/venues/${flag.photo.foodItem.venue.slug}/${flag.photo.foodItem.slug}`
+                      : null;
+                const itemLabel =
+                  flag.review?.foodItem?.name ??
+                  flag.photo?.foodItem?.name ??
+                  "Unknown item";
+
+                return (
+                  <article key={flag.id} className="rounded-2xl bg-black p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-black">{itemLabel}</p>
+                        <p className="mt-1 text-xs text-zinc-500">
+                          Target:{" "}
+                          <span className="font-bold text-zinc-400">
+                            {flag.targetType}
+                          </span>{" "}
+                          · {labelForReportReason(flag.reason)}
+                        </p>
+                        <p className="mt-1 text-xs text-zinc-600">
+                          Reporter: {flag.reporter.displayName} (@
+                          {flag.reporter.handle})
+                        </p>
+                        {flag.review ? (
+                          <p className="mt-2 text-sm text-zinc-400">
+                            Review @{flag.review.user.handle} ·{" "}
+                            {Number(flag.review.slopScore).toFixed(1)}/10
+                            {flag.review.note ? ` · “${flag.review.note.slice(0, 120)}${flag.review.note.length > 120 ? "…" : ""}”` : ""}
+                          </p>
+                        ) : null}
+                        {flag.photo?.url ? (
+                          <p className="mt-1 truncate text-xs text-zinc-500">
+                            Photo: {flag.photo.url}
+                          </p>
+                        ) : null}
+                        {flag.note ? (
+                          <p className="mt-2 text-sm leading-6 text-zinc-400">
+                            Note: {flag.note}
+                          </p>
+                        ) : null}
+                        {itemLink ? (
+                          <Link
+                            href={itemLink}
+                            className="mt-2 inline-flex text-xs font-bold text-[var(--slop-orange)] hover:underline"
+                          >
+                            View item page
+                          </Link>
+                        ) : null}
+                      </div>
+                      <span className="shrink-0 rounded-full border border-amber-800/60 px-2 py-1 text-xs font-bold uppercase tracking-[0.15em] text-amber-200/90">
+                        Open
+                      </span>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <form action={markContentReportReviewed}>
+                        <input type="hidden" name="flagId" value={flag.id} />
+                        <button
+                          type="submit"
+                          className="rounded-full border border-zinc-600 px-3 py-1.5 text-xs font-bold text-zinc-300"
+                        >
+                          Mark reviewed
+                        </button>
+                      </form>
+                      <form action={dismissContentReport}>
+                        <input type="hidden" name="flagId" value={flag.id} />
+                        <button
+                          type="submit"
+                          className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-bold text-zinc-400"
+                        >
+                          Dismiss
+                        </button>
+                      </form>
+                      {flag.reviewId && flag.review ? (
+                        <form action={hideReviewFromContentReport}>
+                          <input type="hidden" name="flagId" value={flag.id} />
+                          <button
+                            type="submit"
+                            className="rounded-full border border-red-900/60 px-3 py-1.5 text-xs font-bold text-red-300/90"
+                          >
+                            Hide review
+                          </button>
+                        </form>
+                      ) : null}
+                      {flag.photoId && flag.photo ? (
+                        <form action={hidePhotoFromContentReport}>
+                          <input type="hidden" name="flagId" value={flag.id} />
+                          <button
+                            type="submit"
+                            className="rounded-full border border-red-900/60 px-3 py-1.5 text-xs font-bold text-red-300/90"
+                          >
+                            Hide photo
+                          </button>
+                        </form>
+                      ) : null}
+                    </div>
+                  </article>
+                );
+              })
+            ) : (
+              <p className="rounded-2xl bg-black p-4 text-sm text-zinc-500">
+                No open fan content reports.
+              </p>
+            )}
           </div>
         </section>
 

@@ -308,6 +308,7 @@ function getDbReviewsForMode(
       alt: string;
       caption: string | null;
       createdAt: Date;
+      id: string;
     }[];
     user: {
       id: string;
@@ -424,6 +425,7 @@ export async function getDbBackedItemSlopStats(
               },
               orderBy: { createdAt: "desc" },
               select: {
+                id: true,
                 url: true,
                 placeholder: true,
                 alt: true,
@@ -490,6 +492,7 @@ export async function getDbBackedItemSlopStats(
         photoLabel: primaryPhoto?.caption ?? undefined,
         photoPlaceholder: primaryPhoto?.placeholder ?? undefined,
         reviewPhotoCreatedAt: primaryPhoto?.createdAt?.toISOString(),
+        primaryFoodPhotoId: primaryPhoto?.id,
         note: review.note ?? undefined
       };
     });

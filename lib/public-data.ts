@@ -453,6 +453,7 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
       where: {
         status: "ACTIVE",
         photoType: PhotoType.FOOD,
+        OR: [{ reviewId: null }, { review: { is: { status: "ACTIVE" } } }],
         foodItem: {
           slug: slugFilterInsensitive(normalizedFoodSlug),
           venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
