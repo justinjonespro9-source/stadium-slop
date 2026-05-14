@@ -13,6 +13,7 @@ import {
   type Vendor,
   type Venue
 } from "./sample-data";
+import { venueTypeLabel } from "./venue-display";
 
 type DbVenue = {
   slug: string;
@@ -28,6 +29,9 @@ type DbVenue = {
   longitude: number;
   reviewRadiusMeters: number;
   venueType: string;
+  primarySport?: string | null;
+  recurringEvents?: string[];
+  surfaceType?: string | null;
 };
 
 type DbVendor = {
@@ -86,15 +90,7 @@ function titleCaseEnum(value: string) {
 }
 
 function mapVenueType(value: string): Venue["venueType"] {
-  if (value === "BALLPARK") {
-    return "Ballpark";
-  }
-
-  if (value === "ARENA") {
-    return "Arena";
-  }
-
-  return "Stadium";
+  return venueTypeLabel(value);
 }
 
 function mapItemType(value: string): FoodItem["itemType"] {
@@ -197,7 +193,13 @@ export function mapVenueFromDb(venue: DbVenue): Venue {
     latitude: venue.latitude,
     longitude: venue.longitude,
     reviewRadiusMeters: venue.reviewRadiusMeters,
-    venueType: mapVenueType(venue.venueType)
+    venueType: mapVenueType(venue.venueType),
+    venueTypeKey: venue.venueType,
+    primarySport: venue.primarySport ?? undefined,
+    recurringEvents: venue.recurringEvents?.length
+      ? [...venue.recurringEvents]
+      : undefined,
+    surfaceType: venue.surfaceType ?? undefined
   };
 }
 

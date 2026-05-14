@@ -23,6 +23,12 @@ enum VenueType {
   BALLPARK
   STADIUM
   ARENA
+  TENNIS_CENTER
+  RACETRACK
+  GOLF_COURSE
+  HORSE_TRACK
+  COLLEGE_STADIUM
+  OTHER
 }
 
 enum ItemType {
@@ -224,6 +230,12 @@ model Venue {
   leagues            String[]
   teams              String[]
   sports             String[]
+  /** Optional headline sport (e.g. Baseball, Tennis); `sports[]` can hold more detail */
+  primarySport       String?
+  /** Named annual or recurring events hosted here (Masters, Indy 500, US Open, etc.) */
+  recurringEvents    String[]        @default([])
+  /** Optional surface or course type for future filters (clay, superspeedway, links, dirt) */
+  surfaceType        String?
   latitude           Float
   longitude          Float
   reviewRadiusMeters Int

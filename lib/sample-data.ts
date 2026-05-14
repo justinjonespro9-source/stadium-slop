@@ -30,7 +30,13 @@ export type Venue = {
   latitude: number;
   longitude: number;
   reviewRadiusMeters: number;
-  venueType: "Ballpark" | "Stadium" | "Arena";
+  /** Display label (from DB `VenueType` via `venueTypeLabel`) */
+  venueType: string;
+  /** Raw Prisma enum string when mapped from DB (for chips); omitted for sample fallback rows */
+  venueTypeKey?: string;
+  primarySport?: string;
+  recurringEvents?: string[];
+  surfaceType?: string;
 };
 
 export type Vendor = {
@@ -270,7 +276,9 @@ export const venues: Venue[] = [
     latitude: 44.9817,
     longitude: -93.2776,
     reviewRadiusMeters: 800,
-    venueType: "Ballpark"
+    venueType: "Ballpark",
+    primarySport: "Baseball",
+    recurringEvents: ["MLB season", "Postseason"]
   },
   {
     slug: "us-bank-stadium",
@@ -285,7 +293,8 @@ export const venues: Venue[] = [
     latitude: 44.9738,
     longitude: -93.2581,
     reviewRadiusMeters: 800,
-    venueType: "Stadium"
+    venueType: "Stadium",
+    primarySport: "Football"
   },
   {
     slug: "xcel-energy-center",
@@ -300,7 +309,8 @@ export const venues: Venue[] = [
     latitude: 44.9448,
     longitude: -93.1011,
     reviewRadiusMeters: 800,
-    venueType: "Arena"
+    venueType: "Arena",
+    primarySport: "Hockey"
   }
 ];
 

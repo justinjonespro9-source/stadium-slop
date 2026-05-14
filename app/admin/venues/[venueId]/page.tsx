@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
+import { VENUE_TYPE_OPTIONS } from "@/lib/venue-display";
 
 type AdminVenueDetailPageProps = {
   params: Promise<{
@@ -24,6 +25,11 @@ async function updateVenue(formData: FormData) {
   const venueId = String(formData.get("venueId") ?? "");
   const reviewRadiusMeters = Number(formData.get("reviewRadiusMeters"));
 
+  const rawType = String(formData.get("venueType") ?? VenueType.STADIUM);
+  const venueType = Object.values(VenueType).includes(rawType as VenueType)
+    ? (rawType as VenueType)
+    : VenueType.STADIUM;
+
   await prisma.venue.update({
     where: { id: venueId },
     data: {
@@ -31,10 +37,15 @@ async function updateVenue(formData: FormData) {
       slug: String(formData.get("slug") ?? "").trim(),
       city: String(formData.get("city") ?? "").trim(),
       state: String(formData.get("state") ?? "").trim(),
+      country: String(formData.get("country") ?? "").trim() || "USA",
+      region: String(formData.get("region") ?? "").trim() || "North America",
       leagues: parseList(formData.get("leagues")),
       teams: parseList(formData.get("teams")),
       sports: parseList(formData.get("sports")),
-      venueType: String(formData.get("venueType") ?? VenueType.STADIUM) as VenueType,
+      primarySport: String(formData.get("primarySport") ?? "").trim() || null,
+      recurringEvents: parseList(formData.get("recurringEvents")),
+      surfaceType: String(formData.get("surfaceType") ?? "").trim() || null,
+      venueType,
       reviewRadiusMeters: Number.isFinite(reviewRadiusMeters)
         ? reviewRadiusMeters
         : 800
@@ -142,9 +153,26 @@ export default async function AdminVenueDetailPage({
                 ["slug", "Slug", venue.slug],
                 ["city", "City", venue.city],
                 ["state", "State", venue.state],
-                ["leagues", "Leagues", venue.leagues.join(", ")],
+                ["country", "Country", venue.country],
+                ["region", "Region", venue.region],
+                ["leagues", "Leagues / tours (comma)", venue.leagues.join(", ")],
                 ["teams", "Teams", venue.teams.join(", ")],
                 ["sports", "Sports", venue.sports.join(", ")],
+                [
+                  "primarySport",
+                  "Primary sport (optional)",
+                  venue.primarySport ?? ""
+                ],
+                [
+                  "recurringEvents",
+                  "Signature events (comma, optional)",
+                  venue.recurringEvents.join(", ")
+                ],
+                [
+                  "surfaceType",
+                  "Surface / course type (optional)",
+                  venue.surfaceType ?? ""
+                ],
                 [
                   "reviewRadiusMeters",
                   "Review radius meters",
@@ -167,9 +195,9 @@ export default async function AdminVenueDetailPage({
                   defaultValue={venue.venueType}
                   className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
                 >
-                  {Object.values(VenueType).map((type) => (
-                    <option key={type} value={type}>
-                      {type}
+                  {VENUE_TYPE_OPTIONS.map(({ value, label }) => (
+                    <option key={value} value={value}>
+                      {label}
                     </option>
                   ))}
                 </select>

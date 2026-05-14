@@ -59,16 +59,22 @@ function toCreatedAt(label: string) {
   return new Date("2026-04-01T18:00:00.000Z");
 }
 
-function venueType(value: FoodItem["venueBadge"] | string) {
-  if (value === "Ballpark") {
-    return VenueType.BALLPARK;
-  }
-
-  if (value === "Arena") {
-    return VenueType.ARENA;
-  }
-
-  return VenueType.STADIUM;
+function venueTypeFromSampleLabel(value: string): VenueType {
+  const key = value.trim().toLowerCase();
+  const map: Record<string, VenueType> = {
+    ballpark: VenueType.BALLPARK,
+    stadium: VenueType.STADIUM,
+    arena: VenueType.ARENA,
+    "tennis center": VenueType.TENNIS_CENTER,
+    tennis_center: VenueType.TENNIS_CENTER,
+    raceway: VenueType.RACETRACK,
+    racetrack: VenueType.RACETRACK,
+    "golf course": VenueType.GOLF_COURSE,
+    "horse track": VenueType.HORSE_TRACK,
+    "college stadium": VenueType.COLLEGE_STADIUM,
+    other: VenueType.OTHER
+  };
+  return map[key] ?? VenueType.STADIUM;
 }
 
 function itemType(value: FoodItem["itemType"]) {
@@ -258,7 +264,10 @@ async function main() {
         latitude: venue.latitude,
         longitude: venue.longitude,
         reviewRadiusMeters: venue.reviewRadiusMeters,
-        venueType: venueType(venue.venueType)
+        venueType: venueTypeFromSampleLabel(venue.venueType),
+        primarySport: venue.primarySport ?? null,
+        recurringEvents: venue.recurringEvents ?? [],
+        surfaceType: venue.surfaceType ?? null
       },
       create: {
         slug: venue.slug,
@@ -273,7 +282,10 @@ async function main() {
         latitude: venue.latitude,
         longitude: venue.longitude,
         reviewRadiusMeters: venue.reviewRadiusMeters,
-        venueType: venueType(venue.venueType)
+        venueType: venueTypeFromSampleLabel(venue.venueType),
+        primarySport: venue.primarySport ?? null,
+        recurringEvents: venue.recurringEvents ?? [],
+        surfaceType: venue.surfaceType ?? null
       }
     });
   }

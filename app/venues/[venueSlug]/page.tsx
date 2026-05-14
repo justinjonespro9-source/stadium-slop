@@ -13,6 +13,10 @@ import {
   getPublicVendorsByVenueSlug
 } from "@/lib/public-data";
 import {
+  eventVenueHint,
+  venueTypeGlyph
+} from "@/lib/venue-display";
+import {
   getDbBackedItemSlopStats,
   getSlopScoreTier,
   type ItemSlopStats,
@@ -417,6 +421,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   const isSignedIn = hasMockUserAccess(
     cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
   );
+  const signatureEventHint = eventVenueHint(venue.recurringEvents ?? []);
 
   return (
     <main className="brand-page min-h-screen">
@@ -433,8 +438,35 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             {venue.name}
           </h1>
           <p className="mt-2 text-sm text-zinc-400 sm:text-base">
-            {venue.city}, {venue.state} · {venue.venueType}
+            <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
+              <span>
+                {venue.city}, {venue.state}
+              </span>
+              <span className="text-zinc-600">·</span>
+              <span className="inline-flex items-center gap-1.5 font-bold text-zinc-300">
+                {venue.venueTypeKey ? (
+                  <span className="text-base leading-none opacity-90" aria-hidden>
+                    {venueTypeGlyph(venue.venueTypeKey) ?? ""}
+                  </span>
+                ) : null}
+                {venue.venueType}
+              </span>
+              {venue.primarySport ? (
+                <>
+                  <span className="text-zinc-600">·</span>
+                  <span>{venue.primarySport}</span>
+                </>
+              ) : null}
+            </span>
           </p>
+          {venue.surfaceType ? (
+            <p className="mt-1 text-xs text-zinc-500">{venue.surfaceType}</p>
+          ) : null}
+          {signatureEventHint ? (
+            <p className="mt-2 text-xs font-bold uppercase tracking-[0.14em] text-zinc-500">
+              {signatureEventHint}
+            </p>
+          ) : null}
           <p className="mt-2 text-xs font-bold uppercase tracking-[0.16em] text-zinc-500">
             {venue.leagues.join(", ")} · {venue.teams.join(", ")} ·{" "}
             {venue.sports.join(", ")}

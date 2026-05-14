@@ -32,6 +32,7 @@ import {
   parseReportTargetType,
   REPORT_NOTE_MAX
 } from "@/lib/reports";
+import { venueTypeGlyph } from "@/lib/venue-display";
 
 export const dynamic = "force-dynamic";
 
@@ -1182,8 +1183,16 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             {venue.name} · {vendor ? vendor.name : "Vendor TBD"} · {foodItem.location}
           </p>
           <p className="mt-1 text-xs leading-5 text-zinc-500">
-            {venue.city}, {venue.state} · {venue.venueType} ·{" "}
-            {venue.teams.slice(0, 2).join(", ")}
+            {venue.city}, {venue.state} ·{" "}
+            <span className="inline-flex items-center gap-1">
+              {venue.venueTypeKey ? (
+                <span className="text-sm leading-none opacity-90" aria-hidden>
+                  {venueTypeGlyph(venue.venueTypeKey) ?? ""}
+                </span>
+              ) : null}
+              {venue.venueType}
+            </span>{" "}
+            · {venue.teams.slice(0, 2).join(", ")}
             {venue.teams.length > 2 ? "…" : ""} · {foodItem.category} ·{" "}
             {foodItem.itemType}
             {foodItem.beverageStyle ? ` · ${foodItem.beverageStyle}` : ""}

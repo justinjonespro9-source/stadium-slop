@@ -4,6 +4,7 @@ import {
   getPublicFoodItemsByVenueSlug,
   getPublicVenues
 } from "@/lib/public-data";
+import { venueTypeGlyph } from "@/lib/venue-display";
 
 export default async function VenuesPage() {
   const venues = await getPublicVenues();
@@ -54,8 +55,16 @@ export default async function VenuesPage() {
                         {venue.city}, {venue.state}
                       </p>
                     </div>
-                    <span className="rounded-full border border-zinc-800 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400">
-                      {venue.venueType}
+                    <span
+                      className="inline-flex items-center gap-1.5 rounded-full border border-zinc-800 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-zinc-400"
+                      title={venue.venueType}
+                    >
+                      {venue.venueTypeKey ? (
+                        <span className="text-base leading-none opacity-85" aria-hidden>
+                          {venueTypeGlyph(venue.venueTypeKey) ?? ""}
+                        </span>
+                      ) : null}
+                      <span>{venue.venueType}</span>
                     </span>
                   </div>
 
