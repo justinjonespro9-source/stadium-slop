@@ -20,6 +20,7 @@ export function venueSearchHaystack(venue: Venue): string {
     venue.venueTypeKey?.replace(/_/g, " ") ?? "",
     venue.primarySport ?? "",
     venue.surfaceType ?? "",
+    venue.importNotes ?? "",
     ...venue.teams,
     ...venue.leagues,
     ...venue.sports,

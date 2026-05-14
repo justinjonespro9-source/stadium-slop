@@ -50,7 +50,7 @@ function itemTypeFromString(raw?: string): ItemType {
 }
 
 async function main() {
-  const filePath = resolve(process.argv[2] ?? "data/mlb/mlb-import.example.json");
+  const filePath = resolve(process.argv[2] ?? "data/mlb/mlb-ballparks-venues.json");
   const raw = JSON.parse(readFileSync(filePath, "utf8"));
   const data = parseMlbImportPayload(raw);
 

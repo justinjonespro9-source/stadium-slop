@@ -22,6 +22,8 @@ export type MlbVenueImportRow = {
   recurringEvents?: string[];
   country?: string;
   region?: string;
+  /** Seed/import QA; do not invent facts — flag for manual review */
+  reviewNotes?: string;
 };
 
 export type MlbVendorImportRow = {
@@ -61,8 +63,9 @@ export function parseMlbImportPayload(raw: unknown): MlbImportPayload {
   if (o.version !== MLB_IMPORT_VERSION) {
     throw new Error(`Expected version ${MLB_IMPORT_VERSION}, got ${String(o.version)}`);
   }
-  if (!Array.isArray(o.venues) || !Array.isArray(o.vendors)) {
-    throw new Error("Import must include venues[] and vendors[] arrays.");
+  if (!Array.isArray(o.venues)) {
+    throw new Error("Import must include venues[] array.");
   }
-  return o as MlbImportPayload;
+  const vendors = Array.isArray(o.vendors) ? o.vendors : [];
+  return { ...o, venues: o.venues, vendors } as MlbImportPayload;
 }

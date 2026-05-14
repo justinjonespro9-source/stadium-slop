@@ -1,3 +1,8 @@
+import {
+  getMlbBallparkSeedRows,
+  type MlbBallparkSeedRow
+} from "./mlb-ballpark-seed-data";
+
 export type EntityStatus = "active" | "hidden" | "archived";
 
 export type UserRole = "reviewer" | "moderator" | "admin";
@@ -37,6 +42,8 @@ export type Venue = {
   primarySport?: string;
   recurringEvents?: string[];
   surfaceType?: string;
+  /** From MLB seed JSON `reviewNotes`; optional admin/import QA */
+  importNotes?: string;
 };
 
 export type Vendor = {
@@ -262,25 +269,36 @@ export type Item = FoodItem;
 export type Photo = FoodPhoto;
 export type Review = FoodReview;
 
-export const venues: Venue[] = [
-  {
-    slug: "target-field",
-    name: "Target Field",
-    city: "Minneapolis",
-    state: "MN",
-    leagues: ["MLB"],
-    teams: ["Minnesota Twins"],
-    sports: ["Baseball"],
-    country: "USA",
-    region: "North America",
-    latitude: 44.9817,
-    longitude: -93.2776,
-    reviewRadiusMeters: 800,
+function mlbBallparkSeedRowToVenue(r: MlbBallparkSeedRow): Venue {
+  const league = r.league ?? "MLB";
+  const primary = r.primarySport ?? "Baseball";
+  return {
+    slug: r.slug,
+    name: r.name,
+    city: r.city,
+    state: r.state,
+    leagues: [league],
+    teams: [r.team],
+    sports: [primary],
+    country: r.country ?? "USA",
+    region: r.region ?? "North America",
+    latitude: r.latitude,
+    longitude: r.longitude,
+    reviewRadiusMeters: r.reviewRadiusMeters ?? 800,
     venueType: "Ballpark",
     venueTypeKey: "BALLPARK",
-    primarySport: "Baseball",
-    recurringEvents: ["MLB season", "Postseason"]
-  },
+    primarySport: primary,
+    recurringEvents: r.recurringEvents,
+    importNotes: r.reviewNotes
+  };
+}
+
+const mlbBallparkVenuesFromJson: Venue[] = getMlbBallparkSeedRows().map(
+  mlbBallparkSeedRowToVenue
+);
+
+/** Non-MLB demo venues only — MLB list lives in `data/mlb/mlb-ballparks-venues.json`. */
+const nonMlbDemoVenues: Venue[] = [
   {
     slug: "us-bank-stadium",
     name: "U.S. Bank Stadium",
@@ -313,43 +331,12 @@ export const venues: Venue[] = [
     venueType: "Arena",
     venueTypeKey: "ARENA",
     primarySport: "Hockey"
-  },
-  {
-    slug: "wrigley-field",
-    name: "Wrigley Field",
-    city: "Chicago",
-    state: "IL",
-    leagues: ["MLB"],
-    teams: ["Chicago Cubs"],
-    sports: ["Baseball"],
-    country: "USA",
-    region: "North America",
-    latitude: 41.9484,
-    longitude: -87.6553,
-    reviewRadiusMeters: 800,
-    venueType: "Ballpark",
-    venueTypeKey: "BALLPARK",
-    primarySport: "Baseball",
-    recurringEvents: ["MLB season", "Postseason"]
-  },
-  {
-    slug: "fenway-park",
-    name: "Fenway Park",
-    city: "Boston",
-    state: "MA",
-    leagues: ["MLB"],
-    teams: ["Boston Red Sox"],
-    sports: ["Baseball"],
-    country: "USA",
-    region: "North America",
-    latitude: 42.3467,
-    longitude: -71.0972,
-    reviewRadiusMeters: 800,
-    venueType: "Ballpark",
-    venueTypeKey: "BALLPARK",
-    primarySport: "Baseball",
-    recurringEvents: ["MLB season", "Postseason", "Green Monster seats"]
   }
+];
+
+export const venues: Venue[] = [
+  ...mlbBallparkVenuesFromJson,
+  ...nonMlbDemoVenues
 ];
 
 export const vendors: Vendor[] = [
