@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stadium Slop
 
-## Getting Started
+Fan-powered stadium food ratings: venues, stands, slop scores, and optional game-day photos.
 
-First, run the development server:
+## Stack
+
+- **Next.js** (App Router) + **React**
+- **PostgreSQL** + **Prisma** (with `pg` adapter)
+- **Cloudinary** (optional server-side fan photo uploads)
+
+## Documentation
+
+- **[Deployment & first Vercel checklist](docs/deployment.md)** — env vars, migrations, seed, Vercel, Cloudinary, domains, and **current MVP limitations** (mock auth, no Stripe, upload behavior).
+
+## Quick start
 
 ```bash
+npm install
+cp .env.example .env
+# Edit .env — at minimum DATABASE_URL; add Cloudinary vars to test uploads
+npm run db:migrate
+npm run db:seed   # optional sample data
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script | Purpose |
+|--------|---------|
+| `npm run dev` | Dev server |
+| `npm run build` / `npm run start` | Production build / serve |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run db:generate` | `prisma generate` |
+| `npm run db:migrate` | `prisma migrate dev` (local) |
+| `npm run db:migrate:deploy` | `prisma migrate deploy` (CI / prod DB) |
+| `npm run db:seed` | Seed sample venues/items (see `docs/deployment.md`) |
+| `npm run lint` | ESLint |
+
+`postinstall` runs `prisma generate` so Vercel/builds have a generated client after `npm install`.
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js Documentation](https://nextjs.org/docs)

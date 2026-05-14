@@ -5,7 +5,8 @@ import {
   hasMockAdminAccess
 } from "@/lib/admin-auth";
 
-export function middleware(request: NextRequest) {
+/** Next.js 16+ convention: network boundary before the app (replaces `middleware.ts`). */
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname === "/admin/login") {
