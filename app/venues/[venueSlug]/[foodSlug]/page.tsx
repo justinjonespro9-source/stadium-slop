@@ -40,6 +40,7 @@ import {
   isUnratedItemStats,
   PhotoBackedReviewsEmpty
 } from "@/components/food-item-empty-states";
+import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 
 export const dynamic = "force-dynamic";
 
@@ -668,32 +669,35 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           </div>
 
           <div>
-            <div className="mb-3 flex flex-wrap gap-2">
-              <p className="inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+            <div className="mb-3 flex flex-wrap items-center gap-2">
+              {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
+                <BrandBadgeIcon size={24} title="Featured on Stadium Slop" />
+              ) : null}
+              <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] bg-[rgba(245,233,208,0.06)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-cream-muted)]">
                 {foodItem.itemType} · {foodItem.category}
               </p>
               {foodItem.ageRestricted ? (
-                <p className="inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-cream-muted)]">
                   21+
                 </p>
               ) : null}
               {foodItem.isPromoted ? (
-                <p className="inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.1)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-gold-bright)]">
                   Promoted
                 </p>
               ) : null}
               {foodItem.isNewThisSeason ? (
-                <p className="inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-cream-muted)]">
                   New This Season
                 </p>
               ) : null}
               {foodItem.venueBadge ? (
-                <p className="inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
+                <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.08)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-gold-bright)]">
                   {foodItem.venueBadge}
                 </p>
               ) : null}
             </div>
-            <h1 className="max-w-4xl text-3xl font-black leading-tight tracking-tight sm:text-6xl">
+            <h1 className="brand-headline max-w-4xl text-3xl leading-tight tracking-tight sm:text-6xl">
               {foodItem.name}
             </h1>
             <p className="mt-3 text-base leading-7 text-zinc-300 sm:text-lg">
@@ -704,7 +708,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               {foodItem.location}
             </p>
 
-            <div className="brand-panel mt-4 rounded-2xl border p-3">
+            <div className="slop-score-callout mt-4 rounded-2xl p-3 sm:rounded-3xl sm:p-4">
               {unratedSeason ? (
                 <p className="text-sm font-bold leading-6 text-zinc-200">
                   <span className="text-zinc-400">Slop Score</span>{" "}
@@ -838,7 +842,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 return (
                   <article
                     key={review.id}
-                    className="min-w-[min(100%,22rem)] max-w-[22rem] shrink-0 snap-start overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 sm:min-w-[20rem]"
+                    className="brand-card min-w-[min(100%,22rem)] max-w-[22rem] shrink-0 snap-start overflow-hidden rounded-2xl sm:min-w-[20rem]"
                   >
                     {heroDup ? (
                       <div className="flex gap-3 p-4 sm:p-4">

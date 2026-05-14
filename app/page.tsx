@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
 
-import { BrandLockup } from "@/components/brand-lockup";
 import {
   HomeFeaturedMlbParks,
   resolveFeaturedMlbParks
@@ -17,23 +17,30 @@ export default async function Home() {
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-5 pb-16 pt-10 sm:px-8 lg:px-10">
         <header className="max-w-3xl">
-          <div className="mb-6 inline-flex rounded-[1.7rem] border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.74)] p-3">
-            <BrandLockup />
+          <div className="mb-6 flex justify-start rounded-2xl border border-[var(--slop-line-strong)] bg-[color:rgba(245,233,208,0.06)] p-4 sm:rounded-3xl sm:p-6">
+            <Image
+              src="/branding/stadium-slop-logo-main.png"
+              alt="Stadium Slop"
+              width={360}
+              height={200}
+              className="h-auto w-full max-w-[min(100%,18rem)] object-contain object-left sm:max-w-xs"
+              priority
+            />
           </div>
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-[var(--slop-blue)]">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-[var(--slop-gold-dim)]">
             MLB-first · fan verified at the park
           </p>
-          <h1 className="mt-3 text-3xl font-black leading-[1.08] tracking-tight text-[var(--slop-cream)] sm:text-5xl sm:leading-[1.05]">
-            Fan-powered ballpark food rankings
+          <h1 className="brand-headline mt-3 text-3xl leading-[1.08] tracking-tight text-[var(--slop-cream)] sm:text-5xl sm:leading-[1.05]">
+            Find the best food at stadiums.
           </h1>
-          <p className="mt-4 text-lg font-bold leading-snug text-white sm:text-xl">
-            Track the best stadium eats
+          <p className="mt-4 text-lg font-bold leading-snug text-[var(--slop-cream-muted)] sm:text-xl">
+            Fan-powered ballpark food rankings — worth the line or bench it.
           </p>
           <HomeMlbValueStrip />
         </header>
 
         <div className="mt-10 max-w-3xl">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--slop-cream-dim)]">
             Search venues
           </p>
           <HomeVenueSearch venues={venues} />
@@ -49,7 +56,7 @@ export default async function Home() {
           <button
             type="button"
             disabled
-            className="cursor-not-allowed rounded-full border border-[var(--slop-line)] px-6 py-3.5 text-center text-sm font-black text-[color:rgba(255,244,223,0.45)] sm:px-8"
+            className="cursor-not-allowed rounded-full border border-[var(--slop-line-strong)] bg-[rgba(11,27,43,0.5)] px-6 py-3.5 text-center text-sm font-black text-[var(--slop-cream-dim)] sm:px-8"
           >
             Use location soon
           </button>
@@ -59,11 +66,11 @@ export default async function Home() {
 
         <section
           aria-label="Game Day Fresh"
-          className="mt-10 rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.45)] px-4 py-4 sm:px-5"
+          className="mt-10 rounded-2xl border border-[var(--slop-line-strong)] bg-[color:rgba(245,233,208,0.05)] px-4 py-4 sm:rounded-3xl sm:px-5"
         >
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--slop-orange)]">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--slop-gold)]">
                 Game Day Fresh
               </p>
               <p className="mt-1 text-sm font-bold text-[var(--slop-cream)]">
@@ -73,14 +80,14 @@ export default async function Home() {
             {featuredMlb[0] ? (
               <Link
                 href={`/venues/${featuredMlb[0].slug}?mode=fresh`}
-                className="shrink-0 rounded-full border border-[var(--slop-orange)] bg-[color:rgba(255,106,0,0.12)] px-4 py-2 text-center text-xs font-black uppercase tracking-[0.12em] text-[var(--slop-orange)] transition hover:bg-[color:rgba(255,106,0,0.2)]"
+                className="shrink-0 rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.1)] px-4 py-2 text-center text-xs font-black uppercase tracking-[0.12em] text-[var(--slop-gold-bright)] transition hover:bg-[rgba(244,179,33,0.18)]"
               >
                 Try {featuredMlb[0].name}
               </Link>
             ) : (
               <Link
                 href="/venues"
-                className="shrink-0 rounded-full border border-[var(--slop-orange)] px-4 py-2 text-center text-xs font-black uppercase tracking-[0.12em] text-[var(--slop-orange)]"
+                className="shrink-0 rounded-full border border-[var(--slop-gold)] px-4 py-2 text-center text-xs font-black uppercase tracking-[0.12em] text-[var(--slop-gold-bright)]"
               >
                 Browse venues
               </Link>
@@ -92,7 +99,7 @@ export default async function Home() {
           id="trust"
           className="brand-panel mt-10 max-w-3xl rounded-2xl border p-4 sm:rounded-3xl sm:p-5"
         >
-          <p className="text-sm leading-relaxed text-[color:rgba(255,244,223,0.72)]">
+          <p className="text-sm leading-relaxed text-[var(--slop-cream-muted)]">
             Independent guide — names for identification only. Promotions can buy
             visibility, not ratings. Photos and scores come from real fans at the
             ballpark.

@@ -529,7 +529,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           Menus change fast, so check availability at the venue.
         </p>
 
-        <section className="border-t border-zinc-800 py-5 sm:py-8">
+        <section className="border-t border-[var(--slop-line-strong)] py-5 sm:py-8">
           <div>
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
@@ -640,7 +640,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           </div>
         </section>
 
-        <section className="border-t border-zinc-800 py-5 sm:py-8">
+        <section className="border-t border-[var(--slop-line-strong)] py-5 sm:py-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Vendors
@@ -658,7 +658,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                 <Link
                   key={vendor.slug}
                   href={`/venues/${venue.slug}/vendors/${vendor.slug}`}
-                  className="rounded-2xl border border-zinc-800 bg-zinc-950 p-4 transition hover:border-zinc-500"
+                  className="brand-card rounded-2xl p-4 transition hover:border-[color:rgba(244,179,33,0.45)]"
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div>
@@ -676,7 +676,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             })}
           </div>
 
-          <article className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
+          <article className="brand-card mt-4 rounded-3xl p-4 sm:p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Don&apos;t see your food?
             </p>
@@ -694,11 +694,11 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                   name="itemName"
                   required
                   placeholder="Missing item name"
-                  className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                  className="rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
                 />
                 <select
                   name="vendorSlug"
-                  className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
+                  className="rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none"
                   defaultValue=""
                 >
                   <option value="">Vendor unknown</option>
@@ -711,13 +711,13 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                 <input
                   name="locationHint"
                   placeholder="Optional section or location"
-                  className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                  className="rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
                 />
                 <textarea
                   name="suggestedItemNote"
                   maxLength={240}
                   placeholder="Optional: price, stand, or menu context"
-                  className="min-h-20 rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                  className="min-h-20 rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
                 />
                 <button
                   type="submit"

@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Stadium Slop",
   description: "Fan-powered concession intel for sports venues",
+  icons: {
+    icon: "/branding/stadium-slop-icon.png",
+    apple: "/branding/stadium-slop-icon.png",
+    shortcut: "/branding/stadium-slop-icon.png"
+  }
 };
 
 export default function RootLayout({
