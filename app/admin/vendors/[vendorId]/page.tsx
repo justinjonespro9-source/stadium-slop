@@ -29,6 +29,14 @@ async function updateVendor(formData: FormData) {
     }
   });
 
+  const v = await prisma.vendor.findUnique({
+    where: { id: vendorId },
+    select: { slug: true, venue: { select: { slug: true } } }
+  });
+  if (v?.venue?.slug) {
+    revalidatePath(`/venues/${v.venue.slug}/vendors/${v.slug}`);
+  }
+
   revalidatePath("/admin/venues");
   revalidatePath(`/admin/vendors/${vendorId}`);
   redirect(`/admin/vendors/${vendorId}`);
@@ -135,6 +143,20 @@ export default async function AdminVendorDetailPage({
             {vendor.name}
           </h1>
           <p className="mt-3 text-sm text-zinc-400">{vendor.venue.name}</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href={`/venues/${vendor.venue.slug}/vendors/${vendor.slug}`}
+              className="inline-flex rounded-full border border-[var(--slop-orange)] px-4 py-2 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-orange)] hover:bg-[var(--slop-orange)] hover:text-[var(--slop-ink)]"
+            >
+              View public vendor page
+            </Link>
+            <Link
+              href={`/venues/${vendor.venue.slug}`}
+              className="inline-flex rounded-full border border-zinc-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+            >
+              View public venue
+            </Link>
+          </div>
         </header>
 
         <section className="mt-8 grid gap-5 lg:grid-cols-[1fr_0.8fr]">

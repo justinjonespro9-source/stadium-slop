@@ -1,36 +1,57 @@
+import Image from "next/image";
 import Link from "next/link";
-
-import { BrandLockup } from "./brand-lockup";
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-[var(--slop-line)] bg-[var(--slop-ink)] text-[var(--slop-cream)]">
+    <header className="sticky top-0 z-50 border-b border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.92)] text-[var(--slop-cream)] shadow-[var(--slop-shadow-header)] backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-3 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" aria-label="Stadium Slop home">
-            <BrandLockup compact />
+          <Link href="/" className="flex items-center gap-2" aria-label="Stadium Slop home">
+            <span className="hidden md:inline-flex">
+              <Image
+                src="/branding/stadium-slop-wordmark.png"
+                alt="Stadium Slop"
+                width={200}
+                height={44}
+                className="h-8 w-auto object-contain object-left sm:h-9"
+                priority
+              />
+            </span>
+            <span className="inline-flex md:hidden">
+              <Image
+                src="/branding/stadium-slop-icon.png"
+                alt="Stadium Slop"
+                width={40}
+                height={40}
+                className="h-9 w-9 object-contain"
+                priority
+              />
+            </span>
           </Link>
           <Link
             href="/login"
-            className="rounded-full border border-[var(--slop-line)] px-4 py-2 text-sm font-black text-[var(--slop-cream)] md:hidden"
+            className="rounded-full border border-[var(--slop-line-strong)] bg-[rgba(11,27,43,0.6)] px-4 py-2 text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-gold-bright)] md:hidden"
           >
             Sign in
           </Link>
         </div>
 
         <nav className="flex items-center gap-2 text-sm text-[var(--slop-cream)]">
-          <Link href="/" className="font-black hover:text-[var(--slop-blue)]">
+          <Link
+            href="/"
+            className="rounded-full px-3 py-2 font-black transition hover:bg-[rgba(244,179,33,0.12)] hover:text-[var(--slop-gold-bright)]"
+          >
             Home
           </Link>
           <Link
             href="/venues"
-            className="flex-1 rounded-full border border-[var(--slop-line)] bg-[var(--slop-navy)] px-4 py-2 font-bold text-[var(--slop-blue)] transition hover:border-[var(--slop-blue)] md:min-w-56"
+            className="flex-1 rounded-full border border-[var(--slop-line-strong)] bg-[rgba(11,27,43,0.75)] px-4 py-2 font-bold text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-gold-bright)] md:min-w-56"
           >
             Find a venue...
           </Link>
           <Link
             href="/account"
-            className="hidden rounded-full bg-[var(--slop-red)] px-4 py-2 font-black text-[var(--slop-cream)] transition hover:bg-[var(--slop-orange)] hover:text-[var(--slop-ink)] md:inline-flex"
+            className="hidden rounded-full bg-[var(--slop-red)] px-4 py-2 font-black text-[var(--slop-cream)] shadow-[0_2px_0_rgba(0,0,0,0.25)] transition hover:bg-[var(--slop-red-deep)] hover:text-white md:inline-flex"
           >
             Account / Sign in
           </Link>

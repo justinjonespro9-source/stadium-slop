@@ -1,16 +1,38 @@
 @import "tailwindcss";
 
+/* Stadium Slop — brand tokens (navy / mustard gold / concession red / cream) */
 :root {
-  --background: #071321;
-  --foreground: #fff4df;
-  --slop-navy: #071321;
-  --slop-ink: #0b0f14;
-  --slop-surface: #132235;
-  --slop-cream: #fff4df;
-  --slop-red: #e23d2f;
-  --slop-orange: #ff9f1c;
-  --slop-blue: #84d7ff;
-  --slop-line: rgba(255, 244, 223, 0.16);
+  --background: #0b1b2b;
+  --foreground: #f5e9d0;
+
+  --slop-navy: #0b1b2b;
+  --slop-navy-mid: #122536;
+  --slop-navy-deep: #060f18;
+  --slop-ink: #111111;
+  --slop-cream: #f5e9d0;
+  --slop-cream-muted: rgba(245, 233, 208, 0.72);
+  --slop-cream-dim: rgba(245, 233, 208, 0.48);
+
+  --slop-gold: #f4b321;
+  --slop-gold-bright: #ffc94a;
+  --slop-gold-dim: #c9a35a;
+
+  --slop-red: #c63d2f;
+  --slop-red-deep: #9a2f24;
+
+  /* Legacy names used across TSX — map to new system */
+  --slop-orange: var(--slop-gold);
+  --slop-blue: var(--slop-gold-dim);
+
+  --slop-surface: #152a3d;
+  --slop-charcoal: #1e2d3d;
+
+  --slop-line: rgba(245, 233, 208, 0.14);
+  --slop-line-strong: rgba(245, 233, 208, 0.22);
+
+  --slop-shadow-card: 0 4px 0 rgba(0, 0, 0, 0.35), 0 12px 28px rgba(0, 0, 0, 0.35);
+  --slop-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --slop-shadow-header: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 @theme inline {
@@ -20,48 +42,108 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #071321;
-    --foreground: #fff4df;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
 }
 
+/* Page shell — stadium night + warm glow */
 .brand-page {
   background:
-    radial-gradient(circle at top left, rgba(226, 61, 47, 0.22), transparent 30rem),
-    radial-gradient(circle at top right, rgba(132, 215, 255, 0.16), transparent 26rem),
-    var(--slop-navy);
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(244, 179, 33, 0.12), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(198, 61, 47, 0.14), transparent 42%),
+    radial-gradient(circle at 0% 100%, rgba(21, 42, 61, 0.9), transparent 45%),
+    linear-gradient(180deg, var(--slop-navy-mid) 0%, var(--slop-navy) 38%, var(--slop-navy-deep) 100%);
   color: var(--slop-cream);
 }
 
+/* Panels — cream wash on navy, signage-style edge */
 .brand-panel {
-  border-color: var(--slop-line);
-  background: rgba(19, 34, 53, 0.9);
+  border: 1px solid var(--slop-line-strong);
+  background: linear-gradient(
+    165deg,
+    rgba(245, 233, 208, 0.1) 0%,
+    rgba(11, 27, 43, 0.92) 45%,
+    rgba(6, 15, 24, 0.95) 100%
+  );
+  box-shadow: var(--slop-shadow-inset), var(--slop-shadow-card);
 }
 
+/* Cards — slightly lighter “concession board” */
 .brand-card {
-  border-color: var(--slop-line);
-  background: rgba(11, 15, 20, 0.74);
+  border: 1px solid var(--slop-line-strong);
+  background: linear-gradient(
+    180deg,
+    rgba(245, 233, 208, 0.07) 0%,
+    rgba(17, 32, 48, 0.92) 100%
+  );
+  box-shadow: var(--slop-shadow-inset), 0 3px 0 rgba(0, 0, 0, 0.28), 0 10px 24px rgba(0, 0, 0, 0.28);
 }
 
 .brand-pill {
-  border-color: var(--slop-line);
-  background: rgba(255, 244, 223, 0.06);
+  border: 1px solid var(--slop-line-strong);
+  background: rgba(245, 233, 208, 0.08);
   color: var(--slop-cream);
+  box-shadow: var(--slop-shadow-inset);
 }
 
+/* Primary CTA — cheese gold */
 .brand-cta {
-  background: var(--slop-orange);
-  color: var(--slop-ink);
+  background: linear-gradient(180deg, var(--slop-gold-bright) 0%, var(--slop-gold) 100%);
+  color: var(--slop-navy);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.22), 0 6px 18px rgba(244, 179, 33, 0.28);
 }
 
 .brand-cta:hover {
-  background: var(--slop-cream);
+  filter: brightness(1.05);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 8px 22px rgba(244, 179, 33, 0.35);
+}
+
+.brand-cta:focus-visible {
+  outline: 2px solid var(--slop-gold-bright);
+  outline-offset: 2px;
+}
+
+/* Secondary outline button (navy fill, cream text) */
+.brand-cta-secondary {
+  background: rgba(11, 27, 43, 0.85);
+  color: var(--slop-cream);
+  border: 1px solid var(--slop-line-strong);
+  box-shadow: var(--slop-shadow-inset);
+}
+
+.brand-cta-secondary:hover {
+  border-color: var(--slop-gold);
+  color: var(--slop-gold-bright);
+}
+
+/* Danger / spicy */
+.brand-cta-danger {
+  background: linear-gradient(180deg, #d94a3d 0%, var(--slop-red) 100%);
+  color: var(--slop-cream);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.brand-cta-danger:hover {
+  filter: brightness(1.06);
+}
+
+/* Slop Score callout — signature slab */
+.slop-score-callout {
+  border: 1px solid rgba(244, 179, 33, 0.35);
+  background: linear-gradient(
+    165deg,
+    rgba(244, 179, 33, 0.12) 0%,
+    rgba(11, 27, 43, 0.94) 55%
+  );
+  box-shadow: var(--slop-shadow-inset), 0 0 0 1px rgba(0, 0, 0, 0.2), 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+/* Headline utility — tight sports-food */
+.brand-headline {
+  letter-spacing: -0.02em;
+  font-weight: 900;
 }

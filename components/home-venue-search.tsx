@@ -32,7 +32,7 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Venue, city, team, league, sport, or type…"
-          className="w-full rounded-[1.5rem] bg-[var(--slop-ink)] px-5 py-5 text-base font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-blue)] placeholder:text-[color:rgba(255,244,223,0.42)] focus-visible:ring-2 sm:text-lg"
+          className="w-full rounded-[1.5rem] border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-5 py-5 text-base font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:text-lg"
         />
       </label>
       {showEmpty ? (
@@ -62,7 +62,7 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
       <p className="border-t border-[var(--slop-line)] px-4 py-2 text-center text-xs text-[color:rgba(255,244,223,0.45)]">
         <Link
           href="/venues"
-          className="font-bold text-[var(--slop-blue)] underline-offset-2 hover:underline"
+          className="font-bold text-[var(--slop-gold)] underline-offset-2 hover:underline"
         >
           Browse all venues
         </Link>

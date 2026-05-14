@@ -43,6 +43,14 @@ async function updateFoodItem(formData: FormData) {
     }
   });
 
+  const published = await prisma.foodItem.findUnique({
+    where: { id: itemId },
+    select: { slug: true, venue: { select: { slug: true } } }
+  });
+  if (published?.venue?.slug) {
+    revalidatePath(`/venues/${published.venue.slug}/${published.slug}`);
+  }
+
   revalidatePath(`/admin/items/${itemId}`);
   redirect(`/admin/items/${itemId}`);
 }
@@ -88,6 +96,26 @@ export default async function AdminItemDetailPage({
           <p className="mt-3 text-sm text-zinc-400">
             {item.venue.name} · {item.vendor.name}
           </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href={`/venues/${item.venue.slug}/${item.slug}`}
+              className="inline-flex rounded-full border border-[var(--slop-orange)] px-4 py-2 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-orange)] hover:bg-[var(--slop-orange)] hover:text-[var(--slop-ink)]"
+            >
+              View public item page
+            </Link>
+            <Link
+              href={`/venues/${item.venue.slug}`}
+              className="inline-flex rounded-full border border-zinc-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+            >
+              View public venue
+            </Link>
+            <Link
+              href={`/venues/${item.venue.slug}/vendors/${item.vendor.slug}`}
+              className="inline-flex rounded-full border border-zinc-600 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+            >
+              View public vendor
+            </Link>
+          </div>
         </header>
 
         <form action={updateFoodItem} className="brand-panel mt-8 rounded-3xl border p-5">

@@ -6,10 +6,14 @@ import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { VENUE_TYPE_OPTIONS } from "@/lib/venue-display";
 
+const VENDOR_LIST_CAP = 60;
+const ITEM_LIST_CAP = 80;
+
 type AdminVenueDetailPageProps = {
   params: Promise<{
     venueId: string;
   }>;
+  searchParams: Promise<{ vendorQ?: string; itemQ?: string }>;
 };
 
 function parseList(value: FormDataEntryValue | null) {
@@ -51,6 +55,11 @@ async function updateVenue(formData: FormData) {
         : 800
     }
   });
+
+  const slug = String(formData.get("slug") ?? "").trim();
+  if (slug) {
+    revalidatePath(`/venues/${slug}`);
+  }
 
   revalidatePath("/admin/venues");
   revalidatePath(`/admin/venues/${venueId}`);
@@ -95,10 +104,19 @@ async function createVendor(formData: FormData) {
   redirect(`/admin/venues/${venueId}`);
 }
 
+function matchesQuery(haystack: string, needle: string) {
+  return haystack.toLowerCase().includes(needle.toLowerCase());
+}
+
 export default async function AdminVenueDetailPage({
-  params
+  params,
+  searchParams
 }: AdminVenueDetailPageProps) {
   const { venueId } = await params;
+  const { vendorQ = "", itemQ = "" } = await searchParams;
+  const vq = vendorQ.trim();
+  const iq = itemQ.trim();
+
   const venue = await prisma.venue.findUnique({
     where: { id: venueId },
     include: {
@@ -125,6 +143,31 @@ export default async function AdminVenueDetailPage({
     notFound();
   }
 
+  const vendorsFiltered = vq
+    ? venue.vendors.filter(
+        (v) => matchesQuery(v.name, vq) || matchesQuery(v.slug, vq)
+      )
+    : venue.vendors;
+
+  const vendorsTruncated = !vq && vendorsFiltered.length > VENDOR_LIST_CAP;
+  const vendorsShown = vendorsTruncated
+    ? vendorsFiltered.slice(0, VENDOR_LIST_CAP)
+    : vendorsFiltered;
+
+  const itemsFiltered = iq
+    ? venue.items.filter(
+        (it) =>
+          matchesQuery(it.name, iq) ||
+          matchesQuery(it.slug, iq) ||
+          matchesQuery(it.vendor.name, iq)
+      )
+    : venue.items;
+
+  const itemsTruncated = !iq && itemsFiltered.length > ITEM_LIST_CAP;
+  const itemsShown = itemsTruncated
+    ? itemsFiltered.slice(0, ITEM_LIST_CAP)
+    : itemsFiltered;
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:px-10">
@@ -142,6 +185,17 @@ export default async function AdminVenueDetailPage({
           <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
             {venue.name}
           </h1>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href={`/venues/${venue.slug}`}
+              className="inline-flex rounded-full border border-[var(--slop-orange)] px-4 py-2 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-orange)] hover:bg-[var(--slop-orange)] hover:text-[var(--slop-ink)]"
+            >
+              View public venue
+            </Link>
+            <p className="text-xs text-zinc-500">
+              {venue.vendors.length} vendors · {venue.items.length} items in database
+            </p>
+          </div>
         </header>
 
         <section className="mt-8 grid gap-5 lg:grid-cols-[1fr_0.9fr]">
@@ -213,7 +267,41 @@ export default async function AdminVenueDetailPage({
 
           <div className="grid gap-5">
             <section className="brand-card rounded-3xl border p-5">
-              <h2 className="text-xl font-black">Vendors</h2>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <h2 className="text-xl font-black">Vendors</h2>
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                  Showing {vendorsShown.length}
+                  {vq ? ` of ${venue.vendors.length}` : vendorsTruncated ? ` of ${venue.vendors.length}` : ""}
+                </p>
+              </div>
+              <form
+                className="mt-3 flex flex-wrap gap-2"
+                method="get"
+                action={`/admin/venues/${venue.id}`}
+              >
+                <input
+                  name="vendorQ"
+                  type="search"
+                  defaultValue={vq}
+                  placeholder="Filter vendors…"
+                  className="min-w-[12rem] flex-1 rounded-2xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-white outline-none"
+                />
+                {iq ? <input type="hidden" name="itemQ" value={iq} /> : null}
+                <button
+                  type="submit"
+                  className="rounded-full border border-zinc-600 px-4 py-2 text-xs font-bold text-zinc-300"
+                >
+                  Filter
+                </button>
+                {vq ? (
+                  <Link
+                    href={iq ? `/admin/venues/${venue.id}?itemQ=${encodeURIComponent(iq)}` : `/admin/venues/${venue.id}`}
+                    className="inline-flex items-center rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-400"
+                  >
+                    Clear vendor filter
+                  </Link>
+                ) : null}
+              </form>
               <form action={createVendor} className="mt-4 grid gap-3 rounded-2xl bg-black p-4">
                 <input type="hidden" name="venueId" value={venue.id} />
                 <p className="text-sm font-bold uppercase tracking-[0.15em] text-zinc-500">
@@ -251,7 +339,7 @@ export default async function AdminVenueDetailPage({
                 </button>
               </form>
               <div className="mt-4 grid gap-2">
-                {venue.vendors.map((vendor) => (
+                {vendorsShown.map((vendor) => (
                   <Link
                     key={vendor.id}
                     href={`/admin/vendors/${vendor.id}`}
@@ -264,12 +352,51 @@ export default async function AdminVenueDetailPage({
                   </Link>
                 ))}
               </div>
+              {vendorsTruncated ? (
+                <p className="mt-3 text-xs text-zinc-500">
+                  List capped at {VENDOR_LIST_CAP} for performance. Use the filter to find a vendor.
+                </p>
+              ) : null}
             </section>
 
             <section className="brand-card rounded-3xl border p-5">
-              <h2 className="text-xl font-black">Food items</h2>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <h2 className="text-xl font-black">Food items</h2>
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+                  Showing {itemsShown.length}
+                  {iq ? ` of ${venue.items.length}` : itemsTruncated ? ` of ${venue.items.length}` : ""}
+                </p>
+              </div>
+              <form
+                className="mt-3 flex flex-wrap gap-2"
+                method="get"
+                action={`/admin/venues/${venue.id}`}
+              >
+                {vq ? <input type="hidden" name="vendorQ" value={vq} /> : null}
+                <input
+                  name="itemQ"
+                  type="search"
+                  defaultValue={iq}
+                  placeholder="Filter items…"
+                  className="min-w-[12rem] flex-1 rounded-2xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-white outline-none"
+                />
+                <button
+                  type="submit"
+                  className="rounded-full border border-zinc-600 px-4 py-2 text-xs font-bold text-zinc-300"
+                >
+                  Filter
+                </button>
+                {iq ? (
+                  <Link
+                    href={vq ? `/admin/venues/${venue.id}?vendorQ=${encodeURIComponent(vq)}` : `/admin/venues/${venue.id}`}
+                    className="inline-flex items-center rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-400"
+                  >
+                    Clear item filter
+                  </Link>
+                ) : null}
+              </form>
               <div className="mt-4 grid gap-2">
-                {venue.items.map((item) => (
+                {itemsShown.map((item) => (
                   <Link
                     key={item.id}
                     href={`/admin/items/${item.id}`}
@@ -282,6 +409,11 @@ export default async function AdminVenueDetailPage({
                   </Link>
                 ))}
               </div>
+              {itemsTruncated ? (
+                <p className="mt-3 text-xs text-zinc-500">
+                  List capped at {ITEM_LIST_CAP} for performance. Use the filter to find an item.
+                </p>
+              ) : null}
             </section>
           </div>
         </section>

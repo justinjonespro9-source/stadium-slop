@@ -3,13 +3,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
-import {
-  foodItems,
-  foodReviews,
-  vendors,
-  venues,
-  foodPhotos
-} from "@/lib/sample-data";
 import { MOCK_ADMIN_COOKIE_NAME, hasMockAdminAccess } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { FAN_REPORT_REASON_LABELS } from "@/lib/reports";
@@ -308,82 +301,48 @@ async function hidePhotoFromContentReport(formData: FormData) {
   redirect("/admin");
 }
 
-const adminSections = [
-  {
-    title: "Venues",
-    count: venues.length,
-    action: "Edit venue",
-    detail: "Manage venue basics, teams, leagues, and review radius.",
-    href: "/admin/venues"
-  },
-  {
-    title: "Vendors",
-    count: vendors.length,
-    action: "Add vendor",
-    detail: "Create or correct stand names, sections, and line intel.",
-    href: "/admin/venues"
-  },
-  {
-    title: "Items",
-    count: foodItems.length,
-    action: "Add item",
-    detail: "Maintain reviewable food and drink listings.",
-    href: "/admin/venues"
-  },
-  {
-    title: "Reviews",
-    count: foodReviews.length,
-    action: "Hide review",
-    detail: "Moderate verified game-day review signals, notes, and photo context."
-  },
-  {
-    title: "Users",
-    count: 3,
-    action: "Suspend user",
-    detail: "Review sample profiles, reputation, ownership, and account status."
-  },
-  {
-    title: "Reports / flags",
-    count: 4,
-    action: "Review flags",
-    detail: "Triage duplicate reviews, suspicious activity, and bad intel."
-  },
-  {
-    title: "Price updates",
-    count: foodItems.filter((item) => item.priceReportCount).length,
-    action: "Approve price update",
-    detail: "Confirm reported prices and last-confirmed labels."
-  },
-  {
-    title: "Suggested missing items",
-    count: 5,
-    action: "Review suggested item",
-    detail: "Queue fan-suggested vendors, sections, and menu items."
-  }
-];
+async function getAdminDashboardStats() {
+  try {
+    const [
+      venueCount,
+      vendorCount,
+      itemCount,
+      photoCount,
+      pendingPrices,
+      pendingSuggestions,
+      openFlags
+    ] = await Promise.all([
+      prisma.venue.count(),
+      prisma.vendor.count(),
+      prisma.foodItem.count(),
+      prisma.foodPhoto.count(),
+      prisma.priceReport.count({ where: { status: "PENDING" } }),
+      prisma.suggestedItem.count({ where: { status: "PENDING" } }),
+      prisma.reportFlag.count({ where: { status: "OPEN" } })
+    ]);
 
-const moderationQueue = [
-  {
-    title: "Hide flagged review",
-    count: 2,
-    copy: "Check food-focused notes, photo context, and verified status."
-  },
-  {
-    title: "Duplicate or suspicious activity",
-    count: 1,
-    copy: "Review repeated scores, duplicate submissions, and unusual helpful-like patterns."
-  },
-  {
-    title: "Outdated prices",
-    count: foodItems.filter((item) => (item.priceReportCount ?? 0) < 5).length,
-    copy: "Prioritize low-confidence reported prices."
-  },
-  {
-    title: "User suspension review",
-    count: 3,
-    copy: "Escalate users with repeated suspicious reviews or abusive profile details."
+    return {
+      venueCount,
+      vendorCount,
+      itemCount,
+      photoCount,
+      pendingPrices,
+      pendingSuggestions,
+      openFlags
+    };
+  } catch (error) {
+    console.warn("Admin dashboard stats unavailable", error);
+    return {
+      venueCount: 0,
+      vendorCount: 0,
+      itemCount: 0,
+      photoCount: 0,
+      pendingPrices: 0,
+      pendingSuggestions: 0,
+      openFlags: 0
+    };
   }
-];
+}
 
 async function getPendingAdminQueues() {
   try {
@@ -393,8 +352,8 @@ async function getPendingAdminQueues() {
         orderBy: { createdAt: "desc" },
         take: 6,
         include: {
-          foodItem: { select: { name: true } },
-          venue: { select: { name: true } },
+          foodItem: { select: { id: true, name: true, slug: true } },
+          venue: { select: { name: true, slug: true } },
           user: { select: { handle: true } }
         }
       }),
@@ -403,8 +362,8 @@ async function getPendingAdminQueues() {
         orderBy: { createdAt: "desc" },
         take: 6,
         include: {
-          venue: { select: { name: true } },
-          vendor: { select: { name: true } },
+          venue: { select: { id: true, name: true, slug: true } },
+          vendor: { select: { name: true, slug: true } },
           user: { select: { handle: true } }
         }
       }),
@@ -456,8 +415,47 @@ async function getPendingAdminQueues() {
 }
 
 export default async function AdminPage() {
-  const { priceReports, suggestedItems, contentReports } =
-    await getPendingAdminQueues();
+  const [{ priceReports, suggestedItems, contentReports }, stats] =
+    await Promise.all([getPendingAdminQueues(), getAdminDashboardStats()]);
+
+  const managementCards = [
+    {
+      title: "Venues",
+      count: stats.venueCount,
+      detail: "Search, edit basics, teams, leagues, and review radius.",
+      href: "/admin/venues",
+      action: "Browse venues"
+    },
+    {
+      title: "Vendors",
+      count: stats.vendorCount,
+      detail: "Open a venue to add vendors or edit sections and line intel.",
+      href: "/admin/venues",
+      action: "Via venue pages"
+    },
+    {
+      title: "Food items",
+      count: stats.itemCount,
+      detail: "Open a venue or vendor to add items and tune categories.",
+      href: "/admin/venues",
+      action: "Via venue pages"
+    },
+    {
+      title: "Photos",
+      count: stats.photoCount,
+      detail: "Photo moderation flows through fan reports when photos are flagged.",
+      href: "#fan-reports",
+      action: "Fan reports"
+    },
+    {
+      title: "User accounts",
+      count: null as number | null,
+      detail: "Account tools are not wired in this mock admin yet.",
+      href: null as string | null,
+      action: "Coming soon",
+      disabled: true
+    }
+  ];
 
   return (
     <main className="brand-page min-h-screen">
@@ -473,8 +471,7 @@ export default async function AdminPage() {
               </h1>
               <p className="mt-4 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
                 Mock-gated management dashboard for Stadium Slop operations.
-                Admin actions are logged conceptually; full audit log comes
-                later.
+                Counts below come from the database. Full audit log comes later.
               </p>
             </div>
 
@@ -483,30 +480,64 @@ export default async function AdminPage() {
                 Mock signed-in admin
               </p>
               <p className="mt-2 font-black">SNG LABS Operator</p>
-              <form action={mockAdminSignOut}>
+              <div className="mt-4 grid gap-2">
+                <Link
+                  href="/admin/venues"
+                  className="block w-full rounded-full border border-zinc-700 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                >
+                  Browse venues
+                </Link>
+                <Link
+                  href="/admin/venues/new"
+                  className="block w-full rounded-full border border-zinc-700 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                >
+                  New venue
+                </Link>
+              </div>
+              <form action={mockAdminSignOut} className="mt-3">
                 <button
                   type="submit"
-                  className="mt-4 w-full rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                  className="w-full rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
                 >
                   Sign out
                 </button>
               </form>
             </div>
           </div>
+          <nav className="mt-6 flex flex-wrap gap-2 border-t border-zinc-800 pt-5 text-xs font-bold uppercase tracking-[0.15em]">
+            <Link
+              href="#fan-reports"
+              className="rounded-full border border-zinc-700 px-3 py-1.5 text-zinc-400 hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+            >
+              Fan reports ({stats.openFlags})
+            </Link>
+            <Link
+              href="#pending-approval"
+              className="rounded-full border border-zinc-700 px-3 py-1.5 text-zinc-400 hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+            >
+              Pending prices ({stats.pendingPrices})
+            </Link>
+            <Link
+              href="#pending-approval"
+              className="rounded-full border border-zinc-700 px-3 py-1.5 text-zinc-400 hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+            >
+              Suggested items ({stats.pendingSuggestions})
+            </Link>
+          </nav>
         </header>
 
-        <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
           {[
-            ["Venues", venues.length],
-            ["Vendors", vendors.length],
-            ["Items", foodItems.length],
-            ["Photos", foodPhotos.length],
-            ["Pending prices", priceReports.length],
-            ["Pending items", suggestedItems.length],
-            ["Open fan reports", contentReports.length]
+            ["Venues", stats.venueCount],
+            ["Vendors", stats.vendorCount],
+            ["Items", stats.itemCount],
+            ["Photos", stats.photoCount],
+            ["Pending prices", stats.pendingPrices],
+            ["Pending suggestions", stats.pendingSuggestions],
+            ["Open fan reports", stats.openFlags]
           ].map(([label, count]) => (
             <div
-              key={label}
+              key={String(label)}
               className="brand-card rounded-3xl border p-4"
             >
               <p className="text-3xl font-black">{count}</p>
@@ -517,71 +548,21 @@ export default async function AdminPage() {
           ))}
         </section>
 
-        <section className="mt-8">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Management
-          </p>
-          <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {adminSections.map((section) => (
-              <article
-                key={section.title}
-                className="brand-card rounded-3xl border p-5"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="text-xl font-black">{section.title}</h2>
-                  <span className="rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
-                    {section.count}
-                  </span>
-                </div>
-                <p className="mt-3 text-sm leading-6 text-zinc-400">
-                  {section.detail}
-                </p>
-                {section.href ? (
-                  <Link
-                    href={section.href}
-                    className="mt-5 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
-                  >
-                    {section.action}
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    disabled
-                    className="mt-5 cursor-not-allowed rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500"
-                  >
-                    {section.action}
-                  </button>
-                )}
-              </article>
-            ))}
+        <section id="fan-reports" className="brand-panel mt-8 scroll-mt-8 rounded-[2rem] border p-5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Fan content reports
+              </p>
+              <p className="mt-1 text-sm text-zinc-500">
+                Approve by marking reviewed, dismiss false positives, or hide the
+                underlying review or photo.
+              </p>
+            </div>
+            <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
+              {stats.openFlags} open
+            </span>
           </div>
-        </section>
-
-        <section className="brand-panel mt-8 rounded-[2rem] border p-5">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Moderation queue
-          </p>
-          <div className="mt-4 grid gap-3 md:grid-cols-2">
-            {moderationQueue.map((item) => (
-              <article key={item.title} className="rounded-2xl bg-black p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <h2 className="font-black">{item.title}</h2>
-                  <span className="text-sm font-black text-zinc-400">
-                    {item.count}
-                  </span>
-                </div>
-                <p className="mt-2 text-sm leading-6 text-zinc-500">
-                  {item.copy}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="brand-panel mt-8 rounded-[2rem] border p-5">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Fan content reports
-          </p>
           <div className="mt-3 grid gap-3">
             {contentReports.length > 0 ? (
               contentReports.map((flag) => {
@@ -695,10 +676,21 @@ export default async function AdminPage() {
           </div>
         </section>
 
-        <section className="brand-panel mt-8 rounded-[2rem] border p-5">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Pending approval
-          </p>
+        <section
+          id="pending-approval"
+          className="brand-panel mt-8 scroll-mt-8 rounded-[2rem] border p-5"
+        >
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+                Pending approval
+              </p>
+              <p className="mt-1 text-sm text-zinc-500">
+                Fan-submitted prices and missing menu items. Approve or reject;
+                approving a price updates the item&apos;s reported price.
+              </p>
+            </div>
+          </div>
           <div className="mt-4 grid gap-4 lg:grid-cols-2">
             <div>
               <h2 className="text-xl font-black">Price reports</h2>
@@ -720,6 +712,22 @@ export default async function AdminPage() {
                               {report.note}
                             </p>
                           ) : null}
+                          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs font-bold">
+                            {report.venue.slug && report.foodItem.slug ? (
+                              <Link
+                                href={`/venues/${report.venue.slug}/${report.foodItem.slug}`}
+                                className="text-[var(--slop-orange)] hover:underline"
+                              >
+                                View public item
+                              </Link>
+                            ) : null}
+                            <Link
+                              href={`/admin/items/${report.foodItemId}`}
+                              className="text-zinc-400 hover:text-white hover:underline"
+                            >
+                              Edit in admin
+                            </Link>
+                          </div>
                         </div>
                         <span className="rounded-full border border-zinc-800 px-2 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
                           Pending
@@ -780,6 +788,28 @@ export default async function AdminPage() {
                               {item.note}
                             </p>
                           ) : null}
+                          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs font-bold">
+                            <Link
+                              href={`/venues/${item.venue.slug}`}
+                              className="text-[var(--slop-orange)] hover:underline"
+                            >
+                              View public venue
+                            </Link>
+                            {item.vendor?.slug ? (
+                              <Link
+                                href={`/venues/${item.venue.slug}/vendors/${item.vendor.slug}`}
+                                className="text-[var(--slop-orange)] hover:underline"
+                              >
+                                View public vendor
+                              </Link>
+                            ) : null}
+                            <Link
+                              href={`/admin/venues/${item.venue.id}`}
+                              className="text-zinc-400 hover:text-white hover:underline"
+                            >
+                              Edit venue (admin)
+                            </Link>
+                          </div>
                         </div>
                         <span className="rounded-full border border-zinc-800 px-2 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
                           Pending
@@ -822,6 +852,50 @@ export default async function AdminPage() {
                 )}
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="mt-8">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
+            Catalog &amp; moderation
+          </p>
+          <p className="mt-2 max-w-3xl text-sm text-zinc-500">
+            Vendors and items are edited in context on each venue page. User
+            account tools are not implemented yet.
+          </p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {managementCards.map((card) => (
+              <article
+                key={card.title}
+                className="brand-card rounded-3xl border p-5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <h2 className="text-xl font-black">{card.title}</h2>
+                  <span className="rounded-full bg-[var(--slop-orange)] px-3 py-1 text-sm font-black text-[var(--slop-ink)]">
+                    {card.count ?? "—"}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-zinc-400">
+                  {card.detail}
+                </p>
+                {card.disabled || !card.href ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="mt-5 cursor-not-allowed rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500"
+                  >
+                    {card.action}
+                  </button>
+                ) : (
+                  <Link
+                    href={card.href}
+                    className="mt-5 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                  >
+                    {card.action}
+                  </Link>
+                )}
+              </article>
+            ))}
           </div>
         </section>
       </section>

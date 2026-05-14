@@ -1,29 +1,39 @@
+import Image from "next/image";
+
 type BrandLockupProps = {
+  /** Icon only — header mobile, tight spaces */
   compact?: boolean;
 };
 
 export function BrandLockup({ compact = false }: BrandLockupProps) {
+  if (compact) {
+    return (
+      <span className="inline-flex items-center">
+        <Image
+          src="/branding/stadium-slop-icon.png"
+          alt="Stadium Slop"
+          width={40}
+          height={40}
+          className="h-9 w-9 object-contain sm:h-10 sm:w-10"
+          priority
+        />
+      </span>
+    );
+  }
+
   return (
-    <div className="flex items-center gap-3">
-      <div
-        className={`flex shrink-0 items-center justify-center rounded-2xl border-2 border-[var(--slop-cream)] bg-[var(--slop-red)] font-black text-[var(--slop-cream)] shadow-[4px_4px_0_var(--slop-orange)] ${
-          compact ? "h-10 w-10 text-base" : "h-12 w-12 text-lg"
-        }`}
-      >
-        SS
-      </div>
-      <div className="leading-none">
-        <p
-          className={`font-black uppercase tracking-tight text-[var(--slop-cream)] ${
-            compact ? "text-lg" : "text-2xl"
-          }`}
-        >
-          Stadium Slop
-        </p>
-        <p className="mt-1 text-[0.65rem] font-black uppercase tracking-[0.22em] text-[var(--slop-blue)]">
-          Eats in the Seats
-        </p>
-      </div>
+    <div className="flex flex-col gap-2">
+      <Image
+        src="/branding/stadium-slop-wordmark.png"
+        alt="Stadium Slop"
+        width={220}
+        height={48}
+        className="h-9 w-auto max-w-[min(100%,14rem)] object-contain object-left sm:h-11"
+        priority
+      />
+      <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-[var(--slop-gold-dim)]">
+        Eats in the Seats
+      </p>
     </div>
   );
 }

@@ -29,7 +29,7 @@ export function VenuesBrowseClient({
 
   return (
     <>
-      <div className="mb-8 rounded-2xl border border-zinc-800 bg-zinc-950/80 p-3 sm:p-4">
+      <div className="mb-8 rounded-2xl border border-[var(--slop-line-strong)] bg-[color:rgba(245,233,208,0.04)] p-3 sm:p-4">
         <label className="block">
           <span className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
             Search venues
@@ -41,7 +41,7 @@ export function VenuesBrowseClient({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Name, city, team, league, sport, type, signature event…"
-            className="mt-2 w-full rounded-xl border border-zinc-800 bg-black px-4 py-3 text-base text-white outline-none ring-[var(--slop-blue)] placeholder:text-zinc-600 focus-visible:ring-2"
+            className="mt-2 w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-4 py-3 text-base text-white outline-none ring-[var(--slop-gold)] placeholder:text-zinc-600 focus-visible:ring-2"
           />
         </label>
       </div>
@@ -62,7 +62,7 @@ export function VenuesBrowseClient({
               <Link
                 key={venue.slug}
                 href={`/venues/${venue.slug}`}
-                className="brand-card group rounded-3xl border p-6 transition hover:border-[var(--slop-blue)]"
+                className="brand-card group rounded-3xl border p-6 transition hover:border-[var(--slop-gold)]"
               >
                 <article>
                   <div className="flex items-start justify-between gap-4">
@@ -101,7 +101,7 @@ export function VenuesBrowseClient({
                     {venue.reviewRadiusMeters}m verified review zone
                   </p>
 
-                  <div className="mt-6 rounded-2xl bg-[var(--slop-ink)] p-4">
+                  <div className="mt-6 rounded-2xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.65)] p-4">
                     <p className="text-sm text-zinc-500">
                       {venueFoodItems.length}{" "}
                       {venueFoodItems.length === 1 ? "item" : "items"}
@@ -135,7 +135,7 @@ export function VenuesBrowseClient({
                     ) : null}
                   </div>
 
-                  <p className="mt-5 text-sm font-bold text-[var(--slop-orange)] transition group-hover:text-[var(--slop-blue)]">
+                  <p className="mt-5 text-sm font-bold text-[var(--slop-gold)] transition group-hover:text-[var(--slop-gold-bright)]">
                     View venue
                   </p>
                 </article>

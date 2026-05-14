@@ -17,7 +17,7 @@ export function FoodItemHeroPlaceholder({
   return (
     <div className="flex h-full min-h-[12rem] flex-col items-center justify-center gap-3 bg-gradient-to-b from-zinc-950 via-black to-zinc-950 px-4 py-8 text-center sm:min-h-[14rem]">
       <div
-        className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[var(--slop-line)] bg-[var(--slop-surface)] text-4xl shadow-[0_0_40px_rgba(255,106,0,0.12)] sm:h-24 sm:w-24 sm:text-5xl"
+        className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[var(--slop-line-strong)] bg-[var(--slop-surface)] text-4xl shadow-[0_4px_20px_rgba(244,179,33,0.15)] sm:h-24 sm:w-24 sm:text-5xl"
         aria-hidden
       >
         {emoji}
