@@ -472,14 +472,32 @@ import {
   expansionBallparkFoodItems,
   expansionBallparkVendors
 } from "./mlb-ballpark-concessions-parks-expansion";
+import {
+  wave2BallparkFoodItems,
+  wave2BallparkVendors
+} from "./mlb-ballpark-concessions-parks-wave2";
+import {
+  wave3BallparkFoodItems,
+  wave3BallparkVendors
+} from "./mlb-ballpark-concessions-parks-wave3";
+import {
+  wave4BallparkFoodItems,
+  wave4BallparkVendors
+} from "./mlb-ballpark-concessions-parks-wave4";
 
-/** Merged into `lib/sample-data` — Target + expansion parks (Wrigley, Fenway, Dodgers, Petco, Citizens Bank). */
+/** Merged into `lib/sample-data` — Target Field + MLB expansion waves 1–4. */
 export const sixParkConcessionsVendors: Vendor[] = [
   ...targetFieldConcessionVendors,
-  ...expansionBallparkVendors
+  ...expansionBallparkVendors,
+  ...wave2BallparkVendors,
+  ...wave3BallparkVendors,
+  ...wave4BallparkVendors
 ];
 
 export const sixParkConcessionsFoodItems: FoodItem[] = [
   ...targetFieldConcessionItems,
-  ...expansionBallparkFoodItems
+  ...expansionBallparkFoodItems,
+  ...wave2BallparkFoodItems,
+  ...wave3BallparkFoodItems,
+  ...wave4BallparkFoodItems
 ];
