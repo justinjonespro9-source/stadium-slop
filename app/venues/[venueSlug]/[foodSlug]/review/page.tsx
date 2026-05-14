@@ -61,6 +61,8 @@ type ReviewPageProps = {
   }>;
 };
 
+type SignalField = "replayValue" | "priceCheck";
+
 function revalidateFoodItemSurfaces(
   canonicalItemPath: string,
   venueSlug: string,
@@ -76,23 +78,26 @@ function SignalOption({
   label,
   name,
   value,
-  defaultSelected
+  defaultSelected,
+  required: radioRequired
 }: {
   label: string;
-  name: string;
+  name: SignalField;
   value: string;
   defaultSelected?: boolean;
+  required?: boolean;
 }) {
   return (
-    <label className="cursor-pointer">
+    <label className="cursor-pointer touch-manipulation">
       <input
         className="peer sr-only"
         type="radio"
         name={name}
         value={value}
+        required={radioRequired}
         defaultChecked={defaultSelected}
       />
-      <span className="block rounded-full border border-zinc-800 bg-black px-4 py-2 text-sm font-bold text-zinc-400 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)]">
+      <span className="flex min-h-11 items-center justify-center rounded-full border border-zinc-800 bg-black px-3 py-2.5 text-center text-xs font-bold leading-snug text-zinc-400 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)] sm:min-h-12 sm:px-4 sm:text-sm">
         {label}
       </span>
     </label>
@@ -101,22 +106,24 @@ function SignalOption({
 
 function ScoreButton({
   score,
-  defaultSelected
+  defaultSelected,
+  radioRequired
 }: {
   score: number;
   defaultSelected?: boolean;
+  radioRequired?: boolean;
 }) {
   return (
-    <label className="cursor-pointer">
+    <label className="cursor-pointer touch-manipulation">
       <input
         className="peer sr-only"
         type="radio"
         name="slopScore"
         value={score}
-        required
+        required={radioRequired}
         defaultChecked={defaultSelected}
       />
-      <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-800 bg-black text-lg font-black text-zinc-300 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)]">
+      <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800 bg-black text-base font-black text-zinc-300 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)] sm:h-12 sm:w-12 sm:rounded-2xl sm:text-lg">
         {score}
       </span>
     </label>
@@ -126,28 +133,34 @@ function ScoreButton({
 function NapkinButton({
   value,
   label,
-  defaultSelected
+  defaultSelected,
+  radioRequired
 }: {
   value: number;
   label: string;
   defaultSelected?: boolean;
+  radioRequired?: boolean;
 }) {
   return (
-    <label className="cursor-pointer">
+    <label className="cursor-pointer touch-manipulation">
       <input
         className="peer sr-only"
         type="radio"
         name="napkinRating"
         value={value}
-        required
+        required={radioRequired}
         defaultChecked={defaultSelected}
       />
-      <span className="block rounded-2xl border border-zinc-800 bg-black p-3 text-left peer-checked:border-[var(--slop-orange)] peer-checked:bg-[color:rgba(255,159,28,0.14)]">
-        <span className="block text-lg">{"▰".repeat(value)}</span>
-        <span className="mt-1 block text-sm font-bold text-zinc-300">
-          {value}/5 napkins
+      <span className="flex min-h-[3.25rem] flex-col justify-center rounded-xl border border-zinc-800 bg-black px-2.5 py-2 text-left peer-checked:border-[var(--slop-orange)] peer-checked:bg-[color:rgba(255,159,28,0.14)] sm:min-h-[3.5rem] sm:rounded-2xl sm:px-3">
+        <span className="block text-sm leading-none sm:text-base">
+          {"▰".repeat(value)}
         </span>
-        <span className="mt-1 block text-xs text-zinc-500">{label}</span>
+        <span className="mt-1 block text-xs font-bold text-zinc-300">
+          {value}/5
+        </span>
+        <span className="mt-0.5 line-clamp-2 text-[0.65rem] leading-tight text-zinc-500 sm:text-xs">
+          {label}
+        </span>
       </span>
     </label>
   );
@@ -266,6 +279,13 @@ async function submitReview(formData: FormData) {
     typeof priceCheck === "string" && priceCheck in PriceCheck
       ? (priceCheck as PriceCheck)
       : null;
+
+  if (!replayValueData) {
+    redirect(`${canonicalItemPath}/review?error=missing-replay`);
+  }
+  if (!priceCheckData) {
+    redirect(`${canonicalItemPath}/review?error=missing-price`);
+  }
 
   const review = await prisma.review.upsert({
     where: {
@@ -399,17 +419,30 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const urlError = query.error;
 
   const reviewFormErrorMessage =
-    urlError === "too_large"
-      ? "Image must be about 8MB or smaller. Shrink the file and try again."
-      : urlError === "heic"
-        ? "HEIC/HEIF is not supported. Export as JPEG or use “Most Compatible” camera format."
-        : urlError === "unsupported"
-          ? "Use JPEG, PNG, WebP, or GIF."
-          : urlError === "cloudinary"
-            ? "Photo uploads need Cloudinary configured on the server."
-            : urlError === "upload"
-              ? "Upload failed. Check connection and try again."
-              : null;
+    urlError === "missing-score"
+      ? "Slop Score (and Napkin Rating for food) are required."
+      : urlError === "missing-replay"
+        ? "Pick a Replay Value — would you order this again?"
+        : urlError === "missing-price"
+          ? "Pick a Price Check — how was the value?"
+          : urlError === "too_large"
+            ? "Image must be about 8MB or smaller. Shrink the file and try again."
+            : urlError === "heic"
+              ? "HEIC/HEIF is not supported. Export as JPEG or use “Most Compatible” camera format."
+              : urlError === "unsupported"
+                ? "Use JPEG, PNG, WebP, or GIF."
+                : urlError === "cloudinary"
+                  ? "Photo uploads need Cloudinary configured on the server."
+                  : urlError === "upload"
+                    ? "Upload failed. Check connection and try again."
+                    : null;
+
+  const reviewErrorAlertTitle =
+    urlError === "missing-score" ||
+    urlError === "missing-replay" ||
+    urlError === "missing-price"
+      ? "Finish required fields"
+      : "Photo not accepted";
 
   const venue = await getPublicVenueBySlug(venueSlug);
 
@@ -437,55 +470,49 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   if (!isSignedIn) {
     return (
       <main className="brand-page min-h-screen">
-        <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
+        <section className="mx-auto w-full max-w-lg px-4 py-5 sm:max-w-xl sm:px-6">
           <Link
             href={`/venues/${venue.slug}/${foodItem.slug}`}
-            className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
+            className="inline-flex text-xs font-bold text-zinc-400 hover:text-white sm:text-sm"
           >
-            Back to food details
+            ← Item
           </Link>
 
-          <header className="py-6 sm:py-10">
-            <p className="brand-pill mb-3 inline-flex rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-[0.15em]">
-              Sign-in required
+          <header className="pt-4">
+            <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-zinc-500">
+              Sign in required
             </p>
-            <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-              Review {foodItem.name}
+            <h1 className="mt-1 text-2xl font-black leading-tight text-white sm:text-3xl">
+              Rate {foodItem.name}
             </h1>
-            <p className="mt-3 text-base text-zinc-300 sm:text-lg">
-              {venue.name} · {venue.city}, {venue.state}
+            <p className="mt-1 text-sm text-zinc-400">
+              {venue.name}
             </p>
           </header>
 
-          <section className="brand-panel rounded-3xl border p-5 sm:p-6">
-            <h2 className="text-2xl font-black sm:text-3xl">
-              Sign in to submit a review
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-zinc-400">
-              Reviews belong to a reviewer profile so fans can trust who
-              contributed the Slop Score, photos, and game-day signals. You can
-              browse without signing in, but submitting reviews and marking
-              helpful likes requires a profile.
+          <div className="mt-5 rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-4">
+            <p className="text-sm leading-relaxed text-zinc-400">
+              Free profile — verified at the park. Slop Scores and photos, no
+              comment threads.
             </p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <div className="mt-4 grid gap-2">
               <Link
                 href={`/login?next=${encodeURIComponent(reviewPath)}`}
-                className="brand-cta rounded-full px-6 py-4 text-center text-sm font-black transition"
+                className="brand-cta rounded-full px-5 py-3.5 text-center text-sm font-black"
               >
                 Sign in
               </Link>
               <Link
-                href="/signup"
-                className="rounded-full border border-[var(--slop-line)] px-6 py-4 text-center text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
+                href={`/signup?next=${encodeURIComponent(reviewPath)}`}
+                className="rounded-full border border-[var(--slop-line)] px-5 py-3.5 text-center text-sm font-black text-[var(--slop-cream)] hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
               >
                 Create profile
               </Link>
             </div>
-            <p className="mt-4 text-xs leading-5 text-zinc-500">
-              Temporary mock auth only. No real password security or database is
-              connected yet.
+            <p className="mt-3 text-[0.65rem] text-zinc-600">
+              Demo auth for now — your reviews still save to the database.
             </p>
-          </section>
+          </div>
         </section>
       </main>
     );
@@ -513,30 +540,28 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   return (
     <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
+      <section className="mx-auto w-full max-w-lg px-4 py-5 sm:max-w-xl sm:px-6 lg:max-w-2xl">
         <Link
           href={`/venues/${venue.slug}/${foodItem.slug}`}
-          className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
+          className="inline-flex text-xs font-bold text-zinc-400 hover:text-white sm:text-sm"
         >
-          Back to food details
+          ← Item
         </Link>
 
-        <header className="py-5 sm:py-8">
+        <header className="py-4 sm:py-6">
           {showPhotoRetryHint || urlPhotoError ? (
             <div
               role="status"
-              className="mb-4 rounded-2xl border border-sky-800/80 bg-sky-950/40 px-4 py-3 text-sm text-sky-100"
+              className="mb-3 rounded-xl border border-sky-800/80 bg-sky-950/40 px-3 py-2.5 text-sm text-sky-100"
             >
-              <p className="font-bold">Add or retry a fan photo</p>
-              <p className="mt-1 text-sky-100/90">
-                Your Slop Score and signals for today are already saved. Submit
-                again with a photo (JPEG/PNG/WebP/GIF, up to about 8MB) — the
-                same-day form updates your existing review; nothing is double
-                counted.
+              <p className="font-bold">Photo retry</p>
+              <p className="mt-1 text-xs leading-relaxed text-sky-100/90">
+                Score and signals are saved. Add a JPEG/PNG/WebP/GIF (about 8MB
+                max) — same-day submit replaces today&apos;s row, no duplicates.
               </p>
               {urlPhotoError ? (
-                <p className="mt-2 text-xs text-amber-200/95">
-                  Last attempt: photo issue ({urlPhotoError.replace(/_/g, " ")}).
+                <p className="mt-2 text-[0.65rem] text-amber-200/95">
+                  Last issue: {urlPhotoError.replace(/_/g, " ")}.
                 </p>
               ) : null}
             </div>
@@ -544,275 +569,245 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           {reviewFormErrorMessage ? (
             <div
               role="alert"
-              className="mb-4 rounded-2xl border border-amber-800/80 bg-amber-950/40 px-4 py-3 text-sm text-amber-100"
+              className="mb-3 rounded-xl border border-amber-800/80 bg-amber-950/40 px-3 py-2.5 text-sm text-amber-100"
             >
-              <p className="font-bold">Photo not accepted</p>
-              <p className="mt-1 text-amber-100/95">{reviewFormErrorMessage}</p>
+              <p className="font-bold">{reviewErrorAlertTitle}</p>
+              <p className="mt-1 text-xs leading-relaxed text-amber-100/95">
+                {reviewFormErrorMessage}
+              </p>
             </div>
           ) : null}
-          <p className="mb-3 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-            Mock Review Flow · {foodItem.itemType}
-          </p>
-          {foodItem.ageRestricted ? (
-            <p className="mb-3 ml-2 inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs font-bold uppercase tracking-[0.15em] text-zinc-300">
-              21+
-            </p>
-          ) : null}
-          <h1 className="text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-            {draft
-              ? `Edit today’s review · ${foodItem.name}`
-              : `Review ${foodItem.name}`}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex rounded-full border border-zinc-700 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-zinc-300">
+              Game day · {foodItem.itemType}
+            </span>
+            {foodItem.ageRestricted ? (
+              <span className="inline-flex rounded-full border border-zinc-700 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-zinc-300">
+                21+
+              </span>
+            ) : null}
+          </div>
+          <h1 className="mt-2 text-2xl font-black leading-tight tracking-tight text-white sm:text-4xl">
+            {draft ? `Edit · ${foodItem.name}` : foodItem.name}
           </h1>
-          <p className="mt-3 text-base text-zinc-300 sm:text-lg">
+          <p className="mt-1 text-sm text-zinc-400">
             {venue.name} · {venue.city}, {venue.state}
-          </p>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-500">
-            You can update today&apos;s review; it replaces your earlier score for
-            this item. Saving uses one row per fan per item per game day — no
-            duplicate scorecards.
           </p>
         </header>
 
-        <form action={submitReview} className="brand-panel rounded-3xl border p-4 sm:p-6">
+        <form
+          action={submitReview}
+          className="rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-3 sm:p-5"
+        >
           <input type="hidden" name="venueSlug" value={venue.slug} />
           <input type="hidden" name="foodSlug" value={foodItem.slug} />
-          <div className="rounded-2xl bg-black p-4">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Mock signed in
-            </p>
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-              This review belongs to your temporary reviewer profile. Fan photos
-              help power Game Day Fresh when you upload a real shot from the
-              seats.
-            </p>
-          </div>
 
-          <div className="mt-4 rounded-2xl bg-black p-4">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Verified game-day
-            </p>
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-              Today&apos;s reviews help power Game Day Fresh. Verified game-day
-              reviews carry more weight, especially when they include a fan
-              photo of what actually showed up.
-            </p>
-          </div>
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-zinc-500">
+            {napkinEligible ? "Food scorecard" : "Drink scorecard"}
+          </p>
+          <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+            {napkinEligible
+              ? "Slop, napkins, replay, and price are required. Photo and note are optional."
+              : "Slop, replay, and price are required — no napkin row for drinks. Photo and note optional."}
+          </p>
 
-          <div className="mt-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Quick scorecard
-            </p>
-            <h2 className="mt-2 text-2xl font-black sm:text-3xl">
-              Tap it, snap it, move on.
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-zinc-400">
-              {napkinEligible ? (
-                <>
-                  Slop Score and Napkin Rating are required because structured
-                  signals power Season Standings. Photo and note are optional.
-                </>
-              ) : (
-                <>
-                  Slop Score is required for drinks and beverages. Napkin Rating
-                  is for messy food only. Photo and note are optional.
-                </>
-              )}
-            </p>
-          </div>
-
-          <div className="mt-6 space-y-7">
-            <div>
-              <h3 className="text-lg font-black">1. Slop Score</h3>
-              <p className="mt-2 text-sm text-zinc-500">
-                Overall quality, 1-10. Think fan score, not restaurant review.
+          <div className="mt-4 space-y-5">
+            <section aria-labelledby="slop-label">
+              <div className="flex items-baseline justify-between gap-2">
+                <h2 id="slop-label" className="text-sm font-black text-white">
+                  Slop Score <span className="text-[var(--slop-orange)]">*</span>
+                </h2>
+                <span className="text-[0.65rem] font-bold text-zinc-500">
+                  1–10
+                </span>
+              </div>
+              <p className="mt-0.5 text-xs text-zinc-500">
+                Fan score for what you got, not a restaurant write-up.
               </p>
-              <div className="mt-3 grid grid-cols-5 gap-2 sm:flex sm:flex-wrap">
+              <div className="mt-2 flex flex-wrap gap-2">
                 {slopScoreOptions.map((score) => (
                   <ScoreButton
                     key={score}
                     score={score}
                     defaultSelected={draftSlop === score}
+                    radioRequired={score === 1}
                   />
                 ))}
               </div>
-            </div>
+            </section>
 
             {napkinEligible ? (
-              <div>
-                <h3 className="text-lg font-black">2. Napkin Rating</h3>
-                <p className="mt-2 text-sm text-zinc-500">
-                  How sloppy was it? This measures messiness, not quality.
+              <section aria-labelledby="napkin-label">
+                <h2 id="napkin-label" className="text-sm font-black text-white">
+                  Napkin rating{" "}
+                  <span className="text-[var(--slop-orange)]">*</span>
+                </h2>
+                <p className="mt-0.5 text-xs text-zinc-500">
+                  Messiness, not quality.
                 </p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-5">
+                <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
                   {napkinOptions.map((option) => (
                     <NapkinButton
                       key={option.value}
                       value={option.value}
                       label={option.label}
                       defaultSelected={draftNapkin === option.value}
+                      radioRequired={option.value === 1}
                     />
                   ))}
                 </div>
-              </div>
+              </section>
             ) : null}
 
-            <div className="rounded-3xl border border-zinc-800 bg-black p-5">
-              <h3 className="text-lg font-black">
-                {napkinEligible ? "3." : "2."} Optional fan photo
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-zinc-500">
-                Fan photos help power Game Day Fresh. JPEG, PNG, WebP, or GIF up
-                to about 8MB (same limit as the server upload cap). iPhone
-                HEIC/HEIF is not supported yet — use “Most Compatible” camera
-                format or export as JPEG. No comments, followers, or DMs —
-                just the shot.
+            <section className="rounded-xl border border-zinc-800 bg-black/80 p-3 sm:p-4">
+              <h2 className="text-sm font-black text-white">
+                Ballpark signals{" "}
+                <span className="text-[var(--slop-orange)]">*</span>
+              </h2>
+              <div className="mt-3 space-y-3">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
+                    Replay value
+                  </p>
+                  <p className="text-[0.65rem] text-zinc-600">Order again?</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {replayValueOptions.map((option, idx) => (
+                      <SignalOption
+                        key={option.value}
+                        label={option.label}
+                        name="replayValue"
+                        value={option.value}
+                        defaultSelected={draftReplay === option.value}
+                        required={idx === 0}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="border-t border-zinc-800 pt-3">
+                  <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
+                    Price check
+                  </p>
+                  <p className="text-[0.65rem] text-zinc-600">Worth it?</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {priceCheckOptions.map((option, idx) => (
+                      <SignalOption
+                        key={option.value}
+                        label={option.label}
+                        name="priceCheck"
+                        value={option.value}
+                        defaultSelected={draftPrice === option.value}
+                        required={idx === 0}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="rounded-xl border border-zinc-800 bg-black/80 p-3 sm:p-4">
+              <h2 className="text-sm font-black text-white">Fan photo</h2>
+              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                Optional. JPEG, PNG, WebP, or GIF — about{" "}
+                <span className="font-bold text-zinc-400">8MB max</span>.
+                iPhone <span className="font-bold text-zinc-400">HEIC not supported</span>{" "}
+                (use Most Compatible or export JPEG). Helps Game Day Fresh — no
+                comments or threads.
               </p>
               {existingPhoto?.url ? (
-                <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-3">
-                  <p className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                    Current fan photo
-                  </p>
-                  <div className="relative mt-2 aspect-[4/3] max-h-52 w-full overflow-hidden rounded-xl bg-black sm:max-h-60">
+                <div className="mt-3 flex gap-3 rounded-lg border border-zinc-800 bg-zinc-950/80 p-2">
+                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-black sm:h-24 sm:w-24">
                     <Image
                       src={existingPhoto.url}
                       alt={existingPhoto.alt}
                       fill
-                      className="object-contain object-center"
-                      sizes="(max-width: 768px) 100vw, 36rem"
+                      className="object-contain"
+                      sizes="96px"
                     />
                   </div>
-                  <p className="mt-2 text-xs text-zinc-500">
-                    Upload a new file below to replace this photo for today&apos;s
-                    review.
-                  </p>
+                  <div className="min-w-0 flex-1 py-0.5">
+                    <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
+                      Current photo
+                    </p>
+                    <p className="mt-1 text-xs text-zinc-400">
+                      New file replaces this for today&apos;s review.
+                    </p>
+                  </div>
                 </div>
               ) : null}
               {cloudinaryReady ? (
-                <>
-                  <label className="mt-4 block">
-                    <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                      Upload
-                    </span>
+                <div className="mt-3 space-y-2">
+                  <label className="block">
+                    <span className="sr-only">Optional fan photo</span>
                     <input
                       name="reviewPhoto"
                       type="file"
                       accept="image/jpeg,image/png,image/webp,image/gif"
-                      className="mt-2 block w-full text-sm text-zinc-400 file:mr-3 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-4 file:py-2 file:text-sm file:font-black file:text-[var(--slop-ink)]"
+                      className="block w-full text-xs text-zinc-400 file:mr-2 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-2 file:text-xs file:font-black file:text-[var(--slop-ink)]"
                     />
                   </label>
-                  <label className="mt-3 block">
-                    <span className="text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
-                      Short caption (optional)
+                  <label className="block">
+                    <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
+                      Caption (optional)
                     </span>
                     <input
                       name="photoCaption"
                       maxLength={120}
-                      placeholder="e.g. Curds at first pitch"
+                      placeholder="e.g. First-bite cheese pull"
                       defaultValue={draftCaption}
-                      className="mt-2 w-full rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
+                      className="mt-1 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-600"
                     />
                   </label>
-                </>
+                </div>
               ) : (
-                <p className="mt-4 rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-500">
-                  Photo upload needs Cloudinary env vars on the server. Slop
-                  Score and signals still save without a photo.
+                <p className="mt-3 rounded-lg border border-dashed border-zinc-700 px-3 py-2 text-xs text-zinc-500">
+                  Cloudinary not configured — save without a photo.
                 </p>
               )}
-            </div>
+            </section>
 
-            <div>
-              <h3 className="text-lg font-black">
-                {napkinEligible ? "4." : "3."} Optional food note
-              </h3>
-              <p className="mt-2 text-sm text-zinc-500">
-                One quick food-focused reaction is enough. Aim for 280-300
-                characters max. No comment threads, no dislikes.
+            <section>
+              <h2 className="text-sm font-black text-white">
+                Quick note <span className="font-normal text-zinc-500">(optional)</span>
+              </h2>
+              <p className="mt-0.5 text-xs text-zinc-500">
+                Food-only vibe check — max 300 characters.
               </p>
               <textarea
                 name="note"
                 maxLength={300}
-                placeholder="Optional: hot, cold, worth it, messy, would run it back?"
+                rows={3}
+                placeholder="Temp, texture, would you run it back?"
                 defaultValue={draftNote}
-                className="mt-3 min-h-24 w-full rounded-2xl border border-zinc-800 bg-black p-4 text-sm text-zinc-400 outline-none placeholder:text-zinc-600"
+                className="mt-2 w-full resize-y rounded-lg border border-zinc-800 bg-black px-3 py-2.5 text-sm text-zinc-200 outline-none placeholder:text-zinc-600"
               />
-            </div>
-
-            <div className="rounded-2xl bg-black p-4">
-              <p className="text-sm font-bold text-zinc-300">
-                Replay Value
-              </p>
-              <p className="mt-1 text-xs text-zinc-500">
-                Would you get this again?
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {replayValueOptions.map((option) => (
-                  <SignalOption
-                    key={option.value}
-                    label={option.label}
-                    name="replayValue"
-                    value={option.value}
-                    defaultSelected={draftReplay === option.value}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-2xl bg-black p-4">
-              <p className="text-sm font-bold text-zinc-300">Price Check</p>
-              <p className="mt-1 text-xs text-zinc-500">How was the value?</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {priceCheckOptions.map((option) => (
-                  <SignalOption
-                    key={option.value}
-                    label={option.label}
-                    name="priceCheck"
-                    value={option.value}
-                    defaultSelected={draftPrice === option.value}
-                  />
-                ))}
-              </div>
-            </div>
+            </section>
           </div>
 
-          <button
-            type="submit"
-            className="brand-cta mt-7 w-full rounded-full px-6 py-4 text-sm font-black"
-          >
-            {draft ? "Update today’s review" : "Submit review"}
-          </button>
+          <div className="mt-5 border-t border-zinc-800 pt-4">
+            <p className="text-center text-[0.65rem] leading-relaxed text-zinc-500">
+              {draft
+                ? "Updating today replaces your earlier Slop Score and signals for this item — one row per fan per game day."
+                : "One review per fan, item, and game day. You can edit later today if needed."}
+            </p>
+            <button
+              type="submit"
+              className="brand-cta mt-3 w-full touch-manipulation rounded-full px-5 py-3.5 text-sm font-black sm:py-4"
+            >
+              {draft ? "Update Today's Review" : "Submit Review"}
+            </button>
+          </div>
         </form>
 
         {foodItem.alcoholic ? (
-          <section className="mt-4 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Responsible Drinking
-            </p>
-            <p className="mt-2 text-sm leading-6 text-zinc-300">
-              Alcohol availability varies by venue. Must be 21+ to purchase.
-              Please drink responsibly.
-            </p>
-          </section>
+          <p className="mt-3 rounded-lg border border-zinc-800 bg-zinc-950/80 px-3 py-2 text-center text-xs text-zinc-400">
+            21+ where served. Drink responsibly — availability varies by park.
+          </p>
         ) : null}
 
-        <section className="mt-4 grid gap-3 md:grid-cols-2">
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Trust
-            </p>
-            <p className="mt-3 text-lg font-black">
-              Promoted placements can buy visibility, not ratings.
-            </p>
-          </div>
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-950 p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Season Standings
-            </p>
-            <p className="mt-3 text-lg font-black">
-              Verified reviews help keep Season Standings honest.
-            </p>
-          </div>
-        </section>
+        <p className="mt-4 text-center text-[0.65rem] leading-relaxed text-zinc-600">
+          Promotions can buy visibility, not ratings. No followers, DMs, or
+          comment threads.
+        </p>
       </section>
     </main>
   );
