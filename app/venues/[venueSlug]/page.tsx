@@ -22,19 +22,21 @@ import {
   type ItemSlopStats,
   type SlopStatsMode
 } from "@/lib/slop-stats";
-import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { prisma } from "@/lib/prisma";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
 import { isUnratedItemStats } from "@/components/food-item-empty-states";
+import { VenueVendorSelect } from "@/components/venue-vendor-select";
+import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
   | "all"
   | "food"
-  | "sweet"
-  | "alcoholic"
-  | "non-alcoholic";
+  | "drinks"
+  | "sweets"
+  | "vegan-gf"
+  | "reviewed";
 
 const modeOptions: { label: string; value: StandingsMode }[] = [
   { label: "All-Time", value: "all-time" },
@@ -45,9 +47,10 @@ const modeOptions: { label: string; value: StandingsMode }[] = [
 const categoryOptions: { label: string; value: CategoryFilter }[] = [
   { label: "All", value: "all" },
   { label: "Food", value: "food" },
-  { label: "Sweet Treats", value: "sweet" },
-  { label: "Alcoholic Drinks", value: "alcoholic" },
-  { label: "Non-Alcoholic Drinks", value: "non-alcoholic" }
+  { label: "Drinks", value: "drinks" },
+  { label: "Sweets", value: "sweets" },
+  { label: "Vegan / GF", value: "vegan-gf" },
+  { label: "Fan favorites / reviewed", value: "reviewed" }
 ];
 
 type VenuePageProps = {
@@ -58,6 +61,7 @@ type VenuePageProps = {
     mode?: string;
     category?: string;
     vendor?: string;
+    q?: string;
   }>;
 };
 
@@ -125,20 +129,29 @@ function getMode(value?: string): StandingsMode {
 }
 
 function getCategory(value?: string): CategoryFilter {
-  if (
-    value === "food" ||
-    value === "sweet" ||
-    value === "alcoholic" ||
-    value === "non-alcoholic"
-  ) {
-    return value;
+  const allowed: CategoryFilter[] = [
+    "all",
+    "food",
+    "drinks",
+    "sweets",
+    "vegan-gf",
+    "reviewed"
+  ];
+  if (value && allowed.includes(value as CategoryFilter)) {
+    return value as CategoryFilter;
+  }
+  if (value === "sweet") {
+    return "sweets";
+  }
+  if (value === "alcoholic" || value === "non-alcoholic") {
+    return "drinks";
   }
 
   return "all";
 }
 
-function filterByCategory(item: FoodItem, category: CategoryFilter) {
-  if (category === "all") {
+function itemPassesCategory(item: FoodItem, category: CategoryFilter) {
+  if (category === "all" || category === "reviewed") {
     return true;
   }
 
@@ -146,24 +159,56 @@ function filterByCategory(item: FoodItem, category: CategoryFilter) {
     return item.itemType === "Food";
   }
 
-  if (category === "alcoholic") {
-    return item.itemType === "Alcoholic Drink";
+  if (category === "drinks") {
+    return (
+      item.itemType === "Alcoholic Drink" || item.itemType === "Non-Alcoholic Drink"
+    );
   }
 
-  if (category === "non-alcoholic") {
-    return item.itemType === "Non-Alcoholic Drink";
+  if (category === "sweets") {
+    const blob = `${item.category} ${item.tags.join(" ")} ${item.name}`.toLowerCase();
+    return ["sweet", "dessert", "treat", "shake", "sundae", "cannoli", "donut", "gelato", "ice cream", "frost", "candy", "churro", "brownie", "cookie"].some(
+      (keyword) => blob.includes(keyword)
+    );
   }
 
-  return ["sweet", "dessert", "treat"].some((keyword) =>
-    `${item.category} ${item.tags.join(" ")}`.toLowerCase().includes(keyword)
-  );
+  if (category === "vegan-gf") {
+    const upper = `${item.category} ${item.tags.join(" ")}`.toUpperCase();
+    const lower = `${item.name} ${item.description} ${item.tags.join(" ")}`.toLowerCase();
+    return (
+      upper.includes("VEGAN") ||
+      upper.includes("GLUTEN") ||
+      upper.includes("GLUTEN_FREE") ||
+      lower.includes("vegan") ||
+      lower.includes("gluten-free") ||
+      lower.includes("gluten free") ||
+      lower.includes("plant-based")
+    );
+  }
+
+  return true;
+}
+
+function formatItemPriceHint(item: FoodItem): string | null {
+  if (item.reportedPrice != null && item.reportedPrice > 0) {
+    return `$${item.reportedPrice.toFixed(2)}`;
+  }
+  if (
+    item.price > 0 &&
+    item.priceLastConfirmedLabel &&
+    item.priceLastConfirmedLabel !== "Unreported"
+  ) {
+    return `$${item.price.toFixed(2)}`;
+  }
+  return null;
 }
 
 function buildVenueHref(
   venueSlug: string,
   mode: StandingsMode,
   category: CategoryFilter,
-  vendorSlug: string
+  vendorSlug: string,
+  searchQuery: string
 ) {
   const params = new URLSearchParams();
 
@@ -179,6 +224,11 @@ function buildVenueHref(
     params.set("vendor", vendorSlug);
   }
 
+  const trimmed = searchQuery.trim();
+  if (trimmed) {
+    params.set("q", trimmed);
+  }
+
   const query = params.toString();
   return `/venues/${venueSlug}${query ? `?${query}` : ""}`;
 }
@@ -187,19 +237,21 @@ function FilterChips({
   venueSlug,
   mode,
   category,
-  vendorSlug
+  vendorSlug,
+  searchQuery
 }: {
   venueSlug: string;
   mode: StandingsMode;
   category: CategoryFilter;
   vendorSlug: string;
+  searchQuery: string;
 }) {
   return (
     <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
       {categoryOptions.map((option) => (
         <Link
           key={option.value}
-          href={buildVenueHref(venueSlug, mode, option.value, vendorSlug)}
+          href={buildVenueHref(venueSlug, mode, option.value, vendorSlug, searchQuery)}
           className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
             category === option.value
               ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
@@ -217,19 +269,21 @@ function ModeChips({
   venueSlug,
   mode,
   category,
-  vendorSlug
+  vendorSlug,
+  searchQuery
 }: {
   venueSlug: string;
   mode: StandingsMode;
   category: CategoryFilter;
   vendorSlug: string;
+  searchQuery: string;
 }) {
   return (
     <div className="mt-4 flex gap-2 overflow-x-auto pb-1">
       {modeOptions.map((option) => (
         <Link
           key={option.value}
-          href={buildVenueHref(venueSlug, option.value, category, vendorSlug)}
+          href={buildVenueHref(venueSlug, option.value, category, vendorSlug, searchQuery)}
           className={`shrink-0 rounded-full border px-4 py-2 text-sm font-black ${
             mode === option.value
               ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
@@ -237,48 +291,6 @@ function ModeChips({
           }`}
         >
           {option.label}
-        </Link>
-      ))}
-    </div>
-  );
-}
-
-function VendorChips({
-  venueSlug,
-  mode,
-  category,
-  vendorSlug,
-  vendors
-}: {
-  venueSlug: string;
-  mode: StandingsMode;
-  category: CategoryFilter;
-  vendorSlug: string;
-  vendors: Vendor[];
-}) {
-  return (
-    <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-      <Link
-        href={buildVenueHref(venueSlug, mode, category, "all")}
-        className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
-          vendorSlug === "all"
-            ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
-            : "border-[var(--slop-line)] bg-[var(--slop-ink)] text-[var(--slop-cream)]"
-        }`}
-      >
-        All Vendors
-      </Link>
-      {vendors.map((vendor) => (
-        <Link
-          key={vendor.slug}
-          href={buildVenueHref(venueSlug, mode, category, vendor.slug)}
-          className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-bold uppercase tracking-[0.15em] ${
-            vendorSlug === vendor.slug
-              ? "border-[var(--slop-orange)] bg-[var(--slop-orange)] text-[var(--slop-ink)]"
-              : "border-[var(--slop-line)] bg-[var(--slop-ink)] text-[var(--slop-cream)]"
-          }`}
-        >
-          {vendor.name}
         </Link>
       ))}
     </div>
@@ -312,75 +324,61 @@ function ItemStandingRow({
   vendor?: Vendor;
   showFresh?: boolean;
 }) {
-  const napkinEligible = isNapkinEligibleItem(item);
+  const priceHint = formatItemPriceHint(item);
+  const unrated = isUnratedItemStats(stats.reviewCount);
 
   return (
     <Link
       href={`/venues/${venueSlug}/${item.slug}`}
-      className="group block border-b border-[var(--slop-line)] bg-[var(--slop-surface)] px-4 py-4 transition last:border-b-0 hover:bg-[var(--slop-ink)] sm:px-5"
+      className="group block border-b border-[var(--slop-line)] bg-[var(--slop-surface)] px-3 py-3 transition last:border-b-0 hover:bg-[var(--slop-ink)] sm:px-4"
     >
-      <article className="grid grid-cols-[auto_1fr] gap-3">
-        <div className="pt-1 text-sm font-black text-zinc-500">#{rank}</div>
+      <article className="grid grid-cols-[auto_1fr_auto] items-start gap-2 sm:gap-3">
+        <div className="pt-0.5 text-xs font-black text-zinc-500 tabular-nums sm:text-sm">
+          #{rank}
+        </div>
         <div className="min-w-0">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-base font-black text-white sm:text-lg">
-                  {item.name}
-                </h3>
-                {item.ageRestricted ? (
-                  <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-300">
-                    21+
-                  </span>
-                ) : null}
-              </div>
-              <p className="mt-1 text-sm text-zinc-400">
-                {vendor ? vendor.name : "Vendor TBD"} · {formatSections(item)}
-              </p>
-            </div>
-            <div className="text-right">
-              {isUnratedItemStats(stats.reviewCount) ? (
-                <>
-                  <p className="text-lg font-black text-zinc-500">—</p>
-                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-500">
-                    {showFresh ? "No Game Day Fresh" : "Awaiting reviews"}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="text-lg font-black text-[var(--slop-orange)]">
-                    {stats.averageSlopScore.toFixed(1)}
-                  </p>
-                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                    {showFresh ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
-            <span>{item.itemType}</span>
-            <span>
-              {stats.reviewCount > 0
-                ? `${stats.reviewCount} reviews`
-                : "Unrated · awaiting reviews"}
-            </span>
-            {napkinEligible && stats.reviewCount > 0 ? (
-              <span>{stats.roundedNapkinRating}/5 napkins</span>
-            ) : null}
-            {stats.topReplayValue ? (
-              <span>
-                {stats.topReplayValue.percentage}% {stats.topReplayValue.label}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <h3 className="text-sm font-black leading-tight text-white sm:text-base">
+              {item.name}
+            </h3>
+            {item.ageRestricted ? (
+              <span className="rounded-full border border-zinc-700 px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-zinc-400">
+                21+
               </span>
             ) : null}
-            {item.reportedPrice ? (
-              <span>${item.reportedPrice.toFixed(2)}</span>
-            ) : null}
-            {item.freshSignal ? (
-              <span>{item.freshSignal}</span>
-            ) : null}
           </div>
+          <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-zinc-400 sm:text-sm">
+            <span className="font-bold text-zinc-300">
+              {vendor ? vendor.name : "Vendor TBD"}
+            </span>
+            <span className="text-zinc-600"> · </span>
+            <span>{formatSections(item)}</span>
+            {priceHint ? (
+              <>
+                <span className="text-zinc-600"> · </span>
+                <span className="text-zinc-300">{priceHint}</span>
+              </>
+            ) : null}
+          </p>
+        </div>
+        <div className="shrink-0 text-right">
+          {unrated ? (
+            <>
+              <p className="text-sm font-black text-zinc-500 sm:text-base">Unrated</p>
+              <p className="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-zinc-600 sm:text-[0.65rem]">
+                {showFresh ? "No fresh" : "No score"}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-sm font-black text-[var(--slop-orange)] sm:text-base">
+                {stats.averageSlopScore.toFixed(1)}
+              </p>
+              <p className="text-[0.6rem] font-bold uppercase tracking-[0.12em] text-zinc-600 sm:text-[0.65rem]">
+                {showFresh ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
+              </p>
+            </>
+          )}
         </div>
       </article>
     </Link>
@@ -400,13 +398,18 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
-  const vendorSlug = query?.vendor ?? "all";
+  const rawVendorSlug = (query?.vendor ?? "all").trim() || "all";
+  const vendorSlug =
+    rawVendorSlug !== "all" && !venueVendors.some((v) => v.slug === rawVendorSlug)
+      ? "all"
+      : rawVendorSlug;
+  const searchQuery = (query?.q ?? "").trim();
   const selectedVendor = venueVendors.find((vendor) => vendor.slug === vendorSlug);
   const statsMode: SlopStatsMode =
     mode === "fresh" ? "gameDayFresh" : mode === "season" ? "season" : "allTime";
   const filteredItems = venueFoodItems.filter(
     (item) =>
-      filterByCategory(item, category) &&
+      itemPassesCategory(item, category) &&
       (vendorSlug === "all" || item.vendorSlug === vendorSlug)
   );
   const itemStats = await Promise.all(
@@ -415,7 +418,8 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       stats: await getDbBackedItemSlopStats(venue.slug, item.slug, statsMode)
     }))
   );
-  const standingsItems = itemStats.sort((a, b) => {
+  const vendorBySlug = new Map(venueVendors.map((v) => [v.slug, v] as const));
+  const sortedItemStats = itemStats.sort((a, b) => {
     const ar = a.stats.reviewCount > 0 ? 1 : 0;
     const br = b.stats.reviewCount > 0 ? 1 : 0;
     if (br !== ar) {
@@ -431,6 +435,32 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
     return a.item.name.localeCompare(b.item.name);
   });
+
+  let standingsRows = sortedItemStats;
+  if (category === "reviewed") {
+    standingsRows = standingsRows.filter(({ stats }) => stats.reviewCount > 0);
+  }
+  const beforeSearchCount = standingsRows.length;
+  standingsRows = standingsRows.filter(({ item }) =>
+    itemMatchesVenueSearch(
+      item,
+      vendorBySlug.get(item.vendorSlug),
+      searchQuery
+    )
+  );
+
+  const emptyStandingsMessage =
+    standingsRows.length > 0
+      ? null
+      : searchQuery
+        ? beforeSearchCount > 0
+          ? `No items match "${searchQuery}". Try fewer keywords or clear search.`
+          : category === "reviewed"
+            ? "No reviewed items in this view yet. Try another mode or category, or be the first to submit a review."
+            : "No items match these filters."
+        : category === "reviewed"
+          ? "No reviewed items in this view yet. Switch to All or another category, or leave the first review."
+          : "No items match these filters.";
   const modeLabel =
     mode === "fresh"
       ? "Game Day Fresh"
@@ -518,19 +548,66 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               mode={mode}
               category={category}
               vendorSlug={vendorSlug}
+              searchQuery={searchQuery}
             />
             <FilterChips
               venueSlug={venue.slug}
               mode={mode}
               category={category}
               vendorSlug={vendorSlug}
+              searchQuery={searchQuery}
             />
-            <VendorChips
+            <form
+              method="get"
+              action={`/venues/${venue.slug}`}
+              className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end"
+            >
+              {mode !== "season" ? (
+                <input type="hidden" name="mode" value={mode} />
+              ) : null}
+              {category !== "all" ? (
+                <input type="hidden" name="category" value={category} />
+              ) : null}
+              {vendorSlug !== "all" ? (
+                <input type="hidden" name="vendor" value={vendorSlug} />
+              ) : null}
+              <label className="block min-w-0 flex-1 sm:max-w-md">
+                <span className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
+                  Search this venue
+                </span>
+                <input
+                  name="q"
+                  type="search"
+                  enterKeyHint="search"
+                  defaultValue={searchQuery}
+                  placeholder="Item, vendor, section, category…"
+                  className="mt-1.5 w-full rounded-xl border border-[var(--slop-line)] bg-black px-3 py-2.5 text-sm font-bold text-zinc-100 outline-none placeholder:font-medium placeholder:text-zinc-600 focus:border-[var(--slop-orange)]"
+                />
+              </label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="submit"
+                  className="rounded-full border border-[var(--slop-line)] bg-[var(--slop-surface)] px-4 py-2 text-xs font-black uppercase tracking-[0.12em] text-zinc-200 hover:border-[var(--slop-orange)]"
+                >
+                  Search
+                </button>
+                {searchQuery ? (
+                  <Link
+                    href={buildVenueHref(venue.slug, mode, category, vendorSlug, "")}
+                    className="inline-flex items-center rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-400 hover:text-white"
+                  >
+                    Clear search
+                  </Link>
+                ) : null}
+              </div>
+            </form>
+            <VenueVendorSelect
               venueSlug={venue.slug}
               mode={mode}
               category={category}
               vendorSlug={vendorSlug}
               vendors={venueVendors}
+              q={searchQuery}
             />
             {selectedVendor ? (
               <Link
@@ -542,24 +619,22 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             ) : null}
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
-            {standingsItems.length > 0 ? (
-              standingsItems.map(({ item, stats }, index) => (
+          <div className="mt-4 overflow-hidden rounded-2xl border border-[var(--slop-line)] bg-[var(--slop-surface)] sm:rounded-3xl">
+            {standingsRows.length > 0 ? (
+              standingsRows.map(({ item, stats }, index) => (
                 <ItemStandingRow
                   key={item.slug}
                   item={item}
                   rank={index + 1}
                   stats={stats}
-                  vendor={venueVendors.find(
-                    (vendor) => vendor.slug === item.vendorSlug
-                  )}
+                  vendor={vendorBySlug.get(item.vendorSlug)}
                   venueSlug={venue.slug}
                   showFresh={mode === "fresh"}
                 />
               ))
             ) : (
-              <p className="px-4 py-6 text-sm text-zinc-500">
-                No items match these filters yet.
+              <p className="px-3 py-5 text-sm leading-relaxed text-zinc-500 sm:px-4">
+                {emptyStandingsMessage}
               </p>
             )}
           </div>

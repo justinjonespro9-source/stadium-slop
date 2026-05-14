@@ -27,16 +27,39 @@ function venueTypeOrDefault(raw?: string): VenueType {
 }
 
 function itemCategoryFromString(raw?: string): ItemCategory {
-  const key = (raw ?? "").toLowerCase();
+  const key = (raw ?? "").trim().toLowerCase().replace(/\s+/g, "_");
   const map: Record<string, ItemCategory> = {
     snack: ItemCategory.SNACK,
     savory: ItemCategory.SAVORY,
     sweet: ItemCategory.SWEET,
     beverage: ItemCategory.BEVERAGE,
     bbq: ItemCategory.SAVORY,
-    seafood: ItemCategory.SAVORY
+    seafood: ItemCategory.SAVORY,
+    burger: ItemCategory.SAVORY,
+    hot_dog: ItemCategory.SAVORY,
+    pizza: ItemCategory.SAVORY,
+    sandwich: ItemCategory.SAVORY,
+    tacos: ItemCategory.SAVORY,
+    chicken: ItemCategory.SAVORY,
+    vegan: ItemCategory.SAVORY,
+    gluten_free: ItemCategory.SAVORY,
+    dessert: ItemCategory.SWEET,
+    drink: ItemCategory.BEVERAGE,
+    other: ItemCategory.OTHER
   };
-  return map[key] ?? ItemCategory.OTHER;
+  if (map[key]) {
+    return map[key]!;
+  }
+  if (["burger", "dog", "pizza", "sandwich", "taco", "chicken", "vegan", "gluten", "bbq", "seafood", "steak", "chili", "pork"].some((w) => key.includes(w))) {
+    return ItemCategory.SAVORY;
+  }
+  if (key.includes("dessert") || key.includes("sweet")) {
+    return ItemCategory.SWEET;
+  }
+  if (key.includes("snack")) {
+    return ItemCategory.SNACK;
+  }
+  return ItemCategory.OTHER;
 }
 
 function itemTypeFromString(raw?: string): ItemType {
@@ -139,8 +162,13 @@ async function main() {
         }
       }
     });
-    const category = itemCategoryFromString(row.category);
     const itemType = itemTypeFromString(row.itemType);
+    const category =
+      itemType === ItemType.ALCOHOLIC_DRINK
+        ? ItemCategory.ALCOHOLIC_BEVERAGE
+        : itemType === ItemType.NON_ALCOHOLIC_DRINK
+          ? ItemCategory.BEVERAGE
+          : itemCategoryFromString(row.category);
     await prisma.foodItem.upsert({
       where: {
         venueId_slug: {
