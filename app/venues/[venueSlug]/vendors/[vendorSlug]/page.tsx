@@ -11,6 +11,7 @@ import {
 } from "@/lib/public-data";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { getDbBackedItemSlopStats, getSlopScoreTier } from "@/lib/slop-stats";
+import { isUnratedItemStats } from "@/components/food-item-empty-states";
 
 type VendorPageProps = {
   params: Promise<{
@@ -48,7 +49,17 @@ export default async function VendorPage({ params }: VendorPageProps) {
       })
     )
   );
-  vendorItems.sort((a, b) => b.stats.averageSlopScore - a.stats.averageSlopScore);
+  vendorItems.sort((a, b) => {
+    const ar = a.stats.reviewCount > 0 ? 1 : 0;
+    const br = b.stats.reviewCount > 0 ? 1 : 0;
+    if (br !== ar) {
+      return br - ar;
+    }
+    if (b.stats.averageSlopScore !== a.stats.averageSlopScore) {
+      return b.stats.averageSlopScore - a.stats.averageSlopScore;
+    }
+    return a.item.name.localeCompare(b.item.name);
+  });
 
   return (
     <main className="brand-page min-h-screen">
@@ -84,6 +95,8 @@ export default async function VendorPage({ params }: VendorPageProps) {
           <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
             {vendorItems.map(({ item, stats }, index) => {
               const napkinEligible = isNapkinEligibleItem(item);
+              const unrated = isUnratedItemStats(stats.reviewCount);
+              const showTopBadge = index === 0 && !unrated;
 
               return (
                 <Link
@@ -98,7 +111,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <h2 className="font-black">{item.name}</h2>
-                        {index === 0 ? (
+                        {showTopBadge ? (
                           <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-300">
                             Top Performer
                           </span>
@@ -108,8 +121,12 @@ export default async function VendorPage({ params }: VendorPageProps) {
                         {item.itemType} · {formatSections(item)}
                       </p>
                       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
-                        <span>{stats.reviewCount} reviews</span>
-                        {napkinEligible ? (
+                        <span>
+                          {stats.reviewCount > 0
+                            ? `${stats.reviewCount} reviews`
+                            : "Unrated · awaiting reviews"}
+                        </span>
+                        {napkinEligible && stats.reviewCount > 0 ? (
                           <span>{stats.roundedNapkinRating}/5 napkins</span>
                         ) : null}
                         {stats.topReplayValue ? (
@@ -124,12 +141,23 @@ export default async function VendorPage({ params }: VendorPageProps) {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-black text-[var(--slop-orange)]">
-                        {stats.averageSlopScore.toFixed(1)}
-                      </p>
-                      <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                        {getSlopScoreTier(stats.averageSlopScore)}
-                      </p>
+                      {unrated ? (
+                        <>
+                          <p className="text-lg font-black text-zinc-500">—</p>
+                          <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-500">
+                            Unrated
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-lg font-black text-[var(--slop-orange)]">
+                            {stats.averageSlopScore.toFixed(1)}
+                          </p>
+                          <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
+                            {getSlopScoreTier(stats.averageSlopScore)}
+                          </p>
+                        </>
+                      )}
                     </div>
                   </article>
                 </Link>

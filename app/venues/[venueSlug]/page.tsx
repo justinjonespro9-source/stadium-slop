@@ -26,6 +26,7 @@ import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { prisma } from "@/lib/prisma";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
+import { isUnratedItemStats } from "@/components/food-item-empty-states";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -338,19 +339,34 @@ function ItemStandingRow({
               </p>
             </div>
             <div className="text-right">
-              <p className="text-lg font-black text-[var(--slop-orange)]">
-                {stats.averageSlopScore.toFixed(1)}
-              </p>
-              <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                {showFresh ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
-              </p>
+              {isUnratedItemStats(stats.reviewCount) ? (
+                <>
+                  <p className="text-lg font-black text-zinc-500">—</p>
+                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-500">
+                    {showFresh ? "No Game Day Fresh" : "Awaiting reviews"}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-lg font-black text-[var(--slop-orange)]">
+                    {stats.averageSlopScore.toFixed(1)}
+                  </p>
+                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
+                    {showFresh ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
           <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
             <span>{item.itemType}</span>
-            <span>{stats.reviewCount} reviews</span>
-            {napkinEligible ? (
+            <span>
+              {stats.reviewCount > 0
+                ? `${stats.reviewCount} reviews`
+                : "Unrated · awaiting reviews"}
+            </span>
+            {napkinEligible && stats.reviewCount > 0 ? (
               <span>{stats.roundedNapkinRating}/5 napkins</span>
             ) : null}
             {stats.topReplayValue ? (
@@ -399,17 +415,22 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       stats: await getDbBackedItemSlopStats(venue.slug, item.slug, statsMode)
     }))
   );
-  const standingsItems = itemStats
-    .filter(({ item, stats }) =>
-      mode === "fresh" ? item.freshSignal || stats.reviewCount > 0 : true
-    )
-    .sort((a, b) => {
-      if (b.stats.averageSlopScore !== a.stats.averageSlopScore) {
-        return b.stats.averageSlopScore - a.stats.averageSlopScore;
-      }
+  const standingsItems = itemStats.sort((a, b) => {
+    const ar = a.stats.reviewCount > 0 ? 1 : 0;
+    const br = b.stats.reviewCount > 0 ? 1 : 0;
+    if (br !== ar) {
+      return br - ar;
+    }
+    if (b.stats.averageSlopScore !== a.stats.averageSlopScore) {
+      return b.stats.averageSlopScore - a.stats.averageSlopScore;
+    }
 
+    if (b.stats.reviewCount !== a.stats.reviewCount) {
       return b.stats.reviewCount - a.stats.reviewCount;
-    });
+    }
+
+    return a.item.name.localeCompare(b.item.name);
+  });
   const modeLabel =
     mode === "fresh"
       ? "Game Day Fresh"
@@ -488,7 +509,8 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                 {modeLabel} items at {venue.name}
               </h2>
               <p className="mt-2 text-sm text-zinc-500">
-                Sorted by {scoreLabel} Score. Pick a mode, category, or vendor.
+                Sorted by {scoreLabel} Score. Unrated menu rows sort after items
+                with reviews — open any row to leave the first score.
               </p>
             </div>
             <ModeChips

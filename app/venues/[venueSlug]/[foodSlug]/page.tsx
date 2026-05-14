@@ -33,6 +33,13 @@ import {
   REPORT_NOTE_MAX
 } from "@/lib/reports";
 import { venueTypeGlyph } from "@/lib/venue-display";
+import {
+  FanSignalsPendingPanel,
+  FoodItemHeroPlaceholder,
+  GameDayFreshPendingBlock,
+  isUnratedItemStats,
+  PhotoBackedReviewsEmpty
+} from "@/components/food-item-empty-states";
 
 export const dynamic = "force-dynamic";
 
@@ -567,6 +574,10 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       )
     : [];
 
+  const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
+  const unratedSeason = isUnratedItemStats(seasonStats.reviewCount);
+  const noFreshReviews = isUnratedItemStats(freshStats.reviewCount);
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 lg:px-10">
@@ -648,9 +659,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 priority
               />
             ) : (
-              <div className="flex h-full min-h-[12rem] items-center justify-center text-7xl sm:text-8xl">
-                {heroEmoji}
-              </div>
+              <FoodItemHeroPlaceholder
+                foodName={foodItem.name}
+                emoji={heroEmoji}
+                reviewHref={reviewPath}
+              />
             )}
           </div>
 
@@ -692,24 +705,34 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             </p>
 
             <div className="brand-panel mt-4 rounded-2xl border p-3">
-              <p className="text-sm font-bold leading-6 text-zinc-200">
-                <span className="text-[var(--slop-orange)]">
-                  Slop Score {seasonStats.averageSlopScore.toFixed(1)}
-                </span>{" "}
-                · {slopTier}
-                · Fresh
-                Signal{" "}
-                {freshStats.reviewCount > 0
-                  ? `${freshStats.averageSlopScore.toFixed(1)} today`
-                  : "pending"}{" "}
-                · {seasonStats.reviewCount} reviews
-                {napkinEligible ? (
-                  <>
-                    {" "}
-                    · {seasonStats.roundedNapkinRating} Napkins
-                  </>
-                ) : null}
-              </p>
+              {unratedSeason ? (
+                <p className="text-sm font-bold leading-6 text-zinc-200">
+                  <span className="text-zinc-400">Slop Score</span>{" "}
+                  <span className="text-zinc-300">Awaiting first Slop Score</span>
+                  {" · "}
+                  <span className="text-zinc-500">Season tier unlocks after reviews</span>
+                </p>
+              ) : (
+                <p className="text-sm font-bold leading-6 text-zinc-200">
+                  <span className="text-[var(--slop-orange)]">
+                    Slop Score {seasonStats.averageSlopScore.toFixed(1)}
+                  </span>{" "}
+                  · {slopTier}
+                  {" · "}
+                  Fresh Signal{" "}
+                  {freshStats.reviewCount > 0
+                    ? `${freshStats.averageSlopScore.toFixed(1)} today`
+                    : "No Game Day Fresh yet"}
+                  {" · "}
+                  {seasonStats.reviewCount} reviews
+                  {napkinEligible ? (
+                    <>
+                      {" "}
+                      · {seasonStats.roundedNapkinRating} Napkins
+                    </>
+                  ) : null}
+                </p>
+              )}
               <p className="mt-1 text-xs leading-5 text-zinc-500 sm:text-sm">
                 Current price{" "}
                 {priceIntel.displayPrice
@@ -724,10 +747,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               </p>
             </div>
             <Link
-              href={`/venues/${venue.slug}/${foodItem.slug}/review`}
+              href={reviewPath}
               className="brand-cta mt-3 inline-flex w-full justify-center rounded-full px-5 py-3 text-sm font-black transition sm:w-auto"
             >
-              {hasTodaysReview ? "Edit Today’s Review" : "Submit a Review"}
+              {hasTodaysReview
+                ? "Edit Today’s Review"
+                : unratedSeason
+                  ? "Submit the first review"
+                  : "Submit a Review"}
             </Link>
             {isSignedIn ? (
               <p className="mt-2 max-w-xl text-xs leading-5 text-zinc-500">
@@ -738,7 +765,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           </div>
         </header>
 
-        {foodItem.freshSignal ? (
+        {noFreshReviews ? (
+          <GameDayFreshPendingBlock />
+        ) : foodItem.freshSignal ? (
           <section className="mt-2 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-5">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
               Fresh Review Signal / Fresh Meter
@@ -773,10 +802,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             Season-scope review signals (deduped per fan and game day). Highest
             share in each group is highlighted.
           </p>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <FanSignalBreakdown title="Replay Value" stats={seasonStats.replayValue} />
-            <FanSignalBreakdown title="Price Check" stats={seasonStats.priceCheck} />
-          </div>
+          {unratedSeason ? (
+            <FanSignalsPendingPanel />
+          ) : (
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <FanSignalBreakdown title="Replay Value" stats={seasonStats.replayValue} />
+              <FanSignalBreakdown title="Price Check" stats={seasonStats.priceCheck} />
+            </div>
+          )}
         </section>
 
         <section className="border-t border-zinc-800 py-6 sm:py-8">
@@ -1097,11 +1130,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 );
               })
             ) : (
-              <p className="rounded-2xl border border-zinc-800 bg-zinc-950 px-4 py-4 text-sm leading-6 text-zinc-500">
-                No photo-backed reviews yet. Submit a review with a photo to show
-                what showed up, or keep rating without a photo — stats still
-                count.
-              </p>
+              <PhotoBackedReviewsEmpty
+                reviewHref={reviewPath}
+                venueSlug={venue.slug}
+                foodSlug={foodItem.slug}
+              />
             )}
           </div>
 
@@ -1166,8 +1199,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                       {item.itemType} · {item.location}
                     </p>
                   </div>
-                  <span className="text-sm font-black">
-                    {item.slopScore.toFixed(1)}
+                  <span className="text-sm font-black text-[var(--slop-orange)]">
+                    {item.reviewCount === 0 ? (
+                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
+                        Unrated
+                      </span>
+                    ) : (
+                      item.slopScore.toFixed(1)
+                    )}
                   </span>
                 </Link>
               ))}
