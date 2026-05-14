@@ -22,7 +22,7 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
   const showEmpty = query.trim().length > 0 && filtered.length === 0;
 
   return (
-    <div className="brand-panel mt-10 rounded-[2rem] border p-2 shadow-2xl">
+    <div className="brand-panel mt-3 rounded-[2rem] border p-2 shadow-2xl">
       <label className="block px-1 pt-1">
         <span className="sr-only">Search venues</span>
         <input
