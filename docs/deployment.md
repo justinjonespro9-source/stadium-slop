@@ -20,6 +20,10 @@ Optional / informational (usually set by the host, not hand-copied):
 - `NODE_ENV` — `production` on Vercel.
 - `VERCEL_URL` — Vercel sets for preview/production URLs (useful for absolute links if you add them later).
 
+Optional tuning:
+
+- `STADIUM_SLOP_DB_QUERY_TIMEOUT_MS` — Milliseconds for the home page venue list DB call before falling back to sample data (default **4000**). Helps local dev when `DATABASE_URL` points at an unreachable host (TCP hang) so `/` still responds.
+
 ---
 
 ## Local setup

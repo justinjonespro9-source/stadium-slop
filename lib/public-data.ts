@@ -279,12 +279,41 @@ function fallback<T>(value: T[], fallbackValue: T[]) {
   return value.length > 0 ? value : fallbackValue;
 }
 
+/** Avoid hanging SSR when Postgres is down or TCP stalls (errors are caught; hangs are not). */
+function publicDataDbTimeoutMs() {
+  const raw = process.env.STADIUM_SLOP_DB_QUERY_TIMEOUT_MS;
+  const n = raw ? Number(raw) : NaN;
+  if (Number.isFinite(n) && n >= 200 && n <= 60_000) {
+    return n;
+  }
+  return 4000;
+}
+
+async function withDbTimeout<T>(label: string, run: () => Promise<T>): Promise<T> {
+  const ms = publicDataDbTimeoutMs();
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error(`${label}: database query timed out after ${ms}ms`));
+    }, ms);
+  });
+  try {
+    return await Promise.race([run(), timeout]);
+  } finally {
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
+  }
+}
+
 export async function getPublicVenues() {
   try {
-    const dbVenues = await prisma.venue.findMany({
-      where: { status: "ACTIVE" },
-      orderBy: [{ state: "asc" }, { name: "asc" }]
-    });
+    const dbVenues = await withDbTimeout("getPublicVenues", () =>
+      prisma.venue.findMany({
+        where: { status: "ACTIVE" },
+        orderBy: [{ state: "asc" }, { name: "asc" }]
+      })
+    );
 
     return fallback(dbVenues.map(mapVenueFromDb), venues);
   } catch (error) {

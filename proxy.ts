@@ -9,6 +9,11 @@ import {
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Defense in depth: never run admin logic on public routes even if matcher regressed.
+  if (!pathname.startsWith("/admin")) {
+    return NextResponse.next();
+  }
+
   if (pathname === "/admin/login") {
     return NextResponse.next();
   }
