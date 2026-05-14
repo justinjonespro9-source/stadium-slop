@@ -1,4 +1,8 @@
 import {
+  sixParkConcessionsFoodItems,
+  sixParkConcessionsVendors
+} from "./mlb-ballpark-concessions-seed";
+import {
   getMlbBallparkSeedRows,
   type MlbBallparkSeedRow
 } from "./mlb-ballpark-seed-data";
@@ -394,24 +398,7 @@ export const vendors: Vendor[] = [
     averageSlopScore: 8.2,
     lineIntel: "Fresh batches trend positive around intermission."
   },
-  {
-    slug: "wrigley-classics",
-    name: "Wrigley Classics",
-    venueSlug: "wrigley-field",
-    section: "Main concourse",
-    location: "Near Gate F",
-    averageSlopScore: 8,
-    lineIntel: "MLB seed stub — replace with walk-the-park line intel."
-  },
-  {
-    slug: "fenway-grill",
-    name: "Fenway Grill",
-    venueSlug: "fenway-park",
-    section: "Lower concourse",
-    location: "Near Gate D",
-    averageSlopScore: 8,
-    lineIntel: "MLB seed stub — replace with walk-the-park line intel."
-  }
+  ...sixParkConcessionsVendors
 ];
 
 export const foodItems: FoodItem[] = [
@@ -654,78 +641,7 @@ export const foodItems: FoodItem[] = [
     freshSignal: "Hot Today",
     freshSignalReason: "A strong non-alcoholic pick with quick lines."
   },
-  {
-    slug: "wrigley-stub-snack",
-    name: "Classic Ballpark Snack (stub)",
-    venueSlug: "wrigley-field",
-    vendorSlug: "wrigley-classics",
-    itemType: "Food",
-    category: "Snack",
-    location: "Main concourse",
-    sections: ["Main"],
-    price: 7.5,
-    reportedPrice: 7.5,
-    priceLastConfirmedLabel: "MLB seed",
-    priceReportCount: 0,
-    rating: 4,
-    worthItScore: 75,
-    slopScore: 7.5,
-    verdict: "Solid Role Player",
-    runItBackPercent: 75,
-    valueLabel: "Fair Deal",
-    servedRightLabel: "Fine",
-    lineWaitLabel: "Quick Stop",
-    napkinRating: 3,
-    napkinLabel: "Two-Handed Problem",
-    reviewCount: 0,
-    tags: ["MLB", "Stub", "Ballpark"],
-    description:
-      "Seed placeholder for MLB-first expansion; swap for real menu intel.",
-    availabilityStatus: "Fan reported",
-    lastConfirmed: "MLB seed",
-    scoreboardRank: 99,
-    freshReviewCount: 0,
-    freshWindowLabel: "stub",
-    freshSignalScore: 7,
-    freshSignal: "Mixed Signals",
-    freshSignalReason: "Placeholder until fan reviews land."
-  },
-  {
-    slug: "fenway-stub-snack",
-    name: "Ballpark Bites (stub)",
-    venueSlug: "fenway-park",
-    vendorSlug: "fenway-grill",
-    itemType: "Food",
-    category: "Snack",
-    location: "Lower concourse",
-    sections: ["Main"],
-    price: 8,
-    reportedPrice: 8,
-    priceLastConfirmedLabel: "MLB seed",
-    priceReportCount: 0,
-    rating: 4,
-    worthItScore: 76,
-    slopScore: 7.6,
-    verdict: "Solid Role Player",
-    runItBackPercent: 76,
-    valueLabel: "Fair Deal",
-    servedRightLabel: "Fine",
-    lineWaitLabel: "Quick Stop",
-    napkinRating: 3,
-    napkinLabel: "Two-Handed Problem",
-    reviewCount: 0,
-    tags: ["MLB", "Stub", "Ballpark"],
-    description:
-      "Seed placeholder for MLB-first expansion; swap for real menu intel.",
-    availabilityStatus: "Fan reported",
-    lastConfirmed: "MLB seed",
-    scoreboardRank: 99,
-    freshReviewCount: 0,
-    freshWindowLabel: "stub",
-    freshSignalScore: 7,
-    freshSignal: "Mixed Signals",
-    freshSignalReason: "Placeholder until fan reviews land."
-  }
+  ...sixParkConcessionsFoodItems
 ];
 
 export const foodPhotos: FoodPhoto[] = [

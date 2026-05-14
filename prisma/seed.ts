@@ -108,7 +108,58 @@ function itemCategory(item: FoodItem) {
     return ItemCategory.SNACK;
   }
 
-  if (["bbq", "seafood", "basket", "sandwich"].some((word) => category.includes(word))) {
+  if (
+    [
+      "bbq",
+      "seafood",
+      "basket",
+      "sandwich",
+      "burger",
+      "hot_dog",
+      "pizza",
+      "taco",
+      "chicken",
+      "vegan",
+      "gluten",
+      "burrito",
+      "waffle",
+      "sausage",
+      "steak",
+      "cuban",
+      "chili",
+      "pork",
+      "tikka",
+      "brisket",
+      "mac",
+      "slider",
+      "tot",
+      "poutine",
+      "nacho",
+      "stew",
+      "curry",
+      "pretzel",
+      "ceviche",
+      "gyro",
+      "knish",
+      "cheesesteak",
+      "custard",
+      "gelato",
+      "cannoli",
+      "lobster",
+      "taquito",
+      "loco",
+      "sampler",
+      "footlong",
+      "helmet",
+      "sliders",
+      "sundae",
+      "churro",
+      "margarita",
+      "martini",
+      "boba",
+      "espresso"
+    ].some((word) => category.includes(word))
+  ) {
     return ItemCategory.SAVORY;
   }
 
@@ -353,7 +404,8 @@ async function main() {
         location: item.location,
         sections: item.sections ?? [],
         description: item.description,
-        basePrice: item.price,
+        basePrice:
+          item.priceLastConfirmedLabel === "Unreported" ? null : item.price,
         reportedPrice: item.reportedPrice,
         priceLastConfirmedLabel: item.priceLastConfirmedLabel,
         priceReportCount: item.priceReportCount ?? 0,
@@ -384,7 +436,8 @@ async function main() {
         location: item.location,
         sections: item.sections ?? [],
         description: item.description,
-        basePrice: item.price,
+        basePrice:
+          item.priceLastConfirmedLabel === "Unreported" ? null : item.price,
         reportedPrice: item.reportedPrice,
         priceLastConfirmedLabel: item.priceLastConfirmedLabel,
         priceReportCount: item.priceReportCount ?? 0,

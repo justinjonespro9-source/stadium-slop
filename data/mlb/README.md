@@ -14,6 +14,15 @@ npx tsx scripts/apply-mlb-import.ts ./data/mlb/mlb-ballparks-venues.json
 
 `lib/sample-data.ts` merges this file into the in-app / Prisma seed venue list plus a small set of non-MLB demo venues (NFL/NHL) so existing demo vendors still resolve.
 
+## Six-park concessions seed (vendors + items)
+
+**`lib/mlb-ballpark-concessions-seed.ts`** — structured vendors and food items merged into `lib/sample-data.ts` for Prisma seed and offline fallback:
+
+- **Target Field** — full list from the uploaded concessions memo (prices left unreported in DB: `basePrice` null, label `Unreported`).
+- **Wrigley Field, Fenway Park, Dodger Stadium, Petco Park, Citizens Bank Park** — vendors and menu rows live in **`lib/mlb-ballpark-concessions-parks-expansion.ts`** (merged via `lib/mlb-ballpark-concessions-seed.ts`); prices unreported the same way.
+
+Semantic menu labels (e.g. `BURGER`, `TACOS`) are stored as `customCategoryLabel`; Prisma `ItemCategory` is derived in `prisma/seed.ts`.
+
 ## Full import shape (venues + vendors + optional items)
 
 See **`mlb-import.example.json`**. Top-level fields:
