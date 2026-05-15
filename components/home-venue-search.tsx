@@ -22,8 +22,8 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
   const showEmpty = query.trim().length > 0 && filtered.length === 0;
 
   return (
-    <div className="brand-panel mt-3 rounded-[2rem] border p-2 shadow-2xl">
-      <label className="block px-1 pt-1">
+    <div className="brand-panel rounded-2xl border p-1.5 shadow-2xl sm:rounded-[2rem] sm:p-2">
+      <label className="block px-0.5 pt-0.5">
         <span className="sr-only">Search venues</span>
         <input
           type="search"
@@ -32,7 +32,7 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Venue, city, team, league, sport, or type…"
-          className="w-full rounded-[1.5rem] border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-5 py-5 text-base font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:text-lg"
+          className="w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-4 py-3.5 text-base font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-[1.5rem] sm:px-5 sm:py-4 sm:text-lg"
         />
       </label>
       {showEmpty ? (

@@ -5,7 +5,7 @@ import { BrandLockup } from "./brand-lockup";
 const footerLinks = [
   { href: "/", label: "Home" },
   { href: "/account", label: "Account" },
-  { href: "/#trust", label: "Verified Reviews" },
+  { href: "/venues", label: "Verified Reviews" },
   { href: "/venues", label: "Fan Photos" },
   { href: "/terms", label: "Terms" },
   { href: "/privacy", label: "Privacy" },
@@ -16,7 +16,7 @@ const footerLinks = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] text-[var(--slop-cream)]">
-      <div className="mx-auto grid w-full max-w-6xl gap-6 px-5 py-8 sm:px-8 md:grid-cols-[1.2fr_0.8fr] lg:px-10">
+      <div className="mx-auto grid w-full max-w-6xl gap-5 px-4 py-6 sm:gap-6 sm:px-8 sm:py-8 md:grid-cols-[1.2fr_0.8fr] lg:px-10">
         <div>
           <BrandLockup />
           <p className="mt-4 max-w-xl text-sm leading-6 text-[var(--slop-cream-muted)]">
