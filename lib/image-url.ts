@@ -5,9 +5,14 @@ export function normalizePublicImageUrl(
   if (raw == null) {
     return undefined;
   }
-  const s = String(raw).trim();
+  let s = String(raw).trim();
   if (!s) {
     return undefined;
+  }
+  if (s.startsWith("//")) {
+    s = `https:${s}`;
+  } else if (/^http:\/\//i.test(s)) {
+    s = `https://${s.slice("http://".length)}`;
   }
   return s;
 }

@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent
@@ -14,12 +15,15 @@ import {
   CROP_ASPECT,
   blobToUploadFile,
   clampPan,
+  computeContainScale,
   computeCoverScale,
   cropImageToBlob,
   assignFileToInput,
   validateClientImageFile,
   type CropTransform
 } from "@/lib/photo-crop-client";
+
+const SLIDER_MAX_ZOOM = 3;
 
 type PhotoCropUploadProps = {
   inputName?: string;
@@ -66,8 +70,7 @@ export function PhotoCropUpload({
   const [sourceFile, setSourceFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [imageEl, setImageEl] = useState<HTMLImageElement | null>(null);
-  const [baseScale, setBaseScale] = useState(1);
-  const [zoom, setZoom] = useState(1);
+  const [zoomFactor, setZoomFactor] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [useFullPhoto, setUseFullPhoto] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -76,8 +79,30 @@ export function PhotoCropUpload({
 
   const zoomLabelId = useId();
 
+  const { minZoomFactor, effectiveScale } = useMemo(() => {
+    if (!imageEl) {
+      return { minZoomFactor: 1, effectiveScale: 1 };
+    }
+    const iw = imageEl.naturalWidth;
+    const ih = imageEl.naturalHeight;
+    const fw = frameSize.w;
+    const fh = frameSize.h;
+    const cover = computeCoverScale(iw, ih, fw, fh);
+    const contain = computeContainScale(iw, ih, fw, fh);
+    return {
+      minZoomFactor: contain / cover,
+      effectiveScale: cover * zoomFactor
+    };
+  }, [imageEl, frameSize.w, frameSize.h, zoomFactor]);
+
+  useEffect(() => {
+    setZoomFactor((z) =>
+      Math.min(SLIDER_MAX_ZOOM, Math.max(minZoomFactor, z))
+    );
+  }, [minZoomFactor]);
+
   const transform: CropTransform = {
-    scale: baseScale * zoom,
+    scale: effectiveScale,
     offsetX: offset.x,
     offsetY: offset.y
   };
@@ -91,8 +116,7 @@ export function PhotoCropUpload({
       }
       return null;
     });
-    setBaseScale(1);
-    setZoom(1);
+    setZoomFactor(1);
     setOffset({ x: 0, y: 0 });
     setUseFullPhoto(false);
     setCropWarning(null);
@@ -103,21 +127,6 @@ export function PhotoCropUpload({
       pickerRef.current.value = "";
     }
   }, []);
-
-  const applyTransformFromImage = useCallback(
-    (img: HTMLImageElement, frameW: number, frameH: number) => {
-      const cover = computeCoverScale(
-        img.naturalWidth,
-        img.naturalHeight,
-        frameW,
-        frameH
-      );
-      setBaseScale(cover);
-      setZoom(1);
-      setOffset({ x: 0, y: 0 });
-    },
-    []
-  );
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -132,13 +141,10 @@ export function PhotoCropUpload({
       const w = Math.max(1, Math.round(entry.contentRect.width));
       const h = Math.max(1, Math.round(w / CROP_ASPECT));
       setFrameSize({ w, h });
-      if (imageEl) {
-        applyTransformFromImage(imageEl, w, h);
-      }
     });
     ro.observe(frame);
     return () => ro.disconnect();
-  }, [imageEl, applyTransformFromImage]);
+  }, [previewUrl]);
 
   useEffect(() => {
     if (!imageEl || useFullPhoto) {
@@ -150,7 +156,7 @@ export function PhotoCropUpload({
         imageEl.naturalHeight,
         frameSize.w,
         frameSize.h,
-        baseScale * zoom,
+        effectiveScale,
         prev.x,
         prev.y
       );
@@ -159,7 +165,7 @@ export function PhotoCropUpload({
       }
       return { x: clamped.offsetX, y: clamped.offsetY };
     });
-  }, [imageEl, baseScale, zoom, frameSize, useFullPhoto]);
+  }, [imageEl, effectiveScale, frameSize, useFullPhoto]);
 
   const handleFileChange = async (file: File | null) => {
     setValidationError(null);
@@ -184,7 +190,8 @@ export function PhotoCropUpload({
       setSourceFile(file);
       setPreviewUrl(url);
       setImageEl(img);
-      applyTransformFromImage(img, frameSize.w, frameSize.h);
+      setZoomFactor(1);
+      setOffset({ x: 0, y: 0 });
       setUseFullPhoto(false);
     } catch (err) {
       setValidationError(
@@ -218,7 +225,7 @@ export function PhotoCropUpload({
       const blob = await cropImageToBlob(
         imageEl,
         {
-          scale: baseScale * zoom,
+          scale: effectiveScale,
           offsetX: offset.x,
           offsetY: offset.y
         },
@@ -238,7 +245,7 @@ export function PhotoCropUpload({
       setCropWarning(msg);
       assignFileToInput(input, null);
     }
-  }, [sourceFile, useFullPhoto, imageEl, baseScale, zoom, offset, frameSize]);
+  }, [sourceFile, useFullPhoto, imageEl, effectiveScale, offset, frameSize]);
 
   useEffect(() => {
     const el = document.getElementById(formId);
@@ -296,7 +303,7 @@ export function PhotoCropUpload({
       imageEl.naturalHeight,
       frameSize.w,
       frameSize.h,
-      baseScale * zoom,
+      effectiveScale,
       dragStartRef.current.ox + dx,
       dragStartRef.current.oy + dy
     );
@@ -381,6 +388,32 @@ export function PhotoCropUpload({
               {useFullPhoto ? "Full photo selected" : "Drag to position"}
             </p>
             <div className="flex flex-wrap gap-1.5">
+              {!useFullPhoto ? (
+                <>
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => {
+                      setZoomFactor(minZoomFactor);
+                      setOffset({ x: 0, y: 0 });
+                    }}
+                    className="rounded-full border border-[var(--slop-line-strong)] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[var(--slop-cream-muted)] hover:border-[var(--slop-gold)]/50"
+                  >
+                    Fit in frame
+                  </button>
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => {
+                      setZoomFactor(1);
+                      setOffset({ x: 0, y: 0 });
+                    }}
+                    className="rounded-full border border-[var(--slop-line-strong)] px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[var(--slop-cream-muted)] hover:border-[var(--slop-gold)]/50"
+                  >
+                    Fill frame
+                  </button>
+                </>
+              ) : null}
               <button
                 type="button"
                 disabled={disabled}
@@ -421,7 +454,7 @@ export function PhotoCropUpload({
 
           <div
             ref={frameRef}
-            className={`relative mx-auto w-full max-w-md touch-none overflow-hidden rounded-lg border-2 bg-black ${
+            className={`relative mx-auto w-full max-w-md touch-none overflow-hidden rounded-lg border-2 bg-[#080f18] ${
               useFullPhoto
                 ? "border-[var(--slop-line-strong)]"
                 : "border-[var(--slop-gold)]/60"
@@ -459,17 +492,17 @@ export function PhotoCropUpload({
                 htmlFor={zoomLabelId}
                 className="text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]"
               >
-                Zoom
+                Zoom — left fits whole photo (letterboxed), right zooms tighter
               </label>
               <input
                 id={zoomLabelId}
                 type="range"
-                min={1}
-                max={3}
-                step={0.01}
-                value={zoom}
+                min={minZoomFactor}
+                max={SLIDER_MAX_ZOOM}
+                step={0.002}
+                value={zoomFactor}
                 disabled={disabled}
-                onChange={(e) => setZoom(Number(e.target.value))}
+                onChange={(e) => setZoomFactor(Number(e.target.value))}
                 className="mt-1 w-full accent-[var(--slop-gold)]"
               />
             </div>
@@ -483,8 +516,8 @@ export function PhotoCropUpload({
           ) : null}
 
           <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-            Frame matches review cards (4:3). Hero uses the same shot with
-            object-contain.
+            Default fills the 4:3 frame (like a tight crop). Zoom out to show the
+            full dish with stadium-navy letterboxing, or zoom in to reframe.
           </p>
         </div>
       ) : null}

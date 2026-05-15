@@ -91,6 +91,19 @@ export function computeCoverScale(
   return Math.max(frameWidth / imageWidth, frameHeight / imageHeight);
 }
 
+/** Full image fits inside frame; letterboxing when aspect ≠ frame — scale ≤ cover scale. */
+export function computeContainScale(
+  imageWidth: number,
+  imageHeight: number,
+  frameWidth: number,
+  frameHeight: number
+) {
+  if (imageWidth <= 0 || imageHeight <= 0) {
+    return 1;
+  }
+  return Math.min(frameWidth / imageWidth, frameHeight / imageHeight);
+}
+
 export function clampPan(
   imageWidth: number,
   imageHeight: number,
@@ -102,8 +115,9 @@ export function clampPan(
 ) {
   const drawW = imageWidth * scale;
   const drawH = imageHeight * scale;
-  const maxX = Math.max(0, (drawW - frameWidth) / 2);
-  const maxY = Math.max(0, (drawH - frameHeight) / 2);
+  // When image is larger than frame: pan within overflow. When smaller: pan within letterbox.
+  const maxX = Math.abs(drawW - frameWidth) / 2;
+  const maxY = Math.abs(drawH - frameHeight) / 2;
   return {
     offsetX: Math.min(maxX, Math.max(-maxX, offsetX)),
     offsetY: Math.min(maxY, Math.max(-maxY, offsetY))
@@ -131,7 +145,7 @@ export function cropImageToBlob(
     return Promise.reject(new Error("Could not create crop canvas."));
   }
 
-  ctx.fillStyle = "#000";
+  ctx.fillStyle = "#0c1828";
   ctx.fillRect(0, 0, outputWidth, outputHeight);
 
   const drawW = image.naturalWidth * scale;

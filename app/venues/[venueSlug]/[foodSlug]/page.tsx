@@ -41,6 +41,7 @@ import {
   PhotoBackedReviewsEmpty
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
+import { ReviewSlopCard } from "@/components/review-slop-card";
 
 export const dynamic = "force-dynamic";
 
@@ -56,19 +57,6 @@ type FoodPageProps = {
     report?: string;
   }>;
 };
-
-function getReviewerInitials(review: {
-  reviewerName?: string;
-  reviewerHandle?: string;
-}) {
-  const label = review.reviewerName ?? review.reviewerHandle ?? "Fan";
-  const words = label.replace("@", "").split(/\s+/).filter(Boolean);
-
-  return words
-    .slice(0, 2)
-    .map((word) => word[0]?.toUpperCase())
-    .join("");
-}
 
 function getPrimaryConsensusLabel(review: { labels: string[] }) {
   return review.labels[0] ?? "Fan Rating";
@@ -868,302 +856,146 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           <div className="mt-2 flex snap-x gap-2 overflow-x-auto pb-2 sm:gap-3">
             {photoBackedReviews.length > 0 ? (
               photoBackedReviews.map((review) => {
+                const photoUrlNorm = normalizePublicImageUrl(review.photoUrl);
                 const heroDup =
-                  Boolean(heroImageUrl) &&
-                  normalizePublicImageUrl(review.photoUrl) === heroImageUrl;
+                  Boolean(heroImageUrl) && photoUrlNorm === heroImageUrl;
+                const captionLine =
+                  review.photoLabel?.trim() || foodItem.name;
+
+                const helpfulSlot = isSignedIn ? (
+                  likedReviewIds.has(review.id) ? (
+                    <button
+                      type="button"
+                      disabled
+                      className="w-full cursor-not-allowed rounded-full border border-[var(--slop-orange)] px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-orange)]"
+                    >
+                      Marked helpful · {review.helpfulLikes}
+                    </button>
+                  ) : (
+                    <form action={markReviewHelpful}>
+                      <input type="hidden" name="venueSlug" value={venue.slug} />
+                      <input type="hidden" name="foodSlug" value={foodItem.slug} />
+                      <input type="hidden" name="reviewId" value={review.id} />
+                      <button
+                        type="submit"
+                        className="w-full rounded-full border border-zinc-800 px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                      >
+                        Mark helpful · {review.helpfulLikes}
+                      </button>
+                    </form>
+                  )
+                ) : (
+                  <Link
+                    href={`/login?next=${encodeURIComponent(
+                      `/venues/${venue.slug}/${foodItem.slug}`
+                    )}`}
+                    className="inline-flex w-full justify-center rounded-full border border-zinc-800 px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                  >
+                    Sign in to mark helpful · {review.helpfulLikes}
+                  </Link>
+                );
+
+                const reportSlot = isSignedIn ? (
+                  <details className="group">
+                    <summary className="cursor-pointer list-none text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-600 marker:content-none [&::-webkit-details-marker]:hidden hover:text-zinc-400">
+                      Report
+                    </summary>
+                    <form
+                      action={submitContentReport}
+                      className="mt-2 grid gap-2 text-xs text-zinc-400"
+                    >
+                      <input type="hidden" name="venueSlug" value={venue.slug} />
+                      <input type="hidden" name="foodSlug" value={foodItem.slug} />
+                      <input type="hidden" name="reviewId" value={review.id} />
+                      {review.primaryFoodPhotoId ? (
+                        <input
+                          type="hidden"
+                          name="photoId"
+                          value={review.primaryFoodPhotoId}
+                        />
+                      ) : null}
+                      <label className="grid gap-1">
+                        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
+                          What is wrong?
+                        </span>
+                        <select
+                          name="reportTarget"
+                          className="rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200"
+                          defaultValue="REVIEW"
+                        >
+                          <option value="REVIEW">This review</option>
+                          {review.primaryFoodPhotoId ? (
+                            <option value="PHOTO">Fan photo only</option>
+                          ) : null}
+                        </select>
+                      </label>
+                      <label className="grid gap-1">
+                        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
+                          Reason
+                        </span>
+                        <select
+                          name="reason"
+                          required
+                          className="rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200"
+                          defaultValue=""
+                        >
+                          <option value="" disabled>
+                            Choose…
+                          </option>
+                          {FAN_REPORT_REASON_VALUES.map((value) => (
+                            <option key={value} value={value}>
+                              {FAN_REPORT_REASON_LABELS[value]}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                      <label className="grid gap-1">
+                        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
+                          Note (optional)
+                        </span>
+                        <textarea
+                          name="note"
+                          rows={2}
+                          maxLength={REPORT_NOTE_MAX}
+                          placeholder="Short context for moderators"
+                          className="resize-y rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200 placeholder:text-zinc-600"
+                        />
+                      </label>
+                      <button
+                        type="submit"
+                        className="justify-self-start rounded-full border border-zinc-700 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-amber-700/80 hover:text-amber-200/90"
+                      >
+                        Submit report
+                      </button>
+                    </form>
+                  </details>
+                ) : (
+                  <p className="text-[0.65rem] leading-5 text-zinc-600">
+                    <Link
+                      href={`/login?next=${encodeURIComponent(
+                        `/venues/${venue.slug}/${foodItem.slug}`
+                      )}`}
+                      className="font-bold text-zinc-400 underline-offset-2 hover:text-[var(--slop-orange)] hover:underline"
+                    >
+                      Sign in
+                    </Link>{" "}
+                    to report a concern about this card.
+                  </p>
+                );
 
                 return (
-                  <article
+                  <ReviewSlopCard
                     key={review.id}
-                    className="brand-card min-w-[min(100%,18.5rem)] max-w-[20rem] shrink-0 snap-start overflow-hidden rounded-xl border sm:min-w-[18rem]"
-                  >
-                    {heroDup ? (
-                      <div className="flex gap-2.5 p-3 sm:p-3">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[var(--slop-surface)] bg-[var(--slop-cream)] text-xs font-black text-[var(--slop-ink)]">
-                          {getReviewerInitials(review)}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="rounded-full bg-[var(--slop-orange)] px-2 py-0.5 text-xs font-black text-[var(--slop-ink)]">
-                              {review.slopScore.toFixed(1)}/10
-                            </span>
-                            <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400">
-                              Verified on-site
-                            </span>
-                            {review.verifiedGameDay ? (
-                              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400">
-                                Game-day
-                              </span>
-                            ) : null}
-                          </div>
-                          <p className="mt-1.5 text-xs text-[var(--slop-cream-dim)]">
-                            Same as hero
-                            {review.photoLabel ? ` · ${review.photoLabel}` : ""}
-                          </p>
-                          <p className="mt-1.5 text-sm font-bold text-[var(--slop-cream)]">
-                            {getPrimaryConsensusLabel(review)}
-                          </p>
-                          <p className="mt-0.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
-                            {review.reviewerName ?? "Fan"} ·{" "}
-                            {review.reviewerHandle ?? "reviewer"} ·{" "}
-                            {review.dateLabel}
-                          </p>
-                          {review.note ? (
-                            <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-[var(--slop-cream-muted)]">
-                              {review.note}
-                            </p>
-                          ) : null}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="relative">
-                        <div
-                          aria-label={
-                            review.photoAlt ??
-                            `Fan-uploaded photo for ${foodItem.name}`
-                          }
-                          className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-zinc-950"
-                        >
-                          {normalizePublicImageUrl(review.photoUrl) ? (
-                            <Image
-                              src={normalizePublicImageUrl(review.photoUrl)!}
-                              alt={
-                                review.photoAlt ?? `Fan photo for ${foodItem.name}`
-                              }
-                              fill
-                              className="object-contain object-center"
-                              sizes="(max-width: 640px) 90vw, 22rem"
-                            />
-                          ) : null}
-                        </div>
-                        <div className="absolute -bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--slop-surface)] bg-[var(--slop-cream)] text-xs font-black text-[var(--slop-ink)]">
-                          {getReviewerInitials(review)}
-                        </div>
-                        <span className="absolute right-3 top-3 rounded-full bg-[var(--slop-orange)] px-2 py-0.5 text-xs font-black text-[var(--slop-ink)]">
-                          {review.slopScore.toFixed(1)}/10
-                        </span>
-                        <span className="absolute left-3 top-3 max-w-[55%] truncate rounded-full border border-zinc-700 bg-black/80 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-300">
-                          {review.photoLabel ?? "Fan photo"}
-                        </span>
-                      </div>
-                    )}
-
-                    <div
-                      className={
-                        heroDup ? "px-3 pb-3 pt-2 sm:px-3" : "p-3 pt-5 sm:p-3 sm:pt-5"
-                      }
-                    >
-                      {!heroDup ? (
-                        <>
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            <h3 className="text-base font-black leading-tight">
-                              {getPrimaryConsensusLabel(review)}
-                            </h3>
-                            <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-300">
-                              Verified on-site
-                            </span>
-                            {review.verifiedGameDay ? (
-                              <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-300">
-                                Verified game-day
-                              </span>
-                            ) : null}
-                          </div>
-                          <p className="mt-1.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
-                            {review.reviewerName ?? "Fan"} ·{" "}
-                            {review.reviewerHandle ?? "reviewer"}
-                          </p>
-                          {review.note ? (
-                            <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-[var(--slop-cream-muted)]">
-                              {review.note}
-                            </p>
-                          ) : null}
-                        </>
-                      ) : null}
-
-                      <div
-                        className={
-                          heroDup ? "mt-3 rounded-xl bg-black p-3" : "mt-4 rounded-xl bg-black p-3"
-                        }
-                      >
-                        <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-600">
-                          Breakdown
-                        </p>
-                        <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                          <div>
-                            <p className="text-xs text-zinc-600">Consensus</p>
-                            <p className="mt-0.5 font-bold text-white">
-                              {getPrimaryConsensusLabel(review)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-zinc-600">Slop Score</p>
-                            <p className="mt-0.5 font-bold text-white">
-                              {review.slopScore.toFixed(1)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-zinc-600">Review Date</p>
-                            <p className="mt-0.5 font-bold text-white">
-                              {review.dateLabel}
-                            </p>
-                          </div>
-                          {napkinEligible ? (
-                            <div>
-                              <p className="text-xs text-zinc-600">Napkins</p>
-                              <p className="mt-0.5 font-bold text-white">
-                                {review.napkinRating}/5
-                              </p>
-                            </div>
-                          ) : null}
-                        </div>
-                        {isSignedIn ? (
-                          likedReviewIds.has(review.id) ? (
-                            <button
-                              type="button"
-                              disabled
-                              className="mt-3 cursor-not-allowed rounded-full border border-[var(--slop-orange)] px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-orange)]"
-                            >
-                              Marked helpful · {review.helpfulLikes}
-                            </button>
-                          ) : (
-                            <form action={markReviewHelpful}>
-                              <input
-                                type="hidden"
-                                name="venueSlug"
-                                value={venue.slug}
-                              />
-                              <input
-                                type="hidden"
-                                name="foodSlug"
-                                value={foodItem.slug}
-                              />
-                              <input
-                                type="hidden"
-                                name="reviewId"
-                                value={review.id}
-                              />
-                              <button
-                                type="submit"
-                                className="mt-3 rounded-full border border-zinc-800 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
-                              >
-                                Mark helpful · {review.helpfulLikes}
-                              </button>
-                            </form>
-                          )
-                        ) : (
-                          <Link
-                            href={`/login?next=${encodeURIComponent(
-                              `/venues/${venue.slug}/${foodItem.slug}`
-                            )}`}
-                            className="mt-3 inline-flex rounded-full border border-zinc-800 px-3 py-1.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
-                          >
-                            Sign in to mark helpful · {review.helpfulLikes}
-                          </Link>
-                        )}
-                        <div className="mt-3 border-t border-zinc-800 pt-3">
-                          {isSignedIn ? (
-                            <details className="group">
-                              <summary className="cursor-pointer list-none text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-600 marker:content-none [&::-webkit-details-marker]:hidden hover:text-zinc-400">
-                                Report
-                              </summary>
-                              <form
-                                action={submitContentReport}
-                                className="mt-2 grid gap-2 text-xs text-zinc-400"
-                              >
-                                <input
-                                  type="hidden"
-                                  name="venueSlug"
-                                  value={venue.slug}
-                                />
-                                <input
-                                  type="hidden"
-                                  name="foodSlug"
-                                  value={foodItem.slug}
-                                />
-                                <input
-                                  type="hidden"
-                                  name="reviewId"
-                                  value={review.id}
-                                />
-                                {review.primaryFoodPhotoId ? (
-                                  <input
-                                    type="hidden"
-                                    name="photoId"
-                                    value={review.primaryFoodPhotoId}
-                                  />
-                                ) : null}
-                                <label className="grid gap-1">
-                                  <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                                    What is wrong?
-                                  </span>
-                                  <select
-                                    name="reportTarget"
-                                    className="rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200"
-                                    defaultValue="REVIEW"
-                                  >
-                                    <option value="REVIEW">This review</option>
-                                    {review.primaryFoodPhotoId ? (
-                                      <option value="PHOTO">Fan photo only</option>
-                                    ) : null}
-                                  </select>
-                                </label>
-                                <label className="grid gap-1">
-                                  <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                                    Reason
-                                  </span>
-                                  <select
-                                    name="reason"
-                                    required
-                                    className="rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200"
-                                    defaultValue=""
-                                  >
-                                    <option value="" disabled>
-                                      Choose…
-                                    </option>
-                                    {FAN_REPORT_REASON_VALUES.map((value) => (
-                                      <option key={value} value={value}>
-                                        {FAN_REPORT_REASON_LABELS[value]}
-                                      </option>
-                                    ))}
-                                  </select>
-                                </label>
-                                <label className="grid gap-1">
-                                  <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                                    Note (optional)
-                                  </span>
-                                  <textarea
-                                    name="note"
-                                    rows={2}
-                                    maxLength={REPORT_NOTE_MAX}
-                                    placeholder="Short context for moderators"
-                                    className="resize-y rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200 placeholder:text-zinc-600"
-                                  />
-                                </label>
-                                <button
-                                  type="submit"
-                                  className="justify-self-start rounded-full border border-zinc-700 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-amber-700/80 hover:text-amber-200/90"
-                                >
-                                  Submit report
-                                </button>
-                              </form>
-                            </details>
-                          ) : (
-                            <p className="text-[0.65rem] leading-5 text-zinc-600">
-                              <Link
-                                href={`/login?next=${encodeURIComponent(
-                                  `/venues/${venue.slug}/${foodItem.slug}`
-                                )}`}
-                                className="font-bold text-zinc-400 underline-offset-2 hover:text-[var(--slop-orange)] hover:underline"
-                              >
-                                Sign in
-                              </Link>{" "}
-                              to report a concern about this card.
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </article>
+                    review={review}
+                    photoUrl={photoUrlNorm}
+                    photoAlt={review.photoAlt ?? `Fan photo for ${foodItem.name}`}
+                    napkinEligible={napkinEligible}
+                    captionLine={captionLine}
+                    signalLine={getPrimaryConsensusLabel(review)}
+                    duplicateHeroBadge={heroDup}
+                    helpfulSlot={helpfulSlot}
+                    reportSlot={reportSlot}
+                  />
                 );
               })
             ) : (
