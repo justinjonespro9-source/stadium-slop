@@ -5,6 +5,11 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 import {
+  AuthPageScaffold,
+  authFieldClass,
+  authLabelClass
+} from "@/components/auth-ui";
+import {
   isCloudinaryConfigured,
   logUploadFailure,
   photoErrorQueryFromUploadFailure,
@@ -100,40 +105,31 @@ function reviewRowDateLabel(
 
 function SignedOutAccount() {
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-lg px-5 py-10 sm:px-8">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
-          Stadium Slop
+    <AuthPageScaffold
+      eyebrow="Fan account"
+      title="Sign in to continue"
+      subtitle="Post reviews, upload photos, and mark helpful from one profile."
+      footer={
+        <p className="text-center text-[0.7rem] leading-relaxed text-[var(--slop-cream-dim)]">
+          Demo cookie session — swap for production auth later.
         </p>
-        <h1 className="mt-2 text-3xl font-black leading-tight tracking-tight text-[var(--slop-cream)] sm:text-4xl">
-          Your reviewer dashboard
-        </h1>
-        <p className="mt-3 text-sm leading-relaxed text-zinc-400">
-          Sign in to track Slop Scores, fan photos, helpful likes, and every park
-          you&apos;ve rated—verified when you&apos;re at the venue.
-        </p>
-
-        <div className="mt-8 grid gap-3">
-          <Link
-            href="/login?next=/account"
-            className="brand-cta rounded-full px-6 py-3.5 text-center text-sm font-black"
-          >
-            Sign in
-          </Link>
-          <Link
-            href="/signup?next=/account"
-            className="rounded-full border border-[var(--slop-line)] px-6 py-3.5 text-center text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
-          >
-            Create free profile
-          </Link>
-        </div>
-
-        <p className="mt-8 text-xs leading-relaxed text-zinc-600">
-          Demo auth today—no passwords or email provider wired yet. Your history
-          still saves to the database while you test.
-        </p>
-      </section>
-    </main>
+      }
+    >
+      <div className="mt-5 grid gap-2.5">
+        <Link
+          href="/login?next=/account"
+          className="brand-cta rounded-xl px-4 py-3 text-center text-sm font-black"
+        >
+          Sign in
+        </Link>
+        <Link
+          href="/signup?next=/account"
+          className="brand-cta-secondary rounded-xl px-4 py-3 text-center text-sm font-black"
+        >
+          Create account
+        </Link>
+      </div>
+    </AuthPageScaffold>
   );
 }
 
@@ -162,6 +158,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     avatarUrl: string | null;
     displayName: string;
     handle: string;
+    createdAt: Date;
     homeVenue: { name: string } | null;
   } | null = null;
   let totalReviews = 0;
@@ -199,6 +196,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           avatarUrl: true,
           displayName: true,
           handle: true,
+          createdAt: true,
           homeVenue: { select: { name: true } }
         }
       }),
@@ -270,6 +268,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   const homeVenueLabel =
     dbUser?.homeVenue?.name ?? mockReviewerProfile.homeVenue;
 
+  const joinedLabel = dbUser?.createdAt
+    ? dbUser.createdAt.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      })
+    : null;
+
+  const handleDisplay =
+    handle.startsWith("@") || handle.length === 0 ? handle : `@${handle}`;
+
   const uploadErrorMessage =
     uploadError === "too_large"
       ? "Photo was over the upload limit (about 8MB). Try a smaller JPEG or PNG."
@@ -293,25 +302,25 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   ];
 
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-6 lg:max-w-3xl lg:px-8">
+    <main className="brand-page relative min-h-dvh">
+      <section className="relative z-10 mx-auto w-full max-w-lg px-4 py-4 pb-10 sm:px-5 sm:py-6">
         {uploadErrorMessage ? (
           <div
             role="alert"
-            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
+            className="mb-3 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
           >
             <p className="font-bold">Profile photo</p>
             <p className="mt-0.5 text-amber-100/95">{uploadErrorMessage}</p>
           </div>
         ) : null}
 
-        <header className="rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-4 sm:p-5">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
-            Reviewer dashboard
+        <header className="brand-card rounded-2xl border border-[var(--slop-line-strong)] px-4 py-4 sm:px-5 sm:py-5">
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+            Profile
           </p>
-          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start">
-            <div className="flex shrink-0 gap-4 sm:flex-col sm:items-center">
-              <div className="relative h-16 w-16 overflow-hidden rounded-2xl border-2 border-dashed border-[var(--slop-orange)] bg-[var(--slop-cream)] text-xl font-black text-[var(--slop-ink)] sm:h-20 sm:w-20 sm:text-2xl">
+          <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-start">
+            <div className="flex shrink-0 gap-3 sm:flex-col sm:items-stretch">
+              <div className="relative h-[4.25rem] w-[4.25rem] shrink-0 overflow-hidden rounded-xl border-2 border-dashed border-[var(--slop-gold)]/70 bg-[var(--slop-cream)] text-lg font-black text-[var(--slop-ink)] sm:h-20 sm:w-20 sm:text-2xl">
                 {dbUser?.avatarUrl ? (
                   <Image
                     src={dbUser.avatarUrl}
@@ -328,87 +337,104 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               </div>
               {cloudinaryReady ? (
                 <form action={uploadProfileAvatar} className="min-w-0 flex-1 sm:w-full">
-                  <label className="block">
-                    <span className="sr-only">Upload profile photo</span>
+                  <label className={`grid gap-1.5 ${authLabelClass}`}>
+                    Avatar
                     <input
                       name="avatar"
                       type="file"
                       accept="image/jpeg,image/png,image/webp,image/gif"
-                      className="w-full text-xs text-zinc-400 file:mr-2 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-1.5 file:text-xs file:font-black file:text-[var(--slop-ink)]"
+                      className={`${authFieldClass} py-2 text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-2 file:text-xs file:font-black file:text-[var(--slop-ink)]`}
                     />
                   </label>
                   <button
                     type="submit"
-                    className="brand-cta mt-2 w-full rounded-full px-3 py-2 text-xs font-black sm:py-1.5"
+                    className="brand-cta mt-2 w-full rounded-xl px-3 py-2 text-xs font-black"
                   >
                     Save avatar
                   </button>
                 </form>
               ) : (
-                <p className="max-w-[11rem] text-xs leading-snug text-zinc-500">
-                  Set Cloudinary env vars to upload a profile photo.
+                <p className="max-w-[12rem] text-[0.7rem] leading-snug text-[var(--slop-cream-dim)]">
+                  Add Cloudinary env vars to upload an avatar (~8MB, JPEG/PNG/WebP/GIF).
                 </p>
               )}
             </div>
 
             <div className="min-w-0 flex-1">
-              <h1 className="text-2xl font-black leading-tight tracking-tight text-white sm:text-3xl">
+              <h1 className="text-xl font-black leading-tight tracking-tight text-[var(--slop-cream)] sm:text-2xl">
                 {displayName}
               </h1>
-              <p className="mt-1 text-sm text-zinc-400">{handle}</p>
-              <p className="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
-                Home park · {homeVenueLabel}
+              <p className="mt-1 font-semibold text-[var(--slop-cream-muted)]">
+                {handleDisplay}
               </p>
-              <p className="mt-3 text-xs leading-relaxed text-zinc-500">
-                JPEG/PNG/WebP/GIF, ~8MB max. Fan photos on reviews stay separate
-                from this avatar.
+              {joinedLabel ? (
+                <p className="mt-2 text-[0.7rem] font-bold uppercase tracking-[0.08em] text-[var(--slop-cream-dim)]">
+                  Joined {joinedLabel}
+                </p>
+              ) : null}
+              <p className="mt-2 text-[0.7rem] leading-snug text-[var(--slop-cream-dim)]">
+                Home venue ·{" "}
+                <span className="font-semibold text-[var(--slop-cream-muted)]">
+                  {homeVenueLabel}
+                </span>
+              </p>
+              <p className="mt-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+                Item fan photos live on reviews — this photo is your profile badge only.
               </p>
             </div>
           </div>
         </header>
 
-        <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+        <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-2.5">
           {statTiles.map((t) => (
             <li
               key={t.label}
-              className="rounded-xl border border-[var(--slop-line)] bg-[var(--slop-surface)] px-3 py-3 text-center sm:px-4 sm:py-3.5"
+              className="brand-card rounded-xl border border-[var(--slop-line-strong)] px-2.5 py-2.5 text-center sm:py-3"
             >
-              <p className="text-xl font-black tabular-nums text-white sm:text-2xl">
+              <p className="text-lg font-black tabular-nums text-[var(--slop-gold-bright)] sm:text-xl">
                 {t.value}
               </p>
-              <p className="mt-1 text-[0.6rem] font-bold uppercase tracking-[0.14em] text-zinc-500 sm:text-[0.65rem]">
+              <p className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)] sm:text-[0.6rem]">
                 {t.label}
               </p>
             </li>
           ))}
         </ul>
 
-        <p className="mt-3 text-xs leading-relaxed text-zinc-600">
-          Helpful likes only—no followers, DMs, or comment threads. Stats pull
-          from your live reviews and photos.
+        <p className="mt-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+          One profile for Slop scores, review photos, and helpful marks.
         </p>
 
-        <section className="mt-6" aria-labelledby="history-heading">
+        <section className="mt-5" aria-labelledby="activity-heading">
           <div className="flex items-baseline justify-between gap-2">
             <h2
-              id="history-heading"
-              className="text-sm font-black uppercase tracking-[0.16em] text-zinc-400"
+              id="activity-heading"
+              className="text-[0.7rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]"
             >
-              Review history
+              Your activity
             </h2>
             <Link
               href="/venues"
-              className="shrink-0 text-xs font-bold text-[var(--slop-blue)] underline-offset-2 hover:underline"
+              className="shrink-0 text-[0.65rem] font-bold text-[var(--slop-gold)] underline-offset-2 hover:underline"
             >
-              Find food
+              Explore venues
             </Link>
           </div>
 
-          <div className="mt-3 divide-y divide-zinc-800 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
+          <div className="mt-2.5 divide-y divide-[var(--slop-line)] overflow-hidden rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.75)]">
             {reviewHistory.length === 0 ? (
-              <p className="px-3 py-8 text-center text-sm text-zinc-500">
-                No reviews yet. Open any menu item and drop your first Slop Score.
-              </p>
+              <div className="px-4 py-6 text-center">
+                <p className="text-sm font-black text-[var(--slop-cream)]">No reviews yet</p>
+                <p className="mt-1 text-[0.7rem] text-[var(--slop-cream-dim)]">
+                  Rate something at any venue — it shows up here.
+                </p>
+                <Link
+                  href="/venues"
+                  className="brand-cta mt-4 inline-flex rounded-xl px-5 py-2.5 text-xs font-black"
+                >
+                  Explore venues
+                </Link>
+              </div>
             ) : (
               reviewHistory.map((review) => {
                 const itemUrl = `/venues/${review.venueSlug}/${review.foodSlug}`;
@@ -428,10 +454,10 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                   <article key={review.id} className="px-3 py-3 sm:px-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <h3 className="text-sm font-black leading-snug text-white sm:text-base">
+                        <h3 className="text-sm font-black leading-snug text-[var(--slop-cream)] sm:text-base">
                           {review.foodName}
                         </h3>
-                        <p className="mt-0.5 truncate text-xs text-zinc-400">
+                        <p className="mt-0.5 truncate text-xs text-[var(--slop-cream-dim)]">
                           {review.venueName}
                         </p>
                       </div>
@@ -439,29 +465,29 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                         <p className="text-lg font-black tabular-nums text-[var(--slop-orange)]">
                           {review.slopScore.toFixed(1)}
                         </p>
-                        <p className="text-[0.6rem] font-bold uppercase tracking-[0.1em] text-zinc-600">
+                        <p className="text-[0.6rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
                           Slop
                         </p>
                       </div>
                     </div>
 
-                    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.65rem] text-zinc-500 sm:text-xs">
+                    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.65rem] text-[var(--slop-cream-dim)] sm:text-xs">
                       <span className="truncate">{dateLine}</span>
-                      <span className="text-zinc-700" aria-hidden>
+                      <span className="text-[var(--slop-line)]" aria-hidden>
                         ·
                       </span>
                       <span>{review.napkinRating}/5 napkins</span>
                       {review.photoCount > 0 ? (
                         <>
-                          <span className="text-zinc-700" aria-hidden>
+                          <span className="text-[var(--slop-line)]" aria-hidden>
                             ·
                           </span>
-                          <span className="font-bold text-zinc-300" title="Review includes a photo">
+                          <span className="font-bold text-[var(--slop-cream-muted)]" title="Review includes a photo">
                             Photo
                           </span>
                         </>
                       ) : null}
-                      <span className="text-zinc-700" aria-hidden>
+                      <span className="text-[var(--slop-line)]" aria-hidden>
                         ·
                       </span>
                       <span>
@@ -474,14 +500,14 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                       {canEditToday ? (
                         <Link
                           href={reviewUrl}
-                          className="inline-flex rounded-full border border-[var(--slop-orange)] bg-[color:rgba(255,106,0,0.1)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-[var(--slop-orange)] transition hover:bg-[color:rgba(255,106,0,0.18)]"
+                          className="inline-flex rounded-xl border border-[var(--slop-orange)] bg-[color:rgba(255,159,28,0.12)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-[var(--slop-orange)] transition hover:bg-[color:rgba(255,159,28,0.2)]"
                         >
                           Edit today&apos;s review
                         </Link>
                       ) : null}
                       <Link
                         href={itemUrl}
-                        className="inline-flex rounded-full border border-zinc-700 px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-zinc-300 transition hover:border-zinc-500 hover:text-white"
+                        className="inline-flex rounded-xl border border-[var(--slop-line-strong)] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-cream)]"
                       >
                         View item
                       </Link>
@@ -493,14 +519,14 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </div>
         </section>
 
-        <footer className="mt-8 flex flex-col gap-3 border-t border-zinc-800 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-zinc-600">
-            Demo session cookie—swap for real auth when you ship it.
+        <footer className="mt-8 flex flex-col gap-3 border-t border-[var(--slop-line-strong)] pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[0.65rem] text-[var(--slop-cream-dim)]">
+            Demo cookie session — replace with real auth when you ship.
           </p>
           <form action={mockUserSignOut}>
             <button
               type="submit"
-              className="w-full rounded-full border border-zinc-700 px-5 py-2.5 text-xs font-black uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)] sm:w-auto"
+              className="brand-cta-secondary w-full rounded-xl px-5 py-2.5 text-xs font-black uppercase tracking-[0.12em] sm:w-auto sm:py-3"
             >
               Sign out
             </button>
