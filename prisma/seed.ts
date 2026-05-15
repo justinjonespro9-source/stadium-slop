@@ -10,6 +10,8 @@ import {
   VenueType
 } from "@prisma/client";
 
+import { applyDemoDensitySeed } from "../lib/demo-density-seed";
+import { buildGameDayKey } from "../lib/game-day";
 import { prisma } from "../lib/prisma";
 import {
   foodItems,
@@ -43,13 +45,23 @@ function slugify(value: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-function toGameDayKey(review: FoodReview) {
+function toGameDayKey(review: FoodReview, seedNow: Date) {
+  if (review.dateLabel === "Today" || review.dateLabel.startsWith("Last ")) {
+    return buildGameDayKey(review.venueSlug, seedNow);
+  }
+
   return `${review.seasonLabel}-${review.venueSlug}-${slugify(review.dateLabel)}`;
 }
 
-function toCreatedAt(label: string) {
-  if (label === "Today" || label.startsWith("Last ")) {
-    return new Date("2026-05-12T18:00:00.000Z");
+function toCreatedAt(label: string, seedNow: Date) {
+  if (label === "Today") {
+    return seedNow;
+  }
+
+  const lastMinutes = /^Last (\d+) minutes$/.exec(label);
+  if (lastMinutes) {
+    const mins = Number(lastMinutes[1]);
+    return new Date(seedNow.getTime() - mins * 60_000);
   }
 
   if (label === "May 2026") {
@@ -300,6 +312,8 @@ async function upsertUser(user: SeedUser) {
 }
 
 async function main() {
+  const seedNow = new Date();
+
   for (const venue of venues) {
     await prisma.venue.upsert({
       where: { slug: venue.slug },
@@ -481,28 +495,28 @@ async function main() {
         userId: user.id,
         foodItemId: foodItem.id,
         venueId: venue.id,
-        gameDayKey: toGameDayKey(review),
+        gameDayKey: toGameDayKey(review, seedNow),
         slopScore: review.slopScore,
         napkinRating: review.napkinRating,
         labels: review.labels.map(consensusLabel),
         verifiedGameDay: review.verifiedGameDay,
         seasonLabel: review.seasonLabel,
         note: review.note,
-        createdAt: toCreatedAt(review.dateLabel)
+        createdAt: toCreatedAt(review.dateLabel, seedNow)
       },
       create: {
         id: review.id,
         userId: user.id,
         foodItemId: foodItem.id,
         venueId: venue.id,
-        gameDayKey: toGameDayKey(review),
+        gameDayKey: toGameDayKey(review, seedNow),
         slopScore: review.slopScore,
         napkinRating: review.napkinRating,
         labels: review.labels.map(consensusLabel),
         verifiedGameDay: review.verifiedGameDay,
         seasonLabel: review.seasonLabel,
         note: review.note,
-        createdAt: toCreatedAt(review.dateLabel)
+        createdAt: toCreatedAt(review.dateLabel, seedNow)
       }
     });
 
@@ -521,7 +535,7 @@ async function main() {
           alt: review.photoAlt ?? `Fan-uploaded photo for ${foodItem.name}`,
           caption: review.photoLabel,
           verifiedOnSite: review.verifiedGameDay,
-          createdAt: toCreatedAt(review.dateLabel)
+          createdAt: toCreatedAt(review.dateLabel, seedNow)
         },
         create: {
           id: `photo-${review.id}`,
@@ -536,7 +550,7 @@ async function main() {
           alt: review.photoAlt ?? `Fan-uploaded photo for ${foodItem.name}`,
           caption: review.photoLabel,
           verifiedOnSite: review.verifiedGameDay,
-          createdAt: toCreatedAt(review.dateLabel)
+          createdAt: toCreatedAt(review.dateLabel, seedNow)
         }
       });
     }
@@ -571,7 +585,7 @@ async function main() {
         alt: photo.alt,
         caption: photo.caption,
         verifiedOnSite: photo.verifiedOnSite,
-        createdAt: toCreatedAt(photo.createdAt)
+        createdAt: toCreatedAt(photo.createdAt, seedNow)
       },
       create: {
         id: photo.id,
@@ -583,13 +597,18 @@ async function main() {
         alt: photo.alt,
         caption: photo.caption,
         verifiedOnSite: photo.verifiedOnSite,
-        createdAt: toCreatedAt(photo.createdAt)
+        createdAt: toCreatedAt(photo.createdAt, seedNow)
       }
     });
   }
 
+  const density = await applyDemoDensitySeed(prisma, seedNow);
+
   console.log(
-    `Seeded ${venues.length} venues, ${vendors.length} vendors, ${foodItems.length} items, ${foodReviews.length} reviews, and ${foodPhotos.length} sample photos.`
+    `Seeded ${venues.length} venues, ${vendors.length} vendors, ${foodItems.length} items, ${foodReviews.length} reviews, ${foodPhotos.length} sample photos, ${density.demoReviewsUpserted} demo-density reviews (${density.demoPhotosUpserted} placeholder photos, ${density.demoHelpfulUpserted} helpful likes). ` +
+      (density.demoReviewsSkippedMissingItem
+        ? `Skipped ${density.demoReviewsSkippedMissingItem} demo rows (missing venue/item).`
+        : "")
   );
 }
 
