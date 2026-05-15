@@ -1,6 +1,6 @@
 import { PhotoType } from "@prisma/client";
 
-import { localCalendarDateKey, utcCalendarDateKey } from "./game-day";
+import { isGameDayKeyTodayForVenue } from "./game-day";
 import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { slugFilterInsensitive } from "./public-data";
@@ -36,6 +36,10 @@ export type ItemSlopStats = {
   topReplayValue?: ConsensusStat;
   topPriceCheck?: ConsensusStat;
   freshSignalScore?: number;
+  /** At least one ACTIVE review with verifiedGameDay + gameDayKey matching today for this venue. */
+  hasFreshToday: boolean;
+  /** Count of ACTIVE today game-day verified reviews on this food item at this venue. */
+  freshReviewCountToday: number;
 };
 
 function average(values: number[]) {
@@ -200,11 +204,48 @@ function dedupeReviewsByUserItemGameDay(reviews: FoodReview[]) {
   return Array.from(reviewsByKey.values());
 }
 
-export function getReviewsForItem(itemSlug: string, mode: SlopStatsMode = "allTime") {
-  const itemReviews = foodReviews.filter((review) => review.foodSlug === itemSlug);
+function countFreshTodaySampleReviews(venueSlug: string, foodSlug: string) {
+  const vs = venueSlug.trim();
+  return foodReviews.filter(
+    (r) =>
+      r.foodSlug === foodSlug &&
+      r.venueSlug === vs &&
+      r.verifiedGameDay &&
+      Boolean(r.gameDayKey) &&
+      isGameDayKeyTodayForVenue(r.gameDayKey as string, vs)
+  ).length;
+}
+
+export function getReviewsForItem(
+  foodSlug: string,
+  mode: SlopStatsMode = "allTime",
+  venueSlug?: string
+) {
+  const v = venueSlug?.trim();
+  const itemReviews = foodReviews.filter((review) => {
+    if (review.foodSlug !== foodSlug) {
+      return false;
+    }
+
+    return !v || review.venueSlug === v;
+  });
 
   if (mode === "gameDayFresh") {
-    return itemReviews.filter((review) => review.verifiedGameDay);
+    if (!v) {
+      return itemReviews.filter(
+        (review) =>
+          review.verifiedGameDay &&
+          review.gameDayKey &&
+          review.venueSlug
+      );
+    }
+
+    return itemReviews.filter(
+      (review) =>
+        review.verifiedGameDay &&
+        Boolean(review.gameDayKey) &&
+        isGameDayKeyTodayForVenue(review.gameDayKey as string, v)
+    );
   }
 
   if (mode === "season") {
@@ -215,12 +256,16 @@ export function getReviewsForItem(itemSlug: string, mode: SlopStatsMode = "allTi
 }
 
 export function getItemSlopStats(
+  venueSlug: string,
   itemSlug: string,
   mode: SlopStatsMode = "allTime"
 ): ItemSlopStats {
-  const reviews = getReviewsForItem(itemSlug, mode);
+  const vn = venueSlug.trim();
+  const reviews = getReviewsForItem(itemSlug, mode, vn);
+  const freshReviewCountToday = countFreshTodaySampleReviews(vn, itemSlug);
+  const hasFreshToday = freshReviewCountToday > 0;
   const fallbackReviews = dedupeReviewsByUserItemGameDay(
-    reviews.length > 0 ? reviews : getReviewsForItem(itemSlug)
+    reviews.length > 0 ? reviews : getReviewsForItem(itemSlug, "allTime", vn)
   );
   const reviewCount = fallbackReviews.length;
   const averageSlopScore = average(fallbackReviews.map((review) => review.slopScore));
@@ -251,7 +296,9 @@ export function getItemSlopStats(
     freshSignalScore:
       mode === "gameDayFresh"
         ? average(fallbackReviews.map((review) => review.slopScore))
-        : undefined
+        : undefined,
+    hasFreshToday,
+    freshReviewCountToday
   };
 }
 
@@ -319,16 +366,17 @@ function getDbReviewsForMode(
       helpfulLikes: number;
     };
   }>,
-  mode: SlopStatsMode
+  mode: SlopStatsMode,
+  venueSlugForToday: string
 ) {
+  const vs = venueSlugForToday.trim();
+
   if (mode === "gameDayFresh") {
-    const localD = localCalendarDateKey();
-    const utcD = utcCalendarDateKey();
     return reviews.filter(
       (review) =>
         review.verifiedGameDay &&
-        (review.gameDayKey.endsWith(`-${localD}`) ||
-          review.gameDayKey.endsWith(`-${utcD}`))
+        Boolean(review.gameDayKey) &&
+        isGameDayKeyTodayForVenue(review.gameDayKey, vs)
     );
   }
 
@@ -340,10 +388,29 @@ function getDbReviewsForMode(
   return reviews;
 }
 
+function countFreshTodayFromDbReviews(
+  reviews: { verifiedGameDay: boolean; gameDayKey: string }[],
+  venueSlug: string
+) {
+  const vs = venueSlug.trim();
+  let n = 0;
+  for (const r of reviews) {
+    if (
+      r.verifiedGameDay &&
+      r.gameDayKey &&
+      isGameDayKeyTodayForVenue(r.gameDayKey, vs)
+    ) {
+      n += 1;
+    }
+  }
+  return n;
+}
+
 function getStatsFromReviews(
   itemSlug: string,
   mode: SlopStatsMode,
-  reviews: FoodReview[]
+  reviews: FoodReview[],
+  freshReviewCountToday: number
 ): ItemSlopStats {
   const dedupedReviews = dedupeReviewsByUserItemGameDay(reviews);
   const reviewCount = dedupedReviews.length;
@@ -375,7 +442,9 @@ function getStatsFromReviews(
     freshSignalScore:
       mode === "gameDayFresh"
         ? average(dedupedReviews.map((review) => review.slopScore))
-        : undefined
+        : undefined,
+    hasFreshToday: freshReviewCountToday > 0,
+    freshReviewCountToday
   };
 }
 
@@ -439,21 +508,32 @@ export async function getDbBackedItemSlopStats(
     });
   } catch (error) {
     console.warn("Falling back to sample Slop stats (DB unavailable)", error);
-    return getItemSlopStats(normalizedSlug, mode);
+    return getItemSlopStats(normalizedVenue, normalizedSlug, mode);
   }
 
   if (!item) {
-    return getItemSlopStats(normalizedSlug, mode);
+    return getItemSlopStats(normalizedVenue, normalizedSlug, mode);
   }
 
+  const freshReviewCountToday = countFreshTodayFromDbReviews(
+    item.reviews,
+    normalizedVenue
+  );
+
   if (item.reviews.length === 0) {
-    return getStatsFromReviews(normalizedSlug, mode, []);
+    return getStatsFromReviews(normalizedSlug, mode, [], freshReviewCountToday);
   }
 
   try {
-    const reviewsForMode = getDbReviewsForMode(item.reviews, mode);
+    const reviewsForMode = getDbReviewsForMode(
+      item.reviews,
+      mode,
+      normalizedVenue
+    );
     const fallbackReviews =
-      reviewsForMode.length > 0 ? reviewsForMode : getDbReviewsForMode(item.reviews, "allTime");
+      reviewsForMode.length > 0
+        ? reviewsForMode
+        : getDbReviewsForMode(item.reviews, "allTime", normalizedVenue);
 
     const reviews = fallbackReviews.map<FoodReview>((review) => {
       const usableFanPhotos = [...review.photos]
@@ -497,9 +577,14 @@ export async function getDbBackedItemSlopStats(
       };
     });
 
-    return getStatsFromReviews(normalizedSlug, mode, reviews);
+    return getStatsFromReviews(normalizedSlug, mode, reviews, freshReviewCountToday);
   } catch (error) {
     console.warn("Slop stats mapping failed; using empty rollups for DB item", error);
-    return getStatsFromReviews(normalizedSlug, mode, []);
+    return getStatsFromReviews(
+      normalizedSlug,
+      mode,
+      [],
+      freshReviewCountToday
+    );
   }
 }

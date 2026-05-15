@@ -579,7 +579,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
   const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
   const unratedSeason = isUnratedItemStats(seasonStats.reviewCount);
-  const noFreshReviews = isUnratedItemStats(freshStats.reviewCount);
+  const hasGameDayFreshToday = freshStats.hasFreshToday;
 
   return (
     <main className="brand-page min-h-screen">
@@ -700,7 +700,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
             <div
               className={`relative overflow-hidden rounded-xl px-3 py-2.5 sm:col-span-4 sm:rounded-lg sm:px-4 sm:py-3 ${
-                freshStats.reviewCount > 0
+                hasGameDayFreshToday
                   ? "slop-fresh-glow border border-emerald-400/40 bg-[color:rgba(6,22,16,0.55)]"
                   : "border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.88)] shadow-[var(--slop-shadow-inset)]"
               }`}
@@ -709,7 +709,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 <p className="text-[0.55rem] font-black uppercase tracking-[0.14em] text-emerald-200/95">
                   Fresh signal
                 </p>
-                {freshStats.reviewCount > 0 ? (
+                {hasGameDayFreshToday ? (
                   <span className="inline-flex items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/55 px-1.5 py-0.5 text-[0.45rem] font-black uppercase tracking-wider text-emerald-100">
                     <span
                       className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400"
@@ -720,14 +720,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 ) : null}
               </div>
               <p className="mt-1 text-2xl font-black tabular-nums leading-none text-[var(--slop-cream)] sm:text-3xl">
-                {freshStats.reviewCount > 0
-                  ? freshStats.averageSlopScore.toFixed(1)
-                  : "—"}
+                {hasGameDayFreshToday ? freshStats.averageSlopScore.toFixed(1) : "—"}
               </p>
               <p className="mt-1 text-[0.58rem] font-semibold text-[var(--slop-cream-dim)]">
-                {foodItem.freshWindowLabel
-                  ? `Window · ${foodItem.freshWindowLabel}`
-                  : "Game-day takes"}
+                {hasGameDayFreshToday
+                  ? foodItem.freshWindowLabel
+                    ? `Window · ${foodItem.freshWindowLabel}`
+                    : "Game-day takes"
+                  : "No Game Day Fresh yet."}
               </p>
             </div>
 
@@ -816,7 +816,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           ) : null}
         </header>
 
-        {noFreshReviews ? (
+        {!hasGameDayFreshToday ? (
           <div className="mt-2">
             <GameDayFreshPendingBlock />
           </div>

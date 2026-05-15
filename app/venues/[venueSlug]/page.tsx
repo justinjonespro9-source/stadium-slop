@@ -296,12 +296,10 @@ function ModeChips({
 function StandingStatusChips({
   rank,
   stats,
-  showFresh,
   maxReviewsInList
 }: {
   rank: number;
   stats: ItemSlopStats;
-  showFresh: boolean;
   maxReviewsInList: number;
 }) {
   const unrated = isUnratedItemStats(stats.reviewCount);
@@ -353,7 +351,7 @@ function StandingStatusChips({
     });
   }
 
-  if (showFresh) {
+  if (stats.hasFreshToday) {
     chips.push({
       key: "fresh",
       label: "Fresh today",
@@ -398,7 +396,7 @@ function ItemStandingRow({
   stats,
   venueSlug,
   vendor,
-  showFresh = false,
+  isFreshStandingsTab,
   maxReviewsInList
 }: {
   item: FoodItem;
@@ -406,12 +404,12 @@ function ItemStandingRow({
   stats: ItemSlopStats;
   venueSlug: string;
   vendor?: Vendor;
-  showFresh?: boolean;
+  isFreshStandingsTab: boolean;
   maxReviewsInList: number;
 }) {
   const priceHint = formatItemPriceHint(item);
   const unrated = isUnratedItemStats(stats.reviewCount);
-  const liveFresh = showFresh && !unrated;
+  const liveFresh = stats.hasFreshToday && isFreshStandingsTab && !unrated;
   const podiumClass =
     !unrated && rank === 1
       ? "standings-podium-1"
@@ -470,7 +468,6 @@ function ItemStandingRow({
           <StandingStatusChips
             rank={rank}
             stats={stats}
-            showFresh={showFresh}
             maxReviewsInList={maxReviewsInList}
           />
         </div>
@@ -492,7 +489,7 @@ function ItemStandingRow({
                 —
               </p>
               <p className="text-[0.55rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)] sm:text-[0.6rem]">
-                {showFresh ? "No fresh" : "Unrated"}
+                {isFreshStandingsTab ? "No fresh" : "Unrated"}
               </p>
             </>
           ) : (
@@ -501,7 +498,7 @@ function ItemStandingRow({
                 {stats.averageSlopScore.toFixed(1)}
               </p>
               <p className="text-[0.55rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)] sm:text-[0.6rem]">
-                {showFresh ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
+                {isFreshStandingsTab ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
               </p>
             </>
           )}
@@ -726,7 +723,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                   stats={stats}
                   vendor={vendorBySlug.get(item.vendorSlug)}
                   venueSlug={venue.slug}
-                  showFresh={mode === "fresh"}
+                  isFreshStandingsTab={mode === "fresh"}
                   maxReviewsInList={maxReviewsInList}
                 />
               ))
