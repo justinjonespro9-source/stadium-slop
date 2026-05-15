@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { PriceCheck, ReplayValue } from "@prisma/client";
@@ -16,6 +15,7 @@ import {
   validateImageFile
 } from "@/lib/cloudinary";
 import { prisma } from "@/lib/prisma";
+import { PhotoCropUpload } from "@/components/photo-crop-upload";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
 import {
@@ -596,6 +596,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
         </header>
 
         <form
+          id="review-form"
           action={submitReview}
           className="rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-3 sm:p-5"
         >
@@ -707,57 +708,17 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
             <section className="rounded-xl border border-zinc-800 bg-black/80 p-3 sm:p-4">
               <h2 className="text-sm font-black text-white">Fan photo</h2>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                Optional. JPEG, PNG, WebP, or GIF — about{" "}
-                <span className="font-bold text-zinc-400">8MB max</span>.
-                iPhone <span className="font-bold text-zinc-400">HEIC not supported</span>{" "}
-                (use Most Compatible or export JPEG). Helps Game Day Fresh — no
-                comments or threads.
+                Helps Game Day Fresh and review cards — no comments or threads.
               </p>
-              {existingPhoto?.url ? (
-                <div className="mt-3 flex gap-3 rounded-lg border border-zinc-800 bg-zinc-950/80 p-2">
-                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-black sm:h-24 sm:w-24">
-                    <Image
-                      src={existingPhoto.url}
-                      alt={existingPhoto.alt}
-                      fill
-                      className="object-contain"
-                      sizes="96px"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1 py-0.5">
-                    <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                      Current photo
-                    </p>
-                    <p className="mt-1 text-xs text-zinc-400">
-                      New file replaces this for today&apos;s review.
-                    </p>
-                  </div>
-                </div>
-              ) : null}
               {cloudinaryReady ? (
-                <div className="mt-3 space-y-2">
-                  <label className="block">
-                    <span className="sr-only">Optional fan photo</span>
-                    <input
-                      name="reviewPhoto"
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp,image/gif"
-                      className="block w-full text-xs text-zinc-400 file:mr-2 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-2 file:text-xs file:font-black file:text-[var(--slop-ink)]"
-                    />
-                  </label>
-                  <label className="block">
-                    <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                      Caption (optional)
-                    </span>
-                    <input
-                      name="photoCaption"
-                      maxLength={120}
-                      placeholder="e.g. First-bite cheese pull"
-                      defaultValue={draftCaption}
-                      className="mt-1 w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-600"
-                    />
-                  </label>
-                </div>
+                <PhotoCropUpload
+                  formId="review-form"
+                  inputName="reviewPhoto"
+                  captionName="photoCaption"
+                  defaultCaption={draftCaption}
+                  existingPhotoUrl={existingPhoto?.url ?? null}
+                  existingPhotoAlt={existingPhoto?.alt ?? `${foodItem.name} fan photo`}
+                />
               ) : (
                 <p className="mt-3 rounded-lg border border-dashed border-zinc-700 px-3 py-2 text-xs text-zinc-500">
                   Cloudinary not configured — save without a photo.
