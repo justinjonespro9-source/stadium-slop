@@ -61,7 +61,10 @@ export function PhotoCropUpload({
   disabled = false
 }: PhotoCropUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const pickerRef = useRef<HTMLInputElement>(null);
+  /** Rear camera on mobile when supported; no permission until user taps the control. */
+  const cameraPickerRef = useRef<HTMLInputElement>(null);
+  /** Photo library / files without `capture` so users can pick an existing image. */
+  const libraryPickerRef = useRef<HTMLInputElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const submitSyncedRef = useRef(false);
   const pointerIdRef = useRef<number | null>(null);
@@ -123,8 +126,22 @@ export function PhotoCropUpload({
     if (fileInputRef.current) {
       assignFileToInput(fileInputRef.current, null);
     }
-    if (options?.clearPicker !== false && pickerRef.current) {
-      pickerRef.current.value = "";
+    if (options?.clearPicker !== false) {
+      if (cameraPickerRef.current) {
+        cameraPickerRef.current.value = "";
+      }
+      if (libraryPickerRef.current) {
+        libraryPickerRef.current.value = "";
+      }
+    }
+  }, []);
+
+  const clearPickerInputsOnly = useCallback(() => {
+    if (cameraPickerRef.current) {
+      cameraPickerRef.current.value = "";
+    }
+    if (libraryPickerRef.current) {
+      libraryPickerRef.current.value = "";
     }
   }, []);
 
@@ -181,6 +198,7 @@ export function PhotoCropUpload({
     const check = validateClientImageFile(file);
     if (!check.ok) {
       setValidationError(check.message);
+      clearPickerInputsOnly();
       return;
     }
 
@@ -193,10 +211,12 @@ export function PhotoCropUpload({
       setZoomFactor(1);
       setOffset({ x: 0, y: 0 });
       setUseFullPhoto(false);
+      clearPickerInputsOnly();
     } catch (err) {
       setValidationError(
         err instanceof Error ? err.message : "Could not load that image."
       );
+      clearPickerInputsOnly();
     }
   };
 
@@ -332,26 +352,65 @@ export function PhotoCropUpload({
         aria-hidden
       />
 
-      <label className="block">
+      <div className="block">
         <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-          Optional fan photo
+          Add food photo (optional)
         </span>
+        <p className="mt-1.5 text-[0.7rem] leading-snug text-[var(--slop-cream-muted)]">
+          Optional. Take a quick food photo or choose one from your library. We only
+          receive the image you submit with this review.
+        </p>
+        <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+          JPEG, PNG, WebP, or GIF · about 8MB max · HEIC not supported
+        </p>
+
         <input
-          ref={pickerRef}
+          ref={cameraPickerRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif"
+          accept="image/*"
+          capture="environment"
           disabled={disabled}
+          aria-label="Take a new food photo with the camera"
+          className="sr-only"
+          tabIndex={-1}
           onChange={(e) => {
             const f = e.target.files?.[0] ?? null;
             void handleFileChange(f);
           }}
-          className="mt-1.5 block w-full text-xs text-[var(--slop-cream-dim)] file:mr-2 file:rounded-full file:border-0 file:bg-[var(--slop-orange)] file:px-3 file:py-2 file:text-xs file:font-black file:text-[var(--slop-ink)]"
         />
-      </label>
+        <input
+          ref={libraryPickerRef}
+          type="file"
+          accept="image/*"
+          disabled={disabled}
+          aria-label="Choose a food photo from your library or files"
+          className="sr-only"
+          tabIndex={-1}
+          onChange={(e) => {
+            const f = e.target.files?.[0] ?? null;
+            void handleFileChange(f);
+          }}
+        />
 
-      <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-        JPEG, PNG, WebP, or GIF · about 8MB max · HEIC not supported
-      </p>
+        <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => cameraPickerRef.current?.click()}
+            className="rounded-full border-0 bg-[var(--slop-orange)] px-4 py-2.5 text-center text-xs font-black text-[var(--slop-ink)] shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Take photo
+          </button>
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => libraryPickerRef.current?.click()}
+            className="rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.65)] px-4 py-2.5 text-center text-xs font-black text-[var(--slop-cream)] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Choose from library
+          </button>
+        </div>
+      </div>
 
       {validationError ? (
         <p role="alert" className="text-xs font-semibold text-amber-200/95">
