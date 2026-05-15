@@ -1,7 +1,23 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 
 import { HomeVenueSearch } from "@/components/home-venue-search";
 import { getPublicVenues } from "@/lib/public-data";
+import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description: SITE_TAGLINE_SHORT,
+  openGraph: {
+    title: `Stadium Slop — ${SITE_TAGLINE_SHORT}`,
+    description: SITE_TAGLINE_SHORT,
+    url: getAbsoluteUrl("/")
+  },
+  twitter: {
+    title: `Stadium Slop — ${SITE_TAGLINE_SHORT}`,
+    description: SITE_TAGLINE_SHORT
+  }
+};
 
 export default async function Home() {
   const venues = await getPublicVenues();

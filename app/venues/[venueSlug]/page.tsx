@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -24,6 +25,7 @@ import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
 import { isUnratedItemStats } from "@/components/food-item-empty-states";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
+import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -60,6 +62,54 @@ type VenuePageProps = {
     q?: string;
   }>;
 };
+
+export async function generateMetadata({
+  params
+}: Pick<VenuePageProps, "params">): Promise<Metadata> {
+  const { venueSlug } = await params;
+  const venue = await getPublicVenueBySlug(venueSlug);
+
+  if (!venue) {
+    return {
+      title: "Venue",
+      description: SITE_TAGLINE_SHORT,
+      robots: { index: false, follow: true }
+    };
+  }
+
+  const teamsLine =
+    venue.teams.length > 0
+      ? `${venue.teams.slice(0, 2).join(" & ")}${venue.teams.length > 2 ? "…" : ""}`
+      : null;
+  const description = [
+    `${venue.name} — Game Day concession rankings in ${venue.city}, ${venue.state}.`,
+    teamsLine ? `Home of ${teamsLine}.` : null,
+    SITE_TAGLINE_SHORT
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const path = `/venues/${venue.slug}`;
+
+  return {
+    title: venue.name,
+    description,
+    alternates: { canonical: getAbsoluteUrl(path) },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      siteName: "Stadium Slop",
+      url: getAbsoluteUrl(path),
+      title: `${venue.name} · Game Day Rankings`,
+      description
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${venue.name} rankings`,
+      description
+    }
+  };
+}
 
 async function suggestMissingItem(formData: FormData) {
   "use server";

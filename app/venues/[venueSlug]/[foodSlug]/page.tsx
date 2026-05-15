@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -42,6 +43,7 @@ import {
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
+import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 
 export const dynamic = "force-dynamic";
 
@@ -57,6 +59,64 @@ type FoodPageProps = {
     report?: string;
   }>;
 };
+
+export async function generateMetadata({
+  params
+}: Pick<FoodPageProps, "params">): Promise<Metadata> {
+  const { venueSlug, foodSlug } = await params;
+  const venue = await getPublicVenueBySlug(venueSlug);
+  const foodItem = venue
+    ? await getPublicFoodItemBySlug(venue.slug, foodSlug)
+    : await getPublicFoodItemBySlug(venueSlug, foodSlug);
+
+  if (
+    !venue ||
+    !foodItem ||
+    foodItem.venueSlug.trim().toLowerCase() !== venue.slug.trim().toLowerCase()
+  ) {
+    return {
+      title: "Concession item",
+      description: SITE_TAGLINE_SHORT,
+      robots: { index: false, follow: true }
+    };
+  }
+
+  const [seasonStats, freshStats] = await Promise.all([
+    getDbBackedItemSlopStats(venue.slug, foodItem.slug, "season"),
+    getDbBackedItemSlopStats(venue.slug, foodItem.slug, "gameDayFresh")
+  ]);
+
+  const unrated = isUnratedItemStats(seasonStats.reviewCount);
+  const scorePart = unrated
+    ? "Season Slop Score awaits the first bite."
+    : `Season Slop Score ${seasonStats.averageSlopScore.toFixed(1)} (${getSlopScoreTier(seasonStats.averageSlopScore)})`;
+
+  const freshPart = freshStats.hasFreshToday
+    ? `Game Day Fresh ${freshStats.averageSlopScore.toFixed(1)} today.`
+    : "Game Day Fresh signal quiet so far.";
+
+  const description = `${foodItem.name} at ${venue.name}. ${scorePart} ${freshPart} ${SITE_TAGLINE_SHORT}`;
+  const path = `/venues/${venue.slug}/${foodItem.slug}`;
+
+  return {
+    title: foodItem.name,
+    description,
+    alternates: { canonical: getAbsoluteUrl(path) },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      siteName: "Stadium Slop",
+      url: getAbsoluteUrl(path),
+      title: `${foodItem.name} · ${venue.name}`,
+      description
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: foodItem.name,
+      description
+    }
+  };
+}
 
 function getPrimaryConsensusLabel(review: { labels: string[] }) {
   return review.labels[0] ?? "Fan Rating";

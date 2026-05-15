@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { buildRootMetadata } from "@/lib/site-metadata";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,9 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const rootMetadata = buildRootMetadata();
+
 export const metadata: Metadata = {
-  title: "Stadium Slop",
-  description: "Fan-powered concession intel for sports venues",
+  ...rootMetadata,
   icons: {
     icon: "/branding/stadium-slop-icon.png",
     apple: "/branding/stadium-slop-icon.png",
