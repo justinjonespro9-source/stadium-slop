@@ -7,23 +7,23 @@ export function SiteHeader() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-3 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
         <div className="flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2" aria-label="Stadium Slop home">
-            <span className="hidden md:inline-flex">
+            <span className="hidden md:inline-flex md:items-center">
               <Image
                 src="/branding/stadium-slop-wordmark.png"
                 alt="Stadium Slop"
-                width={200}
-                height={44}
-                className="h-8 w-auto object-contain object-left sm:h-9"
+                width={560}
+                height={112}
+                className="h-14 w-auto object-contain"
                 priority
               />
             </span>
-            <span className="inline-flex md:hidden">
+            <span className="inline-flex items-center md:hidden">
               <Image
                 src="/branding/stadium-slop-icon.png"
                 alt="Stadium Slop"
-                width={40}
-                height={40}
-                className="h-9 w-9 object-contain"
+                width={256}
+                height={256}
+                className="h-12 w-auto object-contain"
                 priority
               />
             </span>

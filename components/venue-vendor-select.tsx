@@ -56,12 +56,10 @@ export function VenueVendorSelect({
   const router = useRouter();
 
   return (
-    <label className="mt-3 block max-w-full">
-      <span className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
-        Vendor
-      </span>
+    <label className="mt-2 block max-w-full">
+      <span className="sr-only">Vendor filter</span>
       <select
-        className="mt-1.5 w-full max-w-md rounded-xl border border-[var(--slop-line)] bg-black px-3 py-2.5 text-sm font-bold text-zinc-100 outline-none focus:border-[var(--slop-orange)]"
+        className="mt-0 w-full max-w-md rounded-xl border border-[var(--slop-line)] bg-black px-3 py-2 text-sm font-bold text-[var(--slop-cream)] outline-none focus:border-[var(--slop-orange)]"
         value={vendorSlug === "all" ? "all" : vendorSlug}
         aria-label="Filter by vendor"
         onChange={(e) => {

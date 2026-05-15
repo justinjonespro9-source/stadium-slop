@@ -19,20 +19,7 @@ export default async function VenuesPage() {
 
   return (
     <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-6 py-10 sm:px-8 lg:px-10">
-        <header className="py-12">
-          <p className="brand-pill mb-4 inline-flex rounded-full border px-4 py-2 text-sm font-semibold">
-            Browse Venues
-          </p>
-          <h1 className="max-w-3xl text-5xl font-black leading-tight tracking-tight sm:text-6xl">
-            Start with the venues in the Stadium Slop sample set.
-          </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300">
-            MLB ballparks lead the list; NFL/NHL neighbors stay for demos. Use
-            search or open a venue card.
-          </p>
-        </header>
-
+      <section className="mx-auto w-full max-w-6xl px-4 pb-8 pt-3 sm:px-6 sm:pb-10 sm:pt-4 lg:px-10">
         <VenuesBrowseClient venues={venues} itemsByVenueSlug={itemsByVenueSlug} />
       </section>
     </main>
