@@ -88,9 +88,11 @@ function FanSignalBreakdown({
   const topPct = maxConsensusPercentage(stats);
 
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-black p-3 sm:p-4">
-      <h3 className="text-sm font-black text-zinc-200">{title}</h3>
-      <div className="mt-2 space-y-2">
+    <div className="rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.85)] p-2.5 sm:p-3">
+      <h3 className="text-xs font-black uppercase tracking-[0.08em] text-[var(--slop-cream-muted)]">
+        {title}
+      </h3>
+      <div className="mt-1.5 space-y-1.5">
         {stats.map((stat) => {
           const isTop = topPct > 0 && stat.percentage === topPct;
 
@@ -101,26 +103,26 @@ function FanSignalBreakdown({
                 isTop ? "border border-emerald-500/55 bg-emerald-950/35" : ""
               }`}
             >
-              <div className="flex items-center justify-between gap-2 text-xs">
+              <div className="flex items-center justify-between gap-2 text-[0.7rem]">
                 <span
                   className={
-                    isTop ? "font-bold text-emerald-100" : "font-bold text-zinc-400"
+                    isTop ? "font-bold text-emerald-100" : "font-bold text-[var(--slop-cream-dim)]"
                   }
                 >
                   {stat.label}
                 </span>
                 <span
                   className={
-                    isTop ? "font-black text-emerald-300" : "text-zinc-500"
+                    isTop ? "font-black text-emerald-300" : "text-[var(--slop-cream-dim)]"
                   }
                 >
                   {stat.percentage}%
                 </span>
               </div>
-              <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-zinc-900">
+              <div className="mt-1 h-1 overflow-hidden rounded-full bg-[color:rgba(0,0,0,0.35)]">
                 <div
                   className={`h-full rounded-full ${
-                    isTop ? "bg-emerald-400" : "bg-zinc-600"
+                    isTop ? "bg-emerald-400" : "bg-[var(--slop-cream-dim)]"
                   }`}
                   style={{ width: `${stat.percentage}%` }}
                 />
@@ -581,22 +583,22 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
   return (
     <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-8 lg:px-10">
+      <section className="mx-auto w-full max-w-6xl px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
         <Link
           href={`/venues/${venue.slug}`}
-          className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
+          className="inline-flex text-xs font-bold text-[var(--slop-cream-dim)] hover:text-[var(--slop-cream)] sm:text-sm"
         >
-          Back to {venue.name}
+          ← {venue.name}
         </Link>
 
         {showReportThanks ? (
           <div
             role="status"
-            className="mt-4 rounded-2xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm text-zinc-200"
+            className="mt-2 rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-surface)] px-3 py-2 text-xs text-[var(--slop-cream-muted)] sm:text-sm"
           >
-            <p className="font-bold">Thanks — we logged your report</p>
-            <p className="mt-1 text-zinc-400">
-              Moderators review flags; nothing is deleted automatically.
+            <p className="font-bold text-[var(--slop-cream)]">Report logged</p>
+            <p className="mt-0.5 text-[var(--slop-cream-dim)]">
+              Moderators review flags.
             </p>
           </div>
         ) : null}
@@ -604,10 +606,10 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         {reportErrorMsg ? (
           <div
             role="alert"
-            className="mt-4 rounded-2xl border border-amber-800/80 bg-amber-950/40 px-4 py-3 text-sm text-amber-100"
+            className="mt-2 rounded-xl border border-amber-800/80 bg-amber-950/40 px-3 py-2 text-xs text-amber-100 sm:text-sm"
           >
             <p className="font-bold">Report not sent</p>
-            <p className="mt-1 text-amber-200/90">{reportErrorMsg}</p>
+            <p className="mt-0.5 text-amber-200/90">{reportErrorMsg}</p>
           </div>
         ) : null}
 
@@ -616,39 +618,158 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             role="status"
             className={
               photoErrorFollowUp
-                ? "mt-4 rounded-2xl border border-amber-800/80 bg-amber-950/40 px-4 py-3 text-sm text-amber-100"
-                : "mt-4 rounded-2xl border border-emerald-800/80 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-100"
+                ? "mt-2 rounded-xl border border-amber-800/80 bg-amber-950/40 px-3 py-2 text-xs text-amber-100 sm:text-sm"
+                : "mt-2 rounded-xl border border-emerald-800/80 bg-emerald-950/40 px-3 py-2 text-xs text-emerald-100 sm:text-sm"
             }
           >
             <p className="font-bold">Review saved</p>
             <p
               className={
-                photoErrorFollowUp ? "mt-1 text-amber-100/95" : "mt-1 text-emerald-200/90"
+                photoErrorFollowUp ? "mt-0.5 text-amber-100/95" : "mt-0.5 text-emerald-200/90"
               }
             >
               {photoErrorFollowUp ??
-                "Thanks — Season Standings and Game Day Fresh update from structured signals and any fan photos you added."}
+                "Standings and Fresh update from your signals and photos."}
             </p>
             {showPhotoRetryCta ? (
-              <p className="mt-2 text-sm text-amber-50/95">
+              <p className="mt-1.5 text-xs text-amber-50/95">
                 <Link
                   href={`/venues/${venue.slug}/${foodItem.slug}/review?photoRetry=1`}
                   className="font-bold text-white underline decoration-[var(--slop-orange)] underline-offset-2 hover:text-[var(--slop-orange)]"
                 >
-                  Try photo again
-                </Link>
-                {" "}
-                — same-day submit updates your saved review (one per item per
-                game day), so you are not creating a duplicate scorecard.
+                  Retry photo
+                </Link>{" "}
+                — updates today&apos;s saved review.
               </p>
             ) : null}
           </div>
         ) : null}
 
-        <header className="grid gap-4 py-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+        <header className="space-y-2.5 pt-2 sm:space-y-3 sm:pt-3">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
+              <BrandBadgeIcon size={22} title="Featured on Stadium Slop" />
+            ) : null}
+            <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] bg-[rgba(245,233,208,0.06)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] sm:px-2.5 sm:text-xs">
+              {foodItem.itemType} · {foodItem.category}
+            </p>
+            {foodItem.ageRestricted ? (
+              <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] sm:text-xs">
+                21+
+              </p>
+            ) : null}
+            {foodItem.isPromoted ? (
+              <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.1)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] sm:text-xs">
+                Promoted
+              </p>
+            ) : null}
+            {foodItem.isNewThisSeason ? (
+              <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] sm:text-xs">
+                New
+              </p>
+            ) : null}
+            {foodItem.venueBadge ? (
+              <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.08)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] sm:text-xs">
+                {foodItem.venueBadge}
+              </p>
+            ) : null}
+          </div>
+
+          <h1 className="brand-headline max-w-4xl text-2xl leading-[1.08] tracking-tight text-[var(--slop-cream)] sm:text-5xl">
+            {foodItem.name}
+          </h1>
+
+          <div className="flex flex-col gap-2 sm:grid sm:grid-cols-12 sm:gap-2.5">
+            <div className="slop-score-callout relative overflow-hidden rounded-xl px-3 py-2.5 sm:col-span-5 sm:rounded-lg sm:px-4 sm:py-3">
+              <p className="text-[0.55rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+                Slop score
+              </p>
+              <p className="mt-1 text-3xl font-black tabular-nums leading-none tracking-tight text-[var(--slop-orange)] sm:text-4xl">
+                {unratedSeason ? "—" : seasonStats.averageSlopScore.toFixed(1)}
+              </p>
+              {!unratedSeason ? (
+                <p className="mt-1 text-[0.65rem] font-bold leading-snug text-[var(--slop-cream-muted)]">
+                  {slopTier}
+                </p>
+              ) : (
+                <p className="mt-1 text-[0.65rem] text-[var(--slop-cream-dim)]">
+                  Awaiting first season score
+                </p>
+              )}
+            </div>
+
+            <div
+              className={`relative overflow-hidden rounded-xl px-3 py-2.5 sm:col-span-4 sm:rounded-lg sm:px-4 sm:py-3 ${
+                freshStats.reviewCount > 0
+                  ? "slop-fresh-glow border border-emerald-400/40 bg-[color:rgba(6,22,16,0.55)]"
+                  : "border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.88)] shadow-[var(--slop-shadow-inset)]"
+              }`}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[0.55rem] font-black uppercase tracking-[0.14em] text-emerald-200/95">
+                  Fresh signal
+                </p>
+                {freshStats.reviewCount > 0 ? (
+                  <span className="inline-flex items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/55 px-1.5 py-0.5 text-[0.45rem] font-black uppercase tracking-wider text-emerald-100">
+                    <span
+                      className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400"
+                      aria-hidden
+                    />
+                    Live
+                  </span>
+                ) : null}
+              </div>
+              <p className="mt-1 text-2xl font-black tabular-nums leading-none text-[var(--slop-cream)] sm:text-3xl">
+                {freshStats.reviewCount > 0
+                  ? freshStats.averageSlopScore.toFixed(1)
+                  : "—"}
+              </p>
+              <p className="mt-1 text-[0.58rem] font-semibold text-[var(--slop-cream-dim)]">
+                {foodItem.freshWindowLabel
+                  ? `Window · ${foodItem.freshWindowLabel}`
+                  : "Game-day takes"}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 sm:col-span-3 sm:grid-cols-1 sm:gap-2">
+              <div className="rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.88)] px-2.5 py-2 shadow-[var(--slop-shadow-inset)] sm:rounded-lg sm:px-3 sm:py-2.5">
+                <p className="text-[0.5rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+                  Reviews
+                </p>
+                <p className="mt-0.5 text-lg font-black tabular-nums text-[var(--slop-cream)] sm:text-xl">
+                  {seasonStats.reviewCount}
+                </p>
+                {napkinEligible ? (
+                  <p className="text-[0.55rem] text-[var(--slop-cream-dim)]">
+                    {seasonStats.roundedNapkinRating}/5 napkins
+                  </p>
+                ) : (
+                  <p className="text-[0.55rem] text-[var(--slop-cream-dim)]">Season scope</p>
+                )}
+              </div>
+              <div className="rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-2.5 py-2 shadow-[var(--slop-shadow-inset)] sm:rounded-lg sm:px-3 sm:py-2.5">
+                <p className="text-[0.5rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+                  Price
+                </p>
+                <p className="mt-0.5 text-base font-bold tabular-nums text-[var(--slop-cream-muted)] sm:text-lg">
+                  {priceIntel.displayPrice
+                    ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
+                    : "—"}
+                </p>
+                <p className="truncate text-[0.55rem] text-[var(--slop-cream-dim)]">
+                  {foodItem.priceLastConfirmedLabel
+                    ? foodItem.priceLastConfirmedLabel
+                    : priceIntel.reportCount
+                      ? `${priceIntel.reportCount} reports`
+                      : "Fan reports"}
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div
             aria-label={heroAlt}
-            className="brand-card relative aspect-[16/11] overflow-hidden rounded-3xl border bg-black lg:order-2"
+            className="brand-card relative aspect-[16/10] overflow-hidden rounded-2xl border bg-black sm:aspect-[16/9]"
           >
             {heroImageUrl ? (
               <Image
@@ -656,7 +777,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 alt={heroAlt}
                 fill
                 className="object-contain object-center"
-                sizes="(max-width: 1024px) 100vw, 42vw"
+                sizes="(max-width: 1024px) 100vw, 640px"
                 priority
               />
             ) : (
@@ -668,171 +789,83 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             )}
           </div>
 
-          <div>
-            <div className="mb-3 flex flex-wrap items-center gap-2">
-              {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
-                <BrandBadgeIcon size={24} title="Featured on Stadium Slop" />
-              ) : null}
-              <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] bg-[rgba(245,233,208,0.06)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-cream-muted)]">
-                {foodItem.itemType} · {foodItem.category}
-              </p>
-              {foodItem.ageRestricted ? (
-                <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-cream-muted)]">
-                  21+
-                </p>
-              ) : null}
-              {foodItem.isPromoted ? (
-                <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.1)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-gold-bright)]">
-                  Promoted
-                </p>
-              ) : null}
-              {foodItem.isNewThisSeason ? (
-                <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-cream-muted)]">
-                  New This Season
-                </p>
-              ) : null}
-              {foodItem.venueBadge ? (
-                <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.08)] px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-gold-bright)]">
-                  {foodItem.venueBadge}
-                </p>
-              ) : null}
-            </div>
-            <h1 className="brand-headline max-w-4xl text-3xl leading-tight tracking-tight sm:text-6xl">
-              {foodItem.name}
-            </h1>
-            <p className="mt-3 text-base leading-7 text-zinc-300 sm:text-lg">
+          <Link
+            href={reviewPath}
+            className="brand-cta inline-flex w-full justify-center rounded-full px-5 py-2.5 text-sm font-black transition sm:w-auto sm:py-3"
+          >
+            {hasTodaysReview
+              ? "Edit today’s review"
+              : unratedSeason
+                ? "First review"
+                : "Review"}
+          </Link>
+          {isSignedIn ? (
+            <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+              One review per item per game day — edits replace today&apos;s card.
+            </p>
+          ) : null}
+
+          <p className="text-xs text-[var(--slop-cream-dim)]">
+            {venue.name} · {vendor ? vendor.name : "Vendor TBD"} · {foodItem.location}
+          </p>
+
+          {foodItem.description ? (
+            <p className="line-clamp-2 text-sm leading-snug text-[var(--slop-cream-muted)]">
               {foodItem.description}
             </p>
-            <p className="mt-3 text-sm text-zinc-400 sm:text-base">
-              {venue.name} · {vendor ? vendor.name : "Vendor TBD"} ·{" "}
-              {foodItem.location}
-            </p>
-
-            <div className="slop-score-callout mt-4 rounded-2xl p-3 sm:rounded-3xl sm:p-4">
-              {unratedSeason ? (
-                <p className="text-sm font-bold leading-6 text-zinc-200">
-                  <span className="text-zinc-400">Slop Score</span>{" "}
-                  <span className="text-zinc-300">Awaiting first Slop Score</span>
-                  {" · "}
-                  <span className="text-zinc-500">Season tier unlocks after reviews</span>
-                </p>
-              ) : (
-                <p className="text-sm font-bold leading-6 text-zinc-200">
-                  <span className="text-[var(--slop-orange)]">
-                    Slop Score {seasonStats.averageSlopScore.toFixed(1)}
-                  </span>{" "}
-                  · {slopTier}
-                  {" · "}
-                  Fresh Signal{" "}
-                  {freshStats.reviewCount > 0
-                    ? `${freshStats.averageSlopScore.toFixed(1)} today`
-                    : "No Game Day Fresh yet"}
-                  {" · "}
-                  {seasonStats.reviewCount} reviews
-                  {napkinEligible ? (
-                    <>
-                      {" "}
-                      · {seasonStats.roundedNapkinRating} Napkins
-                    </>
-                  ) : null}
-                </p>
-              )}
-              <p className="mt-1 text-xs leading-5 text-zinc-500 sm:text-sm">
-                Current price{" "}
-                {priceIntel.displayPrice
-                  ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
-                  : "pending"}{" "}
-                {foodItem.priceLastConfirmedLabel
-                  ? `· ${foodItem.priceLastConfirmedLabel}`
-                  : ""}
-                {priceIntel.reportCount
-                  ? ` · ${priceIntel.reportCount} ${priceIntel.source} reports`
-                  : ""}
-              </p>
-            </div>
-            <Link
-              href={reviewPath}
-              className="brand-cta mt-3 inline-flex w-full justify-center rounded-full px-5 py-3 text-sm font-black transition sm:w-auto"
-            >
-              {hasTodaysReview
-                ? "Edit Today’s Review"
-                : unratedSeason
-                  ? "Submit the first review"
-                  : "Submit a Review"}
-            </Link>
-            {isSignedIn ? (
-              <p className="mt-2 max-w-xl text-xs leading-5 text-zinc-500">
-                You can update today&apos;s review; it replaces your earlier score for
-                this item (one saved review per item per game day).
-              </p>
-            ) : null}
-          </div>
+          ) : null}
         </header>
 
         {noFreshReviews ? (
-          <GameDayFreshPendingBlock />
+          <div className="mt-2">
+            <GameDayFreshPendingBlock />
+          </div>
         ) : foodItem.freshSignal ? (
-          <section className="mt-2 rounded-3xl border border-zinc-800 bg-zinc-950 p-4 sm:p-5">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-              Fresh Review Signal / Fresh Meter
-            </p>
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <h2 className="text-2xl font-black sm:text-3xl">
-                {foodItem.freshSignal}
-              </h2>
-              <span className="rounded-full border border-zinc-700 px-3 py-1 text-sm font-bold text-zinc-300">
-                {foodItem.freshReviewCount} fresh reviews{" "}
-                {foodItem.freshWindowLabel}
+          <section className="relative mt-2 overflow-hidden rounded-xl border border-emerald-500/35 bg-[color:rgba(6,22,16,0.45)] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_24px_rgba(52,211,153,0.08)] sm:py-2.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/45 px-1.5 py-0.5 text-[0.45rem] font-black uppercase tracking-wider text-emerald-100">
+                <span
+                  className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400"
+                  aria-hidden
+                />
+                Live board
+              </span>
+              <span className="rounded border border-[var(--slop-line)] px-1.5 py-0.5 text-[0.6rem] font-bold text-[var(--slop-cream-muted)]">
+                {foodItem.freshReviewCount} takes · {foodItem.freshWindowLabel ?? "today"}
               </span>
             </div>
-            <p className="mt-3 text-sm leading-6 text-zinc-300 sm:text-base">
-              {foodItem.freshSignalReason}
-            </p>
-            <p className="mt-3 max-w-3xl text-sm text-zinc-500">
-              Season Standings show the long-term read. Game Day Fresh shows
-              what fans are seeing right now.
-            </p>
+            <h2 className="mt-1.5 text-base font-black leading-tight text-[var(--slop-cream)] sm:text-lg">
+              {foodItem.freshSignal}
+            </h2>
+            {foodItem.freshSignalReason ? (
+              <p className="mt-1 line-clamp-2 text-[0.7rem] leading-snug text-[var(--slop-cream-muted)]">
+                {foodItem.freshSignalReason}
+              </p>
+            ) : null}
           </section>
         ) : null}
 
-        <section className="mt-2 border-t border-zinc-800 pt-3 sm:border-t-0 sm:pt-0">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
-            Fan Signals
-          </p>
-          <h2 className="mt-1 text-lg font-black text-zinc-100 sm:text-xl">
-            Replay value · Price check
+        <section className="mt-3 border-t border-[var(--slop-line-strong)] pt-3 sm:mt-4 sm:pt-4">
+          <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+            Fan signals
           </h2>
-          <p className="mt-1 text-xs text-zinc-500">
-            Season-scope review signals (deduped per fan and game day). Highest
-            share in each group is highlighted.
-          </p>
           {unratedSeason ? (
-            <FanSignalsPendingPanel />
+            <div className="mt-2">
+              <FanSignalsPendingPanel />
+            </div>
           ) : (
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <FanSignalBreakdown title="Replay Value" stats={seasonStats.replayValue} />
-              <FanSignalBreakdown title="Price Check" stats={seasonStats.priceCheck} />
+            <div className="mt-2 grid gap-2 sm:grid-cols-2 sm:gap-2.5">
+              <FanSignalBreakdown title="Replay value" stats={seasonStats.replayValue} />
+              <FanSignalBreakdown title="Price check" stats={seasonStats.priceCheck} />
             </div>
           )}
         </section>
 
-        <section className="border-t border-zinc-800 py-6 sm:py-8">
-          <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                Photo-backed reviews
-              </p>
-              <h2 className="mt-1 text-xl font-black sm:text-2xl">
-                From fans in the seats
-              </h2>
-            </div>
-            <p className="max-w-2xl text-xs leading-5 text-zinc-500 sm:text-sm">
-              Same photo is not repeated below the hero. Text-only reviews still
-              move Season Standings and Fresh.
-            </p>
-          </div>
-
-          <div className="mt-4 flex snap-x gap-3 overflow-x-auto pb-3">
+        <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
+          <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+            Photo reviews
+          </h2>
+          <div className="mt-2 flex snap-x gap-2 overflow-x-auto pb-2 sm:gap-3">
             {photoBackedReviews.length > 0 ? (
               photoBackedReviews.map((review) => {
                 const heroDup =
@@ -842,10 +875,10 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 return (
                   <article
                     key={review.id}
-                    className="brand-card min-w-[min(100%,22rem)] max-w-[22rem] shrink-0 snap-start overflow-hidden rounded-2xl sm:min-w-[20rem]"
+                    className="brand-card min-w-[min(100%,18.5rem)] max-w-[20rem] shrink-0 snap-start overflow-hidden rounded-xl border sm:min-w-[18rem]"
                   >
                     {heroDup ? (
-                      <div className="flex gap-3 p-4 sm:p-4">
+                      <div className="flex gap-2.5 p-3 sm:p-3">
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[var(--slop-surface)] bg-[var(--slop-cream)] text-xs font-black text-[var(--slop-ink)]">
                           {getReviewerInitials(review)}
                         </div>
@@ -863,20 +896,20 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                               </span>
                             ) : null}
                           </div>
-                          <p className="mt-1.5 text-xs text-zinc-500">
-                            Fan photo is the hero image above
-                            {review.photoLabel ? ` · ${review.photoLabel}` : ""}.
+                          <p className="mt-1.5 text-xs text-[var(--slop-cream-dim)]">
+                            Same as hero
+                            {review.photoLabel ? ` · ${review.photoLabel}` : ""}
                           </p>
-                          <p className="mt-2 text-sm font-bold text-zinc-200">
+                          <p className="mt-1.5 text-sm font-bold text-[var(--slop-cream)]">
                             {getPrimaryConsensusLabel(review)}
                           </p>
-                          <p className="mt-1 text-xs text-zinc-500">
+                          <p className="mt-0.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
                             {review.reviewerName ?? "Fan"} ·{" "}
                             {review.reviewerHandle ?? "reviewer"} ·{" "}
                             {review.dateLabel}
                           </p>
                           {review.note ? (
-                            <p className="mt-2 text-sm leading-6 text-zinc-400">
+                            <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-[var(--slop-cream-muted)]">
                               {review.note}
                             </p>
                           ) : null}
@@ -917,13 +950,13 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
                     <div
                       className={
-                        heroDup ? "px-4 pb-4 sm:px-4" : "p-4 pt-6 sm:p-4 sm:pt-6"
+                        heroDup ? "px-3 pb-3 pt-2 sm:px-3" : "p-3 pt-5 sm:p-3 sm:pt-5"
                       }
                     >
                       {!heroDup ? (
                         <>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="text-lg font-black">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <h3 className="text-base font-black leading-tight">
                               {getPrimaryConsensusLabel(review)}
                             </h3>
                             <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-300">
@@ -935,12 +968,12 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                               </span>
                             ) : null}
                           </div>
-                          <p className="mt-2 text-sm text-zinc-500">
+                          <p className="mt-1.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
                             {review.reviewerName ?? "Fan"} ·{" "}
                             {review.reviewerHandle ?? "reviewer"}
                           </p>
                           {review.note ? (
-                            <p className="mt-3 text-sm leading-6 text-zinc-300">
+                            <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-[var(--slop-cream-muted)]">
                               {review.note}
                             </p>
                           ) : null}
@@ -1142,9 +1175,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             )}
           </div>
 
-          <p className="mt-2 text-xs leading-5 text-zinc-600 sm:text-sm">
-            Official scores use structured signals. Helpful likes need a
-            signed-in profile — no comments, dislikes, DMs, or followers.
+          <p className="mt-1.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
+            Structured scores · helpful likes need sign-in
           </p>
         </section>
 
@@ -1174,28 +1206,25 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
 
         {vendor && moreFromVendor.length > 0 ? (
-          <section className="border-t border-zinc-800 py-8">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-                  More from this vendor
-                </p>
-                <h2 className="mt-2 text-2xl font-black">{vendor.name}</h2>
-              </div>
+          <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-sm font-black text-[var(--slop-cream)]">
+                More · {vendor.name}
+              </h2>
               <Link
                 href={`/venues/${venue.slug}/vendors/${vendor.slug}`}
-                className="text-sm font-bold text-zinc-400 hover:text-white"
+                className="shrink-0 text-xs font-bold text-[var(--slop-gold)] hover:text-[var(--slop-gold-bright)]"
               >
-                Open vendor
+                Vendor →
               </Link>
             </div>
 
-            <div className="mt-4 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950">
+            <div className="mt-2 overflow-hidden rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-surface)]">
               {moreFromVendor.map((item) => (
                 <Link
                   key={item.slug}
                   href={`/venues/${venue.slug}/${item.slug}`}
-                  className="flex items-center justify-between gap-3 border-b border-zinc-800 px-4 py-4 transition last:border-b-0 hover:bg-black"
+                  className="flex items-center justify-between gap-3 border-b border-[var(--slop-line)] px-3 py-2.5 transition last:border-b-0 hover:bg-[var(--slop-ink)] sm:px-4"
                 >
                   <div>
                     <p className="font-bold">{item.name}</p>
@@ -1218,14 +1247,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           </section>
         ) : null}
 
-        <section className="border-t border-zinc-800 py-6">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
-            Listing & price
-          </p>
-          <p className="mt-2 text-sm font-bold text-zinc-200">
-            {venue.name} · {vendor ? vendor.name : "Vendor TBD"} · {foodItem.location}
-          </p>
-          <p className="mt-1 text-xs leading-5 text-zinc-500">
+        <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
+          <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+            Listing · price
+          </h2>
+          <p className="mt-1.5 text-xs text-[var(--slop-cream-dim)]">
             {venue.city}, {venue.state} ·{" "}
             <span className="inline-flex items-center gap-1">
               {venue.venueTypeKey ? (
@@ -1242,19 +1268,17 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             {foodItem.ageRestricted ? " · 21+" : ""}
             {foodItem.venueBadge ? ` · ${foodItem.venueBadge}` : ""}
             {foodItem.seasonIntroduced ? ` · Since ${foodItem.seasonIntroduced}` : ""}
-            {foodItem.lastConfirmed ? ` · Last confirmed ${foodItem.lastConfirmed}` : ""}
+            {foodItem.lastConfirmed ? ` · Confirmed ${foodItem.lastConfirmed}` : ""}
           </p>
-          <p className="mt-1 text-xs text-zinc-500">
-            Price{" "}
+          <p className="mt-1 text-xs text-[var(--slop-cream-muted)]">
             {priceIntel.displayPrice
               ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
-              : "pending"}{" "}
-            · {priceIntel.reportCount} {priceIntel.source} reports
+              : "—"}{" "}
+            · {priceIntel.reportCount} reports
             {foodItem.priceLastConfirmedLabel
               ? ` · ${foodItem.priceLastConfirmedLabel}`
-              : ""}
-            {" · "}
-            {foodItem.availabilityStatus ?? "Availability pending"}
+              : ""}{" "}
+            · {foodItem.availabilityStatus ?? "Availability TBD"}
           </p>
           {foodItem.tags.length > 0 ? (
             <div className="mt-2 flex flex-wrap gap-1.5">
