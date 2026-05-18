@@ -2,7 +2,9 @@
  * Multi-team / shared-venue helpers.
  * Venues store tenants on `Venue.teams[]` (no separate Team table).
  *
+ * TODO: NHL awards badges when league-specific stats exist
  * TODO: NBA / NHL / WNBA shared arenas (e.g. same building, different leagues)
+ * TODO: PWHL tenants at NHL buildings
  * TODO: neutral-site venues (World Cup, bowl games) with event-specific tenants
  * TODO: temporary event overlays (Super Bowl, Final Four) without duplicating menus
  */
@@ -24,7 +26,8 @@ const SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
   "scotiabank-arena": ["Toronto Maple Leafs"],
   "delta-center": ["Utah Hockey Club"],
   "capital-one-arena": ["Washington Capitals"],
-  "gainbridge-fieldhouse": ["Indiana Fever"]
+  "gainbridge-fieldhouse": ["Indiana Fever"],
+  "grand-casino-arena": ["Minnesota Frost"]
 };
 
 /** Preferred display order for known shared venues (primary tenant first). */
@@ -41,7 +44,8 @@ const SHARED_VENUE_TEAM_ORDER: Record<string, readonly string[]> = {
   "scotiabank-arena": ["Toronto Raptors", "Toronto Maple Leafs"],
   "delta-center": ["Utah Jazz", "Utah Hockey Club"],
   "capital-one-arena": ["Washington Wizards", "Washington Capitals"],
-  "gainbridge-fieldhouse": ["Indiana Pacers", "Indiana Fever"]
+  "gainbridge-fieldhouse": ["Indiana Pacers", "Indiana Fever"],
+  "grand-casino-arena": ["Minnesota Wild", "Minnesota Frost"]
 };
 
 function dedupeTeams(teams: string[]): string[] {
