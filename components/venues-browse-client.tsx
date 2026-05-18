@@ -8,6 +8,9 @@ import type { Venue } from "@/lib/sample-data";
 import { VenueSearchEmpty } from "@/components/venue-search-empty";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import {
+  FanPoweredGuideNote
+} from "@/components/fan-powered-guide-note";
+import {
   filterVenuesBySearch,
   VENUE_SEARCH_HELPER_COPY,
   type VenueSearchOptions
@@ -102,6 +105,7 @@ export function VenuesBrowseClient({
         <p className="mt-1.5 px-1 text-[0.65rem] font-medium text-[var(--slop-cream-dim)] sm:text-xs">
           {VENUE_SEARCH_HELPER_COPY}
         </p>
+        <FanPoweredGuideNote preset="browse" className="mt-1.5 px-1" />
       </div>
 
       {showEmpty ? (

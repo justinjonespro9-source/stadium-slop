@@ -28,9 +28,8 @@ export function SiteFooter() {
             labeled.
           </p>
           <p className="mt-3 max-w-2xl text-xs leading-5 text-[var(--slop-cream-dim)]">
-            Stadium Slop is an independent fan-powered food guide and is not
-            affiliated with any stadium, team, league, concessionaire, or vendor
-            unless stated.
+            Fan-powered and independently maintained. Reviews are crowd opinions,
+            not venue or team endorsements. Menus and stands can change anytime.
           </p>
           <p className="mt-3 text-xs font-black uppercase tracking-[0.15em] text-[var(--slop-gold)]">
             © SNG LABS LLC

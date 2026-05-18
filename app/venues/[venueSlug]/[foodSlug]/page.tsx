@@ -48,6 +48,11 @@ import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
 import { FoodItemAwardChips } from "@/components/food-item-award-chips";
+import {
+  FanPoweredGuideBadge,
+  FanPoweredGuideNote
+} from "@/components/fan-powered-guide-note";
+import { formatItemGuideTimestamp } from "@/lib/guide-disclaimers";
 
 export const dynamic = "force-dynamic";
 
@@ -722,6 +727,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
           <FoodItemAwardChips chips={awardChips} />
 
+          <div className="flex flex-wrap items-center gap-2">
+            <FanPoweredGuideBadge />
+            <FanPoweredGuideNote
+              preset="food-scores"
+              className="min-w-0 flex-1"
+            />
+          </div>
+
           <div className="flex flex-col gap-2 sm:grid sm:grid-cols-12 sm:gap-2.5">
             <div className="slop-score-callout relative overflow-hidden rounded-xl px-3 py-2.5 sm:col-span-5 sm:rounded-lg sm:px-4 sm:py-3">
               <p className="text-[0.55rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
@@ -857,6 +870,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               {foodItem.description}
             </p>
           ) : null}
+          <FanPoweredGuideNote
+            preset="food-menu"
+            className="pt-0.5"
+            lastUpdated={formatItemGuideTimestamp(foodItem)}
+          />
         </header>
 
         {!hasGameDayFreshToday ? (
@@ -905,9 +923,13 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         </section>
 
         <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
-          <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            Photo reviews
-          </h2>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+              Photo reviews
+            </h2>
+            <FanPoweredGuideBadge />
+          </div>
+          <FanPoweredGuideNote preset="food-reviews" className="mt-1.5" />
           <div className="mt-2 flex snap-x gap-2 overflow-x-auto pb-2 sm:gap-3">
             {photoBackedReviews.length > 0 ? (
               photoBackedReviews.map((review) => {

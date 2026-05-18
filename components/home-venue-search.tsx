@@ -16,6 +16,7 @@ import type { Venue } from "@/lib/sample-data";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import { filterVenuesBySearch } from "@/lib/venue-search";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
+import { FanPoweredGuideNote } from "@/components/fan-powered-guide-note";
 import { VenueSearchEmpty } from "@/components/venue-search-empty";
 
 const HOME_RESULTS_MAX = 8;
@@ -130,6 +131,7 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
           className="w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3.5 py-3 text-[0.95rem] font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-[1.35rem] sm:px-4 sm:py-3.5 sm:text-base"
         />
       </label>
+      <FanPoweredGuideNote preset="home" className="mt-1.5 px-1" />
 
       {showEmpty ? (
         <div className="border-t border-[var(--slop-line)] px-2 py-3">

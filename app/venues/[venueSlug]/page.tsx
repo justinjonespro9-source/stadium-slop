@@ -29,6 +29,10 @@ import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatHomeOfTeams, formatVenueTeamsInline } from "@/lib/venue-teams";
 import { buildVenueAwardBoards } from "@/lib/venue-awards";
 import { VenueAwardBoards } from "@/components/venue-award-boards";
+import {
+  FanPoweredGuideBadge,
+  FanPoweredGuideNote
+} from "@/components/fan-powered-guide-note";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -702,7 +706,9 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
               Rankings
             </p>
+            <FanPoweredGuideBadge />
           </div>
+          <FanPoweredGuideNote preset="venue-rankings" className="mt-2" />
           <ModeChips
             venueSlug={venue.slug}
             mode={mode}
@@ -796,6 +802,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               </p>
             )}
           </div>
+          <FanPoweredGuideNote preset="venue-bottom" className="mt-2.5 px-0.5" />
         </section>
 
         <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
