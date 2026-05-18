@@ -19,6 +19,7 @@ import {
   computeCoverScale,
   cropImageToBlob,
   assignFileToInput,
+  prepareClientUploadFile,
   validateClientImageFile,
   type CropTransform
 } from "@/lib/photo-crop-client";
@@ -195,17 +196,21 @@ export function PhotoCropUpload({
 
     resetCropState({ clearPicker: false });
 
-    const check = validateClientImageFile(file);
-    if (!check.ok) {
-      setValidationError(check.message);
+    let prepared: File;
+    try {
+      prepared = await prepareClientUploadFile(file);
+    } catch (err) {
+      setValidationError(
+        err instanceof Error ? err.message : "Could not use that image."
+      );
       clearPickerInputsOnly();
       return;
     }
 
     try {
-      const img = await loadImageFromFile(file);
-      const url = URL.createObjectURL(file);
-      setSourceFile(file);
+      const img = await loadImageFromFile(prepared);
+      const url = URL.createObjectURL(prepared);
+      setSourceFile(prepared);
       setPreviewUrl(url);
       setImageEl(img);
       setZoomFactor(1);
@@ -232,12 +237,28 @@ export function PhotoCropUpload({
     }
 
     if (useFullPhoto) {
-      assignFileToInput(input, sourceFile);
+      try {
+        const prepared = await prepareClientUploadFile(sourceFile);
+        const postCheck = validateClientImageFile(prepared);
+        if (!postCheck.ok) {
+          throw new Error(postCheck.message);
+        }
+        assignFileToInput(input, prepared);
+        setCropWarning(null);
+      } catch (err) {
+        const msg =
+          err instanceof Error
+            ? err.message
+            : "Could not attach full photo. Try crop mode or submit without a photo.";
+        setCropWarning(msg);
+        assignFileToInput(input, null);
+      }
       return;
     }
 
     if (!imageEl) {
-      assignFileToInput(input, sourceFile);
+      assignFileToInput(input, null);
+      setCropWarning("Image is still loading. Wait a moment and submit again.");
       return;
     }
 
@@ -280,18 +301,23 @@ export function PhotoCropUpload({
         return;
       }
 
-      const needsAsyncCrop = Boolean(sourceFile && imageEl && !useFullPhoto);
-
-      if (!needsAsyncCrop) {
-        void syncToFormInput();
+      if (!sourceFile) {
         return;
       }
 
       e.preventDefault();
-      void syncToFormInput().then(() => {
+      void (async () => {
+        await syncToFormInput();
+        const attached = fileInputRef.current?.files?.[0];
+        if (sourceFile && (!attached || attached.size === 0)) {
+          setCropWarning(
+            "Photo could not be attached. Try “Use full photo”, re-pick the image, or submit without a photo."
+          );
+          return;
+        }
         submitSyncedRef.current = true;
         form.requestSubmit();
-      });
+      })();
     };
 
     form.addEventListener("submit", onSubmit, true);
@@ -346,7 +372,7 @@ export function PhotoCropUpload({
         ref={fileInputRef}
         type="file"
         name={inputName}
-        accept="image/jpeg,image/png,image/webp,image/gif"
+        accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif"
         className="sr-only"
         tabIndex={-1}
         aria-hidden
@@ -364,7 +390,8 @@ export function PhotoCropUpload({
           receive the image you submit with this review.
         </p>
         <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-          JPEG, PNG, WebP, or GIF · about 8MB max · HEIC not supported
+          JPEG, PNG, WebP, or GIF · about 8MB max · iPhone HEIC converts to JPEG
+          when your browser supports it
         </p>
 
         <input

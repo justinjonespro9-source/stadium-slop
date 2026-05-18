@@ -52,6 +52,7 @@ import {
   pickSlopCardHighlights,
   slopCardLocationLine
 } from "@/lib/slop-card-display";
+import { photoErrorMessageFromQuery } from "@/lib/review-photo-errors";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
@@ -542,20 +543,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const showReviewSaved = query.reviewSubmitted === "true";
   const photoError = query.photoError;
 
-  const photoErrorFollowUp =
-    photoError === "too_large"
-      ? "Your ratings are live, but the photo was over the upload size limit (about 8MB). Try a smaller JPEG or PNG."
-      : photoError === "heic"
-        ? "Your ratings are live, but HEIC/HEIF is not supported yet. On iPhone use Settings → Camera → Formats → “Most Compatible”, or export the shot as JPEG, then add it from Review this item."
-        : photoError === "unsupported"
-          ? "Your ratings are live, but that file was not a supported image type. Use JPEG, PNG, WebP, or GIF."
-          : photoError === "cloudinary"
-            ? "Your ratings are live, but the server is not configured for photo uploads (missing Cloudinary env vars)."
-            : photoError === "photo_save"
-              ? "Your ratings are live and the image reached our host, but saving the photo link failed. Try submitting the photo again from Review this item."
-              : photoError === "upload" || photoError
-                ? "Your ratings are live, but the fan photo failed to upload. Check your connection and try again with JPEG or PNG under about 8MB."
-                : null;
+  const photoErrorFollowUp = photoErrorMessageFromQuery(photoError);
 
   const showPhotoRetryCta =
     Boolean(photoError) && showReviewSaved && photoError !== "cloudinary";

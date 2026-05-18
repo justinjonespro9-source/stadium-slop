@@ -1,3 +1,5 @@
+import { Readable } from "node:stream";
+
 import { v2 as cloudinary } from "cloudinary";
 import type { UploadApiResponse } from "cloudinary";
 
@@ -15,6 +17,7 @@ export type ImageUploadFailureCode =
   | "UNSUPPORTED_TYPE"
   | "HEIC_UNSUPPORTED"
   | "NOT_CONFIGURED"
+  | "READ_FAILED"
   | "CLOUDINARY_REJECTED"
   | "INVALID_RESPONSE";
 
@@ -49,7 +52,7 @@ export function isCloudinaryConfigured() {
   );
 }
 
-function getFileDebug(file: File): ImageFileDebugInfo {
+export function getFileDebug(file: File): ImageFileDebugInfo {
   const name = file.name ?? "";
   const ext =
     name.includes(".") && name.lastIndexOf(".") >= 0
@@ -168,22 +171,24 @@ export function validateImageFile(file: File): void {
 
   const mime = (file.type || "").trim().toLowerCase();
   const extOk = ALLOWED_EXT.test(file.name || "");
+  const looksLikeJpeg =
+    extOk && /\.jpe?g$/i.test(file.name || "") && file.size > 0;
 
   if (!mime || mime === "application/octet-stream") {
-    if (!extOk) {
-      throw new ImageUploadError(
-        "UNSUPPORTED_TYPE",
-        "Could not confirm an allowed image type. Use JPEG, PNG, WebP, or GIF.",
-        fileDebug
-      );
+    if (looksLikeJpeg || extOk) {
+      return;
     }
-    return;
+    throw new ImageUploadError(
+      "UNSUPPORTED_TYPE",
+      "Could not confirm an allowed image type. Use JPEG, PNG, WebP, or GIF.",
+      fileDebug
+    );
   }
 
   if (!ALLOWED_MIME.test(mime)) {
     throw new ImageUploadError(
       "UNSUPPORTED_TYPE",
-      `Unsupported image type (${file.type}). Use JPEG, PNG, WebP, or GIF.`,
+      `Unsupported image type (${file.type || "unknown"}). Use JPEG, PNG, WebP, or GIF.`,
       fileDebug
     );
   }
@@ -197,13 +202,18 @@ export function photoErrorQueryFromUploadFailure(reason: unknown): string {
         return "too_large";
       case "HEIC_UNSUPPORTED":
         return "heic";
-      case "UNSUPPORTED_TYPE":
       case "EMPTY_FILE":
+        return "empty_file";
+      case "UNSUPPORTED_TYPE":
         return "unsupported";
       case "NOT_CONFIGURED":
         return "cloudinary";
+      case "READ_FAILED":
+        return "read_failed";
       case "INVALID_RESPONSE":
+        return "cloudinary_response";
       case "CLOUDINARY_REJECTED":
+        return "cloudinary_api";
       default:
         return "upload";
     }
@@ -212,15 +222,14 @@ export function photoErrorQueryFromUploadFailure(reason: unknown): string {
 }
 
 function uploadBufferToCloudinary(
-  dataUri: string,
+  buffer: Buffer,
   options: { folder: string; publicId?: string },
   file: File
 ): Promise<UploadApiResponse> {
   const fileDebug = getFileDebug(file);
 
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(
-      dataUri,
+    const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder: options.folder,
         public_id: options.publicId,
@@ -251,6 +260,18 @@ function uploadBufferToCloudinary(
         resolve(result);
       }
     );
+
+    uploadStream.on("error", (streamErr) => {
+      reject(
+        new ImageUploadError(
+          "CLOUDINARY_REJECTED",
+          normalizeUploadReason(streamErr).message,
+          fileDebug
+        )
+      );
+    });
+
+    Readable.from(buffer).pipe(uploadStream);
   });
 }
 
@@ -266,23 +287,40 @@ export async function uploadImageFile(
   ensureConfigured(file);
 
   const fileDebug = getFileDebug(file);
-  let dataUri: string;
+  let buffer: Buffer;
 
   try {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    dataUri = `data:${file.type || "image/jpeg"};base64,${buffer.toString("base64")}`;
+    buffer = Buffer.from(await file.arrayBuffer());
+    if (buffer.length === 0) {
+      throw new ImageUploadError(
+        "EMPTY_FILE",
+        "Image file was empty after upload.",
+        fileDebug
+      );
+    }
   } catch (e) {
+    if (e instanceof ImageUploadError) {
+      throw e;
+    }
     const err = normalizeUploadReason(e);
     logUploadFailure("cloudinary", file, err, { phase: "read_buffer" });
     throw new ImageUploadError(
-      "CLOUDINARY_REJECTED",
+      "READ_FAILED",
       `Could not read image data: ${err.message}`,
       fileDebug
     );
   }
 
+  if (buffer.length > MAX_BYTES) {
+    throw new ImageUploadError(
+      "TOO_LARGE",
+      `Image must be ${MAX_BYTES / 1024 / 1024}MB or smaller.`,
+      fileDebug
+    );
+  }
+
   try {
-    const result = await uploadBufferToCloudinary(dataUri, options, file);
+    const result = await uploadBufferToCloudinary(buffer, options, file);
     return {
       secureUrl: result.secure_url,
       publicId: result.public_id

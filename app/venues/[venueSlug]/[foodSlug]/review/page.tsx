@@ -8,12 +8,14 @@ import { getPublicFoodItemBySlug, getPublicVenueBySlug, slugFilterInsensitive } 
 import { buildGameDayKey } from "@/lib/game-day";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import {
+  getFileDebug,
   isCloudinaryConfigured,
   logUploadFailure,
   photoErrorQueryFromUploadFailure,
   uploadImageFile,
   validateImageFile
 } from "@/lib/cloudinary";
+import { reviewPagePhotoErrorMessage } from "@/lib/review-photo-errors";
 import { prisma } from "@/lib/prisma";
 import { PhotoCropUpload } from "@/components/photo-crop-upload";
 import { normalizePublicImageUrl } from "@/lib/image-url";
@@ -62,6 +64,22 @@ type ReviewPageProps = {
 };
 
 type SignalField = "replayValue" | "priceCheck";
+
+function getReviewPhotoFromForm(formData: FormData): File | null {
+  const field = formData.get("reviewPhoto");
+  if (!(field instanceof File)) {
+    if (field != null && String(field).trim()) {
+      console.warn("[reviewPhotoUpload] unexpected reviewPhoto field type", {
+        type: typeof field
+      });
+    }
+    return null;
+  }
+  if (field.size === 0) {
+    return null;
+  }
+  return field;
+}
 
 function revalidateFoodItemSurfaces(
   canonicalItemPath: string,
@@ -238,16 +256,19 @@ async function submitReview(formData: FormData) {
     redirect(`${canonicalItemPath}/review?error=missing-score`);
   }
 
-  const photoFieldPre = formData.get("reviewPhoto");
-  if (photoFieldPre instanceof File && photoFieldPre.size > 0) {
+  const photoFieldPre = getReviewPhotoFromForm(formData);
+  if (photoFieldPre) {
     if (!isCloudinaryConfigured()) {
       redirect(`${canonicalItemPath}/review?error=cloudinary`);
     }
     try {
       validateImageFile(photoFieldPre);
     } catch (err) {
+      logUploadFailure("reviewPhotoValidate", photoFieldPre, err, {
+        phase: "pre_submit"
+      });
       const code = photoErrorQueryFromUploadFailure(err);
-      redirect(`${canonicalItemPath}/review?error=${code}`);
+      redirect(`${canonicalItemPath}/review?photoRetry=1&photoError=${code}`);
     }
   }
 
@@ -321,9 +342,10 @@ async function submitReview(formData: FormData) {
     }
   });
 
-  const photoField = formData.get("reviewPhoto");
+  const photoField = getReviewPhotoFromForm(formData);
 
-  if (photoField instanceof File && photoField.size > 0) {
+  if (photoField) {
+    console.info("[reviewPhotoUpload] uploading", getFileDebug(photoField));
     let secureUrl: string;
 
     try {
@@ -353,7 +375,7 @@ async function submitReview(formData: FormData) {
         venue.slug,
         foodItemRow.vendor.slug
       );
-      redirect(`${canonicalItemPath}/review?photoRetry=1&photoError=upload`);
+      redirect(`${canonicalItemPath}/review?photoRetry=1&photoError=invalid_url`);
     }
 
     try {
@@ -425,17 +447,9 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
         ? "Pick a Replay Value — would you order this again?"
         : urlError === "missing-price"
           ? "Pick a Price Check — how was the value?"
-          : urlError === "too_large"
-            ? "Image must be about 8MB or smaller. Shrink the file and try again."
-            : urlError === "heic"
-              ? "HEIC/HEIF is not supported. Export as JPEG or use “Most Compatible” camera format."
-              : urlError === "unsupported"
-                ? "Use JPEG, PNG, WebP, or GIF."
-                : urlError === "cloudinary"
-                  ? "Photo uploads need Cloudinary configured on the server."
-                  : urlError === "upload"
-                    ? "Upload failed. Check connection and try again."
-                    : null;
+          : reviewPagePhotoErrorMessage(urlError);
+
+  const photoRetryDetailMessage = reviewPagePhotoErrorMessage(urlPhotoError);
 
   const reviewErrorAlertTitle =
     urlError === "missing-score" ||
@@ -598,6 +612,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
         <form
           id="review-form"
           action={submitReview}
+          encType="multipart/form-data"
           className="rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-3 sm:p-5"
         >
           <input type="hidden" name="venueSlug" value={venue.slug} />

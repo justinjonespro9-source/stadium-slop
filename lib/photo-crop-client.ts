@@ -4,6 +4,15 @@ export const MAX_IMAGE_UPLOAD_BYTES = 8 * 1024 * 1024;
 const ALLOWED_MIME = /^image\/(jpeg|pjpeg|png|x-png|webp|gif)$/i;
 const ALLOWED_EXT = /\.(jpe?g|png|gif|webp)$/i;
 
+export function isHeicLikeFile(file: File): boolean {
+  const mime = (file.type || "").toLowerCase();
+  if (mime === "image/heic" || mime === "image/heif") {
+    return true;
+  }
+  const name = (file.name || "").toLowerCase();
+  return name.endsWith(".heic") || name.endsWith(".heif");
+}
+
 export type ClientImageValidationCode =
   | "EMPTY"
   | "TOO_LARGE"
@@ -29,22 +38,16 @@ export function validateClientImageFile(file: File): {
     };
   }
 
-  const mime = (file.type || "").toLowerCase();
-  const name = (file.name || "").toLowerCase();
-  if (
-    mime === "image/heic" ||
-    mime === "image/heif" ||
-    name.endsWith(".heic") ||
-    name.endsWith(".heif")
-  ) {
+  if (isHeicLikeFile(file)) {
     return {
       ok: false,
       code: "HEIC",
       message:
-        "HEIC/HEIF is not supported. Export as JPEG or use Most Compatible camera format."
+        "This phone photo appears to be HEIC. Choose Most Compatible/JPEG in iPhone camera settings, export as JPEG from Photos, or take a new photo through the app."
     };
   }
 
+  const mime = (file.type || "").toLowerCase();
   const extOk = ALLOWED_EXT.test(file.name || "");
   if (!mime || mime === "application/octet-stream") {
     if (!extOk) {
@@ -124,6 +127,95 @@ export function clampPan(
   };
 }
 
+/** Resize + JPEG export for HEIC decode or full-photo normalization. */
+export function exportImageToJpegBlob(
+  image: HTMLImageElement,
+  maxDimension = 2400,
+  quality = 0.88
+): Promise<Blob> {
+  const iw = image.naturalWidth;
+  const ih = image.naturalHeight;
+  if (iw <= 0 || ih <= 0) {
+    return Promise.reject(new Error("Image has no pixel dimensions."));
+  }
+
+  const scale = Math.min(1, maxDimension / Math.max(iw, ih));
+  const cw = Math.max(1, Math.round(iw * scale));
+  const ch = Math.max(1, Math.round(ih * scale));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = cw;
+  canvas.height = ch;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    return Promise.reject(new Error("Could not create export canvas."));
+  }
+
+  ctx.fillStyle = "#0c1828";
+  ctx.fillRect(0, 0, cw, ch);
+  ctx.drawImage(image, 0, 0, cw, ch);
+
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error("Could not export image as JPEG."));
+          return;
+        }
+        if (blob.size > MAX_IMAGE_UPLOAD_BYTES) {
+          reject(
+            new Error(
+              "Photo is still too large after conversion. Try a smaller shot or zoom out before crop."
+            )
+          );
+          return;
+        }
+        resolve(blob);
+      },
+      "image/jpeg",
+      quality
+    );
+  });
+}
+
+/**
+ * When Safari decodes HEIC for <img>, convert to JPEG before upload.
+ * Otherwise return the file unchanged (after validation).
+ */
+export async function prepareClientUploadFile(file: File): Promise<File> {
+  if (!isHeicLikeFile(file)) {
+    const check = validateClientImageFile(file);
+    if (!check.ok) {
+      throw new Error(check.message);
+    }
+    return file;
+  }
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const el = new window.Image();
+      el.onload = () => resolve(el);
+      el.onerror = () =>
+        reject(
+          new Error(
+            "This phone photo appears to be HEIC. Choose Most Compatible/JPEG in iPhone camera settings, export as JPEG from Photos, or take a new photo through the app."
+          )
+        );
+      el.src = url;
+    });
+    const blob = await exportImageToJpegBlob(img);
+    const converted = blobToUploadFile(blob, file.name);
+    const check = validateClientImageFile(converted);
+    if (!check.ok) {
+      throw new Error(check.message);
+    }
+    return converted;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 export function cropImageToBlob(
   image: HTMLImageElement,
   transform: CropTransform,
@@ -181,7 +273,11 @@ export function cropImageToBlob(
 export function blobToUploadFile(blob: Blob, originalName: string): File {
   const base =
     originalName.replace(/\.[^.]+$/, "").slice(0, 80) || "fan-photo";
-  return new File([blob], `${base}-cropped.jpg`, {
+  const jpegBlob =
+    blob.type === "image/jpeg" || blob.type === "image/pjpeg"
+      ? blob
+      : new Blob([blob], { type: "image/jpeg" });
+  return new File([jpegBlob], `${base}-cropped.jpg`, {
     type: "image/jpeg",
     lastModified: Date.now()
   });
