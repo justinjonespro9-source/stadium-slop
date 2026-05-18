@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "rows": [
+    {
+      "league": "MLB",
+      "team": "Example MLB Club",
+      "venue": "Example Ballpark",
+      "city": "Example City",
+      "state": "IL",
+      "vendor": "Example Concessions",
+      "stand_name": "Section 101 Stand",
+      "section": "Section 101",
+      "item_name": "Placeholder Hot Dog",
+      "description": "Template row for import testing — replace before production.",
+      "price": 6.5,
+      "category": "Snack",
+      "season": "2026"
+    }
+  ]
+}

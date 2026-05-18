@@ -353,9 +353,12 @@ export function PhotoCropUpload({
       />
 
       <div className="block">
-        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-          Add food photo (optional)
-        </span>
+        <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+          Food photo{" "}
+          <span className="font-semibold normal-case text-[var(--slop-cream-dim)]">
+            (optional)
+          </span>
+        </p>
         <p className="mt-1.5 text-[0.7rem] leading-snug text-[var(--slop-cream-muted)]">
           Optional. Take a quick food photo or choose one from your library. We only
           receive the image you submit with this review.
@@ -370,7 +373,7 @@ export function PhotoCropUpload({
           accept="image/*"
           capture="environment"
           disabled={disabled}
-          aria-label="Take a new food photo with the camera"
+          aria-label="Take or upload a food photo"
           className="sr-only"
           tabIndex={-1}
           onChange={(e) => {
@@ -383,7 +386,7 @@ export function PhotoCropUpload({
           type="file"
           accept="image/*"
           disabled={disabled}
-          aria-label="Choose a food photo from your library or files"
+          aria-label="Choose a food photo from your library"
           className="sr-only"
           tabIndex={-1}
           onChange={(e) => {
@@ -392,22 +395,22 @@ export function PhotoCropUpload({
           }}
         />
 
-        <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+        <div className="mt-3 flex flex-col gap-2">
           <button
             type="button"
             disabled={disabled}
             onClick={() => cameraPickerRef.current?.click()}
-            className="rounded-full border-0 bg-[var(--slop-orange)] px-4 py-2.5 text-center text-xs font-black text-[var(--slop-ink)] shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex min-h-11 w-full touch-manipulation items-center justify-center rounded-xl border-0 bg-[var(--slop-orange)] px-4 py-3 text-center text-sm font-black text-[var(--slop-ink)] shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Take photo
+            Take or upload food photo
           </button>
           <button
             type="button"
             disabled={disabled}
             onClick={() => libraryPickerRef.current?.click()}
-            className="rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.65)] px-4 py-2.5 text-center text-xs font-black text-[var(--slop-cream)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex min-h-10 w-full touch-manipulation items-center justify-center rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.5)] px-4 py-2.5 text-center text-xs font-bold text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)]/40 hover:text-[var(--slop-cream)] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Choose from library
+            Choose from photo library
           </button>
         </div>
       </div>

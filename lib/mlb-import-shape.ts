@@ -1,6 +1,9 @@
 /**
  * MLB-first import payload (venues → vendors → optional items).
  * Versioned JSON for `scripts/apply-mlb-import.ts` and docs in `data/mlb/`.
+ *
+ * For flat spreadsheet rows (league, team, venue, vendor, stand_name, item_name, …)
+ * use `lib/league-import-shape.ts` and `npm run import:league` instead.
  */
 
 export const MLB_IMPORT_VERSION = 1 as const;

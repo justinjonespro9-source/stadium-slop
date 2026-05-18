@@ -26,6 +26,8 @@ import { isUnratedItemStats } from "@/components/food-item-empty-states";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import { buildVenueAwardBoards } from "@/lib/venue-awards";
+import { VenueAwardBoards } from "@/components/venue-award-boards";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -569,6 +571,18 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
   const venueFoodItems = await getPublicFoodItemsByVenueSlug(venue.slug);
   const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
+  const awardBundles = await Promise.all(
+    venueFoodItems.map(async (item) => ({
+      item,
+      season: await getDbBackedItemSlopStats(venue.slug, item.slug, "season"),
+      fresh: await getDbBackedItemSlopStats(
+        venue.slug,
+        item.slug,
+        "gameDayFresh"
+      )
+    }))
+  );
+  const awardBoards = buildVenueAwardBoards(awardBundles);
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
   const rawVendorSlug = (query?.vendor ?? "all").trim() || "all";
@@ -676,6 +690,8 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             </span>
           </p>
         </header>
+
+        <VenueAwardBoards venueSlug={venue.slug} boards={awardBoards} />
 
         <section
           className="pt-3 sm:pt-4"

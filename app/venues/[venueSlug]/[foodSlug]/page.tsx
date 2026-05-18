@@ -43,7 +43,10 @@ import {
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
+import { SlopCardShareModule } from "@/components/slop-card-share-module";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
+import { FoodItemAwardChips } from "@/components/food-item-award-chips";
 
 export const dynamic = "force-dynamic";
 
@@ -626,8 +629,16 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     : [];
 
   const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
+  const itemPath = `/venues/${venue.slug}/${foodItem.slug}`;
+  const itemShareUrl = getAbsoluteUrl(itemPath);
   const unratedSeason = isUnratedItemStats(seasonStats.reviewCount);
   const hasGameDayFreshToday = freshStats.hasFreshToday;
+  const awardChips = deriveFoodItemAwardChips(
+    foodItem,
+    seasonStats,
+    freshStats,
+    photoBackedReviews.length
+  );
 
   return (
     <main className="brand-page min-h-screen">
@@ -662,35 +673,16 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         ) : null}
 
         {showReviewSaved ? (
-          <div
-            role="status"
-            className={
-              photoErrorFollowUp
-                ? "mt-2 rounded-xl border border-amber-800/80 bg-amber-950/40 px-3 py-2 text-xs text-amber-100 sm:text-sm"
-                : "mt-2 rounded-xl border border-emerald-800/80 bg-emerald-950/40 px-3 py-2 text-xs text-emerald-100 sm:text-sm"
+          <SlopCardShareModule
+            itemHref={itemPath}
+            shareUrl={itemShareUrl}
+            shareTitle={`${foodItem.name} · ${venue.name}`}
+            shareDescription={`Slop Score and fan signals for ${foodItem.name} at ${venue.name} on Stadium Slop.`}
+            photoErrorMessage={photoErrorFollowUp}
+            photoRetryHref={
+              showPhotoRetryCta ? `${reviewPath}?photoRetry=1` : null
             }
-          >
-            <p className="font-bold">Review saved</p>
-            <p
-              className={
-                photoErrorFollowUp ? "mt-0.5 text-amber-100/95" : "mt-0.5 text-emerald-200/90"
-              }
-            >
-              {photoErrorFollowUp ??
-                "Standings and Fresh update from your signals and photos."}
-            </p>
-            {showPhotoRetryCta ? (
-              <p className="mt-1.5 text-xs text-amber-50/95">
-                <Link
-                  href={`/venues/${venue.slug}/${foodItem.slug}/review?photoRetry=1`}
-                  className="font-bold text-white underline decoration-[var(--slop-orange)] underline-offset-2 hover:text-[var(--slop-orange)]"
-                >
-                  Retry photo
-                </Link>{" "}
-                — updates today&apos;s saved review.
-              </p>
-            ) : null}
-          </div>
+          />
         ) : null}
 
         <header className="space-y-2.5 pt-2 sm:space-y-3 sm:pt-3">
@@ -726,6 +718,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           <h1 className="brand-headline max-w-4xl text-2xl leading-[1.08] tracking-tight text-[var(--slop-cream)] sm:text-5xl">
             {foodItem.name}
           </h1>
+
+          <FoodItemAwardChips chips={awardChips} />
 
           <div className="flex flex-col gap-2 sm:grid sm:grid-cols-12 sm:gap-2.5">
             <div className="slop-score-callout relative overflow-hidden rounded-xl px-3 py-2.5 sm:col-span-5 sm:rounded-lg sm:px-4 sm:py-3">

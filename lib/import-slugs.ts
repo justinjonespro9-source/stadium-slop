@@ -1,0 +1,74 @@
+/**
+ * Shared slug rules for seed + league/CSV imports.
+ * Keeps venue, vendor (stand), and item URLs stable across repeated imports.
+ */
+
+const SLUG_MAX = 80;
+
+/** Lowercase kebab slug; empty input becomes "unknown". */
+export function slugifyImportKey(raw: string, maxLen = SLUG_MAX): string {
+  const base = raw
+    .trim()
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  const slug = base || "unknown";
+  if (slug.length <= maxLen) {
+    return slug;
+  }
+  return slug.slice(0, maxLen).replace(/-$/, "");
+}
+
+/** Venue URL segment — prefer explicit slug, else ballpark name. */
+export function venueSlugFromImport(venueName: string, explicitSlug?: string): string {
+  const trimmed = explicitSlug?.trim();
+  if (trimmed) {
+    return slugifyImportKey(trimmed);
+  }
+  return slugifyImportKey(venueName);
+}
+
+/** Team dedupe key (stored on Venue.teams as display names, not slugs). */
+export function teamSlugFromImport(teamName: string): string {
+  return slugifyImportKey(teamName);
+}
+
+/** Stand segment when a row names a physical stand separately from brand/vendor. */
+export function standSlugFromImport(standName: string): string {
+  return slugifyImportKey(standName);
+}
+
+/**
+ * Vendor slug scoped to a venue.
+ * When stand_name is set, encodes both: `{vendor}--{stand}` (stand = location identity).
+ */
+export function vendorSlugFromImport(vendorName: string, standName?: string): string {
+  const vendorPart = slugifyImportKey(vendorName);
+  const stand = standName?.trim();
+  if (!stand) {
+    return vendorPart;
+  }
+  return slugifyImportKey(`${vendorPart}--${standSlugFromImport(stand)}`);
+}
+
+/** Human-readable vendor label for UI. */
+export function vendorDisplayNameFromImport(vendorName: string, standName?: string): string {
+  const stand = standName?.trim();
+  if (!stand) {
+    return vendorName.trim();
+  }
+  return `${vendorName.trim()} · ${stand}`;
+}
+
+/**
+ * Item slug unique within a venue.
+ * Prefixes with vendor slug so two stands can both sell a "Hot Dog" without colliding.
+ */
+export function foodItemSlugFromImport(itemName: string, vendorSlug: string): string {
+  const itemPart = slugifyImportKey(itemName);
+  const vendorPart = vendorSlug.slice(0, 40);
+  return slugifyImportKey(`${vendorPart}-${itemPart}`, SLUG_MAX);
+}

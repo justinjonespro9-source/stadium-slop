@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 
+import { HomeSlopNetwork } from "@/components/home-slop-network";
 import { HomeVenueSearch } from "@/components/home-venue-search";
 import { getPublicVenues } from "@/lib/public-data";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
@@ -48,6 +49,8 @@ export default async function Home() {
           <HomeVenueSearch venues={venues} />
         </div>
       </section>
+
+      <HomeSlopNetwork />
     </main>
   );
 }

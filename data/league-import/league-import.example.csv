@@ -1,0 +1,2 @@
+league,team,venue,city,state,vendor,stand_name,section,item_name,description,price,category,source_url,season
+MLB,Example MLB Club,Example Ballpark,Example City,IL,Example Concessions,Section 101 Stand,Section 101,Placeholder Hot Dog,Template row for import testing — replace before production.,6.50,Snack,,2026

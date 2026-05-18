@@ -61,3 +61,4 @@ If you only have PDFs or photos of menus, transcribe a minimal CSV first; the ap
 
 - **`prisma db seed`** loads `lib/sample-data` (MLB venues from **`mlb-ballparks-venues.json`** plus non-MLB demo stubs).
 - **JSON import** is for larger or updated MLB lists without editing TypeScript.
+- **Flat league CSV/JSON** (one row per menu item) — see [`../league-import/README.md`](../league-import/README.md) and `npm run import:league`.

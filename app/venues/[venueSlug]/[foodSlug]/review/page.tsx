@@ -706,9 +706,13 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
             </section>
 
             <section className="rounded-xl border border-zinc-800 bg-black/80 p-3 sm:p-4">
-              <h2 className="text-sm font-black text-white">Fan photo</h2>
+              <h2 className="text-sm font-black text-white">
+                Fan photo{" "}
+                <span className="font-semibold text-zinc-500">(optional)</span>
+              </h2>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                Helps Game Day Fresh and review cards — no comments or threads.
+                Snap or upload only if you want — we use it for Fresh signals and
+                your Slop Card. No comments or threads.
               </p>
               {cloudinaryReady ? (
                 <PhotoCropUpload
