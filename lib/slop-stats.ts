@@ -1,3 +1,5 @@
+import "server-only";
+
 import { PhotoType } from "@prisma/client";
 
 import { isGameDayKeyTodayForVenue } from "./game-day";
@@ -12,35 +14,14 @@ import {
   type ReviewConsensusLabel
 } from "./sample-data";
 
-export type SlopStatsMode = "allTime" | "season" | "gameDayFresh";
+export type {
+  ConsensusStat,
+  ItemSlopStats,
+  SlopStatsMode
+} from "./slop-stats-display";
+export { getSlopScoreTier } from "./slop-stats-display";
 
-export type ConsensusStat = {
-  label: ReviewConsensusLabel | ReplayValueLabel | PriceCheckLabel;
-  count: number;
-  percentage: number;
-};
-
-export type ItemSlopStats = {
-  itemSlug: string;
-  mode: SlopStatsMode;
-  reviews: FoodReview[];
-  averageSlopScore: number;
-  averageNapkinRating: number;
-  roundedNapkinRating: 1 | 2 | 3 | 4 | 5;
-  reviewCount: number;
-  helpfulLikesTotal: number;
-  consensus: ConsensusStat[];
-  replayValue: ConsensusStat[];
-  priceCheck: ConsensusStat[];
-  topConsensus?: ConsensusStat;
-  topReplayValue?: ConsensusStat;
-  topPriceCheck?: ConsensusStat;
-  freshSignalScore?: number;
-  /** At least one ACTIVE review with verifiedGameDay + gameDayKey matching today for this venue. */
-  hasFreshToday: boolean;
-  /** Count of ACTIVE today game-day verified reviews on this food item at this venue. */
-  freshReviewCountToday: number;
-};
+import type { ConsensusStat, ItemSlopStats, SlopStatsMode } from "./slop-stats-display";
 
 function average(values: number[]) {
   if (values.length === 0) {
@@ -66,18 +47,6 @@ const priceCheckLabels: PriceCheckLabel[] = [
   "Fair Deal",
   "Stadium Tax"
 ];
-
-export function getSlopScoreTier(score: number) {
-  if (score >= 9.5) return "Legend of the Game";
-  if (score >= 9) return "Hall of Fame";
-  if (score >= 8) return "All-Star";
-  if (score >= 7) return "Starter Quality";
-  if (score >= 5.5) return "Bench Depth";
-  if (score >= 4.5) return "Needs a Rebuild";
-  if (score >= 3.5) return "On the Trading Block";
-  if (score >= 2.5) return "Sent to the Minors";
-  return "First-Round Bust";
-}
 
 function fallbackReplayValue(review: FoodReview): ReplayValueLabel {
   if (review.slopScore >= 8) return "Game Day Starter";

@@ -1,3 +1,5 @@
+import "server-only";
+
 import { PhotoType } from "@prisma/client";
 
 import { normalizePublicImageUrl } from "./image-url";

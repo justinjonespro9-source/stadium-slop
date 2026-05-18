@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { isUnratedItemStats } from "@/components/food-item-empty-states";
 import type { FoodItem, Vendor } from "@/lib/sample-data";
-import { getSlopScoreTier, type ItemSlopStats } from "@/lib/slop-stats";
+import { getSlopScoreTier, type ItemSlopStats } from "@/lib/slop-stats-display";
 
 function formatItemPriceHint(item: FoodItem): string | null {
   if (item.reportedPrice != null && item.reportedPrice > 0) {

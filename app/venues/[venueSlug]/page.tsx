@@ -28,6 +28,7 @@ import { formatHomeOfTeams, formatVenueTeamsInline } from "@/lib/venue-teams";
 import { buildVenueAwardBoards } from "@/lib/venue-awards";
 import { VenueAwardBoards } from "@/components/venue-award-boards";
 import { ClaimListingCta } from "@/components/claim-listing-cta";
+import { SuggestCorrectionLink } from "@/components/suggest-correction-link";
 import {
   FanPoweredGuideBadge,
   FanPoweredGuideNote
@@ -582,6 +583,15 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             </AgeGateProvider>
           </div>
           <FanPoweredGuideNote preset="venue-bottom" className="mt-2.5 px-0.5" />
+          <SuggestCorrectionLink
+            className="mt-2 px-0.5"
+            context={{
+              kind: "venue",
+              venueName: venue.name,
+              venueSlug: venue.slug,
+              pagePath: `/venues/${venue.slug}`
+            }}
+          />
         </section>
 
         <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">

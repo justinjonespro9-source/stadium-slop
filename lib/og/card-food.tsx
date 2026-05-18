@@ -3,8 +3,7 @@ import type { ReactElement } from "react";
 import { OgScoreboardShell } from "@/lib/og/card-shell";
 import { ellipsis, FONT, OG } from "@/lib/og-brand";
 import { isUnratedItemStats } from "@/components/food-item-empty-states";
-import type { ItemSlopStats } from "@/lib/slop-stats";
-import { getSlopScoreTier } from "@/lib/slop-stats";
+import { getSlopScoreTier, type ItemSlopStats } from "@/lib/slop-stats-display";
 import type { FoodItem, Venue } from "@/lib/sample-data";
 import { SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 

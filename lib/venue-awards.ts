@@ -8,7 +8,7 @@
  */
 
 import type { FoodItem, Vendor } from "@/lib/sample-data";
-import type { ItemSlopStats } from "@/lib/slop-stats";
+import type { ItemSlopStats } from "@/lib/slop-stats-display";
 
 function isRated(stats: ItemSlopStats) {
   return stats.reviewCount > 0;

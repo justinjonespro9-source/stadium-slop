@@ -7,7 +7,7 @@ import { AgeConfirmationPrompt } from "@/components/age-gate/age-confirmation-pr
 import { useAgeGate } from "@/components/age-gate/age-gate-context";
 import { VenueStandingRow } from "@/components/venue-standing-row";
 import type { FoodItem, Vendor } from "@/lib/sample-data";
-import type { ItemSlopStats } from "@/lib/slop-stats";
+import type { ItemSlopStats } from "@/lib/slop-stats-display";
 
 export type VenueStandingAgeGateRow = {
   item: FoodItem;
