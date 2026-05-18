@@ -48,6 +48,7 @@ import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
 import { FoodItemAwardChips } from "@/components/food-item-award-chips";
+import { ClaimListingCta } from "@/components/claim-listing-cta";
 import {
   FanPoweredGuideBadge,
   FanPoweredGuideNote
@@ -1272,6 +1273,20 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               </p>
             </article>
           ) : null}
+
+          <ClaimListingCta
+            className="mt-4"
+            context={{
+              kind: "item",
+              venueName: venue.name,
+              venueSlug: venue.slug,
+              vendorName: vendor?.name,
+              vendorSlug: vendor?.slug,
+              itemName: foodItem.name,
+              itemSlug: foodItem.slug,
+              pagePath: `/venues/${venue.slug}/${foodItem.slug}`
+            }}
+          />
         </section>
       </section>
     </main>

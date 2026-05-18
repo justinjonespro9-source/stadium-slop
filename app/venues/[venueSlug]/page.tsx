@@ -29,6 +29,7 @@ import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatHomeOfTeams, formatVenueTeamsInline } from "@/lib/venue-teams";
 import { buildVenueAwardBoards } from "@/lib/venue-awards";
 import { VenueAwardBoards } from "@/components/venue-award-boards";
+import { ClaimListingCta } from "@/components/claim-listing-cta";
 import {
   FanPoweredGuideBadge,
   FanPoweredGuideNote
@@ -892,6 +893,16 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               </Link>
             )}
           </article>
+
+          <ClaimListingCta
+            className="mt-3 sm:mt-4"
+            context={{
+              kind: "venue",
+              venueName: venue.name,
+              venueSlug: venue.slug,
+              pagePath: `/venues/${venue.slug}`
+            }}
+          />
         </section>
 
       </section>

@@ -10,6 +10,7 @@ const footerLinks = [
   { href: "/terms", label: "Terms" },
   { href: "/privacy", label: "Privacy" },
   { href: "/disclaimer", label: "Disclaimer" },
+  { href: "/claim", label: "Claim listing" },
   { href: "mailto:hello@snglabs.com", label: "Contact" }
 ];
 
