@@ -101,6 +101,10 @@ body {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 8px 22px rgba(244, 179, 33, 0.35);
 }
 
+.slop-card-shell {
+  scroll-snap-align: center;
+}
+
 .brand-cta:focus-visible {
   outline: 2px solid var(--slop-gold-bright);
   outline-offset: 2px;

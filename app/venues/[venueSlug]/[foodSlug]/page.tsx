@@ -43,7 +43,15 @@ import {
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
-import { SlopCardShareModule } from "@/components/slop-card-share-module";
+import {
+  SlopCardShareModule,
+  type SlopCardSharePreview
+} from "@/components/slop-card-share-module";
+import {
+  formatSlopCardMetaRow,
+  pickSlopCardHighlights,
+  slopCardLocationLine
+} from "@/lib/slop-card-display";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
@@ -651,6 +659,33 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     photoBackedReviews.length
   );
   const alcoholRelated = isAlcoholRelatedFoodItem(foodItem, vendor);
+  const slopCardLocation = slopCardLocationLine(foodItem, vendor);
+  const awardLabelPool = awardChips.map((chip) => chip.label);
+  const leadReview = photoBackedReviews[0];
+  const shareSlopPreview: SlopCardSharePreview | null =
+    showReviewSaved && leadReview
+      ? {
+          itemName: foodItem.name,
+          venueName: venue.name,
+          metaLine: formatSlopCardMetaRow({
+            locationLine: slopCardLocation,
+            verifiedGameDay: leadReview.verifiedGameDay,
+            dateLabel: leadReview.dateLabel
+          }),
+          slopScore: leadReview.slopScore,
+          highlightLabels: pickSlopCardHighlights(
+            leadReview.labels,
+            awardLabelPool
+          )
+        }
+      : showReviewSaved
+        ? {
+            itemName: foodItem.name,
+            venueName: venue.name,
+            metaLine: formatSlopCardMetaRow({ locationLine: slopCardLocation }),
+            highlightLabels: awardLabelPool.slice(0, 2)
+          }
+        : null;
 
   return (
     <main className="brand-page min-h-screen">
@@ -696,6 +731,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             photoRetryHref={
               showPhotoRetryCta ? `${reviewPath}?photoRetry=1` : null
             }
+            preview={shareSlopPreview}
           />
         ) : null}
 
@@ -957,8 +993,15 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 const photoUrlNorm = normalizePublicImageUrl(review.photoUrl);
                 const heroDup =
                   Boolean(heroImageUrl) && photoUrlNorm === heroImageUrl;
-                const captionLine =
-                  review.photoLabel?.trim() || foodItem.name;
+                const highlightLabels = pickSlopCardHighlights(
+                  review.labels,
+                  awardLabelPool
+                );
+                const metaLine = formatSlopCardMetaRow({
+                  locationLine: slopCardLocation,
+                  verifiedGameDay: review.verifiedGameDay,
+                  dateLabel: review.dateLabel
+                });
 
                 const helpfulSlot = isSignedIn ? (
                   likedReviewIds.has(review.id) ? (
@@ -1085,10 +1128,16 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   <ReviewSlopCard
                     key={review.id}
                     review={review}
+                    itemName={foodItem.name}
+                    venueName={venue.name}
+                    metaLine={metaLine}
+                    highlightLabels={highlightLabels}
                     photoUrl={photoUrlNorm}
                     photoAlt={review.photoAlt ?? `Fan photo for ${foodItem.name}`}
+                    photoPlaceholderEmoji={
+                      review.photoPlaceholder ?? foodPhotos[0]?.imagePlaceholder
+                    }
                     napkinEligible={napkinEligible}
-                    captionLine={captionLine}
                     signalLine={getPrimaryConsensusLabel(review)}
                     duplicateHeroBadge={heroDup}
                     helpfulSlot={helpfulSlot}
