@@ -12,13 +12,36 @@ import { teamSlugFromImport } from "./import-slugs";
 /** Extra tenants for a venue slug when import rows only list one team. */
 const SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
   "sofi-stadium": ["Los Angeles Chargers"],
-  "metlife-stadium": ["New York Jets"]
+  "metlife-stadium": ["New York Jets"],
+  // NBA / NHL / WNBA shared arenas (see also parse:nba-docx)
+  "td-garden": ["Boston Bruins"],
+  "united-center": ["Chicago Blackhawks"],
+  "american-airlines-center": ["Dallas Stars"],
+  "ball-arena": ["Colorado Avalanche"],
+  "little-caesars-arena": ["Detroit Red Wings"],
+  "target-center": ["Minnesota Lynx"],
+  "madison-square-garden": ["New York Rangers"],
+  "scotiabank-arena": ["Toronto Maple Leafs"],
+  "delta-center": ["Utah Hockey Club"],
+  "capital-one-arena": ["Washington Capitals"],
+  "gainbridge-fieldhouse": ["Indiana Fever"]
 };
 
 /** Preferred display order for known shared venues (primary tenant first). */
 const SHARED_VENUE_TEAM_ORDER: Record<string, readonly string[]> = {
   "sofi-stadium": ["Los Angeles Rams", "Los Angeles Chargers"],
-  "metlife-stadium": ["New York Giants", "New York Jets"]
+  "metlife-stadium": ["New York Giants", "New York Jets"],
+  "td-garden": ["Boston Celtics", "Boston Bruins"],
+  "united-center": ["Chicago Bulls", "Chicago Blackhawks"],
+  "american-airlines-center": ["Dallas Mavericks", "Dallas Stars"],
+  "ball-arena": ["Denver Nuggets", "Colorado Avalanche"],
+  "little-caesars-arena": ["Detroit Pistons", "Detroit Red Wings"],
+  "target-center": ["Minnesota Timberwolves", "Minnesota Lynx"],
+  "madison-square-garden": ["New York Knicks", "New York Rangers"],
+  "scotiabank-arena": ["Toronto Raptors", "Toronto Maple Leafs"],
+  "delta-center": ["Utah Jazz", "Utah Hockey Club"],
+  "capital-one-arena": ["Washington Wizards", "Washington Capitals"],
+  "gainbridge-fieldhouse": ["Indiana Pacers", "Indiana Fever"]
 };
 
 function dedupeTeams(teams: string[]): string[] {
