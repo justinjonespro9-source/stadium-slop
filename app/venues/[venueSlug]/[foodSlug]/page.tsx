@@ -54,6 +54,9 @@ import {
   FanPoweredGuideNote
 } from "@/components/fan-powered-guide-note";
 import { formatItemGuideTimestamp } from "@/lib/guide-disclaimers";
+import { isAlcoholRelatedFoodItem } from "@/lib/alcohol-content";
+import { AgeGateProvider } from "@/components/age-gate/age-gate-context";
+import { FoodItemAgeGate } from "@/components/age-gate/food-item-age-gate";
 
 export const dynamic = "force-dynamic";
 
@@ -646,6 +649,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     freshStats,
     photoBackedReviews.length
   );
+  const alcoholRelated = isAlcoholRelatedFoodItem(foodItem, vendor);
 
   return (
     <main className="brand-page min-h-screen">
@@ -657,6 +661,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           ← {venue.name}
         </Link>
 
+        <AgeGateProvider>
+          <FoodItemAgeGate alcoholRelated={alcoholRelated}>
         {showReportThanks ? (
           <div
             role="status"
@@ -1288,6 +1294,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             }}
           />
         </section>
+          </FoodItemAgeGate>
+        </AgeGateProvider>
       </section>
     </main>
   );
