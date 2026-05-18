@@ -7,7 +7,11 @@ import type { FoodItem } from "@/lib/sample-data";
 import type { Venue } from "@/lib/sample-data";
 import { VenueSearchEmpty } from "@/components/venue-search-empty";
 import { venueTypeGlyph } from "@/lib/venue-display";
-import { filterVenuesBySearch } from "@/lib/venue-search";
+import {
+  filterVenuesBySearch,
+  VENUE_SEARCH_HELPER_COPY,
+  type VenueSearchOptions
+} from "@/lib/venue-search";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 
 type VenuesBrowseClientProps = {
@@ -15,14 +19,35 @@ type VenuesBrowseClientProps = {
   itemsByVenueSlug: Record<string, FoodItem[]>;
 };
 
+function buildItemTagsByVenueSlug(
+  itemsByVenueSlug: Record<string, FoodItem[]>
+): VenueSearchOptions["itemTagsByVenueSlug"] {
+  const out: Record<string, string[]> = {};
+  for (const [slug, items] of Object.entries(itemsByVenueSlug)) {
+    const tags = [
+      ...new Set(
+        items.flatMap((item) => item.tags ?? []).filter((tag) => tag.trim().length > 0)
+      )
+    ];
+    if (tags.length > 0) {
+      out[slug] = tags;
+    }
+  }
+  return out;
+}
+
 export function VenuesBrowseClient({
   venues,
   itemsByVenueSlug
 }: VenuesBrowseClientProps) {
   const [query, setQuery] = useState("");
+  const searchOptions = useMemo(
+    () => ({ itemTagsByVenueSlug: buildItemTagsByVenueSlug(itemsByVenueSlug) }),
+    [itemsByVenueSlug]
+  );
   const filtered = useMemo(
-    () => filterVenuesBySearch(venues, query),
-    [venues, query]
+    () => filterVenuesBySearch(venues, query, searchOptions),
+    [venues, query, searchOptions]
   );
   const showEmpty = query.trim().length > 0 && filtered.length === 0;
 
@@ -74,6 +99,9 @@ export function VenuesBrowseClient({
             className="w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3 py-2.5 text-[0.95rem] font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-[1.25rem] sm:px-4 sm:py-3 sm:text-base"
           />
         </label>
+        <p className="mt-1.5 px-1 text-[0.65rem] font-medium text-[var(--slop-cream-dim)] sm:text-xs">
+          {VENUE_SEARCH_HELPER_COPY}
+        </p>
       </div>
 
       {showEmpty ? (
