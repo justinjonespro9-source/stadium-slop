@@ -58,8 +58,8 @@ export function ReviewSlopCard({
         : [];
 
   return (
-    <article className="slop-card-shell w-[min(100%,19.75rem)] shrink-0 snap-center sm:w-[20rem]">
-      <div className="flex flex-col overflow-hidden rounded-2xl border border-[color:rgba(244,179,33,0.38)] bg-[var(--slop-navy-deep)] shadow-[0_20px_48px_rgba(0,0,0,0.55),0_0_0_1px_rgba(196,30,58,0.18),inset_0_1px_0_rgba(255,255,255,0.07)]">
+    <article className="slop-card-shell w-[min(100%,22rem)] max-w-full min-w-0 shrink-0 snap-center sm:w-[20rem]">
+      <div className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[color:rgba(244,179,33,0.38)] bg-[var(--slop-navy-deep)] shadow-[0_20px_48px_rgba(0,0,0,0.55),0_0_0_1px_rgba(196,30,58,0.18),inset_0_1px_0_rgba(255,255,255,0.07)]">
         {/* Scoreboard header strip */}
         <div
           className="relative border-b border-[color:rgba(244,179,33,0.22)] bg-[linear-gradient(105deg,rgba(198,61,47,0.35)_0%,rgba(11,27,43,0.95)_38%,rgba(244,179,33,0.22)_100%)] px-3 pb-2.5 pt-2.5"
@@ -189,8 +189,8 @@ export function ReviewSlopCard({
             ) : null}
           </div>
 
-          <div className="mt-2 grid grid-cols-3 gap-1 rounded-lg border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.65)] px-2 py-1.5 text-center">
-            <div>
+          <div className="mt-2 grid min-w-0 grid-cols-3 gap-1 rounded-lg border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.65)] px-2 py-1.5 text-center">
+            <div className="min-w-0">
               <p className="text-[0.48rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
                 Slop
               </p>
@@ -198,7 +198,7 @@ export function ReviewSlopCard({
                 {slopScoreDisplay(review.slopScore)}
               </p>
             </div>
-            <div className="border-x border-[var(--slop-line)]">
+            <div className="min-w-0 border-x border-[var(--slop-line)]">
               <p className="text-[0.48rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
                 Napkins
               </p>
@@ -206,7 +206,7 @@ export function ReviewSlopCard({
                 {napkinEligible ? `${review.napkinRating}/5` : "—"}
               </p>
             </div>
-            <div>
+            <div className="min-w-0">
               <p className="text-[0.48rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
                 Helpful
               </p>

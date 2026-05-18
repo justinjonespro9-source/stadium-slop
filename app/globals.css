@@ -105,6 +105,23 @@ body {
   scroll-snap-align: center;
 }
 
+/* Center Slop Cards in horizontal carousel on narrow viewports */
+.slop-card-carousel {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scroll-padding-inline: max(0.5rem, calc((100% - min(100%, 22rem)) / 2));
+  padding-inline: max(0.5rem, calc((100% - min(100%, 22rem)) / 2));
+}
+
+@media (min-width: 640px) {
+  .slop-card-carousel {
+    scroll-padding-inline: 0;
+    padding-inline: 0;
+  }
+}
+
 .brand-cta:focus-visible {
   outline: 2px solid var(--slop-gold-bright);
   outline-offset: 2px;

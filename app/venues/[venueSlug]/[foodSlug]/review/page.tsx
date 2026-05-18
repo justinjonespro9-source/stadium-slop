@@ -354,7 +354,10 @@ async function submitReview(formData: FormData) {
         publicId: `${review.id}-${Date.now()}`
       }));
     } catch (err) {
-      logUploadFailure("reviewPhotoUpload", photoField, err);
+      logUploadFailure("reviewPhotoUpload", photoField, err, {
+        reviewId: review.id,
+        foodItemId: foodItemRow.id
+      });
       revalidateFoodItemSurfaces(
         canonicalItemPath,
         venue.slug,

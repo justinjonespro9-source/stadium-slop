@@ -1,9 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from "react";
 
 import { SlopCardHighlightChips } from "@/components/slop-card-highlight-chips";
+import {
+  FAN_PHOTO_REVIEWS_SECTION_ID,
+  itemPathWithReviewCelebration,
+  reviewCelebrationStorageKey
+} from "@/lib/review-celebration";
 import { slopScoreDisplay } from "@/lib/slop-card-display";
 
 export type SlopCardSharePreview = {
@@ -15,7 +21,10 @@ export type SlopCardSharePreview = {
 };
 
 type SlopCardShareModuleProps = {
-  itemHref: string;
+  itemPath: string;
+  /** From `?reviewSubmitted=true` on first landing after submit. */
+  celebrationFromServer: boolean;
+  photoErrorCode?: string | null;
   shareUrl: string;
   shareTitle: string;
   shareDescription: string;
@@ -25,7 +34,9 @@ type SlopCardShareModuleProps = {
 };
 
 export function SlopCardShareModule({
-  itemHref,
+  itemPath,
+  celebrationFromServer,
+  photoErrorCode,
   shareUrl,
   shareTitle,
   shareDescription,
@@ -33,7 +44,58 @@ export function SlopCardShareModule({
   photoRetryHref,
   preview
 }: SlopCardShareModuleProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const storageKey = reviewCelebrationStorageKey(itemPath);
+
+  const [persisted, setPersisted] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
+  const [shareState, setShareState] = useState<"idle" | "shared">("idle");
+
+  const itemHrefWithCelebration = useMemo(
+    () =>
+      `${itemPathWithReviewCelebration(itemPath, photoErrorCode)}#${FAN_PHOTO_REVIEWS_SECTION_ID}`,
+    [itemPath, photoErrorCode]
+  );
+
+  useEffect(() => {
+    if (celebrationFromServer) {
+      try {
+        sessionStorage.setItem(storageKey, "1");
+      } catch {
+        /* private mode */
+      }
+      setPersisted(true);
+      return;
+    }
+    try {
+      setPersisted(sessionStorage.getItem(storageKey) === "1");
+    } catch {
+      setPersisted(false);
+    }
+  }, [celebrationFromServer, storageKey]);
+
+  const visible = (celebrationFromServer || persisted) && !dismissed;
+
+  const dismissCelebration = useCallback(() => {
+    try {
+      sessionStorage.removeItem(storageKey);
+    } catch {
+      /* ignore */
+    }
+    setDismissed(true);
+    setPersisted(false);
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (!params.has("reviewSubmitted")) {
+      return;
+    }
+    params.delete("reviewSubmitted");
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [pathname, router, searchParams, storageKey]);
 
   const copyShareLink = useCallback(async () => {
     try {
@@ -53,6 +115,8 @@ export function SlopCardShareModule({
           text: shareDescription,
           url: shareUrl
         });
+        setShareState("shared");
+        window.setTimeout(() => setShareState("idle"), 2200);
         return;
       } catch (err) {
         if (err instanceof Error && err.name === "AbortError") {
@@ -63,11 +127,52 @@ export function SlopCardShareModule({
     await copyShareLink();
   }, [shareTitle, shareDescription, shareUrl, copyShareLink]);
 
+  const scrollToPhotoReviews = useCallback(() => {
+    document
+      .getElementById(FAN_PHOTO_REVIEWS_SECTION_ID)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
+  const onViewItem = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      const onSameItemPage =
+        pathname === itemPath || pathname === itemPath.replace(/\/$/, "");
+
+      if (onSameItemPage) {
+        event.preventDefault();
+        scrollToPhotoReviews();
+        if (!searchParams.get("reviewSubmitted")) {
+          router.replace(itemHrefWithCelebration, { scroll: false });
+          try {
+            sessionStorage.setItem(storageKey, "1");
+          } catch {
+            /* ignore */
+          }
+          setPersisted(true);
+        }
+      }
+    },
+    [
+      pathname,
+      itemPath,
+      scrollToPhotoReviews,
+      searchParams,
+      router,
+      itemHrefWithCelebration,
+      storageKey
+    ]
+  );
+
+  if (!visible) {
+    return null;
+  }
+
   const hasPhotoIssue = Boolean(photoErrorMessage);
 
   return (
     <div
       role="status"
+      id="slop-card-share-celebration"
       className={`slop-card-share-celebrate mt-3 overflow-hidden rounded-2xl border px-4 py-4 sm:px-5 sm:py-5 ${
         hasPhotoIssue
           ? "border-amber-800/70 bg-[color:rgba(69,26,3,0.5)]"
@@ -101,7 +206,7 @@ export function SlopCardShareModule({
 
       {preview ? (
         <div
-          className="mt-4 max-w-[20rem] rounded-2xl border border-[color:rgba(244,179,33,0.35)] bg-[var(--slop-navy-deep)] p-3 shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
+          className="mx-auto mt-4 w-full max-w-[min(100%,22rem)] rounded-2xl border border-[color:rgba(244,179,33,0.35)] bg-[var(--slop-navy-deep)] p-3 shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
           aria-hidden
         >
           <p className="text-[0.5rem] font-black uppercase tracking-[0.18em] text-[var(--slop-gold-bright)]">
@@ -161,7 +266,7 @@ export function SlopCardShareModule({
           onClick={() => void shareSlopCard()}
           className="brand-cta inline-flex min-h-11 w-full items-center justify-center rounded-xl px-4 py-3 text-center text-sm font-black uppercase tracking-[0.06em]"
         >
-          Share Slop Card
+          {shareState === "shared" ? "Shared" : "Share Slop Card"}
         </button>
         <button
           type="button"
@@ -175,7 +280,8 @@ export function SlopCardShareModule({
               : "Copy link"}
         </button>
         <Link
-          href={itemHref}
+          href={itemHrefWithCelebration}
+          onClick={onViewItem}
           className="inline-flex min-h-10 w-full items-center justify-center rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-4 py-2.5 text-center text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)]/40 hover:text-[var(--slop-cream)]"
         >
           View item
@@ -185,6 +291,14 @@ export function SlopCardShareModule({
       <p className="mt-3 text-center text-[0.6rem] leading-snug text-[var(--slop-cream-dim)]">
         Tip: screenshot your card in Photo reviews — looks great in stories.
       </p>
+
+      <button
+        type="button"
+        onClick={dismissCelebration}
+        className="mt-2 w-full text-center text-[0.6rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)] underline-offset-2 hover:text-[var(--slop-cream-muted)] hover:underline"
+      >
+        Hide
+      </button>
     </div>
   );
 }

@@ -3,6 +3,18 @@ import { Readable } from "node:stream";
 import { v2 as cloudinary } from "cloudinary";
 import type { UploadApiResponse } from "cloudinary";
 
+/**
+ * Required server env (see `.env.example`):
+ * - CLOUDINARY_CLOUD_NAME
+ * - CLOUDINARY_API_KEY
+ * - CLOUDINARY_API_SECRET
+ */
+export const CLOUDINARY_ENV_KEYS = [
+  "CLOUDINARY_CLOUD_NAME",
+  "CLOUDINARY_API_KEY",
+  "CLOUDINARY_API_SECRET"
+] as const;
+
 /** Matches `experimental.serverActions.bodySizeLimit` in next.config.ts (8mb). */
 export const MAX_IMAGE_UPLOAD_BYTES = 8 * 1024 * 1024;
 const MAX_BYTES = MAX_IMAGE_UPLOAD_BYTES;
@@ -28,28 +40,208 @@ export type ImageFileDebugInfo = {
   nameTruncated: string;
 };
 
+export type CloudinaryErrorDetails = {
+  message: string;
+  httpCode?: number;
+  nestedMessage?: string;
+  errorName?: string;
+};
+
+export type CloudinaryEnvStatus = {
+  configured: boolean;
+  cloudNameSet: boolean;
+  apiKeySet: boolean;
+  apiSecretSet: boolean;
+  /** First 4 chars of cloud name — dev-only fingerprint, not secret. */
+  cloudNameHint?: string;
+};
+
+export type ResolvedCloudinaryUpload = {
+  folder: string;
+  publicId: string;
+  format: string;
+  bufferBytes: number;
+  fileMime: string;
+  fileName: string;
+};
+
 export class ImageUploadError extends Error {
   readonly code: ImageUploadFailureCode;
   readonly fileDebug: ImageFileDebugInfo;
+  readonly cloudinary?: CloudinaryErrorDetails;
 
   constructor(
     code: ImageUploadFailureCode,
     message: string,
-    fileDebug: ImageFileDebugInfo
+    fileDebug: ImageFileDebugInfo,
+    cloudinaryDetails?: CloudinaryErrorDetails
   ) {
     super(message);
     this.name = "ImageUploadError";
     this.code = code;
     this.fileDebug = fileDebug;
+    this.cloudinary = cloudinaryDetails;
   }
 }
 
 export function isCloudinaryConfigured() {
   return Boolean(
-    process.env.CLOUDINARY_CLOUD_NAME &&
-      process.env.CLOUDINARY_API_KEY &&
-      process.env.CLOUDINARY_API_SECRET
+    process.env.CLOUDINARY_CLOUD_NAME?.trim() &&
+      process.env.CLOUDINARY_API_KEY?.trim() &&
+      process.env.CLOUDINARY_API_SECRET?.trim()
   );
+}
+
+/** Safe env fingerprint for logs — never includes secrets. */
+export function getCloudinaryEnvStatus(): CloudinaryEnvStatus {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME?.trim() ?? "";
+  return {
+    configured: isCloudinaryConfigured(),
+    cloudNameSet: cloudName.length > 0,
+    apiKeySet: Boolean(process.env.CLOUDINARY_API_KEY?.trim()),
+    apiSecretSet: Boolean(process.env.CLOUDINARY_API_SECRET?.trim()),
+    cloudNameHint: cloudName.length >= 4 ? cloudName.slice(0, 4) : undefined
+  };
+}
+
+/** Strip secrets / long base64 from log strings. */
+export function redactSecretsForLog(text: string): string {
+  return text
+    .replace(/api_secret=[^&\s'"]+/gi, "api_secret=[REDACTED]")
+    .replace(/api_key=[^&\s'"]+/gi, "api_key=[REDACTED]")
+    .replace(/CLOUDINARY_API_SECRET[=:\s][^\s'"]+/gi, "CLOUDINARY_API_SECRET=[REDACTED]")
+    .replace(/data:image\/[a-z+]+;base64,[a-z0-9+/=]+/gi, "data:image/…;base64,[REDACTED]")
+    .replace(/[A-Za-z0-9+/]{80,}={0,2}/g, "[REDACTED_BLOB]");
+}
+
+export function extractCloudinaryErrorDetails(reason: unknown): CloudinaryErrorDetails {
+  const fallback: CloudinaryErrorDetails = {
+    message: "Unknown Cloudinary error",
+    errorName: reason instanceof Error ? reason.name : undefined
+  };
+
+  const visit = (value: unknown, depth: number): CloudinaryErrorDetails => {
+    if (depth > 4 || value == null) {
+      return fallback;
+    }
+
+    if (value instanceof ImageUploadError && value.cloudinary) {
+      return value.cloudinary;
+    }
+
+    if (typeof value === "string") {
+      return {
+        message: redactSecretsForLog(value),
+        errorName: "string"
+      };
+    }
+
+    if (value instanceof Error) {
+      const httpCode =
+        typeof (value as Error & { http_code?: number }).http_code === "number"
+          ? (value as Error & { http_code: number }).http_code
+          : undefined;
+      const nested =
+        value && typeof value === "object" && "error" in value
+          ? (value as Error & { error?: { message?: string } }).error?.message
+          : undefined;
+
+      const fromCause = value.cause ? visit(value.cause, depth + 1) : null;
+
+      return {
+        message: redactSecretsForLog(value.message || fallback.message),
+        httpCode: httpCode ?? fromCause?.httpCode,
+        nestedMessage: nested
+          ? redactSecretsForLog(nested)
+          : fromCause?.nestedMessage,
+        errorName: value.name
+      };
+    }
+
+    if (typeof value === "object") {
+      const o = value as Record<string, unknown>;
+      const httpCode = typeof o.http_code === "number" ? o.http_code : undefined;
+      const msg =
+        typeof o.message === "string"
+          ? o.message
+          : typeof o.error === "object" &&
+              o.error &&
+              typeof (o.error as Record<string, unknown>).message === "string"
+            ? String((o.error as Record<string, unknown>).message)
+            : undefined;
+
+      return {
+        message: redactSecretsForLog(msg ?? fallback.message),
+        httpCode,
+        nestedMessage:
+          typeof o.error === "object" &&
+          o.error &&
+          typeof (o.error as Record<string, unknown>).message === "string"
+            ? redactSecretsForLog(
+                String((o.error as Record<string, unknown>).message)
+              )
+            : undefined,
+        errorName: typeof o.name === "string" ? o.name : undefined
+      };
+    }
+
+    return fallback;
+  };
+
+  return visit(reason, 0);
+}
+
+/** Cloudinary folder: alphanumeric segments separated by `/`. */
+export function sanitizeCloudinaryFolder(raw: string): string {
+  const segments = raw
+    .split("/")
+    .map((seg) => seg.replace(/[^a-zA-Z0-9_-]/g, "-").replace(/^-+|-+$/g, ""))
+    .filter(Boolean);
+  return segments.join("/") || "stadium-slop/uploads";
+}
+
+/** Cloudinary public_id (no slashes — folder is separate). */
+export function sanitizeCloudinaryPublicId(raw: string): string {
+  const cleaned = raw
+    .replace(/[^a-zA-Z0-9_-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 180);
+  return cleaned || `upload-${Date.now()}`;
+}
+
+export function inferUploadFormat(file: File): string {
+  const mime = (file.type || "").toLowerCase();
+  const name = (file.name || "").toLowerCase();
+  if (mime.includes("png") || name.endsWith(".png")) {
+    return "png";
+  }
+  if (mime.includes("webp") || name.endsWith(".webp")) {
+    return "webp";
+  }
+  if (mime.includes("gif") || name.endsWith(".gif")) {
+    return "gif";
+  }
+  return "jpg";
+}
+
+function buildResolvedUpload(
+  file: File,
+  buffer: Buffer,
+  options: { folder: string; publicId?: string }
+): ResolvedCloudinaryUpload {
+  const folder = sanitizeCloudinaryFolder(options.folder);
+  const publicId = sanitizeCloudinaryPublicId(
+    options.publicId ?? `fan-${Date.now()}`
+  );
+  return {
+    folder,
+    publicId,
+    format: inferUploadFormat(file),
+    bufferBytes: buffer.length,
+    fileMime: file.type?.trim() || "image/jpeg",
+    fileName: getFileDebug(file).nameTruncated
+  };
 }
 
 export function getFileDebug(file: File): ImageFileDebugInfo {
@@ -112,11 +304,48 @@ export function logUploadFailure(
 ) {
   const err = normalizeUploadReason(reason);
   const meta = getFileDebug(file);
+  const cloudinary = extractCloudinaryErrorDetails(reason);
+  const safeExtra = extra
+    ? Object.fromEntries(
+        Object.entries(extra).map(([k, v]) => [
+          k,
+          typeof v === "string" ? redactSecretsForLog(v) : v
+        ])
+      )
+    : undefined;
+
   console.warn(`[${scope}] image upload failed`, {
     ...meta,
     errorName: err.name,
-    errorMessage: err.message,
-    ...extra
+    errorMessage: redactSecretsForLog(err.message),
+    cloudinaryHttpCode: cloudinary.httpCode,
+    cloudinaryMessage: cloudinary.message,
+    cloudinaryNested: cloudinary.nestedMessage,
+    ...safeExtra
+  });
+
+  if (process.env.NODE_ENV === "development") {
+    console.warn(`[${scope}] image upload failed (dev detail)`, {
+      ...meta,
+      ...safeExtra,
+      cloudinary,
+      env: getCloudinaryEnvStatus()
+    });
+  }
+}
+
+function logUploadStart(scope: string, resolved: ResolvedCloudinaryUpload) {
+  if (process.env.NODE_ENV !== "development") {
+    return;
+  }
+  console.info(`[${scope}] cloudinary upload start`, {
+    folder: resolved.folder,
+    publicId: resolved.publicId,
+    format: resolved.format,
+    bufferBytes: resolved.bufferBytes,
+    fileMime: resolved.fileMime,
+    fileName: resolved.fileName,
+    env: getCloudinaryEnvStatus()
   });
 }
 
@@ -221,9 +450,40 @@ export function photoErrorQueryFromUploadFailure(reason: unknown): string {
   return "upload";
 }
 
+function wrapCloudinaryFailure(
+  file: File,
+  reason: unknown,
+  resolved?: ResolvedCloudinaryUpload
+): ImageUploadError {
+  const fileDebug = getFileDebug(file);
+  const cloudinary = extractCloudinaryErrorDetails(reason);
+  const baseMessage =
+    cloudinary.nestedMessage ||
+    cloudinary.message ||
+    normalizeUploadReason(reason).message ||
+    "Cloudinary upload failed.";
+
+  const err = new ImageUploadError(
+    "CLOUDINARY_REJECTED",
+    redactSecretsForLog(baseMessage),
+    fileDebug,
+    cloudinary
+  );
+
+  logUploadFailure("cloudinary", file, err, {
+    phase: "cloudinary_api",
+    uploadFolder: resolved?.folder,
+    uploadPublicId: resolved?.publicId,
+    uploadFormat: resolved?.format,
+    bufferBytes: resolved?.bufferBytes
+  });
+
+  return err;
+}
+
 function uploadBufferToCloudinary(
   buffer: Buffer,
-  options: { folder: string; publicId?: string },
+  resolved: ResolvedCloudinaryUpload,
   file: File
 ): Promise<UploadApiResponse> {
   const fileDebug = getFileDebug(file);
@@ -231,20 +491,16 @@ function uploadBufferToCloudinary(
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
       {
-        folder: options.folder,
-        public_id: options.publicId,
+        folder: resolved.folder,
+        public_id: resolved.publicId,
+        format: resolved.format,
         resource_type: "image",
         overwrite: true,
         invalidate: true
       },
       (err, result) => {
         if (err) {
-          const wrapped = new ImageUploadError(
-            "CLOUDINARY_REJECTED",
-            normalizeUploadReason(err).message,
-            fileDebug
-          );
-          reject(wrapped);
+          reject(wrapCloudinaryFailure(file, err, resolved));
           return;
         }
         if (!result?.secure_url || !result.public_id) {
@@ -257,18 +513,20 @@ function uploadBufferToCloudinary(
           );
           return;
         }
+        if (process.env.NODE_ENV === "development") {
+          console.info("[cloudinary] upload ok", {
+            publicId: result.public_id,
+            bytes: result.bytes,
+            format: result.format,
+            httpCode: 200
+          });
+        }
         resolve(result);
       }
     );
 
     uploadStream.on("error", (streamErr) => {
-      reject(
-        new ImageUploadError(
-          "CLOUDINARY_REJECTED",
-          normalizeUploadReason(streamErr).message,
-          fileDebug
-        )
-      );
+      reject(wrapCloudinaryFailure(file, streamErr, resolved));
     });
 
     Readable.from(buffer).pipe(uploadStream);
@@ -319,23 +577,19 @@ export async function uploadImageFile(
     );
   }
 
+  const resolved = buildResolvedUpload(file, buffer, options);
+  logUploadStart("cloudinary", resolved);
+
   try {
-    const result = await uploadBufferToCloudinary(buffer, options, file);
+    const result = await uploadBufferToCloudinary(buffer, resolved, file);
     return {
       secureUrl: result.secure_url,
       publicId: result.public_id
     };
   } catch (e) {
     if (e instanceof ImageUploadError) {
-      logUploadFailure("cloudinary", file, e, { phase: "cloudinary_api" });
       throw e;
     }
-    const err = normalizeUploadReason(e);
-    logUploadFailure("cloudinary", file, err, { phase: "cloudinary_api" });
-    throw new ImageUploadError(
-      "CLOUDINARY_REJECTED",
-      err.message || "Cloudinary upload failed.",
-      fileDebug
-    );
+    throw wrapCloudinaryFailure(file, e, resolved);
   }
 }

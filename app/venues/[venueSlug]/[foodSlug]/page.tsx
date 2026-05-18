@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -709,9 +710,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           </div>
         ) : null}
 
-        {showReviewSaved ? (
+        <Suspense fallback={null}>
           <SlopCardShareModule
-            itemHref={itemPath}
+            itemPath={itemPath}
+            celebrationFromServer={showReviewSaved}
+            photoErrorCode={photoError ?? null}
             shareUrl={itemShareUrl}
             shareTitle={`${foodItem.name} · ${venue.name}`}
             shareDescription={`Slop Score and fan signals for ${foodItem.name} at ${venue.name} on Stadium Slop.`}
@@ -721,7 +724,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             }
             preview={shareSlopPreview}
           />
-        ) : null}
+        </Suspense>
 
         <header className="space-y-2.5 pt-2 sm:space-y-3 sm:pt-3">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -967,7 +970,10 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           )}
         </section>
 
-        <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
+        <section
+          id="fan-photo-reviews"
+          className="scroll-mt-20 border-t border-[var(--slop-line-strong)] py-4 sm:py-5"
+        >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
               Photo reviews
@@ -975,7 +981,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             <FanPoweredGuideBadge />
           </div>
           <FanPoweredGuideNote preset="food-reviews" className="mt-1.5" />
-          <div className="mt-2 flex snap-x gap-2 overflow-x-auto pb-2 sm:gap-3">
+          <div className="slop-card-carousel mt-2 flex snap-x snap-mandatory gap-3 pb-2 sm:gap-3">
             {photoBackedReviews.length > 0 ? (
               photoBackedReviews.map((review) => {
                 const photoUrlNorm = normalizePublicImageUrl(review.photoUrl);
