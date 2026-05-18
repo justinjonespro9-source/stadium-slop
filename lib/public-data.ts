@@ -14,6 +14,7 @@ import {
   type Venue
 } from "./sample-data";
 import { venueTypeLabel } from "./venue-display";
+import { resolveVenueTeams } from "./venue-teams";
 
 type DbVenue = {
   slug: string;
@@ -186,7 +187,7 @@ export function mapVenueFromDb(venue: DbVenue): Venue {
     city: venue.city,
     state: venue.state,
     leagues: venue.leagues,
-    teams: venue.teams,
+    teams: resolveVenueTeams(venue.slug, venue.teams),
     sports: venue.sports,
     country: venue.country,
     region: venue.region,

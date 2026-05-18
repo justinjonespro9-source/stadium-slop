@@ -26,6 +26,7 @@ import { isUnratedItemStats } from "@/components/food-item-empty-states";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import { formatHomeOfTeams, formatVenueTeamsInline } from "@/lib/venue-teams";
 import { buildVenueAwardBoards } from "@/lib/venue-awards";
 import { VenueAwardBoards } from "@/components/venue-award-boards";
 
@@ -79,13 +80,10 @@ export async function generateMetadata({
     };
   }
 
-  const teamsLine =
-    venue.teams.length > 0
-      ? `${venue.teams.slice(0, 2).join(" & ")}${venue.teams.length > 2 ? "…" : ""}`
-      : null;
+  const homeOfTeams = formatHomeOfTeams(venue.teams, venue.slug);
   const description = [
     `${venue.name} — Game Day concession rankings in ${venue.city}, ${venue.state}.`,
-    teamsLine ? `Home of ${teamsLine}.` : null,
+    homeOfTeams ? `Home of ${homeOfTeams}.` : null,
     SITE_TAGLINE_SHORT
   ]
     .filter(Boolean)
@@ -678,8 +676,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               </span>
               <span className="text-[var(--slop-line)]">·</span>
               <span className="font-semibold text-[var(--slop-cream)]">
-                {venue.teams.slice(0, 2).join(", ")}
-                {venue.teams.length > 2 ? "…" : ""}
+                {formatVenueTeamsInline(venue.teams, venue.slug)}
               </span>
               {venue.primarySport || venue.sports[0] ? (
                 <>

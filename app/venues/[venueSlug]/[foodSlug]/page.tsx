@@ -45,6 +45,7 @@ import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
 import { SlopCardShareModule } from "@/components/slop-card-share-module";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
 import { FoodItemAwardChips } from "@/components/food-item-award-chips";
 
@@ -1147,8 +1148,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               ) : null}
               {venue.venueType}
             </span>{" "}
-            · {venue.teams.slice(0, 2).join(", ")}
-            {venue.teams.length > 2 ? "…" : ""} · {foodItem.category} ·{" "}
+            · {formatVenueTeamsInline(venue.teams)} · {foodItem.category} ·{" "}
             {foodItem.itemType}
             {foodItem.beverageStyle ? ` · ${foodItem.beverageStyle}` : ""}
             {foodItem.ageRestricted ? " · 21+" : ""}

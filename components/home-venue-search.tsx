@@ -15,6 +15,7 @@ import {
 import type { Venue } from "@/lib/sample-data";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import { filterVenuesBySearch } from "@/lib/venue-search";
+import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import { VenueSearchEmpty } from "@/components/venue-search-empty";
 
 const HOME_RESULTS_MAX = 8;
@@ -145,7 +146,7 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
             className="max-h-[min(16.5rem,calc(100dvh-12rem))] overflow-y-auto py-1.5 sm:py-2"
           >
             {capped.map((venue, index) => {
-              const teamLine = venue.teams.join(" · ");
+              const teamLine = formatVenueTeamsInline(venue.teams);
               const metaChips =
                 teamLine.length > 96 ? `${teamLine.slice(0, 96)}…` : teamLine;
 

@@ -33,6 +33,7 @@
  *
  * - **Stand** — not a separate table; encoded in vendor slug + display name.
  * - **Team** — not a separate table; deduped on Venue.teams[] by normalized slug.
+ *   Shared venues (SoFi, MetLife, future NBA/NHL arenas) also merge tenants via `lib/venue-teams.ts`.
  * - **source_url** — optional tag `import-source:<url>` on FoodItem.tags.
  * - **season** — FoodItem.seasonIntroduced.
  *

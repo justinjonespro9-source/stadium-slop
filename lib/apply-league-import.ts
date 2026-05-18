@@ -19,6 +19,7 @@ import {
   venueSlugFromImport
 } from "./import-slugs";
 import type { LeagueImportRow } from "./league-import-shape";
+import { resolveVenueTeams } from "./venue-teams";
 
 export type LeagueImportApplyResult = {
   venuesUpserted: number;
@@ -197,7 +198,7 @@ export async function applyLeagueImportRows(
         country: "USA",
         region: "North America",
         leagues: [row.league.trim()],
-        teams: [row.team.trim()],
+        teams: resolveVenueTeams(venueSlug, [row.team.trim()]),
         sports: [primarySportForLeague(row.league)],
         primarySport: primarySportForLeague(row.league),
         recurringEvents: [],
@@ -213,7 +214,10 @@ export async function applyLeagueImportRows(
         city: row.city.trim(),
         state: row.state.trim(),
         leagues: mergeUniqueStrings(existingVenue?.leagues ?? [], [row.league.trim()]),
-        teams: mergeUniqueBySlug(existingVenue?.teams ?? [], [row.team.trim()]),
+        teams: resolveVenueTeams(
+          venueSlug,
+          mergeUniqueBySlug(existingVenue?.teams ?? [], [row.team.trim()])
+        ),
         sports: mergeUniqueStrings(existingVenue?.sports ?? [], [
           primarySportForLeague(row.league)
         ]),

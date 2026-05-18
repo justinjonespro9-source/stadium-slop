@@ -20,6 +20,7 @@
     "import:league": "tsx scripts/apply-league-import.ts",
     "parse:nfl-docx": "tsx scripts/parse-nfl-stadium-docx.ts",
     "validate:league-import": "tsx scripts/validate-league-import.ts",
+    "sync:venue-teams": "tsx scripts/sync-shared-venue-teams.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {

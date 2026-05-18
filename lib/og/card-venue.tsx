@@ -4,6 +4,7 @@ import { OgScoreboardShell } from "@/lib/og/card-shell";
 import { ellipsis, FONT, OG } from "@/lib/og-brand";
 import type { Venue } from "@/lib/sample-data";
 import { SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import { formatVenueTeamsInline } from "@/lib/venue-teams";
 
 function VenueNotFoundInner(): ReactElement {
   return (
@@ -40,8 +41,7 @@ function VenueNotFoundInner(): ReactElement {
 }
 
 function VenueInner({ venue }: { venue: Venue }): ReactElement {
-  const teams = venue.teams.filter(Boolean).slice(0, 3);
-  const teamLine = teams.length ? teams.join(" · ") : null;
+  const teamLine = venue.teams.length ? formatVenueTeamsInline(venue.teams) : null;
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>

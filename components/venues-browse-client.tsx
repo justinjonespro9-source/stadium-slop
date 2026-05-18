@@ -8,6 +8,7 @@ import type { Venue } from "@/lib/sample-data";
 import { VenueSearchEmpty } from "@/components/venue-search-empty";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import { filterVenuesBySearch } from "@/lib/venue-search";
+import { formatVenueTeamsInline } from "@/lib/venue-teams";
 
 type VenuesBrowseClientProps = {
   venues: Venue[];
@@ -119,7 +120,9 @@ export function VenuesBrowseClient({
                   </div>
 
                   <p className="mt-2 line-clamp-2 text-[0.72rem] font-semibold text-[var(--slop-cream-muted)] sm:text-xs">
-                    {venue.teams.length > 0 ? venue.teams.join(" · ") : "—"}
+                    {venue.teams.length > 0
+                      ? formatVenueTeamsInline(venue.teams)
+                      : "—"}
                   </p>
 
                   <div className="mt-2.5 rounded-lg border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.55)] px-2.5 py-2 sm:px-3 sm:py-2.5">
