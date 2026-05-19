@@ -728,7 +728,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           </Link>
           {isSignedIn ? (
             <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-              One review per item per game day — edits replace today&apos;s card.
+              One review per item per game day — edits replace today&apos;s scorecard.
             </p>
           ) : null}
 
@@ -911,6 +911,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               />
             )}
           </div>
+          {photoBackedReviews.length > 1 ? (
+            <p className="mt-1 text-center text-[0.6rem] font-semibold text-[var(--slop-cream-dim)] sm:hidden">
+              Swipe scorecards
+            </p>
+          ) : null}
 
           <p className="mt-1.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
             Structured scores · helpful likes need sign-in

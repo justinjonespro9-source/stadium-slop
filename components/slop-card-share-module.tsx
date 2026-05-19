@@ -181,7 +181,7 @@ export function SlopCardShareModule({
     >
       <div className="flex flex-wrap items-center gap-2">
         <span className="inline-flex rounded-full border border-[color:rgba(244,179,33,0.4)] bg-[color:rgba(244,179,33,0.12)] px-2.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-bright)]">
-          Slop Card live
+          Scorecard live
         </span>
         <span className="text-[0.55rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
           Fan-powered guide
@@ -193,15 +193,15 @@ export function SlopCardShareModule({
           hasPhotoIssue ? "text-amber-50" : "text-[var(--slop-cream)]"
         }`}
       >
-        Your Slop Card is ready.
+        Your Scorecard is ready.
       </p>
       <p
         className={`mt-1.5 text-sm leading-snug ${
           hasPhotoIssue ? "text-amber-100/90" : "text-[var(--slop-cream-muted)]"
         }`}
       >
-        Help fans find what&apos;s worth the walk — screenshot your card or share
-        the link.
+        Help fans find what&apos;s worth the walk — screenshot your scorecard or
+        share the link.
       </p>
 
       {preview ? (
@@ -266,7 +266,7 @@ export function SlopCardShareModule({
           onClick={() => void shareSlopCard()}
           className="brand-cta inline-flex min-h-11 w-full items-center justify-center rounded-xl px-4 py-3 text-center text-sm font-black uppercase tracking-[0.06em]"
         >
-          {shareState === "shared" ? "Shared" : "Share Slop Card"}
+          {shareState === "shared" ? "Shared" : "Share Scorecard"}
         </button>
         <button
           type="button"
@@ -289,7 +289,7 @@ export function SlopCardShareModule({
       </div>
 
       <p className="mt-3 text-center text-[0.6rem] leading-snug text-[var(--slop-cream-dim)]">
-        Tip: screenshot your card in Photo reviews — looks great in stories.
+        Tip: screenshot your scorecard in Photo reviews — looks great in stories.
       </p>
 
       <button

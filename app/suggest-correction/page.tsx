@@ -51,7 +51,8 @@ export default async function SuggestCorrectionPage({
 
           <aside className="rounded-xl border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.35)] px-3 py-3 sm:px-4">
             <p className="text-xs leading-relaxed text-[var(--slop-cream-muted)]">
-              Fan corrections help improve rankings and venue accuracy. We read every
+              Fan corrections help improve the Slop Scoreboard and venue accuracy. We
+              read every
               note while manual review tools are still lightweight.
             </p>
             <p className="mt-2 text-[0.7rem] leading-snug text-[var(--slop-cream-dim)]">

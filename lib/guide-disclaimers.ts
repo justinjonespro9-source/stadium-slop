@@ -11,7 +11,7 @@ export const GUIDE_NOTE_BROWSE =
   "Listings mix fan reviews with imported menu intel; details may shift event to event.";
 
 export const GUIDE_NOTE_VENUE_RANKINGS = [
-  "Rankings reflect geofenced fan reviews, not venue or team picks.",
+  "The Slop Scoreboard reflects geofenced fan reviews, not venue or team picks.",
   "Menus, vendors, sections, and prices can change by game or season."
 ];
 

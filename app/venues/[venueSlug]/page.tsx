@@ -87,7 +87,7 @@ export async function generateMetadata({
 
   const homeOfTeams = formatHomeOfTeams(venue.teams, venue.slug);
   const description = [
-    `${venue.name} — Game Day concession rankings in ${venue.city}, ${venue.state}.`,
+    `${venue.name} — Game day Slop Scoreboard for concessions in ${venue.city}, ${venue.state}.`,
     homeOfTeams ? `Home of ${homeOfTeams}.` : null,
     SITE_TAGLINE_SHORT
   ]
@@ -105,12 +105,12 @@ export async function generateMetadata({
       locale: "en_US",
       siteName: "Stadium Slop",
       url: getAbsoluteUrl(path),
-      title: `${venue.name} · Game Day Rankings`,
+      title: `${venue.name} · Slop Scoreboard`,
       description
     },
     twitter: {
       card: "summary_large_image",
-      title: `${venue.name} rankings`,
+      title: `${venue.name} · Slop Scoreboard`,
       description
     }
   };
@@ -467,13 +467,13 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           aria-describedby="venue-standings-hint"
         >
           <p id="venue-standings-hint" className="sr-only">
-            Rankings use geofenced fan reviews within {venue.reviewRadiusMeters}{" "}
-            meters of this venue when submitted on site.
+            Slop Scoreboard uses geofenced fan reviews within{" "}
+            {venue.reviewRadiusMeters} meters of this venue when submitted on site.
           </p>
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
               <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-                Rankings
+                Slop Scoreboard
               </p>
               <h2 className="mt-1 text-base font-black leading-snug text-[var(--slop-cream)] sm:text-lg">
                 Find the best food at {venue.name}

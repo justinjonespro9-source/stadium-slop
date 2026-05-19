@@ -70,9 +70,9 @@ export function PhotoBackedReviewsEmpty({
   return (
     <div className="rounded-2xl border border-dashed border-[color:rgba(244,179,33,0.22)] bg-[color:rgba(6,15,24,0.55)] px-4 py-4 text-center">
       <p className="text-[0.55rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-        Slop Cards
+        Slop Scorecards
       </p>
-      <p className="mt-1 text-sm font-bold text-[var(--slop-cream)]">No fan photo cards yet</p>
+      <p className="mt-1 text-sm font-bold text-[var(--slop-cream)]">No fan scorecards yet</p>
       <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
         Be the first screenshot-worthy review at this stand.
       </p>

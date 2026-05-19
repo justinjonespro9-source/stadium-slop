@@ -79,7 +79,7 @@ export function ReviewSlopCard({
                 Stadium Slop
               </p>
               <p className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-                Slop Card
+                Slop Scorecard
               </p>
             </div>
             <span className="shrink-0 rounded-full border border-[color:rgba(244,179,33,0.35)] bg-[color:rgba(244,179,33,0.1)] px-2 py-0.5 text-[0.5rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-dim)]">

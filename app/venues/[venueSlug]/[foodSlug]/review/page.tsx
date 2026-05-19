@@ -730,7 +730,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               </h2>
               <p className="mt-1 text-xs leading-relaxed text-zinc-500">
                 Snap or upload only if you want — we use it for Fresh signals and
-                your Slop Card. No comments or threads.
+                your Slop Scorecard. No comments or threads.
               </p>
               {cloudinaryReady ? (
                 <PhotoCropUpload

@@ -6,7 +6,7 @@ import { OG_CARD } from "@/lib/site-metadata";
 
 export const runtime = "nodejs";
 
-export const alt = "Venue game day food rankings on Stadium Slop";
+export const alt = "Venue Slop Scoreboard on Stadium Slop";
 
 export const size = { width: OG_CARD.width, height: OG_CARD.height };
 

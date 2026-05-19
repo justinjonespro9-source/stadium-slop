@@ -75,7 +75,7 @@ function VenueInner({ venue }: { venue: Venue }): ReactElement {
               textTransform: "uppercase"
             }}
           >
-            Game Day Rankings
+            Slop Scoreboard
           </span>
         </div>
         <div
