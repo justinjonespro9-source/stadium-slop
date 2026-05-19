@@ -96,8 +96,16 @@ export const TERMS_SECTIONS: LegalSection[] = [
     ]
   },
   {
+    id: "allergens",
+    title: "9. Allergens and dietary information",
+    paragraphs: [
+      "Ingredient, allergen, and diet-related labels on the Service come from fans and public menu data. They may be inaccurate or outdated.",
+      "Shared concession kitchens pose cross-contamination risk. We do not verify allergen information and do not guarantee that any item is safe for your dietary needs. Confirm ingredients and preparation with the venue or vendor before ordering if allergies or restrictions apply."
+    ]
+  },
+  {
     id: "dmca",
-    title: "9. Copyright and DMCA",
+    title: "10. Copyright and DMCA",
     paragraphs: [
       "We respect intellectual property rights. If you believe content on the Service infringes your copyright, send a notice that includes:",
       contactParagraph("Send DMCA notices to:"),
@@ -112,7 +120,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   },
   {
     id: "promoted",
-    title: "10. Promoted and partner listings",
+    title: "11. Promoted and partner listings",
     paragraphs: [
       "Some items or venues may be labeled as promoted, featured, or partner content. We will disclose paid or sponsored placement clearly when it applies.",
       "Promoted placement does not change our fan-powered review model unless we say so on the listing."
@@ -120,7 +128,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   },
   {
     id: "disclaimer-warranty",
-    title: "11. Disclaimers",
+    title: "12. Disclaimers",
     paragraphs: [
       `THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE." TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.`,
       "Slop Scores, rankings, menus, sections, prices, and fan signals reflect crowd opinion and may be incomplete or outdated. Verify important details at the stand."
@@ -128,7 +136,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   },
   {
     id: "liability",
-    title: "12. Limitation of liability",
+    title: "13. Limitation of liability",
     paragraphs: [
       `TO THE FULLEST EXTENT PERMITTED BY LAW, ${LEGAL_OPERATOR} AND ITS OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS, DATA, OR GOODWILL, ARISING FROM YOUR USE OF THE SERVICE.`,
       "Our total liability for any claim relating to the Service is limited to the greater of (a) amounts you paid us in the twelve months before the claim or (b) one hundred U.S. dollars ($100)."
@@ -136,21 +144,21 @@ export const TERMS_SECTIONS: LegalSection[] = [
   },
   {
     id: "indemnity",
-    title: "13. Indemnification",
+    title: "14. Indemnification",
     paragraphs: [
       "You agree to defend, indemnify, and hold harmless us and our affiliates from claims, damages, losses, and expenses (including reasonable attorneys' fees) arising from your User Content, your use of the Service, or your violation of these Terms."
     ]
   },
   {
     id: "changes",
-    title: "14. Changes to these Terms",
+    title: "15. Changes to these Terms",
     paragraphs: [
       "We may update these Terms from time to time. We will post the revised Terms with an updated date. Continued use after changes means you accept the revised Terms."
     ]
   },
   {
     id: "law",
-    title: "15. Governing law",
+    title: "16. Governing law",
     paragraphs: [
       "These Terms are governed by the laws of the State of Delaware, USA, without regard to conflict-of-law rules, except where mandatory local law applies.",
       "Disputes will be resolved in the state or federal courts located in Delaware, and you consent to personal jurisdiction there."
@@ -158,7 +166,7 @@ export const TERMS_SECTIONS: LegalSection[] = [
   },
   {
     id: "contact",
-    title: "16. Contact",
+    title: "17. Contact",
     paragraphs: [contactParagraph("Questions about these Terms:")]
   }
 ];
@@ -343,10 +351,16 @@ export const DISCLAIMER_SECTIONS: LegalSection[] = [
     ]
   },
   {
-    id: "health",
-    title: "Health, allergens, and safety",
+    id: "allergens",
+    title: "Allergens and dietary information",
     paragraphs: [
-      "We do not provide medical, nutritional, or allergen advice. If you have dietary restrictions or health concerns, speak with venue staff before ordering."
+      "Menu notes, tags, and fan comments about ingredients or diets may be wrong, incomplete, or out of date. Vendors change recipes and suppliers without notice.",
+      "Stadium kitchens and stands often share equipment and prep space. Cross-contamination is possible for any allergen—including peanuts, tree nuts, gluten, dairy, eggs, soy, and shellfish.",
+      "Stadium Slop does not verify allergen or dietary information and does not guarantee that any listing is safe for you."
+    ],
+    bullets: [
+      "Do not rely on our site alone for allergy or strict dietary decisions.",
+      "Ask the venue or vendor about ingredients, prep, and cross-contact before you order."
     ]
   },
   {
