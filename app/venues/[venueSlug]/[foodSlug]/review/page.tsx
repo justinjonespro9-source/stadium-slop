@@ -20,13 +20,8 @@ import { prisma } from "@/lib/prisma";
 import { PhotoCropUpload } from "@/components/photo-crop-upload";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
-import {
-  MOCK_REVIEWER_EMAIL,
-  MOCK_REVIEWER_USER_ID,
-  MOCK_USER_COOKIE_NAME,
-  hasMockUserAccess,
-  mockReviewerProfile
-} from "@/lib/user-auth";
+import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 
 const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const replayValueOptions = [
@@ -187,19 +182,10 @@ function NapkinButton({
 async function submitReview(formData: FormData) {
   "use server";
 
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
   const venueSlug = String(formData.get("venueSlug") ?? "");
   const foodSlug = String(formData.get("foodSlug") ?? "");
   const normalizedVenueSlug = venueSlug.trim();
   const normalizedFoodSlug = decodeURIComponent(foodSlug).trim();
-  const draftPath = `/venues/${normalizedVenueSlug}/${normalizedFoodSlug}`;
-
-  if (!isSignedIn) {
-    redirect(`/login?next=${encodeURIComponent(`${draftPath}/review`)}`);
-  }
 
   const venue = await prisma.venue.findFirst({
     where: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
@@ -272,21 +258,10 @@ async function submitReview(formData: FormData) {
     }
   }
 
-  const user = await prisma.user.upsert({
-    where: { id: MOCK_REVIEWER_USER_ID },
-    update: {
-      email: MOCK_REVIEWER_EMAIL,
-      displayName: mockReviewerProfile.displayName,
-      handle: mockReviewerProfile.handle,
-      homeVenueId: venue.id
-    },
-    create: {
-      id: MOCK_REVIEWER_USER_ID,
-      email: MOCK_REVIEWER_EMAIL,
-      displayName: mockReviewerProfile.displayName,
-      handle: mockReviewerProfile.handle,
-      homeVenueId: venue.id
-    }
+  const userId = await requireContributorUserId(`${canonicalItemPath}/review`);
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: { homeVenueId: venue.id }
   });
 
   const today = new Date();
@@ -478,13 +453,10 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   const napkinEligible = isNapkinEligibleItem(foodItem);
   const cloudinaryReady = isCloudinaryConfigured();
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
   const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
+  const contributorUserId = await getContributorUserId();
 
-  if (!isSignedIn) {
+  if (!contributorUserId) {
     return (
       <main className="brand-page min-h-screen">
         <section className="mx-auto w-full max-w-lg px-4 py-5 sm:max-w-xl sm:px-6">
@@ -509,26 +481,15 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
           <div className="mt-5 rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-4">
             <p className="text-sm leading-relaxed text-zinc-400">
-              Free profile — verified at the park. Slop Scores and photos, no
-              comment threads.
+              Sign in with Google to leave a review, optional fan photo, and game-day
+              signals. No comment threads.
             </p>
-            <div className="mt-4 grid gap-2">
-              <Link
-                href={`/login?next=${encodeURIComponent(reviewPath)}`}
-                className="brand-cta rounded-full px-5 py-3.5 text-center text-sm font-black"
-              >
-                Sign in
-              </Link>
-              <Link
-                href={`/signup?next=${encodeURIComponent(reviewPath)}`}
-                className="rounded-full border border-[var(--slop-line)] px-5 py-3.5 text-center text-sm font-black text-[var(--slop-cream)] hover:border-[var(--slop-blue)] hover:text-[var(--slop-blue)]"
-              >
-                Create profile
-              </Link>
+            <div className="mt-4">
+              <GoogleSignInButton
+                callbackUrl={reviewPath}
+                className="brand-cta rounded-full px-5 py-3.5 text-sm font-black"
+              />
             </div>
-            <p className="mt-3 text-[0.65rem] text-zinc-600">
-              Demo auth for now — your reviews still save to the database.
-            </p>
           </div>
         </section>
       </main>
@@ -537,7 +498,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   const draft = foodItem.id
     ? await findTodaysReviewForItem({
-        userId: MOCK_REVIEWER_USER_ID,
+        userId: contributorUserId,
         foodItemId: foodItem.id,
         venueSlug: venue.slug
       })

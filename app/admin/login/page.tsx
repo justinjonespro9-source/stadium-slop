@@ -1,82 +1,68 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
-import { BrandLockup } from "@/components/brand-lockup";
-import {
-  MOCK_ADMIN_COOKIE_NAME,
-  MOCK_ADMIN_COOKIE_VALUE,
-  MOCK_ADMIN_SESSION_SECONDS
-} from "@/lib/admin-auth";
+import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { DevMockAdminSignIn } from "@/components/dev-mock-admin-sign-in";
 
-async function mockAdminSignIn() {
-  "use server";
+type AdminLoginPageProps = {
+  searchParams?: Promise<{
+    next?: string;
+    error?: string;
+  }>;
+};
 
-  const cookieStore = await cookies();
+export default async function AdminLoginPage({ searchParams }: AdminLoginPageProps) {
+  const query = await searchParams;
+  const nextPath =
+    typeof query?.next === "string" && query.next.startsWith("/admin")
+      ? query.next
+      : "/admin";
+  const error = query?.error;
 
-  cookieStore.set(MOCK_ADMIN_COOKIE_NAME, MOCK_ADMIN_COOKIE_VALUE, {
-    httpOnly: true,
-    maxAge: MOCK_ADMIN_SESSION_SECONDS,
-    path: "/",
-    sameSite: "lax"
-  });
-
-  redirect("/admin");
-}
-
-export default function AdminLoginPage() {
   return (
     <main className="brand-page min-h-screen">
-      <section className="mx-auto flex min-h-[calc(100vh-160px)] w-full max-w-xl flex-col justify-center px-5 py-10 sm:px-8">
-        <div className="brand-panel rounded-[2rem] border p-5 sm:p-7">
-          <BrandLockup />
+      <section className="mx-auto w-full max-w-md px-4 py-10 sm:px-6">
+        <Link
+          href="/"
+          className="inline-flex text-xs font-bold text-[var(--slop-cream-dim)] hover:text-[var(--slop-cream)]"
+        >
+          ← Stadium Slop
+        </Link>
 
-          <p className="brand-pill mt-6 inline-flex rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-[0.2em]">
-            Temporary dev-only gate
+        <header className="mt-4 border-b border-[var(--slop-line-strong)] pb-4">
+          <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+            SNG LABS · Admin
           </p>
-
-          <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight sm:text-5xl">
-            Admin Access
+          <h1 className="mt-1 text-2xl font-black text-[var(--slop-cream)]">
+            Admin access
           </h1>
-          <p className="mt-4 text-sm leading-6 text-zinc-400">
-            Future SNG LABS admin console for Stadium Slop operations,
-            moderation, reports, and venue data. This mock login only sets a
-            local development cookie. No real auth provider or database is wired
-            up yet.
+          <p className="mt-2 text-sm leading-relaxed text-[var(--slop-cream-muted)]">
+            Sign in with an allowlisted Google account. Fan contributor sign-in does
+            not grant admin access.
           </p>
+        </header>
 
-          <form action={mockAdminSignIn} className="mt-6 grid gap-4">
-            <label className="grid gap-2 text-sm font-bold text-zinc-300">
-              Admin email
-              <input
-                name="email"
-                placeholder="admin@snglabs.com"
-                className="rounded-2xl border border-[var(--slop-line)] bg-[var(--slop-ink)] px-4 py-4 text-sm text-[var(--slop-cream)] outline-none placeholder:text-zinc-600"
-              />
-            </label>
-
-            <label className="grid gap-2 text-sm font-bold text-zinc-300">
-              Password
-              <input
-                name="password"
-                type="password"
-                placeholder="Dev password placeholder"
-                className="rounded-2xl border border-[var(--slop-line)] bg-[var(--slop-ink)] px-4 py-4 text-sm text-[var(--slop-cream)] outline-none placeholder:text-zinc-600"
-              />
-            </label>
-
-            <button
-              type="submit"
-              className="brand-cta rounded-full px-6 py-4 text-sm font-black transition"
-            >
-              Sign in to admin
-            </button>
-          </form>
-
-          <p className="mt-4 text-xs leading-5 text-zinc-500">
-            Placeholder fields are not validated. Replace this with real SNG
-            LABS authentication before production use.
+        {error === "not-admin" ? (
+          <p
+            role="alert"
+            className="mt-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
+          >
+            That Google account is not on the admin allowlist.
           </p>
+        ) : null}
+
+        <div className="mt-5 grid gap-3">
+          <GoogleSignInButton
+            callbackUrl={nextPath}
+            label="Sign in with Google"
+          />
+          <DevMockAdminSignIn nextPath={nextPath} />
         </div>
+
+        <p className="mt-4 text-xs leading-relaxed text-[var(--slop-cream-dim)]">
+          Admin emails are configured with{" "}
+          <code className="text-[var(--slop-cream-muted)]">ADMIN_EMAILS</code> on
+          the server.
+        </p>
       </section>
     </main>
   );

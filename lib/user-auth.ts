@@ -14,3 +14,23 @@ export const mockReviewerProfile = {
 export function hasMockUserAccess(cookieValue?: string) {
   return cookieValue === MOCK_USER_COOKIE_VALUE;
 }
+
+/** Dev-only mock fan cookie — NODE_ENV=development and ENABLE_MOCK_USER_AUTH=true */
+export function allowMockUserAccess(): boolean {
+  return (
+    process.env.NODE_ENV === "development" &&
+    process.env.ENABLE_MOCK_USER_AUTH === "true"
+  );
+}
+
+export async function isContributorSignedIn(
+  cookieValue?: string
+): Promise<boolean> {
+  if (allowMockUserAccess() && hasMockUserAccess(cookieValue)) {
+    return true;
+  }
+
+  const { getSessionUser } = await import("@/lib/auth/require-user");
+  const user = await getSessionUser();
+  return Boolean(user?.id);
+}

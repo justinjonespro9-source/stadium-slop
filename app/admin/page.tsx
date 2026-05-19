@@ -3,7 +3,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
-import { MOCK_ADMIN_COOKIE_NAME, hasMockAdminAccess } from "@/lib/admin-auth";
+import { signOut } from "@/auth";
+import { requireAdminAccess } from "@/lib/auth/require-admin";
+import {
+  MOCK_ADMIN_COOKIE_NAME,
+  allowMockAdminAccess,
+  hasMockAdminAccess
+} from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { FAN_REPORT_REASON_LABELS } from "@/lib/reports";
 import { formatPriceUsd } from "@/lib/price-report";
@@ -16,13 +22,14 @@ function slugify(value: string) {
     .replace(/(^-|-$)/g, "");
 }
 
-async function mockAdminSignOut() {
+async function adminSignOut() {
   "use server";
 
   const cookieStore = await cookies();
-
-  cookieStore.delete(MOCK_ADMIN_COOKIE_NAME);
-  redirect("/admin/login");
+  if (allowMockAdminAccess()) {
+    cookieStore.delete(MOCK_ADMIN_COOKIE_NAME);
+  }
+  await signOut({ redirectTo: "/admin/login" });
 }
 
 async function approvePriceReport(formData: FormData) {
@@ -177,10 +184,7 @@ function labelForReportReason(reason: ReportReason): string {
 }
 
 async function requireMockAdmin() {
-  const cookieStore = await cookies();
-  if (!hasMockAdminAccess(cookieStore.get(MOCK_ADMIN_COOKIE_NAME)?.value)) {
-    redirect("/admin/login");
-  }
+  await requireAdminAccess();
 }
 
 async function markContentReportReviewed(formData: FormData) {
@@ -504,7 +508,7 @@ export default async function AdminPage() {
                   New venue
                 </Link>
               </div>
-              <form action={mockAdminSignOut} className="mt-3">
+              <form action={adminSignOut} className="mt-3">
                 <button
                   type="submit"
                   className="w-full rounded-full border border-zinc-700 px-4 py-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"

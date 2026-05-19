@@ -258,7 +258,7 @@ export function ProfileDashboardBody({
 
       <footer className="mt-8 flex flex-col gap-3 border-t border-[var(--slop-line-strong)] pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[0.65rem] text-[var(--slop-cream-dim)]">
-          Demo cookie session — replace with real auth when you ship.
+          Signed in with Google — sign out on shared devices after game day.
         </p>
         <form action={mockUserSignOut} className="sm:hidden">
           <button

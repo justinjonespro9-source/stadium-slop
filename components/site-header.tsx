@@ -1,7 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
-export function SiteHeader() {
+import { getSessionUser } from "@/lib/auth/require-user";
+import {
+  MOCK_USER_COOKIE_NAME,
+  allowMockUserAccess,
+  hasMockUserAccess
+} from "@/lib/user-auth";
+
+export async function SiteHeader() {
+  const sessionUser = await getSessionUser();
+  const cookieStore = await cookies();
+  const mockSignedIn =
+    allowMockUserAccess() &&
+    hasMockUserAccess(cookieStore.get(MOCK_USER_COOKIE_NAME)?.value);
+  const isSignedIn = Boolean(sessionUser) || mockSignedIn;
+  const accountHref = isSignedIn ? "/account" : "/login";
+  const accountLabel = isSignedIn ? "Account" : "Sign in";
+
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.92)] text-[var(--slop-cream)] shadow-[var(--slop-shadow-header)] backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-3 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
@@ -29,10 +46,10 @@ export function SiteHeader() {
             </span>
           </Link>
           <Link
-            href="/login"
+            href={accountHref}
             className="rounded-full border border-[var(--slop-line-strong)] bg-[rgba(11,27,43,0.6)] px-4 py-2 text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-gold-bright)] md:hidden"
           >
-            Sign in
+            {accountLabel}
           </Link>
         </div>
 
@@ -50,10 +67,10 @@ export function SiteHeader() {
             Find a venue...
           </Link>
           <Link
-            href="/account"
+            href={accountHref}
             className="hidden rounded-full bg-[var(--slop-red)] px-4 py-2 font-black text-[var(--slop-cream)] shadow-[0_2px_0_rgba(0,0,0,0.25)] transition hover:bg-[var(--slop-red-deep)] hover:text-white md:inline-flex"
           >
-            Account / Sign in
+            {accountLabel}
           </Link>
         </nav>
       </div>

@@ -3,8 +3,12 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+import { signOut } from "@/auth";
 import { ProfileDashboardBody } from "@/components/account/profile-dashboard-body";
 import { AuthPageScaffold } from "@/components/auth-ui";
+import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { getContributorUserId } from "@/lib/auth/contributor-id";
+import { getSessionUser } from "@/lib/auth/require-user";
 import {
   deriveProfileBadges,
   deriveScoutRank,
@@ -17,30 +21,29 @@ import {
   photoErrorQueryFromUploadFailure,
   uploadImageFile
 } from "@/lib/cloudinary";
-import { ensureMockReviewerUser } from "@/lib/mock-user";
 import { prisma } from "@/lib/prisma";
 import { isGameDayKeyTodayForVenue } from "@/lib/game-day";
 import {
-  MOCK_REVIEWER_USER_ID,
   MOCK_USER_COOKIE_NAME,
-  hasMockUserAccess,
+  allowMockUserAccess,
   mockReviewerProfile
 } from "@/lib/user-auth";
 
-async function mockUserSignOut() {
+async function contributorSignOut() {
   "use server";
 
   const cookieStore = await cookies();
-
-  cookieStore.delete(MOCK_USER_COOKIE_NAME);
-  redirect("/account");
+  if (allowMockUserAccess()) {
+    cookieStore.delete(MOCK_USER_COOKIE_NAME);
+  }
+  await signOut({ redirectTo: "/" });
 }
 
 async function uploadProfileAvatar(formData: FormData) {
   "use server";
 
-  const cookieStore = await cookies();
-  if (!hasMockUserAccess(cookieStore.get(MOCK_USER_COOKIE_NAME)?.value)) {
+  const userId = await getContributorUserId();
+  if (!userId) {
     redirect("/login?next=/account");
   }
 
@@ -53,16 +56,14 @@ async function uploadProfileAvatar(formData: FormData) {
     redirect("/account?error=cloudinary");
   }
 
-  await ensureMockReviewerUser();
-
   try {
     const { secureUrl } = await uploadImageFile(file, {
-      folder: `stadium-slop/profiles/${MOCK_REVIEWER_USER_ID}`,
-      publicId: `${MOCK_REVIEWER_USER_ID}-avatar`
+      folder: `stadium-slop/profiles/${userId}`,
+      publicId: `${userId}-avatar`
     });
 
     await prisma.user.update({
-      where: { id: MOCK_REVIEWER_USER_ID },
+      where: { id: userId },
       data: {
         avatarUrl: secureUrl
       }
@@ -113,23 +114,12 @@ function SignedOutAccount() {
       subtitle="Post reviews, upload photos, and mark helpful from one profile."
       footer={
         <p className="text-center text-[0.7rem] leading-relaxed text-[var(--slop-cream-dim)]">
-          Demo cookie session — swap for production auth later.
+          Google sign-in keeps browsing public — only contributions need an account.
         </p>
       }
     >
-      <div className="mt-5 grid gap-2.5">
-        <Link
-          href="/login?next=/account"
-          className="brand-cta rounded-xl px-4 py-3 text-center text-sm font-black"
-        >
-          Sign in
-        </Link>
-        <Link
-          href="/signup?next=/account"
-          className="brand-cta-secondary rounded-xl px-4 py-3 text-center text-sm font-black"
-        >
-          Create account
-        </Link>
+      <div className="mt-5">
+        <GoogleSignInButton callbackUrl="/account" />
       </div>
     </AuthPageScaffold>
   );
@@ -144,17 +134,14 @@ type AccountPageProps = {
 export default async function AccountPage({ searchParams }: AccountPageProps) {
   const query = (await searchParams) ?? {};
   const uploadError = query.error;
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
+  const sessionUser = await getSessionUser();
+  const userId = await getContributorUserId();
 
-  if (!isSignedIn) {
+  if (!userId) {
     return <SignedOutAccount />;
   }
 
   const cloudinaryReady = isCloudinaryConfigured();
-  const userId = MOCK_REVIEWER_USER_ID;
 
   let dbUser: {
     avatarUrl: string | null;
@@ -185,7 +172,6 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
   }[] = [];
 
   try {
-    await ensureMockReviewerUser();
     const [
       userRow,
       reviewCount,
@@ -281,10 +267,18 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     console.warn("Account dashboard DB read failed", error);
   }
 
-  const displayName = dbUser?.displayName ?? mockReviewerProfile.displayName;
+  const displayName =
+    dbUser?.displayName ?? sessionUser?.name ?? mockReviewerProfile.displayName;
   const handle = dbUser?.handle ?? mockReviewerProfile.handle;
   const homeVenueLabel =
     dbUser?.homeVenue?.name ?? mockReviewerProfile.homeVenue;
+  const avatarUrl = dbUser?.avatarUrl ?? sessionUser?.image ?? null;
+  const initials = displayName
+    .split(/\s+/)
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase() || "SS";
 
   const joinedLabel = dbUser?.createdAt
     ? dbUser.createdAt.toLocaleDateString("en-US", {
@@ -353,11 +347,11 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           handleDisplay={handleDisplay}
           joinedLabel={joinedLabel}
           homeVenueLabel={homeVenueLabel}
-          initials={mockReviewerProfile.initials}
-          avatarUrl={dbUser?.avatarUrl}
+          initials={initials}
+          avatarUrl={avatarUrl}
           cloudinaryReady={cloudinaryReady}
           uploadProfileAvatar={uploadProfileAvatar}
-          mockUserSignOut={mockUserSignOut}
+          mockUserSignOut={contributorSignOut}
           scoutRank={scoutRank}
           activitySummary={activitySummary}
           profileBadges={profileBadges}

@@ -19,8 +19,10 @@ import {
   type SlopStatsMode
 } from "@/lib/slop-stats";
 import { prisma } from "@/lib/prisma";
-import { ensureMockReviewerUser } from "@/lib/mock-user";
-import { MOCK_USER_COOKIE_NAME, hasMockUserAccess } from "@/lib/user-auth";
+import {
+  getContributorUserId,
+  requireContributorUserId
+} from "@/lib/auth/contributor-id";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
@@ -129,14 +131,7 @@ async function suggestMissingItem(formData: FormData) {
   const locationHint = String(formData.get("locationHint") ?? "").trim();
   const note = String(formData.get("suggestedItemNote") ?? "").trim();
   const venuePath = `/venues/${venueSlug}`;
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
-
-  if (!isSignedIn) {
-    redirect(`/login?next=${encodeURIComponent(venuePath)}`);
-  }
+  const userId = await requireContributorUserId(venuePath);
 
   if (!name) {
     redirect(`${venuePath}?suggestion=missing-name`);
@@ -158,13 +153,11 @@ async function suggestMissingItem(formData: FormData) {
         }
       })
     : null;
-  const user = await ensureMockReviewerUser(venue.id);
-
   await prisma.suggestedItem.create({
     data: {
       venueId: venue.id,
       vendorId: vendor?.id,
-      userId: user.id,
+      userId,
       name: name.slice(0, 120),
       locationHint: locationHint ? locationHint.slice(0, 160) : null,
       note: note ? note.slice(0, 240) : null
@@ -433,10 +426,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       alcoholRelated: isAlcoholRelatedFoodItem(item, vendor)
     };
   });
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
+  const isSignedIn = Boolean(await getContributorUserId());
 
   return (
     <main className="brand-page min-h-screen">

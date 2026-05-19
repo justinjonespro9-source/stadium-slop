@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { AuthPageScaffold, authFieldClass, authLabelClass } from "@/components/auth-ui";
-import {
-  MOCK_USER_COOKIE_NAME,
-  MOCK_USER_COOKIE_VALUE,
-  MOCK_USER_SESSION_SECONDS
-} from "@/lib/user-auth";
+import { AuthPageScaffold } from "@/components/auth-ui";
+import { DevMockUserSignIn } from "@/components/dev-mock-user-sign-in";
+import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { getSessionUser } from "@/lib/auth/require-user";
 
 type LoginPageProps = {
   searchParams?: Promise<{
@@ -15,68 +12,42 @@ type LoginPageProps = {
   }>;
 };
 
-async function mockUserSignIn(formData: FormData) {
-  "use server";
-
-  const nextPath = formData.get("next");
-  const cookieStore = await cookies();
-
-  cookieStore.set(MOCK_USER_COOKIE_NAME, MOCK_USER_COOKIE_VALUE, {
-    httpOnly: true,
-    maxAge: MOCK_USER_SESSION_SECONDS,
-    path: "/",
-    sameSite: "lax"
-  });
-
-  redirect(typeof nextPath === "string" && nextPath ? nextPath : "/account");
-}
-
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const query = await searchParams;
-  const nextPath = query?.next ?? "/account";
+  const nextPath =
+    typeof query?.next === "string" && query.next.startsWith("/")
+      ? query.next
+      : "/account";
+
+  const user = await getSessionUser();
+  if (user) {
+    redirect(nextPath);
+  }
 
   return (
     <AuthPageScaffold
-      eyebrow="Demo session"
+      eyebrow="Contributor account"
       title="Sign in"
-      subtitle="Sign in to post reviews, upload photos, and mark helpful."
+      subtitle="Use Google to post reviews, upload photos, and report prices. Browsing stays free without an account."
       footer={
-        <p className="text-center text-[0.8rem] text-[var(--slop-cream-muted)]">
-          New here?{" "}
-          <Link
-            href="/signup"
-            className="font-black text-[var(--slop-gold)] underline-offset-2 hover:underline"
-          >
-            Create account
+        <p className="text-center text-[0.75rem] leading-relaxed text-[var(--slop-cream-dim)]">
+          {/* TODO: optional email magic link sign-in */}
+          By signing in you agree to our{" "}
+          <Link href="/terms" className="font-bold text-[var(--slop-gold)] hover:underline">
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className="font-bold text-[var(--slop-gold)] hover:underline">
+            Privacy Policy
           </Link>
+          .
         </p>
       }
     >
-      <form action={mockUserSignIn} className="mt-5 grid gap-3">
-        <input type="hidden" name="next" value={nextPath} />
-        <label className={`grid gap-1.5 ${authLabelClass}`}>
-          Email
-          <input
-            name="email"
-            autoComplete="email"
-            placeholder="fan@example.com"
-            className={authFieldClass}
-          />
-        </label>
-        <label className={`grid gap-1.5 ${authLabelClass}`}>
-          Password
-          <input
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            placeholder="Any text (mock)"
-            className={authFieldClass}
-          />
-        </label>
-        <button type="submit" className="brand-cta mt-1 w-full rounded-xl px-4 py-3 text-sm font-black">
-          Sign in
-        </button>
-      </form>
+      <div className="mt-5 grid gap-3">
+        <GoogleSignInButton callbackUrl={nextPath} />
+        <DevMockUserSignIn nextPath={nextPath} />
+      </div>
     </AuthPageScaffold>
   );
 }

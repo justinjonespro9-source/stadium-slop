@@ -1,15 +1,21 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 import {
   MOCK_ADMIN_COOKIE_NAME,
+  allowMockAdminAccess,
   hasMockAdminAccess
 } from "@/lib/admin-auth";
+import { isAdminEmail } from "@/lib/auth/admin";
+
+function authSecret() {
+  return process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET;
+}
 
 /** Next.js 16+ convention: network boundary before the app (replaces `middleware.ts`). */
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Defense in depth: never run admin logic on public routes even if matcher regressed.
   if (!pathname.startsWith("/admin")) {
     return NextResponse.next();
   }
@@ -18,11 +24,31 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const adminCookie = request.cookies.get(MOCK_ADMIN_COOKIE_NAME)?.value;
+  if (allowMockAdminAccess()) {
+    const mockCookie = request.cookies.get(MOCK_ADMIN_COOKIE_NAME)?.value;
+    if (hasMockAdminAccess(mockCookie)) {
+      return NextResponse.next();
+    }
+  }
 
-  if (!hasMockAdminAccess(adminCookie)) {
+  const token = await getToken({
+    req: request,
+    secret: authSecret()
+  });
+
+  const email =
+    typeof token?.email === "string" ? token.email.toLowerCase() : null;
+  const isAdmin =
+    token?.isAdmin === true ||
+    token?.role === "ADMIN" ||
+    (email ? isAdminEmail(email) : false);
+
+  if (!token?.sub || !isAdmin) {
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("next", pathname);
+    if (token?.sub && !isAdmin) {
+      loginUrl.searchParams.set("error", "not-admin");
+    }
     return NextResponse.redirect(loginUrl);
   }
 

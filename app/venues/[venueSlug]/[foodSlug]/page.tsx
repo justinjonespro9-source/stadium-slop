@@ -18,12 +18,7 @@ import {
 import type { FoodReview } from "@/lib/sample-data";
 import { prisma } from "@/lib/prisma";
 import { getDbBackedItemSlopStats, getSlopScoreTier, type ConsensusStat } from "@/lib/slop-stats";
-import {
-  MOCK_REVIEWER_USER_ID,
-  MOCK_USER_COOKIE_NAME,
-  hasMockUserAccess
-} from "@/lib/user-auth";
-import { ensureMockReviewerUser } from "@/lib/mock-user";
+import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import { buildItemFanPhotoLayout } from "@/lib/fan-photo-layout";
@@ -215,14 +210,7 @@ async function markReviewHelpful(formData: FormData) {
   const foodSlug = String(formData.get("foodSlug") ?? "");
   const reviewId = String(formData.get("reviewId") ?? "");
   const itemPath = `/venues/${venueSlug}/${foodSlug}`;
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
-
-  if (!isSignedIn) {
-    redirect(`/login?next=${encodeURIComponent(itemPath)}`);
-  }
+  await requireContributorUserId(itemPath);
 
   const review = await prisma.review.findFirst({
     where: {
@@ -244,18 +232,18 @@ async function markReviewHelpful(formData: FormData) {
     redirect(itemPath);
   }
 
-  const user = await ensureMockReviewerUser(review.venueId);
+  const userId = await requireContributorUserId(itemPath);
 
   await prisma.helpfulLike.upsert({
     where: {
       userId_reviewId: {
-        userId: user.id,
+        userId,
         reviewId: review.id
       }
     },
     update: {},
     create: {
-      userId: user.id,
+      userId,
       reviewId: review.id
     }
   });
@@ -270,15 +258,6 @@ async function submitPriceReport(formData: FormData) {
   const venueSlug = String(formData.get("venueSlug") ?? "").trim();
   const foodSlug = String(formData.get("foodSlug") ?? "").trim();
   const itemPath = `/venues/${venueSlug}/${foodSlug}`;
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
-
-  if (!isSignedIn) {
-    redirect(`/login?next=${encodeURIComponent(itemPath)}`);
-  }
-
   const reportedPrice = Number(formData.get("reportedPrice"));
   const note = String(formData.get("priceNote") ?? "").trim();
 
@@ -294,11 +273,11 @@ async function submitPriceReport(formData: FormData) {
   const { venue, foodItem } = resolved;
   const canonicalPath = `/venues/${venue.slug}/${foodItem.slug}`;
 
-  const user = await ensureMockReviewerUser(venue.id);
+  const userId = await requireContributorUserId(itemPath);
 
   await prisma.priceReport.create({
     data: {
-      userId: user.id,
+      userId,
       venueId: venue.id,
       foodItemId: foodItem.id,
       reportedPrice,
@@ -372,15 +351,15 @@ async function getPriceIntel(
   }
 }
 
-async function getLikedReviewIds(reviewIds: string[]) {
-  if (reviewIds.length === 0) {
+async function getLikedReviewIds(userId: string, reviewIds: string[]) {
+  if (reviewIds.length === 0 || !userId) {
     return new Set<string>();
   }
 
   try {
     const helpfulLikes = await prisma.helpfulLike.findMany({
       where: {
-        userId: MOCK_REVIEWER_USER_ID,
+        userId,
         reviewId: {
           in: reviewIds
         }
@@ -484,21 +463,22 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     foodPhotos.find((p) => !p.imageUrl)?.imagePlaceholder ??
     foodPhotos[0]?.imagePlaceholder ??
     "🍔";
-  const cookieStore = await cookies();
-  const isSignedIn = hasMockUserAccess(
-    cookieStore.get(MOCK_USER_COOKIE_NAME)?.value
-  );
+  const contributorUserId = await getContributorUserId();
+  const isSignedIn = Boolean(contributorUserId);
   let hasTodaysReview = false;
-  if (isSignedIn && foodItem.id) {
+  if (contributorUserId && foodItem.id) {
     const todaysRow = await findTodaysReviewForItem({
-      userId: MOCK_REVIEWER_USER_ID,
+      userId: contributorUserId,
       foodItemId: foodItem.id,
       venueSlug: venue.slug
     });
     hasTodaysReview = Boolean(todaysRow);
   }
-  const likedReviewIds = isSignedIn
-    ? await getLikedReviewIds(photoBackedReviews.map((review) => review.id))
+  const likedReviewIds = contributorUserId
+    ? await getLikedReviewIds(
+        contributorUserId,
+        photoBackedReviews.map((review) => review.id)
+      )
     : new Set<string>();
   const moreFromVendor = vendor
     ? (await getPublicFoodItemsByVendorSlug(venue.slug, vendor.slug)).filter(
