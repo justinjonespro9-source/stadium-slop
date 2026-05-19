@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { getSessionUser } from "@/lib/auth/require-user";
 import { ensureMockReviewerUser } from "@/lib/mock-user";
@@ -24,12 +25,14 @@ export async function getContributorUserId(): Promise<string | null> {
   return sessionUser?.id ?? null;
 }
 
-export async function requireContributorUserId(nextPath: string): Promise<string> {
+export async function requireContributorUserId(
+  nextPath: string
+): Promise<string> {
   const userId = await getContributorUserId();
+
   if (userId) {
     return userId;
   }
 
-  const { redirect } = await import("next/navigation");
   redirect(`/login?next=${encodeURIComponent(nextPath)}`);
 }
