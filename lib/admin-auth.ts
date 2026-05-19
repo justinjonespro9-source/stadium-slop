@@ -15,10 +15,3 @@ export function allowMockAdminAccess(): boolean {
 export function hasMockAdminAccess(cookieValue?: string) {
   return cookieValue === MOCK_ADMIN_COOKIE_VALUE;
 }
-
-export function allowMockAdminAccess(): boolean {
-  return (
-    process.env.NODE_ENV === "development" &&
-    process.env.ENABLE_MOCK_ADMIN === "true"
-  );
-}
