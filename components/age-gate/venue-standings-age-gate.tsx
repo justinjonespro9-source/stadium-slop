@@ -6,6 +6,7 @@ import { AlcoholHiddenStandingRow } from "@/components/age-gate/alcohol-hidden-s
 import { AgeConfirmationPrompt } from "@/components/age-gate/age-confirmation-prompt";
 import { useAgeGate } from "@/components/age-gate/age-gate-context";
 import { VenueStandingRow } from "@/components/venue-standing-row";
+import type { FanFavoriteBadge } from "@/lib/fan-favorite-awards";
 import type { FoodItem, Vendor } from "@/lib/sample-data";
 import type { ItemSlopStats } from "@/lib/slop-stats-display";
 
@@ -14,20 +15,19 @@ export type VenueStandingAgeGateRow = {
   stats: ItemSlopStats;
   alcoholRelated: boolean;
   vendor?: Vendor;
+  fanFavoriteBadges: FanFavoriteBadge[];
 };
 
 type VenueStandingsAgeGateProps = {
   rows: VenueStandingAgeGateRow[];
   venueSlug: string;
   isFreshStandingsTab: boolean;
-  maxReviewsInList: number;
 };
 
 export function VenueStandingsAgeGate({
   rows,
   venueSlug,
-  isFreshStandingsTab,
-  maxReviewsInList
+  isFreshStandingsTab
 }: VenueStandingsAgeGateProps) {
   const { status, isConfirmed } = useAgeGate();
   const hasAlcohol = rows.some((row) => row.alcoholRelated);
@@ -62,7 +62,7 @@ export function VenueStandingsAgeGate({
             vendor={row.vendor}
             venueSlug={venueSlug}
             isFreshStandingsTab={isFreshStandingsTab}
-            maxReviewsInList={maxReviewsInList}
+            fanFavoriteBadges={row.fanFavoriteBadges}
           />
         );
       })}

@@ -80,10 +80,10 @@ export function deriveProfileBadges(input: ScoutProfileInput): ProfileBadge[] {
       hint: "Add a fan photo on any review."
     },
     {
-      id: "worth-walk",
-      label: "Worth the Walk",
-      earned: input.worthTheWalkReviewCount > 0,
-      hint: 'Tag a review with "Worth the Walk".'
+      id: "season-scout",
+      label: "Season Scout",
+      earned: input.totalReviews >= 5,
+      hint: "Post five reviews across the season."
     }
   ];
 }

@@ -1,9 +1,15 @@
 /** Client-safe Slop Card label + layout helpers (no DB). */
 
+import { isFanFavoriteHighlightLabel } from "@/lib/fan-favorite-awards";
+
 const HIGHLIGHT_PRIORITY = [
   "Trending Tonight",
-  "Fan Favorite",
-  "Worth the Walk",
+  "#1 All-Time Fan Favorite",
+  "#2 All-Time Fan Favorite",
+  "#3 All-Time Fan Favorite",
+  "#1 Season Fan Favorite",
+  "#2 Season Fan Favorite",
+  "#3 Season Fan Favorite",
   "Run It Back",
   "Steal",
   "Worth the Price of Admission",
@@ -18,14 +24,13 @@ export function highlightToneForLabel(label: string): SlopCardHighlightTone {
     return "emerald";
   }
   if (
-    lower.includes("worth the walk") ||
     lower.includes("worth the price") ||
     lower.includes("steal") ||
     lower.includes("run it back")
   ) {
     return "orange";
   }
-  if (lower.includes("fan favorite") || lower.includes("photo favorite")) {
+  if (isFanFavoriteHighlightLabel(label) || lower.includes("photo favorite")) {
     return "gold";
   }
   return "cream";
@@ -40,9 +45,14 @@ export function pickSlopCardHighlights(
   const picked: string[] = [];
 
   for (const priority of HIGHLIGHT_PRIORITY) {
-    const match = pool.find(
-      (l) => l.toLowerCase() === priority.toLowerCase() || l.includes(priority)
-    );
+    const match = pool.find((label) => {
+      if (isFanFavoriteHighlightLabel(priority)) {
+        return isFanFavoriteHighlightLabel(label) && label === priority;
+      }
+      return (
+        label.toLowerCase() === priority.toLowerCase() || label.includes(priority)
+      );
+    });
     if (match && !picked.includes(match)) {
       picked.push(match);
     }
@@ -52,7 +62,11 @@ export function pickSlopCardHighlights(
   }
 
   for (const label of pool) {
-    if (!picked.includes(label)) {
+    if (
+      !picked.includes(label) &&
+      !label.toLowerCase().includes("worth the walk") &&
+      label.toLowerCase() !== "best value"
+    ) {
       picked.push(label);
     }
     if (picked.length >= max) {

@@ -8,6 +8,7 @@ import { notFound, redirect } from "next/navigation";
 
 import {
   getPublicFoodItemBySlug,
+  getPublicFoodItemsByVenueSlug,
   getPublicFoodItemsByVendorSlug,
   getPublicPhotosForFoodItem,
   getPublicVendorForFoodItem,
@@ -53,7 +54,11 @@ import { photoErrorMessageFromQuery } from "@/lib/review-photo-errors";
 import { resolveFoodItemForPriceReport } from "@/lib/price-report";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
-import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
+import {
+  computeVenueFanFavoriteBadges,
+  deriveFoodItemAwardChips,
+  getFanFavoriteBadgesForItem
+} from "@/lib/venue-awards";
 import { FoodItemAwardChips } from "@/components/food-item-award-chips";
 import { ClaimListingCta } from "@/components/claim-listing-cta";
 import { SuggestCorrectionLink } from "@/components/suggest-correction-link";
@@ -451,6 +456,21 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     "gameDayFresh"
   );
 
+  const venueMenuItems = await getPublicFoodItemsByVenueSlug(venue.slug);
+  const fanFavoriteByItem = computeVenueFanFavoriteBadges(
+    await Promise.all(
+      venueMenuItems.map(async (menuItem) => ({
+        itemSlug: menuItem.slug,
+        allTime: await getDbBackedItemSlopStats(venue.slug, menuItem.slug, "allTime"),
+        season: await getDbBackedItemSlopStats(venue.slug, menuItem.slug, "season")
+      }))
+    )
+  );
+  const fanFavoriteBadges = getFanFavoriteBadgesForItem(
+    fanFavoriteByItem,
+    foodItem.slug
+  );
+
   const { heroEntry, additionalFanPhotos, photoBackedReviews } = buildItemFanPhotoLayout(
     careerStats.reviews,
     foodPhotos,
@@ -502,12 +522,13 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const itemShareUrl = getAbsoluteUrl(itemPath);
   const unratedSeason = isUnratedItemStats(seasonStats.reviewCount);
   const hasGameDayFreshToday = freshStats.hasFreshToday;
-  const awardChips = deriveFoodItemAwardChips(
-    foodItem,
-    seasonStats,
-    freshStats,
-    photoBackedReviews.length
-  );
+  const awardChips = deriveFoodItemAwardChips(fanFavoriteBadges, freshStats);
+  const editorialVenueBadge =
+    foodItem.venueBadge &&
+    foodItem.venueBadge !== "Fan Favorite" &&
+    foodItem.venueBadge !== "Best Value"
+      ? foodItem.venueBadge
+      : null;
   const alcoholRelated = isAlcoholRelatedFoodItem(foodItem, vendor);
   const slopCardLocation = slopCardLocationLine(foodItem, vendor);
   const awardLabelPool = awardChips.map((chip) => chip.label);
@@ -585,9 +606,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 New
               </p>
             ) : null}
-            {foodItem.venueBadge ? (
+            {editorialVenueBadge ? (
               <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.08)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] sm:text-xs">
-                {foodItem.venueBadge}
+                {editorialVenueBadge}
               </p>
             ) : null}
           </div>

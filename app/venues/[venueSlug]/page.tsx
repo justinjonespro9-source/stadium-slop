@@ -34,6 +34,10 @@ import {
 import { AgeGateProvider } from "@/components/age-gate/age-gate-context";
 import { VenueStandingsAgeGate } from "@/components/age-gate/venue-standings-age-gate";
 import { isAlcoholRelatedFoodItem } from "@/lib/alcohol-content";
+import {
+  computeVenueFanFavoriteBadges,
+  getFanFavoriteBadgesForItem
+} from "@/lib/venue-awards";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -346,6 +350,14 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
   const venueFoodItems = await getPublicFoodItemsByVenueSlug(venue.slug);
   const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
+  const fanFavoriteEntries = await Promise.all(
+    venueFoodItems.map(async (item) => ({
+      itemSlug: item.slug,
+      allTime: await getDbBackedItemSlopStats(venue.slug, item.slug, "allTime"),
+      season: await getDbBackedItemSlopStats(venue.slug, item.slug, "season")
+    }))
+  );
+  const fanFavoriteByItem = computeVenueFanFavoriteBadges(fanFavoriteEntries);
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
   const rawVendorSlug = (query?.vendor ?? "all").trim() || "all";
@@ -411,16 +423,13 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
         : category === "reviewed"
           ? "No reviewed items in this view yet. Switch to All or another category, or leave the first review."
           : "No items match these filters.";
-  const maxReviewsInList = standingsRows.reduce(
-    (max, { stats }) => Math.max(max, stats.reviewCount),
-    0
-  );
   const standingsAgeGateRows = standingsRows.map(({ item, stats }) => {
     const vendor = vendorBySlug.get(item.vendorSlug);
     return {
       item,
       stats,
       vendor,
+      fanFavoriteBadges: getFanFavoriteBadgesForItem(fanFavoriteByItem, item.slug),
       alcoholRelated: isAlcoholRelatedFoodItem(item, vendor)
     };
   });
@@ -562,7 +571,6 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                   rows={standingsAgeGateRows}
                   venueSlug={venue.slug}
                   isFreshStandingsTab={mode === "fresh"}
-                  maxReviewsInList={maxReviewsInList}
                 />
               ) : (
                 <p className="px-3 py-4 text-sm leading-snug text-[var(--slop-cream-muted)] sm:px-4">
