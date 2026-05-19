@@ -651,30 +651,27 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const slopCardLocation = slopCardLocationLine(foodItem, vendor);
   const awardLabelPool = awardChips.map((chip) => chip.label);
   const leadReview = photoBackedReviews[0];
-  const shareSlopPreview: SlopCardSharePreview | null =
-    showReviewSaved && leadReview
-      ? {
-          itemName: foodItem.name,
-          venueName: venue.name,
-          metaLine: formatSlopCardMetaRow({
-            locationLine: slopCardLocation,
-            verifiedGameDay: leadReview.verifiedGameDay,
-            dateLabel: leadReview.dateLabel
-          }),
-          slopScore: leadReview.slopScore,
-          highlightLabels: pickSlopCardHighlights(
-            leadReview.labels,
-            awardLabelPool
-          )
-        }
-      : showReviewSaved
-        ? {
-            itemName: foodItem.name,
-            venueName: venue.name,
-            metaLine: formatSlopCardMetaRow({ locationLine: slopCardLocation }),
-            highlightLabels: awardLabelPool.slice(0, 2)
-          }
-        : null;
+  const shareSlopPreview: SlopCardSharePreview | null = leadReview
+    ? {
+        itemName: foodItem.name,
+        venueName: venue.name,
+        metaLine: formatSlopCardMetaRow({
+          locationLine: slopCardLocation,
+          verifiedGameDay: leadReview.verifiedGameDay,
+          dateLabel: leadReview.dateLabel
+        }),
+        slopScore: leadReview.slopScore,
+        highlightLabels: pickSlopCardHighlights(
+          leadReview.labels,
+          awardLabelPool
+        )
+      }
+    : {
+        itemName: foodItem.name,
+        venueName: venue.name,
+        metaLine: formatSlopCardMetaRow({ locationLine: slopCardLocation }),
+        highlightLabels: awardLabelPool.slice(0, 2)
+      };
 
   return (
     <main className="brand-page min-h-screen">
