@@ -18,37 +18,37 @@ export const SITE_SOCIAL_LINKS: readonly SiteSocialLink[] = [
   {
     id: "x",
     label: "X",
-    href: "https://x.com/stadiumslop",
-    isPlaceholder: true
+    href: "https://x.com/StadiumSlop",
+    isPlaceholder: false
   },
   {
     id: "instagram",
     label: "Instagram",
-    href: "https://instagram.com/stadiumslop",
-    isPlaceholder: true
+    href: "https://www.instagram.com/stadiumslop/",
+    isPlaceholder: false
   },
   {
     id: "tiktok",
     label: "TikTok",
     href: "https://www.tiktok.com/@stadiumslop",
-    isPlaceholder: true
+    isPlaceholder: false
   },
   {
     id: "youtube",
     label: "YouTube",
-    href: "https://www.youtube.com/@stadiumslop",
-    isPlaceholder: true
+    href: "https://www.youtube.com/@StadiumSlop",
+    isPlaceholder: false
   },
   {
     id: "linkedin",
     label: "LinkedIn",
-    href: "https://www.linkedin.com/company/stadiumslop",
-    isPlaceholder: true
+    href: "https://www.linkedin.com/company/sng-labs/?viewAsMember=true",
+    isPlaceholder: false
   },
   {
     id: "email",
     label: "Email",
-    href: `mailto:${SITE_CONTACT_EMAIL}`
+    href: `mailto:${hello@stadiumslop.com}`
   }
 ] as const;
 
