@@ -1,6 +1,6 @@
 /** Public contact + social — single place to update handles and inbox. */
 
-export const SITE_CONTACT_EMAIL = "hello@snglabs.com";
+export const SITE_CONTACT_EMAIL = "hello@stadiumslop.com";
 
 export type SiteSocialLink = {
   id: string;
@@ -12,7 +12,6 @@ export type SiteSocialLink = {
 
 /**
  * Update URLs when official accounts are live.
- * Placeholder hosts use stadiumslop-style paths until confirmed.
  */
 export const SITE_SOCIAL_LINKS: readonly SiteSocialLink[] = [
   {
@@ -48,7 +47,8 @@ export const SITE_SOCIAL_LINKS: readonly SiteSocialLink[] = [
   {
     id: "email",
     label: "Email",
-    href: `mailto:${hello@stadiumslop.com}`
+    href: `mailto:${SITE_CONTACT_EMAIL}`,
+    isPlaceholder: false
   }
 ] as const;
 
