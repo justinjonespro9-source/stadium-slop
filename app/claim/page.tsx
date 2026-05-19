@@ -2,13 +2,19 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { ClaimInquiryForm } from "@/components/claim-inquiry-form";
-import { getPartnerFeatureTeasers, parseClaimSearchParams } from "@/lib/claim-listing";
-import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import {
+  claimPageLead,
+  claimPageTitle,
+  getPartnerFeatureTeasers,
+  parseClaimSearchParams
+} from "@/lib/claim-listing";
+import { PROMOTED_PLACEMENT_NOTE, PUBLIC_TRUST_STATEMENT } from "@/lib/site-contact";
+import { getAbsoluteUrl } from "@/lib/site-metadata";
 
 export const metadata: Metadata = {
-  title: "Claim a listing",
+  title: "Claim or partner",
   description:
-    "Early partnership and listing support for venues, vendors, and operators on Stadium Slop.",
+    "Partnership, vendor, and listing inquiries for Stadium Slop — specific listings or general business questions.",
   alternates: { canonical: getAbsoluteUrl("/claim") }
 };
 
@@ -36,12 +42,10 @@ export default async function ClaimPage({ searchParams }: ClaimPageProps) {
             Operator &amp; vendor lane
           </p>
           <h1 className="mt-1 text-2xl font-black tracking-tight text-[var(--slop-cream)] sm:text-3xl">
-            Claim this listing
+            {claimPageTitle(context)}
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-[var(--slop-cream-muted)]">
-            Stadium Slop is building fan-powered venue guides and early partnerships
-            with teams, vendors, and operators. Tell us what to correct, verify, or
-            explore — no dashboard login required yet.
+            {claimPageLead(context)}
           </p>
         </header>
 
@@ -66,9 +70,11 @@ export default async function ClaimPage({ searchParams }: ClaimPageProps) {
             </ul>
           </aside>
 
-          <p className="text-center text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-            {SITE_TAGLINE_SHORT} Fan reviews stay independent; paid placements are
-            always labeled.
+          <p className="text-center text-sm leading-relaxed text-[var(--slop-cream-muted)]">
+            {PUBLIC_TRUST_STATEMENT}
+          </p>
+          <p className="mt-1.5 text-center text-xs leading-snug text-[var(--slop-cream-dim)]">
+            {PROMOTED_PLACEMENT_NOTE}
           </p>
         </div>
       </section>

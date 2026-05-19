@@ -1,6 +1,7 @@
+import { SITE_CONTACT_EMAIL } from "@/lib/site-contact";
 import { getAbsoluteUrl } from "@/lib/site-metadata";
 
-export const SUGGEST_CORRECTION_EMAIL = "hello@snglabs.com";
+export const SUGGEST_CORRECTION_EMAIL = SITE_CONTACT_EMAIL;
 
 export type SuggestCorrectionKind = "venue" | "vendor" | "item";
 

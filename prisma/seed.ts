@@ -13,6 +13,7 @@ import {
 import { applyDemoDensitySeed } from "../lib/demo-density-seed";
 import { buildGameDayKey } from "../lib/game-day";
 import { prisma } from "../lib/prisma";
+import { MOCK_REVIEWER_USER_ID } from "../lib/user-auth";
 import {
   foodItems,
   foodPhotos,
@@ -603,6 +604,34 @@ async function main() {
   }
 
   const density = await applyDemoDensitySeed(prisma, seedNow);
+
+  const seedPriceDemoItem = await prisma.foodItem.findFirst({
+    where: { slug: "loaded-cheese-curds", status: "ACTIVE" },
+    select: { id: true, venueId: true }
+  });
+  const seedPriceDemoUser = await prisma.user.findUnique({
+    where: { id: MOCK_REVIEWER_USER_ID },
+    select: { id: true }
+  });
+  if (seedPriceDemoItem && seedPriceDemoUser) {
+    await prisma.priceReport.upsert({
+      where: { id: "seed-pending-price-report-curds" },
+      create: {
+        id: "seed-pending-price-report-curds",
+        foodItemId: seedPriceDemoItem.id,
+        venueId: seedPriceDemoItem.venueId,
+        userId: seedPriceDemoUser.id,
+        reportedPrice: 14.99,
+        status: "PENDING",
+        note: "Seed demo — fan board price for admin queue testing"
+      },
+      update: {
+        status: "PENDING",
+        reportedPrice: 14.99,
+        note: "Seed demo — fan board price for admin queue testing"
+      }
+    });
+  }
 
   console.log(
     `Seeded ${venues.length} venues, ${vendors.length} vendors, ${foodItems.length} items, ${foodReviews.length} reviews, ${foodPhotos.length} sample photos, ${density.demoReviewsUpserted} demo-density reviews (${density.demoPhotosUpserted} placeholder photos, ${density.demoHelpfulUpserted} helpful likes). ` +

@@ -7,10 +7,12 @@ import {
   buildClaimMailto,
   CLAIM_CONTACT_EMAIL,
   CLAIM_INQUIRY_TOPICS,
+  claimFormIntro,
   formatClaimContextSummary,
   type ClaimInquiryTopic,
   type ClaimListingContext
 } from "@/lib/claim-listing";
+import { CLAIM_SUBMISSION_NOTE } from "@/lib/site-contact";
 
 type ClaimInquiryFormProps = {
   context: ClaimListingContext | null;
@@ -50,7 +52,11 @@ export function ClaimInquiryForm({ context }: ClaimInquiryFormProps) {
             ))}
           </ul>
         </div>
-      ) : null}
+      ) : (
+        <p className="mb-4 text-xs leading-relaxed text-[var(--slop-cream-dim)]">
+          {claimFormIntro(null)}
+        </p>
+      )}
 
       <form
         className="grid gap-3"
@@ -135,15 +141,8 @@ export function ClaimInquiryForm({ context }: ClaimInquiryFormProps) {
         </button>
 
         <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-          Opens your mail app to{" "}
-          <a
-            href={`mailto:${CLAIM_CONTACT_EMAIL}`}
-            className="font-semibold text-[var(--slop-gold)] underline-offset-2 hover:underline"
-          >
-            {CLAIM_CONTACT_EMAIL}
-          </a>
-          . No account required — we reply manually while partner tools are in
-          development.
+          {CLAIM_SUBMISSION_NOTE} No account required — we reply manually while
+          partner tools are in development.
         </p>
       </form>
     </div>

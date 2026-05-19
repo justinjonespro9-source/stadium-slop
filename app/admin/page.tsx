@@ -6,6 +6,7 @@ import Link from "next/link";
 import { MOCK_ADMIN_COOKIE_NAME, hasMockAdminAccess } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { FAN_REPORT_REASON_LABELS } from "@/lib/reports";
+import { formatPriceUsd } from "@/lib/price-report";
 import type { ReportReason } from "@prisma/client";
 
 function slugify(value: string) {
@@ -60,6 +61,7 @@ async function approvePriceReport(formData: FormData) {
 async function rejectPriceReport(formData: FormData) {
   "use server";
 
+  await requireMockAdmin();
   const reportId = String(formData.get("reportId") ?? "");
 
   await prisma.priceReport.updateMany({
@@ -350,11 +352,19 @@ async function getPendingAdminQueues() {
       prisma.priceReport.findMany({
         where: { status: "PENDING" },
         orderBy: { createdAt: "desc" },
-        take: 6,
+        take: 12,
         include: {
-          foodItem: { select: { id: true, name: true, slug: true } },
+          foodItem: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              basePrice: true,
+              reportedPrice: true
+            }
+          },
           venue: { select: { name: true, slug: true } },
-          user: { select: { handle: true } }
+          user: { select: { handle: true, displayName: true } }
         }
       }),
       prisma.suggestedItem.findMany({
@@ -409,7 +419,7 @@ async function getPendingAdminQueues() {
 
     return { priceReports, suggestedItems, contentReports };
   } catch (error) {
-    console.warn("Falling back to empty admin queues", error);
+    console.error("Admin pending queues failed", error);
     return { priceReports: [], suggestedItems: [], contentReports: [] };
   }
 }
@@ -696,17 +706,49 @@ export default async function AdminPage() {
               <h2 className="text-xl font-black">Price reports</h2>
               <div className="mt-3 grid gap-3">
                 {priceReports.length > 0 ? (
-                  priceReports.map((report) => (
+                  priceReports.map((report) => {
+                    const currentDisplay =
+                      formatPriceUsd(report.foodItem.reportedPrice) ??
+                      formatPriceUsd(report.foodItem.basePrice);
+                    const submittedDisplay = formatPriceUsd(report.reportedPrice);
+                    const submittedAt = report.createdAt.toLocaleString("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short"
+                    });
+                    const reporterLabel =
+                      report.user.displayName?.trim() ||
+                      report.user.handle ||
+                      "Fan";
+
+                    return (
                     <article key={report.id} className="rounded-2xl bg-black p-4">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <p className="font-black">{report.foodItem.name}</p>
-                          <p className="mt-1 text-sm text-zinc-500">
-                            {report.venue.name} · ${Number(report.reportedPrice).toFixed(2)}
-                          </p>
-                          <p className="mt-1 text-xs text-zinc-600">
-                            Needs review · {report.user.handle}
-                          </p>
+                          <p className="mt-1 text-sm text-zinc-500">{report.venue.name}</p>
+                          <dl className="mt-2 grid gap-1 text-xs text-zinc-400">
+                            <div className="flex flex-wrap gap-x-2">
+                              <dt className="font-bold text-zinc-500">Current price</dt>
+                              <dd>{currentDisplay ?? "—"}</dd>
+                            </div>
+                            <div className="flex flex-wrap gap-x-2">
+                              <dt className="font-bold text-zinc-500">Submitted price</dt>
+                              <dd className="font-black text-[var(--slop-orange)]">
+                                {submittedDisplay ?? "—"}
+                              </dd>
+                            </div>
+                            <div className="flex flex-wrap gap-x-2">
+                              <dt className="font-bold text-zinc-500">Submitted by</dt>
+                              <dd>
+                                {reporterLabel}
+                                {report.user.handle ? ` (@${report.user.handle})` : ""}
+                              </dd>
+                            </div>
+                            <div className="flex flex-wrap gap-x-2">
+                              <dt className="font-bold text-zinc-500">Submitted at</dt>
+                              <dd>{submittedAt}</dd>
+                            </div>
+                          </dl>
                           {report.note ? (
                             <p className="mt-2 text-sm leading-6 text-zinc-400">
                               {report.note}
@@ -754,7 +796,8 @@ export default async function AdminPage() {
                         </form>
                       </div>
                     </article>
-                  ))
+                    );
+                  })
                 ) : (
                   <p className="rounded-2xl bg-black p-4 text-sm text-zinc-500">
                     No pending price reports.

@@ -50,6 +50,7 @@ import {
   slopCardLocationLine
 } from "@/lib/slop-card-display";
 import { photoErrorMessageFromQuery } from "@/lib/review-photo-errors";
+import { resolveFoodItemForPriceReport } from "@/lib/price-report";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import { deriveFoodItemAwardChips } from "@/lib/venue-awards";
@@ -75,6 +76,7 @@ type FoodPageProps = {
   searchParams?: Promise<{
     reviewSubmitted?: string;
     photoError?: string;
+    price?: string;
   }>;
 };
 
@@ -260,8 +262,8 @@ async function markReviewHelpful(formData: FormData) {
 async function submitPriceReport(formData: FormData) {
   "use server";
 
-  const venueSlug = String(formData.get("venueSlug") ?? "");
-  const foodSlug = String(formData.get("foodSlug") ?? "");
+  const venueSlug = String(formData.get("venueSlug") ?? "").trim();
+  const foodSlug = String(formData.get("foodSlug") ?? "").trim();
   const itemPath = `/venues/${venueSlug}/${foodSlug}`;
   const cookieStore = await cookies();
   const isSignedIn = hasMockUserAccess(
@@ -279,21 +281,13 @@ async function submitPriceReport(formData: FormData) {
     redirect(`${itemPath}?price=invalid`);
   }
 
-  const venue = await prisma.venue.findUnique({ where: { slug: venueSlug } });
-  const foodItem = venue
-    ? await prisma.foodItem.findUnique({
-        where: {
-          venueId_slug: {
-            venueId: venue.id,
-            slug: foodSlug
-          }
-        }
-      })
-    : null;
-
-  if (!venue || !foodItem) {
-    redirect(itemPath);
+  const resolved = await resolveFoodItemForPriceReport(venueSlug, foodSlug);
+  if (!resolved) {
+    redirect(`${itemPath}?price=unavailable`);
   }
+
+  const { venue, foodItem } = resolved;
+  const canonicalPath = `/venues/${venue.slug}/${foodItem.slug}`;
 
   const user = await ensureMockReviewerUser(venue.id);
 
@@ -303,12 +297,14 @@ async function submitPriceReport(formData: FormData) {
       venueId: venue.id,
       foodItemId: foodItem.id,
       reportedPrice,
-      note: note ? note.slice(0, 240) : null
+      note: note ? note.slice(0, 240) : null,
+      status: "PENDING"
     }
   });
 
-  revalidatePath(itemPath);
-  redirect(`${itemPath}?price=reported`);
+  revalidatePath(canonicalPath);
+  revalidatePath("/admin");
+  redirect(`${canonicalPath}?price=reported`);
 }
 
 async function getPriceIntel(
@@ -323,9 +319,11 @@ async function getPriceIntel(
   try {
     const item = await prisma.foodItem.findFirst({
       where: {
-        slug: foodSlug,
+        slug: slugFilterInsensitive(foodSlug.trim()),
+        status: "ACTIVE",
         venue: {
-          slug: venueSlug
+          slug: slugFilterInsensitive(venueSlug.trim()),
+          status: "ACTIVE"
         }
       },
       include: {
@@ -405,6 +403,16 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const showPhotoRetryCta =
     Boolean(photoError) && showReviewSaved && photoError !== "cloudinary";
 
+  const priceQuery = query.price;
+  const priceStatusMessage =
+    priceQuery === "reported"
+      ? "Price report submitted — pending admin review."
+      : priceQuery === "invalid"
+        ? "Enter a valid price greater than $0."
+        : priceQuery === "unavailable"
+          ? "This menu item is not in our live database yet, so we cannot save a price report. Try an imported stadium menu item instead."
+          : null;
+
   const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
@@ -421,6 +429,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   }
 
   const napkinEligible = isNapkinEligibleItem(foodItem);
+  const priceReportDbReady = Boolean(foodItem.id);
 
   const vendor = await getPublicVendorForFoodItem(foodItem);
   const foodPhotos = await getPublicPhotosForFoodItem(venue.slug, foodItem.slug);
@@ -1027,7 +1036,26 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             <p className="mt-1 text-xs text-zinc-500">
               Functional reports only — pending admin review.
             </p>
-            {isSignedIn ? (
+            {priceStatusMessage ? (
+              <p
+                role="status"
+                className={`mt-2 text-xs leading-snug ${
+                  priceQuery === "reported"
+                    ? "text-emerald-200/95"
+                    : "text-amber-100/95"
+                }`}
+              >
+                {priceStatusMessage}
+              </p>
+            ) : null}
+            {!priceReportDbReady ? (
+              <p className="mt-2 text-xs leading-snug text-amber-100/90">
+                Price reports need a live menu record for this item. Sample-only
+                listings cannot accept reports — browse imported stadium menus to
+                submit a price.
+              </p>
+            ) : null}
+            {isSignedIn && priceReportDbReady ? (
               <form
                 action={submitPriceReport}
                 className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end"
@@ -1056,7 +1084,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   Submit
                 </button>
               </form>
-            ) : (
+            ) : !priceReportDbReady ? null : (
               <Link
                 href={`/login?next=${encodeURIComponent(
                   `/venues/${venue.slug}/${foodItem.slug}`

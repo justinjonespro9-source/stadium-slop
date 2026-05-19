@@ -1,10 +1,8 @@
 /** Future expansion concepts — static, no routes until product is live. */
 const SLOP_NETWORK_CONCEPTS = [
-  { label: "State Fair Slop", hint: "Midway bites & fair classics" },
   { label: "Airport Slop", hint: "Terminals & gate food" },
   { label: "Theme Park Slop", hint: "Queues, lands & snack stands" },
-  { label: "Concert Slop", hint: "Arena & amphitheater concessions" },
-  { label: "Festival Slop", hint: "Fields, stages & vendor rows" }
+  { label: "State Fair Slop", hint: "Midway bites & fair classics" }
 ] as const;
 
 export function HomeSlopNetwork() {
@@ -23,7 +21,7 @@ export function HomeSlopNetwork() {
             food discovery layer for crowded places.
           </p>
 
-          <ul className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:max-w-3xl">
             {SLOP_NETWORK_CONCEPTS.map((concept) => (
               <li key={concept.label}>
                 <SlopNetworkChip label={concept.label} hint={concept.hint} />

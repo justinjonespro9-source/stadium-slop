@@ -1,6 +1,7 @@
+import { SITE_CONTACT_EMAIL } from "@/lib/site-contact";
 import { getAbsoluteUrl } from "@/lib/site-metadata";
 
-export const REPORT_CONTENT_EMAIL = "hello@snglabs.com";
+export const REPORT_CONTENT_EMAIL = SITE_CONTACT_EMAIL;
 
 export type ReportContentReason =
   | "inappropriate_photo"

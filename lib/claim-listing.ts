@@ -1,6 +1,7 @@
+import { SITE_CONTACT_EMAIL } from "@/lib/site-contact";
 import { getAbsoluteUrl } from "@/lib/site-metadata";
 
-export const CLAIM_CONTACT_EMAIL = "hello@snglabs.com";
+export const CLAIM_CONTACT_EMAIL = SITE_CONTACT_EMAIL;
 
 export type ClaimListingKind = "venue" | "vendor" | "item";
 
@@ -59,6 +60,24 @@ export function claimCtaSubline(kind: ClaimListingKind): string {
     return "Claim this listing or update menu details and partnership info.";
   }
   return "Claim this listing, correct stand info, or explore early operator access.";
+}
+
+export function claimPageTitle(context: ClaimListingContext | null): string {
+  return context ? "Claim this listing" : "Claim or partner with Stadium Slop";
+}
+
+export function claimPageLead(context: ClaimListingContext | null): string {
+  if (context) {
+    return "You're reaching out about a specific venue, vendor, or menu item. Tell us what to correct, verify, or explore for this listing — no dashboard login required yet.";
+  }
+  return "Partnership, vendor, and operator inquiries welcome — whether you have a specific stadium listing in mind or a general business question. Tell us what to correct, verify, or explore together.";
+}
+
+export function claimFormIntro(context: ClaimListingContext | null): string {
+  if (context) {
+    return "Listing details are prefilled below. Choose an inquiry type and send your note.";
+  }
+  return "General partnership and listing inquiries — add your organization and what you want to explore.";
 }
 
 export function buildClaimHref(context: ClaimListingContext): string {
