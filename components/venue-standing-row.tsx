@@ -32,6 +32,76 @@ function formatSections(item: FoodItem) {
   return `Sections ${item.sections.join(", ")}`;
 }
 
+function vendorPageHref(venueSlug: string, vendor: Vendor) {
+  return `/venues/${venueSlug}/vendors/${vendor.slug}`;
+}
+
+/**
+ * Vendor / stand line on venue rankings.
+ * TODO: Expand /venues/[venueSlug]/vendors/[vendorSlug] — "More from this vendor", vendor awards, vendor claim flow.
+ */
+function VendorStandMeta({
+  vendor,
+  venueSlug,
+  item
+}: {
+  vendor?: Vendor;
+  venueSlug: string;
+  item: FoodItem;
+}) {
+  const priceHint = formatItemPriceHint(item);
+  const locationLine = formatSections(item);
+
+  if (!vendor?.slug) {
+    return (
+      <p className="mt-0.5 line-clamp-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs">
+        <span className="font-semibold text-[var(--slop-cream-muted)]">Vendor TBD</span>
+        <span className="text-[var(--slop-line)]"> · </span>
+        <span>{locationLine}</span>
+        {priceHint ? (
+          <>
+            <span className="text-[var(--slop-line)]"> · </span>
+            <span className="text-[var(--slop-cream-muted)]">{priceHint}</span>
+          </>
+        ) : null}
+      </p>
+    );
+  }
+
+  const standDetail = [vendor.section, vendor.location].filter(Boolean).join(" · ");
+
+  return (
+    <p className="mt-0.5 line-clamp-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs">
+      <Link
+        href={vendorPageHref(venueSlug, vendor)}
+        className="inline-flex max-w-full items-center gap-0.5 rounded-sm font-semibold text-[var(--slop-gold-dim)] underline-offset-2 transition hover:text-[var(--slop-gold-bright)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--slop-gold-bright)]/70"
+      >
+        <span className="truncate">{vendor.name}</span>
+        <span aria-hidden className="shrink-0 text-[0.55rem]">
+          →
+        </span>
+      </Link>
+      {standDetail ? (
+        <>
+          <span className="text-[var(--slop-line)]"> · </span>
+          <span>{standDetail}</span>
+        </>
+      ) : (
+        <>
+          <span className="text-[var(--slop-line)]"> · </span>
+          <span>{locationLine}</span>
+        </>
+      )}
+      {priceHint ? (
+        <>
+          <span className="text-[var(--slop-line)]"> · </span>
+          <span className="text-[var(--slop-cream-muted)]">{priceHint}</span>
+        </>
+      ) : null}
+    </p>
+  );
+}
+
 function StandingStatusChips({
   rank,
   stats,
@@ -64,6 +134,15 @@ function StandingStatusChips({
       label: "Most reviewed",
       className:
         "border border-[var(--slop-line-strong)] bg-[color:rgba(245,233,208,0.05)] text-[var(--slop-cream-muted)]"
+    });
+  }
+
+  if (stats.reviews.some((review) => review.labels.includes("Worth the Walk"))) {
+    chips.push({
+      key: "walk",
+      label: "Worth the walk",
+      className:
+        "border border-[var(--slop-orange)]/40 bg-[color:rgba(255,159,28,0.1)] text-[var(--slop-orange)]"
     });
   }
 
@@ -134,9 +213,9 @@ export function VenueStandingRow({
   isFreshStandingsTab: boolean;
   maxReviewsInList: number;
 }) {
-  const priceHint = formatItemPriceHint(item);
   const unrated = isUnratedItemStats(stats.reviewCount);
   const liveFresh = stats.hasFreshToday && isFreshStandingsTab && !unrated;
+  const itemHref = `/venues/${venueSlug}/${item.slug}`;
   const podiumClass =
     !unrated && rank === 1
       ? "standings-podium-1"
@@ -147,13 +226,12 @@ export function VenueStandingRow({
           : "";
 
   return (
-    <Link
-      href={`/venues/${venueSlug}/${item.slug}`}
-      className={`group relative block border-b border-[color:rgba(245,233,208,0.07)] transition last:border-b-0 hover:bg-[color:rgba(6,15,24,0.5)] focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--slop-gold-bright)]/80 ${
+    <article
+      className={`group relative border-b border-[color:rgba(245,233,208,0.07)] transition last:border-b-0 hover:bg-[color:rgba(6,15,24,0.5)] ${
         podiumClass || "bg-[var(--slop-surface)]"
       } ${liveFresh ? "standings-row-live" : ""} `}
     >
-      <article className="grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-2 px-2.5 py-2 sm:grid-cols-[3rem_1fr_auto] sm:gap-x-2.5 sm:px-3 sm:py-2">
+      <div className="grid grid-cols-[2.5rem_1fr_auto] items-start gap-x-2 px-2.5 py-2 sm:grid-cols-[3rem_1fr_auto] sm:gap-x-2.5 sm:px-3 sm:py-2">
         <div
           className={`select-none pt-0.5 text-center font-mono text-base font-black tabular-nums leading-none sm:text-lg ${
             !unrated && rank === 1
@@ -170,35 +248,30 @@ export function VenueStandingRow({
         </div>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
-            <h3 className="text-[0.8125rem] font-black leading-tight text-[var(--slop-cream)] sm:text-sm">
+            <Link
+              href={itemHref}
+              className="text-[0.8125rem] font-black leading-tight text-[var(--slop-cream)] underline-offset-2 transition hover:text-[var(--slop-gold-bright)] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--slop-gold-bright)]/70 sm:text-sm"
+            >
               {item.name}
-            </h3>
+            </Link>
             {item.ageRestricted ? (
               <span className="rounded border border-[var(--slop-line-strong)] px-1 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
                 21+
               </span>
             ) : null}
           </div>
-          <p className="mt-0.5 line-clamp-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs">
-            <span className="font-semibold text-[var(--slop-cream-muted)]">
-              {vendor ? vendor.name : "Vendor TBD"}
-            </span>
-            <span className="text-[var(--slop-line)]"> · </span>
-            <span>{formatSections(item)}</span>
-            {priceHint ? (
-              <>
-                <span className="text-[var(--slop-line)]"> · </span>
-                <span className="text-[var(--slop-cream-muted)]">{priceHint}</span>
-              </>
-            ) : null}
-          </p>
+          <VendorStandMeta vendor={vendor} venueSlug={venueSlug} item={item} />
           <StandingStatusChips
             rank={rank}
             stats={stats}
             maxReviewsInList={maxReviewsInList}
           />
         </div>
-        <div className="min-w-[3.25rem] shrink-0 text-right sm:min-w-[3.5rem]">
+        <Link
+          href={itemHref}
+          className="min-w-[3.25rem] shrink-0 text-right sm:min-w-[3.5rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--slop-gold-bright)]/70"
+          aria-label={`${item.name} — ${unrated ? "unrated" : `${stats.averageSlopScore.toFixed(1)} Slop score`}`}
+        >
           {liveFresh ? (
             <div className="mb-0.5 flex items-center justify-end gap-1">
               <span
@@ -229,8 +302,8 @@ export function VenueStandingRow({
               </p>
             </>
           )}
-        </div>
-      </article>
-    </Link>
+        </Link>
+      </div>
+    </article>
   );
 }

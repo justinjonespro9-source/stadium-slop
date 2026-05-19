@@ -25,8 +25,6 @@ import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatHomeOfTeams, formatVenueTeamsInline } from "@/lib/venue-teams";
-import { buildVenueAwardBoards } from "@/lib/venue-awards";
-import { VenueAwardBoards } from "@/components/venue-award-boards";
 import { ClaimListingCta } from "@/components/claim-listing-cta";
 import { SuggestCorrectionLink } from "@/components/suggest-correction-link";
 import {
@@ -348,18 +346,6 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
   const venueFoodItems = await getPublicFoodItemsByVenueSlug(venue.slug);
   const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
-  const awardBundles = await Promise.all(
-    venueFoodItems.map(async (item) => ({
-      item,
-      season: await getDbBackedItemSlopStats(venue.slug, item.slug, "season"),
-      fresh: await getDbBackedItemSlopStats(
-        venue.slug,
-        item.slug,
-        "gameDayFresh"
-      )
-    }))
-  );
-  const awardBoards = buildVenueAwardBoards(awardBundles);
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
   const rawVendorSlug = (query?.vendor ?? "all").trim() || "all";
@@ -476,8 +462,6 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           </p>
         </header>
 
-        <VenueAwardBoards venueSlug={venue.slug} boards={awardBoards} />
-
         <section
           className="pt-3 sm:pt-4"
           aria-describedby="venue-standings-hint"
@@ -486,10 +470,15 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             Rankings use geofenced fan reviews within {venue.reviewRadiusMeters}{" "}
             meters of this venue when submitted on site.
           </p>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-              Rankings
-            </p>
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+                Rankings
+              </p>
+              <h2 className="mt-1 text-base font-black leading-snug text-[var(--slop-cream)] sm:text-lg">
+                Find the best food at {venue.name}
+              </h2>
+            </div>
             <FanPoweredGuideBadge />
           </div>
           <FanPoweredGuideNote preset="venue-rankings" className="mt-2" />
@@ -592,47 +581,16 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               pagePath: `/venues/${venue.slug}`
             }}
           />
-        </section>
 
-        <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
-          <div className="flex items-baseline justify-between gap-2">
-            <h2 className="text-sm font-black uppercase tracking-[0.12em] text-[var(--slop-gold-dim)]">
-              Stands
-            </h2>
-          </div>
-
-          <div className="mt-2 grid gap-1.5 sm:gap-2">
-            {venueVendors.map((vendor) => {
-              const vendorItems = venueFoodItems.filter(
-                (item) => item.vendorSlug === vendor.slug
-              );
-
-              return (
-                <Link
-                  key={vendor.slug}
-                  href={`/venues/${venue.slug}/vendors/${vendor.slug}`}
-                  className="brand-card rounded-2xl p-4 transition hover:border-[color:rgba(244,179,33,0.45)]"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <div>
-                      <h3 className="font-black">{vendor.name}</h3>
-                      <p className="mt-1 text-sm text-zinc-400">
-                        {vendor.section} · {vendor.location}
-                      </p>
-                    </div>
-                    <span className="shrink-0 text-sm font-bold text-zinc-500">
-                      {vendorItems.length} items
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-
-          <article className="brand-card mt-3 rounded-2xl p-3 sm:mt-4 sm:rounded-3xl sm:p-4">
-            <h3 className="text-sm font-black text-[var(--slop-cream)]">
-              Suggest a menu item
-            </h3>
+          <div className="mt-4 space-y-3 border-t border-[var(--slop-line-strong)] pt-4 sm:mt-5 sm:pt-5">
+            <article className="brand-card rounded-2xl p-3 sm:rounded-3xl sm:p-4">
+              <h3 className="text-sm font-black text-[var(--slop-cream)]">
+                Suggest a menu item
+              </h3>
+              <p className="mt-1 text-xs leading-snug text-[var(--slop-cream-dim)]">
+                Missing a bite? Add it here — pick a stand from the vendor filter if
+                you know it.
+              </p>
             {isSignedIn ? (
               <form action={suggestMissingItem} className="mt-2 grid gap-2">
                 <input type="hidden" name="venueSlug" value={venue.slug} />
@@ -680,17 +638,17 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                 Sign in to suggest
               </Link>
             )}
-          </article>
+            </article>
 
-          <ClaimListingCta
-            className="mt-3 sm:mt-4"
-            context={{
-              kind: "venue",
-              venueName: venue.name,
-              venueSlug: venue.slug,
-              pagePath: `/venues/${venue.slug}`
-            }}
-          />
+            <ClaimListingCta
+              context={{
+                kind: "venue",
+                venueName: venue.name,
+                venueSlug: venue.slug,
+                pagePath: `/venues/${venue.slug}`
+              }}
+            />
+          </div>
         </section>
 
       </section>

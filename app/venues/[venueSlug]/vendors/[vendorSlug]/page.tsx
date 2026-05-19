@@ -1,3 +1,7 @@
+/**
+ * Vendor / stand detail — linked from venue rankings rows.
+ * TODO: "More from this vendor" module, vendor-specific awards, vendor claim flow.
+ */
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
