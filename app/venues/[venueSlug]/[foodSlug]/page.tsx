@@ -27,13 +27,9 @@ import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import { buildItemFanPhotoLayout } from "@/lib/fan-photo-layout";
 import { normalizePublicImageUrl } from "@/lib/image-url";
-import {
-  FAN_REPORT_REASON_LABELS,
-  FAN_REPORT_REASON_VALUES,
-  parseFanReportReason,
-  parseReportTargetType,
-  REPORT_NOTE_MAX
-} from "@/lib/reports";
+
+import { ReportContentLink } from "@/components/report-content-link";
+import type { ReportContentContext } from "@/lib/report-content";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import {
   FanSignalsPendingPanel,
@@ -79,8 +75,6 @@ type FoodPageProps = {
   searchParams?: Promise<{
     reviewSubmitted?: string;
     photoError?: string;
-    reported?: string;
-    report?: string;
   }>;
 };
 
@@ -317,144 +311,6 @@ async function submitPriceReport(formData: FormData) {
   redirect(`${itemPath}?price=reported`);
 }
 
-async function submitContentReport(formData: FormData) {
-  "use server";
-
-  const venueSlug = String(formData.get("venueSlug") ?? "").trim();
-  const foodSlug = String(formData.get("foodSlug") ?? "").trim();
-  const reviewId = String(formData.get("reviewId") ?? "").trim();
-  const reportTarget = parseReportTargetType(
-    String(formData.get("reportTarget") ?? "REVIEW")
-  );
-  const reasonRaw = String(formData.get("reason") ?? "");
-  const note = String(formData.get("note") ?? "")
-    .trim()
-    .slice(0, REPORT_NOTE_MAX);
-  const photoIdFromForm = String(formData.get("photoId") ?? "").trim();
-
-  const itemPath = `/venues/${venueSlug}/${foodSlug}`;
-  const cookieStore = await cookies();
-  if (!hasMockUserAccess(cookieStore.get(MOCK_USER_COOKIE_NAME)?.value)) {
-    redirect(`/login?next=${encodeURIComponent(itemPath)}`);
-  }
-
-  const venue = await prisma.venue.findFirst({
-    where: { slug: slugFilterInsensitive(venueSlug), status: "ACTIVE" },
-    select: { id: true, slug: true }
-  });
-  if (!venue) {
-    redirect(`${itemPath}?report=invalid`);
-  }
-
-  const foodRow = await prisma.foodItem.findFirst({
-    where: {
-      slug: slugFilterInsensitive(foodSlug),
-      status: "ACTIVE",
-      venueId: venue.id
-    },
-    select: { id: true, slug: true }
-  });
-  if (!foodRow) {
-    redirect(`${itemPath}?report=invalid`);
-  }
-
-  const canonicalPath = `/venues/${venue.slug}/${foodRow.slug}`;
-  const user = await ensureMockReviewerUser(venue.id);
-  const reason = parseFanReportReason(reasonRaw);
-  if (!reason) {
-    redirect(`${canonicalPath}?report=reason`);
-  }
-  if (!reportTarget) {
-    redirect(`${canonicalPath}?report=target`);
-  }
-
-  if (reportTarget === "REVIEW") {
-    const review = await prisma.review.findFirst({
-      where: {
-        id: reviewId,
-        status: "ACTIVE",
-        foodItemId: foodRow.id
-      },
-      select: { id: true, userId: true }
-    });
-    if (!review) {
-      redirect(`${canonicalPath}?report=invalid`);
-    }
-    if (review.userId === user.id) {
-      redirect(`${canonicalPath}?report=self`);
-    }
-    const dup = await prisma.reportFlag.findFirst({
-      where: {
-        reporterUserId: user.id,
-        targetType: "REVIEW",
-        targetId: review.id,
-        status: "OPEN"
-      }
-    });
-    if (dup) {
-      redirect(`${canonicalPath}?report=duplicate`);
-    }
-    await prisma.reportFlag.create({
-      data: {
-        reporterUserId: user.id,
-        targetType: "REVIEW",
-        targetId: review.id,
-        reviewId: review.id,
-        reason,
-        note: note || null,
-        status: "OPEN"
-      }
-    });
-  } else {
-    const pid = photoIdFromForm;
-    if (!pid) {
-      redirect(`${canonicalPath}?report=invalid`);
-    }
-    const photo = await prisma.foodPhoto.findFirst({
-      where: {
-        id: pid,
-        status: "ACTIVE",
-        photoType: "FOOD",
-        foodItemId: foodRow.id,
-        reviewId
-      },
-      select: { id: true, uploaderUserId: true, reviewId: true }
-    });
-    if (!photo) {
-      redirect(`${canonicalPath}?report=invalid`);
-    }
-    if (photo.uploaderUserId === user.id) {
-      redirect(`${canonicalPath}?report=self`);
-    }
-    const dup = await prisma.reportFlag.findFirst({
-      where: {
-        reporterUserId: user.id,
-        targetType: "PHOTO",
-        targetId: photo.id,
-        status: "OPEN"
-      }
-    });
-    if (dup) {
-      redirect(`${canonicalPath}?report=duplicate`);
-    }
-    await prisma.reportFlag.create({
-      data: {
-        reporterUserId: user.id,
-        targetType: "PHOTO",
-        targetId: photo.id,
-        reviewId: photo.reviewId,
-        photoId: photo.id,
-        reason,
-        note: note || null,
-        status: "OPEN"
-      }
-    });
-  }
-
-  revalidatePath(canonicalPath);
-  redirect(`${canonicalPath}?reported=1`);
-}
-
 async function getPriceIntel(
   venueSlug: string,
   foodSlug: string,
@@ -549,21 +405,6 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const showPhotoRetryCta =
     Boolean(photoError) && showReviewSaved && photoError !== "cloudinary";
 
-  const showReportThanks = query.reported === "1";
-  const reportErrKey = query.report;
-  const reportErrorMsg =
-    reportErrKey === "duplicate"
-      ? "You already have an open report for this."
-      : reportErrKey === "self"
-        ? "You cannot report your own content."
-        : reportErrKey === "reason"
-          ? "Pick a report reason."
-          : reportErrKey === "target"
-            ? "Invalid report target."
-            : reportErrKey === "invalid"
-              ? "That report could not be submitted."
-              : null;
-
   const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
@@ -638,6 +479,17 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
   const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
   const itemPath = `/venues/${venue.slug}/${foodItem.slug}`;
+  const itemPageWithReviewsAnchor = `${itemPath}#fan-photo-reviews`;
+  const baseReportContext: Omit<ReportContentContext, "reviewId" | "photoUrl"> =
+    {
+      venueName: venue.name,
+      venueSlug: venue.slug,
+      vendorName: vendor?.name,
+      vendorSlug: vendor?.slug,
+      itemName: foodItem.name,
+      itemSlug: foodItem.slug,
+      pagePath: itemPageWithReviewsAnchor
+    };
   const itemShareUrl = getAbsoluteUrl(itemPath);
   const unratedSeason = isUnratedItemStats(seasonStats.reviewCount);
   const hasGameDayFreshToday = freshStats.hasFreshToday;
@@ -685,28 +537,6 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
         <AgeGateProvider>
           <FoodItemAgeGate alcoholRelated={alcoholRelated}>
-        {showReportThanks ? (
-          <div
-            role="status"
-            className="mt-2 rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-surface)] px-3 py-2 text-xs text-[var(--slop-cream-muted)] sm:text-sm"
-          >
-            <p className="font-bold text-[var(--slop-cream)]">Report logged</p>
-            <p className="mt-0.5 text-[var(--slop-cream-dim)]">
-              Moderators review flags.
-            </p>
-          </div>
-        ) : null}
-
-        {reportErrorMsg ? (
-          <div
-            role="alert"
-            className="mt-2 rounded-xl border border-amber-800/80 bg-amber-950/40 px-3 py-2 text-xs text-amber-100 sm:text-sm"
-          >
-            <p className="font-bold">Report not sent</p>
-            <p className="mt-0.5 text-amber-200/90">{reportErrorMsg}</p>
-          </div>
-        ) : null}
-
         <Suspense fallback={null}>
           <SlopCardShareModule
             itemPath={itemPath}
@@ -978,6 +808,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             <FanPoweredGuideBadge />
           </div>
           <FanPoweredGuideNote preset="food-reviews" className="mt-1.5" />
+          <ReportContentLink
+            context={baseReportContext}
+            variant="section"
+            className="mt-1"
+          />
           <div className="slop-card-carousel mt-2 flex snap-x snap-mandatory gap-3 pb-2 sm:gap-3">
             {photoBackedReviews.length > 0 ? (
               photoBackedReviews.map((review) => {
@@ -1027,92 +862,15 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   </Link>
                 );
 
-                const reportSlot = isSignedIn ? (
-                  <details className="group">
-                    <summary className="cursor-pointer list-none text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-600 marker:content-none [&::-webkit-details-marker]:hidden hover:text-zinc-400">
-                      Report
-                    </summary>
-                    <form
-                      action={submitContentReport}
-                      className="mt-2 grid gap-2 text-xs text-zinc-400"
-                    >
-                      <input type="hidden" name="venueSlug" value={venue.slug} />
-                      <input type="hidden" name="foodSlug" value={foodItem.slug} />
-                      <input type="hidden" name="reviewId" value={review.id} />
-                      {review.primaryFoodPhotoId ? (
-                        <input
-                          type="hidden"
-                          name="photoId"
-                          value={review.primaryFoodPhotoId}
-                        />
-                      ) : null}
-                      <label className="grid gap-1">
-                        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                          What is wrong?
-                        </span>
-                        <select
-                          name="reportTarget"
-                          className="rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200"
-                          defaultValue="REVIEW"
-                        >
-                          <option value="REVIEW">This review</option>
-                          {review.primaryFoodPhotoId ? (
-                            <option value="PHOTO">Fan photo only</option>
-                          ) : null}
-                        </select>
-                      </label>
-                      <label className="grid gap-1">
-                        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                          Reason
-                        </span>
-                        <select
-                          name="reason"
-                          required
-                          className="rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200"
-                          defaultValue=""
-                        >
-                          <option value="" disabled>
-                            Choose…
-                          </option>
-                          {FAN_REPORT_REASON_VALUES.map((value) => (
-                            <option key={value} value={value}>
-                              {FAN_REPORT_REASON_LABELS[value]}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                      <label className="grid gap-1">
-                        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500">
-                          Note (optional)
-                        </span>
-                        <textarea
-                          name="note"
-                          rows={2}
-                          maxLength={REPORT_NOTE_MAX}
-                          placeholder="Short context for moderators"
-                          className="resize-y rounded-lg border border-zinc-800 bg-zinc-950 px-2 py-1.5 text-zinc-200 placeholder:text-zinc-600"
-                        />
-                      </label>
-                      <button
-                        type="submit"
-                        className="justify-self-start rounded-full border border-zinc-700 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-amber-700/80 hover:text-amber-200/90"
-                      >
-                        Submit report
-                      </button>
-                    </form>
-                  </details>
-                ) : (
-                  <p className="text-[0.65rem] leading-5 text-zinc-600">
-                    <Link
-                      href={`/login?next=${encodeURIComponent(
-                        `/venues/${venue.slug}/${foodItem.slug}`
-                      )}`}
-                      className="font-bold text-zinc-400 underline-offset-2 hover:text-[var(--slop-orange)] hover:underline"
-                    >
-                      Sign in
-                    </Link>{" "}
-                    to report a concern about this card.
-                  </p>
+                const reportSlot = (
+                  <ReportContentLink
+                    context={{
+                      ...baseReportContext,
+                      reviewId: review.id,
+                      photoUrl: photoUrlNorm ?? undefined
+                    }}
+                    variant="card"
+                  />
                 );
 
                 return (
