@@ -307,6 +307,7 @@ async function getAdminDashboardStats() {
       vendorCount,
       itemCount,
       photoCount,
+      userCount,
       pendingPrices,
       pendingSuggestions,
       openFlags
@@ -315,6 +316,7 @@ async function getAdminDashboardStats() {
       prisma.vendor.count(),
       prisma.foodItem.count(),
       prisma.foodPhoto.count(),
+      prisma.user.count(),
       prisma.priceReport.count({ where: { status: "PENDING" } }),
       prisma.suggestedItem.count({ where: { status: "PENDING" } }),
       prisma.reportFlag.count({ where: { status: "OPEN" } })
@@ -325,6 +327,7 @@ async function getAdminDashboardStats() {
       vendorCount,
       itemCount,
       photoCount,
+      userCount,
       pendingPrices,
       pendingSuggestions,
       openFlags
@@ -336,6 +339,7 @@ async function getAdminDashboardStats() {
       vendorCount: 0,
       itemCount: 0,
       photoCount: 0,
+      userCount: 0,
       pendingPrices: 0,
       pendingSuggestions: 0,
       openFlags: 0
@@ -458,11 +462,10 @@ export default async function AdminPage() {
     },
     {
       title: "User accounts",
-      count: null as number | null,
-      detail: "Account tools are not wired in this mock admin yet.",
-      href: null as string | null,
-      action: "Coming soon",
-      disabled: true
+      count: stats.userCount,
+      detail: "Roles, suspension, and contributor activity. No public profiles.",
+      href: "/admin/users",
+      action: "Manage users"
     }
   ];
 
@@ -501,6 +504,12 @@ export default async function AdminPage() {
                   className="block w-full rounded-full border border-zinc-700 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
                 >
                   New venue
+                </Link>
+                <Link
+                  href="/admin/users"
+                  className="block w-full rounded-full border border-zinc-700 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                >
+                  User accounts
                 </Link>
               </div>
               <form action={adminSignOut} className="mt-3">
@@ -903,7 +912,7 @@ export default async function AdminPage() {
           </p>
           <p className="mt-2 max-w-3xl text-sm text-zinc-500">
             Vendors and items are edited in context on each venue page. User
-            account tools are not implemented yet.
+            accounts are managed under Contributors.
           </p>
           <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {managementCards.map((card) => (
