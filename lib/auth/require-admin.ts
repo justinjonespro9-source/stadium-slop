@@ -10,8 +10,17 @@ import {
   resolveAdminAccessForUserId
 } from "@/lib/auth/resolve-admin-access";
 
-/** Server pages/actions: session via /login + live Prisma User.role === ADMIN. */
-export async function requireAdminAccess() {
+export type AdminAccessContext = {
+  userId: string;
+  email: string | null;
+  dbRole: string;
+};
+
+/**
+ * Server pages/actions only — never call from proxy/middleware.
+ * Google sign-in entry: `/login` (not `/admin/login`).
+ */
+export async function requireAdminAccess(): Promise<AdminAccessContext> {
   const session = await auth();
   const userId = session?.user?.id;
   const email = session?.user?.email?.trim().toLowerCase() ?? null;
@@ -35,4 +44,15 @@ export async function requireAdminAccess() {
   if (!access.isAdmin) {
     redirect("/account?error=not-admin");
   }
+
+  const resolvedUserId = userId ?? access.userId;
+  if (!resolvedUserId) {
+    redirect(contributorLoginUrl(ADMIN_LOGIN_NEXT_PATH));
+  }
+
+  return {
+    userId: resolvedUserId,
+    email: access.email ?? session?.user?.email ?? null,
+    dbRole: access.dbRole ?? "ADMIN"
+  };
 }
