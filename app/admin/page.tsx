@@ -19,7 +19,7 @@ function slugify(value: string) {
 async function adminSignOut() {
   "use server";
 
-  await signOut({ redirectTo: "/admin/login" });
+  await signOut({ redirectTo: "/login" });
 }
 
 async function approvePriceReport(formData: FormData) {

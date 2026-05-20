@@ -6,6 +6,7 @@ import { AuthPageScaffold } from "@/components/auth-ui";
 import { DevMockUserSignIn } from "@/components/dev-mock-user-sign-in";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { isGoogleSignInConfigured } from "@/lib/auth/env";
+import { resolveAdminAccessForUserId } from "@/lib/auth/resolve-admin-access";
 import { getSessionUser } from "@/lib/auth/require-user";
 
 type LoginPageProps = {
@@ -24,6 +25,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   const user = await getSessionUser();
   if (user) {
+    if (nextPath.startsWith("/admin")) {
+      const { isAdmin } = await resolveAdminAccessForUserId(user.id);
+      if (!isAdmin) {
+        redirect("/account?error=not-admin");
+      }
+    }
     redirect(nextPath);
   }
 

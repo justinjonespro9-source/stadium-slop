@@ -1,12 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
+import { ADMIN_LOGIN_NEXT_PATH, contributorLoginUrl } from "@/lib/auth/admin-routes";
 import { getAuthSecret } from "@/lib/auth/env";
 
 /**
  * Next.js 16+ network boundary (replaces `middleware.ts`).
- * Admin routes: session cookie only — no Prisma (Vercel-safe).
- * DB role === ADMIN is enforced in server pages/actions via requireAdminAccess().
+ * Admin: session cookie only — no Prisma. Unsigned users go to /login (not /admin/login).
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -16,7 +16,8 @@ export async function proxy(request: NextRequest) {
   }
 
   if (pathname === "/admin/login") {
-    return NextResponse.next();
+    const loginUrl = new URL(contributorLoginUrl(ADMIN_LOGIN_NEXT_PATH), request.url);
+    return NextResponse.redirect(loginUrl);
   }
 
   const token = await getToken({
@@ -24,11 +25,8 @@ export async function proxy(request: NextRequest) {
     secret: getAuthSecret()
   });
 
-  const hasSession = Boolean(token?.sub);
-
-  if (!hasSession) {
-    const loginUrl = new URL("/admin/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
+  if (!token?.sub) {
+    const loginUrl = new URL(contributorLoginUrl(pathname), request.url);
     return NextResponse.redirect(loginUrl);
   }
 

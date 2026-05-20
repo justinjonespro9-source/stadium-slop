@@ -140,6 +140,7 @@ type AccountPageProps = {
 export default async function AccountPage({ searchParams }: AccountPageProps) {
   const query = (await searchParams) ?? {};
   const uploadError = query.error;
+  const notAdminError = query.error === "not-admin";
   const sessionUser = await getSessionUser();
   const userId = await getContributorUserId();
 
@@ -338,6 +339,18 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         aria-hidden
       />
       <section className="relative z-10 mx-auto w-full max-w-6xl px-4 py-4 pb-10 sm:px-6 sm:py-6 lg:py-8">
+        {notAdminError ? (
+          <div
+            role="alert"
+            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
+          >
+            <p className="font-bold">Admin access</p>
+            <p className="mt-0.5 text-amber-100/95">
+              This account is signed in but is not an admin. Admin tools require{" "}
+              <code className="text-amber-50">User.role = ADMIN</code> in the database.
+            </p>
+          </div>
+        ) : null}
         {uploadErrorMessage ? (
           <div
             role="alert"
