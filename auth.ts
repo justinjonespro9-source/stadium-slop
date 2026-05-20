@@ -50,7 +50,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return true;
     },
-    async jwt({ token }) {
+    async jwt({ token, trigger }) {
       const email =
         typeof token.email === "string" ? token.email.trim().toLowerCase() : null;
 
@@ -70,6 +70,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       } else {
         token.role = resolveUserRoleForEmail(email);
         token.isAdmin = token.role === "ADMIN";
+      }
+
+      if (process.env.NODE_ENV === "development" && trigger) {
+        console.info("[auth:jwt]", {
+          trigger,
+          userId: token.sub,
+          role: token.role,
+          isAdmin: token.isAdmin
+        });
       }
 
       return token;

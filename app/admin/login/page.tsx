@@ -1,13 +1,17 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
+import { auth } from "@/auth";
 import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { isGoogleSignInConfigured } from "@/lib/auth/env";
+import { resolveAdminAccessForUserId } from "@/lib/auth/resolve-admin-access";
 
 type AdminLoginPageProps = {
   searchParams?: Promise<{
     next?: string;
     error?: string;
+    hint?: string;
   }>;
 };
 
@@ -18,6 +22,20 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
       ? query.next
       : "/admin";
   const error = query?.error;
+  const staleSessionHint = query?.hint === "stale-session";
+
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (userId) {
+    const { isAdmin } = await resolveAdminAccessForUserId(userId);
+    if (isAdmin) {
+      redirect(nextPath);
+    }
+  }
+
+  const signedIn = Boolean(userId);
+  const sessionEmail = session?.user?.email;
 
   return (
     <main className="brand-page min-h-screen">
@@ -45,39 +63,78 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
 
         <AuthConfigAlert className="mt-4" />
 
+        {signedIn && sessionEmail ? (
+          <p className="mt-4 rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-3 py-2.5 text-xs text-[var(--slop-cream-muted)]">
+            Signed in as <span className="font-bold text-[var(--slop-cream)]">{sessionEmail}</span>
+            . Use the same Google account here after promotion, or sign out from{" "}
+            <Link href="/account" className="font-bold text-[var(--slop-gold)] hover:underline">
+              your account
+            </Link>{" "}
+            and sign in again so admin access refreshes.
+          </p>
+        ) : null}
+
         {error === "not-admin" ? (
           <p
             role="alert"
             className="mt-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
           >
-            That Google account is signed in but is not an admin. After your first
-            contributor sign-in, run{" "}
-            <code className="text-amber-50">npm run make-admin -- your@email.com</code>{" "}
-            then sign in here again.
+            {signedIn
+              ? "This Google account is signed in but is not an admin in the database."
+              : "Admin access requires a signed-in Google account with ADMIN role."}
+            {signedIn ? (
+              <>
+                {" "}
+                After{" "}
+                <code className="text-amber-50">npm run make-admin -- your@email.com</code>
+                , sign out and sign in again (or open this page while signed in — we
+                check the live database role).
+              </>
+            ) : (
+              <>
+                {" "}
+                Sign in once at{" "}
+                <Link href="/login" className="font-bold underline">
+                  /login
+                </Link>
+                , run make-admin, then return here.
+              </>
+            )}
+          </p>
+        ) : null}
+
+        {staleSessionHint ? (
+          <p className="mt-3 text-xs leading-relaxed text-amber-100/90">
+            Your session cookie still had an old role claim. This page now checks
+            the database directly — try{" "}
+            <Link href={nextPath} className="font-bold underline">
+              opening admin again
+            </Link>{" "}
+            or sign out and back in once.
           </p>
         ) : null}
 
         <div className="mt-5 grid gap-3">
           <GoogleSignInButton
             callbackUrl={nextPath}
-            label="Sign in with Google"
+            label={signedIn ? "Continue with Google" : "Sign in with Google"}
             disabled={!isGoogleSignInConfigured()}
             configErrorRedirect="/admin/login"
           />
         </div>
 
         <p className="mt-4 text-xs leading-relaxed text-[var(--slop-cream-dim)]">
-          Bootstrap the first admin: sign in once at{" "}
+          Bootstrap: sign in at{" "}
           <Link href="/login" className="font-bold text-[var(--slop-gold)] hover:underline">
             /login
           </Link>
-          , then run{" "}
+          , then{" "}
           <code className="text-[var(--slop-cream-muted)]">
             npm run make-admin -- you@example.com
           </code>
-          . New accounts listed in{" "}
+          . New users in{" "}
           <code className="text-[var(--slop-cream-muted)]">ADMIN_EMAILS</code> get
-          ADMIN on first Google sign-up only.
+          ADMIN on first sign-up only.
         </p>
       </section>
     </main>
