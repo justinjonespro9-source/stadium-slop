@@ -425,13 +425,22 @@ async function getPendingAdminQueues() {
   }
 }
 
+type AdminDashboardCard = {
+  title: string;
+  count: number;
+  detail: string;
+  href?: string;
+  action: string;
+  disabled?: boolean;
+};
+
 export default async function AdminPage() {
   await requireAdminAccess();
 
   const [{ priceReports, suggestedItems, contentReports }, stats] =
     await Promise.all([getPendingAdminQueues(), getAdminDashboardStats()]);
 
-  const managementCards = [
+  const managementCards: AdminDashboardCard[] = [
     {
       title: "Venues",
       count: stats.venueCount,
