@@ -6,7 +6,9 @@ import { revalidatePath } from "next/cache";
 import { signOut } from "@/auth";
 import { ProfileDashboardBody } from "@/components/account/profile-dashboard-body";
 import { AuthPageScaffold } from "@/components/auth-ui";
+import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { isGoogleSignInConfigured } from "@/lib/auth/env";
 import { getContributorUserId } from "@/lib/auth/contributor-id";
 import { getSessionUser } from "@/lib/auth/require-user";
 import {
@@ -118,8 +120,12 @@ function SignedOutAccount() {
         </p>
       }
     >
+      <AuthConfigAlert className="mt-4" />
       <div className="mt-5">
-        <GoogleSignInButton callbackUrl="/account" />
+        <GoogleSignInButton
+          callbackUrl="/account"
+          disabled={!isGoogleSignInConfigured()}
+        />
       </div>
     </AuthPageScaffold>
   );

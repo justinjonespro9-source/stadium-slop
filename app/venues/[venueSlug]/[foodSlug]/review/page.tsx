@@ -27,7 +27,9 @@ import { prisma } from "@/lib/prisma";
 import { PhotoCropUpload } from "@/components/photo-crop-upload";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
+import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { isGoogleSignInConfigured } from "@/lib/auth/env";
 import { ReviewFormLocation } from "@/components/review-form-location";
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 
@@ -527,10 +529,12 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               Sign in with Google to leave a review, optional fan photo, and game-day
               signals. No comment threads.
             </p>
+            <AuthConfigAlert className="mt-3" />
             <div className="mt-4">
               <GoogleSignInButton
                 callbackUrl={reviewPath}
                 className="brand-cta rounded-full px-5 py-3.5 text-sm font-black"
+                disabled={!isGoogleSignInConfigured()}
               />
             </div>
           </div>

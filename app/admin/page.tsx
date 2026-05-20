@@ -1,15 +1,9 @@
-import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
 import { signOut } from "@/auth";
 import { requireAdminAccess } from "@/lib/auth/require-admin";
-import {
-  MOCK_ADMIN_COOKIE_NAME,
-  allowMockAdminAccess,
-  hasMockAdminAccess
-} from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { FAN_REPORT_REASON_LABELS } from "@/lib/reports";
 import { formatPriceUsd } from "@/lib/price-report";
@@ -25,10 +19,6 @@ function slugify(value: string) {
 async function adminSignOut() {
   "use server";
 
-  const cookieStore = await cookies();
-  if (allowMockAdminAccess()) {
-    cookieStore.delete(MOCK_ADMIN_COOKIE_NAME);
-  }
   await signOut({ redirectTo: "/admin/login" });
 }
 

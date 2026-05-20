@@ -17,6 +17,7 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "seed:game-schedule": "tsx scripts/seed-game-schedule.ts",
+    "make-admin": "tsx scripts/make-admin.ts",
     "import:mlb": "tsx scripts/apply-mlb-import.ts",
     "import:league": "tsx scripts/apply-league-import.ts",
     "parse:nfl-docx": "tsx scripts/parse-nfl-stadium-docx.ts",

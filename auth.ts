@@ -1,14 +1,21 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
-import { isAdminEmail, resolveUserRoleForEmail } from "@/lib/auth/admin";
+import { resolveUserRoleForEmail } from "@/lib/auth/admin";
+import {
+  getAuthSecret,
+  getGoogleClientId,
+  getGoogleClientSecret
+} from "@/lib/auth/env";
 import { syncUserFromOAuth } from "@/lib/auth/sync-user";
 import { prisma } from "@/lib/prisma";
 
-const googleClientId = process.env.GOOGLE_CLIENT_ID;
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const googleClientId = getGoogleClientId() ?? "";
+const googleClientSecret = getGoogleClientSecret() ?? "";
+const authSecret = getAuthSecret();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  secret: authSecret,
   trustHost: true,
   providers: [
     Google({
@@ -59,11 +66,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (dbUser) {
         token.sub = dbUser.id;
         token.role = dbUser.role;
-        token.isAdmin =
-          dbUser.role === "ADMIN" || isAdminEmail(email);
+        token.isAdmin = dbUser.role === "ADMIN";
       } else {
         token.role = resolveUserRoleForEmail(email);
-        token.isAdmin = isAdminEmail(email);
+        token.isAdmin = token.role === "ADMIN";
       }
 
       return token;
