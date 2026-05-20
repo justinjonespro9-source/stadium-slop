@@ -192,6 +192,14 @@ enum ReportStatus {
   DISMISSED
 }
 
+enum GameStatus {
+  SCHEDULED
+  LIVE
+  FINAL
+  POSTPONED
+  CANCELED
+}
+
 model User {
   id                         String          @id @default(cuid())
   email                      String          @unique
@@ -251,8 +259,33 @@ model Venue {
   priceReports       PriceReport[]
   suggestedItems     SuggestedItem[]
   homeUsers          User[]          @relation("UserHomeVenue")
+  games              Game[]
 
   @@index([city, state])
+}
+
+model Game {
+  id              String     @id @default(cuid())
+  league          String
+  season          Int
+  homeTeamSlug    String
+  awayTeamName    String
+  venueId         String
+  startsAt        DateTime
+  estimatedEndsAt DateTime?
+  pollingOpensAt  DateTime
+  pollingClosesAt DateTime
+  status          GameStatus @default(SCHEDULED)
+  externalId      String?    @unique
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  venue           Venue      @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  reviews         Review[]
+
+  @@index([venueId, startsAt])
+  @@index([venueId, pollingOpensAt, pollingClosesAt])
+  @@index([status, startsAt])
 }
 
 model Vendor {
@@ -322,34 +355,39 @@ model FoodItem {
 }
 
 model Review {
-  id              String           @id @default(cuid())
-  userId          String
-  foodItemId      String
-  venueId         String
-  gameDayKey      String
-  slopScore       Decimal          @db.Decimal(3, 1)
-  napkinRating    Int
-  labels          ConsensusLabel[]
-  replayValue     ReplayValue?
-  priceCheck      PriceCheck?
-  verifiedGameDay Boolean          @default(false)
-  seasonLabel     String
-  note            String?
-  status          EntityStatus     @default(ACTIVE)
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id                      String           @id @default(cuid())
+  userId                  String
+  foodItemId              String
+  venueId                 String
+  gameId                  String?
+  gameDayKey              String
+  slopScore               Decimal          @db.Decimal(3, 1)
+  napkinRating            Int
+  labels                  ConsensusLabel[]
+  replayValue             ReplayValue?
+  priceCheck              PriceCheck?
+  verifiedGameDay         Boolean          @default(false)
+  locationVerifiedAt      DateTime?
+  distanceFromVenueMeters Int?
+  seasonLabel             String
+  note                    String?
+  status                  EntityStatus     @default(ACTIVE)
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
 
-  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  foodItem        FoodItem         @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
-  venue           Venue            @relation(fields: [venueId], references: [id], onDelete: Cascade)
-  helpfulLikes    HelpfulLike[]
-  photos          FoodPhoto[]
-  reportFlags     ReportFlag[]     @relation("ReviewFlags")
+  user                    User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  foodItem                FoodItem         @relation(fields: [foodItemId], references: [id], onDelete: Cascade)
+  venue                   Venue            @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  game                    Game?            @relation(fields: [gameId], references: [id], onDelete: SetNull)
+  helpfulLikes            HelpfulLike[]
+  photos                  FoodPhoto[]
+  reportFlags             ReportFlag[]     @relation("ReviewFlags")
 
   @@unique([userId, foodItemId, gameDayKey])
   @@index([foodItemId, seasonLabel])
   @@index([foodItemId, verifiedGameDay, createdAt])
   @@index([venueId])
+  @@index([gameId])
 }
 
 model HelpfulLike {

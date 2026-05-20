@@ -40,6 +40,11 @@ import {
   computeVenueFanFavoriteBadges,
   getFanFavoriteBadgesForItem
 } from "@/lib/venue-awards";
+import { GameDayModeCard } from "@/components/game-day-mode-card";
+import {
+  getVenueActiveGame,
+  getVenueUpcomingGame
+} from "@/lib/game-day";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -341,6 +346,25 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     notFound();
   }
 
+  const dbVenue = await prisma.venue.findUnique({
+    where: { slug: venue.slug },
+    select: { id: true, teams: true }
+  });
+  const venueId = dbVenue?.id;
+  let activeGame: Awaited<ReturnType<typeof getVenueActiveGame>> = null;
+  let upcomingGame: Awaited<ReturnType<typeof getVenueUpcomingGame>> = null;
+  if (venueId) {
+    try {
+      [activeGame, upcomingGame] = await Promise.all([
+        getVenueActiveGame(venueId),
+        getVenueUpcomingGame(venueId)
+      ]);
+    } catch (error) {
+      console.warn("Game day schedule lookup failed; continuing without card", error);
+    }
+  }
+  const homeTeamLabel = dbVenue?.teams[0] ?? venue.teams[0] ?? "";
+
   const venueFoodItems = await getPublicFoodItemsByVenueSlug(venue.slug);
   const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
   const fanFavoriteEntries = await Promise.all(
@@ -460,6 +484,16 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             </span>
           </p>
         </header>
+
+        {venueId && (activeGame || upcomingGame) ? (
+          <div className="pt-3 sm:pt-4">
+            <GameDayModeCard
+              homeTeamLabel={homeTeamLabel}
+              activeGame={activeGame}
+              upcomingGame={upcomingGame}
+            />
+          </div>
+        ) : null}
 
         <section
           className="pt-3 sm:pt-4"
