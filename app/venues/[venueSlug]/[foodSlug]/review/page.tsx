@@ -7,9 +7,13 @@ import { notFound, redirect } from "next/navigation";
 import { getPublicFoodItemBySlug, getPublicVenueBySlug, slugFilterInsensitive } from "@/lib/public-data";
 import {
   buildGameDayKey,
+  formatGameDayDateTime,
+  formatGameDayPollingWindowHoursLabel,
   GAME_DAY_REVIEW_ERROR_MESSAGES,
   getVenueActiveGame,
+  getVenueUpcomingGame,
   parseReviewLocationFromForm,
+  resolveVenueReviewRadiusMeters,
   validateGameDayReviewSubmission,
   type GameDayReviewErrorCode
 } from "@/lib/game-day";
@@ -565,27 +569,33 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   const dbVenue = await prisma.venue.findUnique({
     where: { slug: venue.slug },
-    select: { id: true }
+    select: {
+      id: true,
+      reviewRadiusMeters: true,
+      latitude: true,
+      longitude: true
+    }
   });
   let activeGame: Awaited<ReturnType<typeof getVenueActiveGame>> = null;
+  let upcomingGame: Awaited<ReturnType<typeof getVenueUpcomingGame>> = null;
   if (dbVenue?.id) {
     try {
-      activeGame = await getVenueActiveGame(dbVenue.id);
+      [activeGame, upcomingGame] = await Promise.all([
+        getVenueActiveGame(dbVenue.id),
+        getVenueUpcomingGame(dbVenue.id)
+      ]);
     } catch (error) {
-      console.warn("Active game lookup failed on review page", error);
+      console.warn("Game day lookup failed on review page", error);
     }
   }
   const pollingOpen = Boolean(activeGame);
-  const reviewCtaLabel = pollingOpen
-    ? draft
-      ? "Update game-day review"
-      : "Submit game-day review"
-    : "Reviews open during home games";
-  const submitButtonLabel = pollingOpen
-    ? draft
-      ? "Update Today's Review"
-      : "Submit Review"
-    : "Reviews open during home games";
+  const reviewRadiusMeters = resolveVenueReviewRadiusMeters(
+    dbVenue?.reviewRadiusMeters ?? venue.reviewRadiusMeters
+  );
+  const hasVenueCoords =
+    Boolean(dbVenue?.latitude && dbVenue?.longitude) ||
+    Boolean(venue.latitude && venue.longitude);
+  const pollingWindowHoursLabel = formatGameDayPollingWindowHoursLabel();
 
   return (
     <main className="brand-page min-h-screen">
@@ -644,9 +654,20 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           </p>
           <p className="mt-2 text-xs leading-relaxed text-zinc-500">
             {pollingOpen
-              ? "Review this item — game-day certified. Location is checked at submit."
-              : "Reviews open during home games. You can fill the scorecard now; submit unlocks during the active home-game window."}
+              ? `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium to submit.`
+              : "You can draft anytime. Certified reviews can only be submitted during an active home-game window while you’re at the stadium."}
           </p>
+          {!pollingOpen && upcomingGame ? (
+            <p className="mt-1 text-[0.65rem] leading-relaxed text-zinc-600">
+              Next home game: {formatGameDayDateTime(upcomingGame.startsAt)}.
+            </p>
+          ) : null}
+          {!hasVenueCoords ? (
+            <p className="mt-1 text-[0.65rem] text-amber-200/90">
+              Stadium coordinates are not on file for this venue yet — location
+              certification may fail until coords are added.
+            </p>
+          ) : null}
         </header>
 
         <form
@@ -811,13 +832,9 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
             </p>
             <ReviewFormLocation
               formId="review-form"
-              submitLabel={submitButtonLabel}
               pollingOpen={pollingOpen}
-              locationRequiredHint={
-                pollingOpen
-                  ? "Submit certifies your location at the stadium for this home game."
-                  : reviewCtaLabel
-              }
+              reviewRadiusMeters={reviewRadiusMeters}
+              isDraft={Boolean(draft)}
             />
           </div>
         </form>

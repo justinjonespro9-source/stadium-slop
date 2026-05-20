@@ -4,10 +4,10 @@ import { GameStatus, type Game } from "@prisma/client";
 export const DEFAULT_GAME_DAY_REVIEW_RADIUS_METERS = 750;
 
 /** Hours before first pitch when location-certified polling opens. */
-export const GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START = 2;
+export const GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START = 3;
 
 /** Hours after first pitch when location-certified polling closes. */
-export const GAME_DAY_POLLING_CLOSES_HOURS_AFTER_START = 4;
+export const GAME_DAY_POLLING_CLOSES_HOURS_AFTER_START = 8;
 
 /** Default estimated game length when `estimatedEndsAt` is unset (MLB regular season). */
 export const GAME_DAY_DEFAULT_DURATION_HOURS = 3;
@@ -109,6 +109,19 @@ export function formatGameDayDateTime(d: Date) {
 
 export function formatGameDayTime(d: Date) {
   return gameDayTimeFormatter.format(d);
+}
+
+/** Fan-facing summary of the certified review window (hours only). */
+export function formatGameDayPollingWindowHoursLabel() {
+  return `${GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START} hours before first pitch through ${GAME_DAY_POLLING_CLOSES_HOURS_AFTER_START} hours after`;
+}
+
+/** Certified review window for a scheduled home game. */
+export function formatGameDayPollingWindowRange(
+  pollingOpensAt: Date,
+  pollingClosesAt: Date
+) {
+  return `${formatGameDayTime(pollingOpensAt)} – ${formatGameDayTime(pollingClosesAt)}`;
 }
 
 export function formatHomeTeamLabel(homeTeamSlug: string) {

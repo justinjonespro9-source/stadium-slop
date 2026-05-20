@@ -10,6 +10,7 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
+import { GAME_DAY_FLAGSHIP_VENUE_COORDS } from "../lib/schedules/game-day-venue-coords";
 import {
   getMockMlbGameSeeds,
   mockMlbGameToPrismaData
@@ -23,8 +24,29 @@ const prisma = new PrismaClient({
   adapter: new PrismaPg(connectionString)
 });
 
+async function ensureFlagshipVenueCoordinates() {
+  for (const row of GAME_DAY_FLAGSHIP_VENUE_COORDS) {
+    const result = await prisma.venue.updateMany({
+      where: { slug: row.slug },
+      data: {
+        latitude: row.latitude,
+        longitude: row.longitude,
+        reviewRadiusMeters: row.reviewRadiusMeters
+      }
+    });
+    if (result.count > 0) {
+      console.log(
+        `Venue coords · ${row.slug} (${row.latitude}, ${row.longitude}) · ${row.reviewRadiusMeters}m`
+      );
+    } else {
+      console.warn(`Venue coords skipped — "${row.slug}" not in DB`);
+    }
+  }
+}
+
 async function main() {
   const seedNow = new Date();
+  await ensureFlagshipVenueCoordinates();
   const rows = getMockMlbGameSeeds(seedNow);
   let upserted = 0;
   let skipped = 0;

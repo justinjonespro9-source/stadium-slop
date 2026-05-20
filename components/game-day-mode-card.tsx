@@ -2,6 +2,8 @@ import type { Game } from "@prisma/client";
 
 import {
   formatGameDayDateTime,
+  formatGameDayPollingWindowHoursLabel,
+  formatGameDayPollingWindowRange,
   formatGameDayTime,
   formatHomeTeamLabel,
   isGameDayActive
@@ -22,7 +24,10 @@ export function GameDayModeCard({
 }: GameDayModeCardProps) {
   if (activeGame && isGameDayActive(activeGame, now)) {
     const matchup = `${activeGame.awayTeamName} at ${homeTeamLabel}`;
-    const closesLabel = formatGameDayTime(activeGame.pollingClosesAt);
+    const windowRange = formatGameDayPollingWindowRange(
+      activeGame.pollingOpensAt,
+      activeGame.pollingClosesAt
+    );
     const startLabel = formatGameDayTime(activeGame.startsAt);
 
     return (
@@ -43,12 +48,12 @@ export function GameDayModeCard({
           First pitch · {startLabel}
         </p>
         <p className="mt-1 text-xs font-semibold text-[var(--slop-gold-dim)]">
-          Polling closes at {closesLabel}
+          Certified review window · {windowRange}
         </p>
         <p className="mt-3 text-xs leading-relaxed text-[var(--slop-cream-dim)]">
-          Location-certified reviews during this window power today&apos;s Fresh
-          Score. Unofficial fan-powered food guide — not affiliated with teams
-          or venues.
+          Location-certified reviews ({formatGameDayPollingWindowHoursLabel()})
+          power today&apos;s Fresh Score. Unofficial fan-powered food guide — not
+          affiliated with teams or venues.
         </p>
       </article>
     );
