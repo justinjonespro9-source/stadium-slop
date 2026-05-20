@@ -3,6 +3,7 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { requireAdminAccess } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/prisma";
 import { VENUE_TYPE_OPTIONS } from "@/lib/venue-display";
 
@@ -16,6 +17,7 @@ function parseList(value: FormDataEntryValue | null) {
 async function createVenue(formData: FormData) {
   "use server";
 
+  await requireAdminAccess();
   const name = String(formData.get("name") ?? "").trim();
   const slug = String(formData.get("slug") ?? "").trim();
   const city = String(formData.get("city") ?? "").trim();
@@ -61,7 +63,9 @@ async function createVenue(formData: FormData) {
   redirect(`/admin/venues/${venue.id}`);
 }
 
-export default function AdminNewVenuePage() {
+export default async function AdminNewVenuePage() {
+  await requireAdminAccess();
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-2xl px-5 py-8 sm:px-8 lg:px-10">

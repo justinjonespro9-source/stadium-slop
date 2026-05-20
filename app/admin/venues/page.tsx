@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { requireAdminAccess } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/prisma";
 import { venueTypeLabel } from "@/lib/venue-display";
 
@@ -8,6 +9,8 @@ type AdminVenuesPageProps = {
 };
 
 export default async function AdminVenuesPage({ searchParams }: AdminVenuesPageProps) {
+  await requireAdminAccess();
+
   const { q } = await searchParams;
   const query = (q ?? "").trim();
 

@@ -25,6 +25,7 @@ async function adminSignOut() {
 async function approvePriceReport(formData: FormData) {
   "use server";
 
+  await requireMockAdmin();
   const reportId = String(formData.get("reportId") ?? "");
   const report = await prisma.priceReport.findUnique({
     where: { id: reportId }
@@ -78,6 +79,7 @@ async function rejectPriceReport(formData: FormData) {
 async function approveSuggestedItem(formData: FormData) {
   "use server";
 
+  await requireMockAdmin();
   const suggestionId = String(formData.get("suggestionId") ?? "");
   const suggestion = await prisma.suggestedItem.findUnique({
     where: { id: suggestionId },
@@ -152,6 +154,7 @@ async function approveSuggestedItem(formData: FormData) {
 async function rejectSuggestedItem(formData: FormData) {
   "use server";
 
+  await requireMockAdmin();
   const suggestionId = String(formData.get("suggestionId") ?? "");
 
   await prisma.suggestedItem.updateMany({
@@ -419,6 +422,8 @@ async function getPendingAdminQueues() {
 }
 
 export default async function AdminPage() {
+  await requireAdminAccess();
+
   const [{ priceReports, suggestedItems, contentReports }, stats] =
     await Promise.all([getPendingAdminQueues(), getAdminDashboardStats()]);
 

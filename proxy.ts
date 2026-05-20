@@ -2,12 +2,12 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 import { getAuthSecret } from "@/lib/auth/env";
-import {
-  logAdminAccessCheck,
-  resolveAdminAccessForUserId
-} from "@/lib/auth/resolve-admin-access";
 
-/** Next.js 16+ convention: network boundary before the app (replaces `middleware.ts`). */
+/**
+ * Next.js 16+ network boundary (replaces `middleware.ts`).
+ * Admin routes: session cookie only — no Prisma (Vercel-safe).
+ * DB role === ADMIN is enforced in server pages/actions via requireAdminAccess().
+ */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -24,34 +24,11 @@ export async function proxy(request: NextRequest) {
     secret: getAuthSecret()
   });
 
-  const userId = typeof token?.sub === "string" ? token.sub : null;
+  const hasSession = Boolean(token?.sub);
 
-  if (!userId) {
+  if (!hasSession) {
     const loginUrl = new URL("/admin/login", request.url);
     loginUrl.searchParams.set("next", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  const { isAdmin, dbRole } = await resolveAdminAccessForUserId(userId);
-  const jwtClaimsAdmin =
-    token?.role === "ADMIN" || token?.isAdmin === true;
-
-  logAdminAccessCheck("proxy", {
-    path: pathname,
-    userId,
-    jwtRole: typeof token?.role === "string" ? token.role : null,
-    jwtIsAdmin: token?.isAdmin === true,
-    dbRole,
-    allowed: isAdmin
-  });
-
-  if (!isAdmin) {
-    const loginUrl = new URL("/admin/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
-    loginUrl.searchParams.set("error", "not-admin");
-    if (jwtClaimsAdmin && dbRole !== "ADMIN") {
-      loginUrl.searchParams.set("hint", "stale-session");
-    }
     return NextResponse.redirect(loginUrl);
   }
 

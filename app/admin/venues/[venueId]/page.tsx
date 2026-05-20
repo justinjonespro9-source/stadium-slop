@@ -3,6 +3,7 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
+import { requireAdminAccess } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/prisma";
 import { VENUE_TYPE_OPTIONS } from "@/lib/venue-display";
 
@@ -26,6 +27,7 @@ function parseList(value: FormDataEntryValue | null) {
 async function updateVenue(formData: FormData) {
   "use server";
 
+  await requireAdminAccess();
   const venueId = String(formData.get("venueId") ?? "");
   const reviewRadiusMeters = Number(formData.get("reviewRadiusMeters"));
 
@@ -69,6 +71,7 @@ async function updateVenue(formData: FormData) {
 async function createVendor(formData: FormData) {
   "use server";
 
+  await requireAdminAccess();
   const venueId = String(formData.get("venueId") ?? "");
   const name = String(formData.get("vendorName") ?? "").trim();
   const slug = String(formData.get("vendorSlug") ?? "").trim();
@@ -112,6 +115,8 @@ export default async function AdminVenueDetailPage({
   params,
   searchParams
 }: AdminVenueDetailPageProps) {
+  await requireAdminAccess();
+
   const { venueId } = await params;
   const { vendorQ = "", itemQ = "" } = await searchParams;
   const vq = vendorQ.trim();

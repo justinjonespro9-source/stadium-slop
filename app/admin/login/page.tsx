@@ -11,7 +11,6 @@ type AdminLoginPageProps = {
   searchParams?: Promise<{
     next?: string;
     error?: string;
-    hint?: string;
   }>;
 };
 
@@ -21,8 +20,6 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
     typeof query?.next === "string" && query.next.startsWith("/admin")
       ? query.next
       : "/admin";
-  const error = query?.error;
-  const staleSessionHint = query?.hint === "stale-session";
 
   const session = await auth();
   const userId = session?.user?.id;
@@ -36,6 +33,7 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
 
   const signedIn = Boolean(userId);
   const sessionEmail = session?.user?.email;
+  const showNotAuthorized = signedIn || query?.error === "not-admin";
 
   return (
     <main className="brand-page min-h-screen">
@@ -57,60 +55,33 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
           <p className="mt-2 text-sm leading-relaxed text-[var(--slop-cream-muted)]">
             Sign in with Google using an account that has{" "}
             <code className="text-[var(--slop-cream)]">User.role = ADMIN</code> in
-            the database. Fan sign-in alone does not grant admin access.
+            the database.
           </p>
         </header>
 
         <AuthConfigAlert className="mt-4" />
 
-        {signedIn && sessionEmail ? (
-          <p className="mt-4 rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-3 py-2.5 text-xs text-[var(--slop-cream-muted)]">
-            Signed in as <span className="font-bold text-[var(--slop-cream)]">{sessionEmail}</span>
-            . Use the same Google account here after promotion, or sign out from{" "}
-            <Link href="/account" className="font-bold text-[var(--slop-gold)] hover:underline">
-              your account
-            </Link>{" "}
-            and sign in again so admin access refreshes.
-          </p>
-        ) : null}
-
-        {error === "not-admin" ? (
+        {showNotAuthorized ? (
           <p
             role="alert"
             className="mt-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
           >
-            {signedIn
-              ? "This Google account is signed in but is not an admin in the database."
-              : "Admin access requires a signed-in Google account with ADMIN role."}
-            {signedIn ? (
+            {signedIn && sessionEmail ? (
               <>
-                {" "}
-                After{" "}
-                <code className="text-amber-50">npm run make-admin -- your@email.com</code>
-                , sign out and sign in again (or open this page while signed in — we
-                check the live database role).
+                <span className="font-bold">Not authorized.</span> Signed in as{" "}
+                {sessionEmail}, but this account is not an admin. Run{" "}
+                <code className="text-amber-50">
+                  npm run make-admin -- your@email.com
+                </code>{" "}
+                after one contributor sign-in, then reload this page or sign out and
+                back in.
               </>
             ) : (
               <>
-                {" "}
-                Sign in once at{" "}
-                <Link href="/login" className="font-bold underline">
-                  /login
-                </Link>
-                , run make-admin, then return here.
+                <span className="font-bold">Not authorized.</span> Admin access
+                requires a signed-in Google account with ADMIN role in the database.
               </>
             )}
-          </p>
-        ) : null}
-
-        {staleSessionHint ? (
-          <p className="mt-3 text-xs leading-relaxed text-amber-100/90">
-            Your session cookie still had an old role claim. This page now checks
-            the database directly — try{" "}
-            <Link href={nextPath} className="font-bold underline">
-              opening admin again
-            </Link>{" "}
-            or sign out and back in once.
           </p>
         ) : null}
 
@@ -132,9 +103,7 @@ export default async function AdminLoginPage({ searchParams }: AdminLoginPagePro
           <code className="text-[var(--slop-cream-muted)]">
             npm run make-admin -- you@example.com
           </code>
-          . New users in{" "}
-          <code className="text-[var(--slop-cream-muted)]">ADMIN_EMAILS</code> get
-          ADMIN on first sign-up only.
+          .
         </p>
       </section>
     </main>

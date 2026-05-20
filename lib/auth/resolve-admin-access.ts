@@ -1,8 +1,6 @@
 import "server-only";
 
 import { UserRole, type User } from "@prisma/client";
-import type { JWT } from "next-auth/jwt";
-
 import { prisma } from "@/lib/prisma";
 
 export async function isUserAdminById(userId: string): Promise<boolean> {
@@ -13,15 +11,19 @@ export async function isUserAdminById(userId: string): Promise<boolean> {
   return user?.role === UserRole.ADMIN;
 }
 
-/**
- * Admin gate for proxy/middleware: valid signed session (token.sub) + live DB role.
- * getToken() does not run Auth.js jwt callbacks, so JWT role may lag after make-admin.
- */
-export async function isAdminFromJwtToken(token: JWT | null): Promise<boolean> {
-  if (!token?.sub) {
-    return false;
-  }
-  return isUserAdminById(token.sub);
+export async function resolveAdminAccessForEmail(email: string) {
+  const normalized = email.trim().toLowerCase();
+  const user = await prisma.user.findUnique({
+    where: { email: normalized },
+    select: { id: true, role: true, email: true }
+  });
+
+  return {
+    isAdmin: user?.role === UserRole.ADMIN,
+    dbRole: user?.role ?? null,
+    email: user?.email ?? null,
+    userId: user?.id ?? null
+  };
 }
 
 /** Dev-only diagnostics — never log secrets or full tokens. */
@@ -59,6 +61,7 @@ export async function resolveAdminAccessForUserId(userId: string) {
   return {
     isAdmin: user?.role === UserRole.ADMIN,
     dbRole: user?.role ?? null,
-    email: user?.email ?? null
+    email: user?.email ?? null,
+    userId: user?.id ?? null
   };
 }

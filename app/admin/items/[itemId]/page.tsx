@@ -3,6 +3,7 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
+import { requireAdminAccess } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/prisma";
 
 type AdminItemDetailPageProps = {
@@ -21,6 +22,7 @@ function parseSections(value: FormDataEntryValue | null) {
 async function updateFoodItem(formData: FormData) {
   "use server";
 
+  await requireAdminAccess();
   const itemId = String(formData.get("itemId") ?? "");
   const reportedPriceValue = String(formData.get("reportedPrice") ?? "").trim();
   const reportedPrice = reportedPriceValue ? Number(reportedPriceValue) : null;
@@ -58,6 +60,8 @@ async function updateFoodItem(formData: FormData) {
 export default async function AdminItemDetailPage({
   params
 }: AdminItemDetailPageProps) {
+  await requireAdminAccess();
+
   const { itemId } = await params;
   const item = await prisma.foodItem.findUnique({
     where: { id: itemId },

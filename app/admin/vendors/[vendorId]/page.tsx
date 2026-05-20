@@ -3,6 +3,7 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { notFound, redirect } from "next/navigation";
 
+import { requireAdminAccess } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/prisma";
 
 type AdminVendorDetailPageProps = {
@@ -14,6 +15,7 @@ type AdminVendorDetailPageProps = {
 async function updateVendor(formData: FormData) {
   "use server";
 
+  await requireAdminAccess();
   const vendorId = String(formData.get("vendorId") ?? "");
 
   await prisma.vendor.update({
@@ -45,6 +47,7 @@ async function updateVendor(formData: FormData) {
 async function createFoodItem(formData: FormData) {
   "use server";
 
+  await requireAdminAccess();
   const vendorId = String(formData.get("vendorId") ?? "");
   const name = String(formData.get("itemName") ?? "").trim();
   const slug = String(formData.get("itemSlug") ?? "").trim();
@@ -105,6 +108,8 @@ async function createFoodItem(formData: FormData) {
 export default async function AdminVendorDetailPage({
   params
 }: AdminVendorDetailPageProps) {
+  await requireAdminAccess();
+
   const { vendorId } = await params;
   const [vendor, venues] = await Promise.all([
     prisma.vendor.findUnique({
