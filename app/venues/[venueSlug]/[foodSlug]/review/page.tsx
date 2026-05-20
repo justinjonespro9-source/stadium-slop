@@ -5,7 +5,14 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { getPublicFoodItemBySlug, getPublicVenueBySlug, slugFilterInsensitive } from "@/lib/public-data";
-import { buildGameDayKey } from "@/lib/game-day";
+import {
+  buildGameDayKey,
+  GAME_DAY_REVIEW_ERROR_MESSAGES,
+  getVenueActiveGame,
+  parseReviewLocationFromForm,
+  validateGameDayReviewSubmission,
+  type GameDayReviewErrorCode
+} from "@/lib/game-day";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import {
   getFileDebug,
@@ -21,6 +28,7 @@ import { PhotoCropUpload } from "@/components/photo-crop-upload";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
+import { ReviewFormLocation } from "@/components/review-form-location";
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 
 const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -188,7 +196,14 @@ async function submitReview(formData: FormData) {
   const normalizedFoodSlug = decodeURIComponent(foodSlug).trim();
 
   const venue = await prisma.venue.findFirst({
-    where: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
+    where: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" },
+    select: {
+      id: true,
+      slug: true,
+      latitude: true,
+      longitude: true,
+      reviewRadiusMeters: true
+    }
   });
 
   const foodItemRow = venue
@@ -283,6 +298,27 @@ async function submitReview(formData: FormData) {
     redirect(`${canonicalItemPath}/review?error=missing-price`);
   }
 
+  const activeGame = await getVenueActiveGame(venue.id);
+  const gameDayCheck = validateGameDayReviewSubmission({
+    activeGame,
+    venueLatitude: venue.latitude,
+    venueLongitude: venue.longitude,
+    reviewRadiusMeters: venue.reviewRadiusMeters,
+    location: parseReviewLocationFromForm(formData)
+  });
+
+  if (!gameDayCheck.ok) {
+    redirect(`${canonicalItemPath}/review?error=${gameDayCheck.code}`);
+  }
+
+  const locationVerifiedAt = new Date();
+  const gameDayVerification = {
+    gameId: gameDayCheck.game.id,
+    verifiedGameDay: true,
+    locationVerifiedAt,
+    distanceFromVenueMeters: gameDayCheck.distanceFromVenueMeters
+  };
+
   const review = await prisma.review.upsert({
     where: {
       userId_foodItemId_gameDayKey: {
@@ -297,9 +333,9 @@ async function submitReview(formData: FormData) {
       labels: [],
       replayValue: replayValueData,
       priceCheck: priceCheckData,
-      verifiedGameDay: true,
       seasonLabel,
-      note: noteValue ? noteValue.slice(0, 300) : null
+      note: noteValue ? noteValue.slice(0, 300) : null,
+      ...gameDayVerification
     },
     create: {
       userId: user.id,
@@ -311,9 +347,9 @@ async function submitReview(formData: FormData) {
       labels: [],
       replayValue: replayValueData,
       priceCheck: priceCheckData,
-      verifiedGameDay: true,
       seasonLabel,
-      note: noteValue ? noteValue.slice(0, 300) : null
+      note: noteValue ? noteValue.slice(0, 300) : null,
+      ...gameDayVerification
     }
   });
 
@@ -418,8 +454,14 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const urlPhotoError = query.photoError;
   const urlError = query.error;
 
-  const reviewFormErrorMessage =
-    urlError === "missing-score"
+  const gameDayErrorCode =
+    urlError && urlError in GAME_DAY_REVIEW_ERROR_MESSAGES
+      ? (urlError as GameDayReviewErrorCode)
+      : null;
+
+  const reviewFormErrorMessage = gameDayErrorCode
+    ? GAME_DAY_REVIEW_ERROR_MESSAGES[gameDayErrorCode]
+    : urlError === "missing-score"
       ? "Slop Score (and Napkin Rating for food) are required."
       : urlError === "missing-replay"
         ? "Pick a Replay Value — would you order this again?"
@@ -429,10 +471,11 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   const photoRetryDetailMessage = reviewPagePhotoErrorMessage(urlPhotoError);
 
-  const reviewErrorAlertTitle =
-    urlError === "missing-score" ||
-    urlError === "missing-replay" ||
-    urlError === "missing-price"
+  const reviewErrorAlertTitle = gameDayErrorCode
+    ? "Game-day review not accepted"
+    : urlError === "missing-score" ||
+        urlError === "missing-replay" ||
+        urlError === "missing-price"
       ? "Finish required fields"
       : "Photo not accepted";
 
@@ -516,6 +559,30 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     draft?.photos.find((p) => normalizePublicImageUrl(p.url)) ?? undefined;
   const draftCaption = existingPhoto?.caption ?? "";
 
+  const dbVenue = await prisma.venue.findUnique({
+    where: { slug: venue.slug },
+    select: { id: true }
+  });
+  let activeGame: Awaited<ReturnType<typeof getVenueActiveGame>> = null;
+  if (dbVenue?.id) {
+    try {
+      activeGame = await getVenueActiveGame(dbVenue.id);
+    } catch (error) {
+      console.warn("Active game lookup failed on review page", error);
+    }
+  }
+  const pollingOpen = Boolean(activeGame);
+  const reviewCtaLabel = pollingOpen
+    ? draft
+      ? "Update game-day review"
+      : "Submit game-day review"
+    : "Reviews open during home games";
+  const submitButtonLabel = pollingOpen
+    ? draft
+      ? "Update Today's Review"
+      : "Submit Review"
+    : "Reviews open during home games";
+
   return (
     <main className="brand-page min-h-screen">
       <section className="mx-auto w-full max-w-lg px-4 py-5 sm:max-w-xl sm:px-6 lg:max-w-2xl">
@@ -570,6 +637,11 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           </h1>
           <p className="mt-1 text-sm text-zinc-400">
             {venue.name} · {venue.city}, {venue.state}
+          </p>
+          <p className="mt-2 text-xs leading-relaxed text-zinc-500">
+            {pollingOpen
+              ? "Review this item — game-day certified. Location is checked at submit."
+              : "Reviews open during home games. You can fill the scorecard now; submit unlocks during the active home-game window."}
           </p>
         </header>
 
@@ -733,12 +805,16 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                 ? "Updating today replaces your earlier Slop Score and signals for this item — one row per fan per game day."
                 : "One review per fan, item, and game day. You can edit later today if needed."}
             </p>
-            <button
-              type="submit"
-              className="brand-cta mt-3 w-full touch-manipulation rounded-full px-5 py-3.5 text-sm font-black sm:py-4"
-            >
-              {draft ? "Update Today's Review" : "Submit Review"}
-            </button>
+            <ReviewFormLocation
+              formId="review-form"
+              submitLabel={submitButtonLabel}
+              pollingOpen={pollingOpen}
+              locationRequiredHint={
+                pollingOpen
+                  ? "Submit certifies your location at the stadium for this home game."
+                  : reviewCtaLabel
+              }
+            />
           </div>
         </form>
 

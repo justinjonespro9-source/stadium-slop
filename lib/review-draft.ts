@@ -3,9 +3,6 @@ import { PhotoType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { buildGameDayKey } from "@/lib/game-day";
 
-// TODO(game-day): attach gameId, locationVerifiedAt, distanceFromVenueMeters, and
-// verifiedGameDay when location certification is wired to getVenueActiveGame().
-
 export async function findTodaysReviewForItem(options: {
   userId: string;
   foodItemId: string;

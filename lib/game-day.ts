@@ -1,5 +1,8 @@
 import { GameStatus, type Game } from "@prisma/client";
 
+/** Fallback on-site radius when a venue row has no valid `reviewRadiusMeters`. */
+export const DEFAULT_GAME_DAY_REVIEW_RADIUS_METERS = 750;
+
 /** Hours before first pitch when location-certified polling opens. */
 export const GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START = 2;
 
@@ -149,4 +152,101 @@ export async function getVenueUpcomingGame(
     },
     orderBy: { startsAt: "asc" }
   });
+}
+
+export function resolveVenueReviewRadiusMeters(reviewRadiusMeters: number) {
+  return Number.isFinite(reviewRadiusMeters) && reviewRadiusMeters > 0
+    ? Math.round(reviewRadiusMeters)
+    : DEFAULT_GAME_DAY_REVIEW_RADIUS_METERS;
+}
+
+const EARTH_RADIUS_METERS = 6_371_000;
+
+/** Great-circle distance in meters (WGS84). */
+export function distanceMetersBetween(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Math.round(EARTH_RADIUS_METERS * c);
+}
+
+export type GameDayReviewLocation = {
+  latitude: number;
+  longitude: number;
+};
+
+export function parseReviewLocationFromForm(
+  formData: FormData
+): GameDayReviewLocation | null {
+  const latitude = Number(formData.get("latitude"));
+  const longitude = Number(formData.get("longitude"));
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    return null;
+  }
+  if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+    return null;
+  }
+  return { latitude, longitude };
+}
+
+export const GAME_DAY_REVIEW_ERROR_MESSAGES = {
+  "no-active-game": "Reviews open during active home-game windows only.",
+  "missing-location":
+    "Location certification is required to submit a game-day review.",
+  "outside-radius": "You must be at the stadium to submit a certified review."
+} as const;
+
+export type GameDayReviewErrorCode = keyof typeof GAME_DAY_REVIEW_ERROR_MESSAGES;
+
+export function validateGameDayReviewSubmission(options: {
+  activeGame: Game | null;
+  venueLatitude: number;
+  venueLongitude: number;
+  reviewRadiusMeters: number;
+  location: GameDayReviewLocation | null;
+}):
+  | {
+      ok: true;
+      game: Game;
+      distanceFromVenueMeters: number;
+      allowedRadiusMeters: number;
+    }
+  | { ok: false; code: GameDayReviewErrorCode } {
+  if (!options.activeGame) {
+    return { ok: false, code: "no-active-game" };
+  }
+
+  if (!options.location) {
+    return { ok: false, code: "missing-location" };
+  }
+
+  const allowedRadiusMeters = resolveVenueReviewRadiusMeters(
+    options.reviewRadiusMeters
+  );
+  const distanceFromVenueMeters = distanceMetersBetween(
+    options.location.latitude,
+    options.location.longitude,
+    options.venueLatitude,
+    options.venueLongitude
+  );
+
+  if (distanceFromVenueMeters > allowedRadiusMeters) {
+    return { ok: false, code: "outside-radius" };
+  }
+
+  return {
+    ok: true,
+    game: options.activeGame,
+    distanceFromVenueMeters,
+    allowedRadiusMeters
+  };
 }

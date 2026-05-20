@@ -21,6 +21,7 @@ import { getDbBackedItemSlopStats, getSlopScoreTier, type ConsensusStat } from "
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
+import { getVenueActiveGame } from "@/lib/game-day";
 import { buildItemFanPhotoLayout } from "@/lib/fan-photo-layout";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 
@@ -487,6 +488,23 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     : [];
 
   const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
+  const dbVenue = await prisma.venue.findUnique({
+    where: { slug: venue.slug },
+    select: { id: true }
+  });
+  let activeGame: Awaited<ReturnType<typeof getVenueActiveGame>> = null;
+  if (dbVenue?.id) {
+    try {
+      activeGame = await getVenueActiveGame(dbVenue.id);
+    } catch (error) {
+      console.warn("Active game lookup failed on item page", error);
+    }
+  }
+  const reviewCtaLabel = hasTodaysReview
+    ? "Edit today’s review"
+    : activeGame
+      ? "Review this item — game-day certified"
+      : "Reviews open during home games";
   const itemPath = `/venues/${venue.slug}/${foodItem.slug}`;
   const itemPageWithReviewsAnchor = `${itemPath}#fan-photo-reviews`;
   const baseReportContext: Omit<ReportContentContext, "reviewId" | "photoUrl"> =
@@ -721,17 +739,23 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             href={reviewPath}
             className="brand-cta inline-flex w-full justify-center rounded-full px-5 py-2.5 text-sm font-black transition sm:w-auto sm:py-3"
           >
-            {hasTodaysReview
-              ? "Edit today’s review"
-              : unratedSeason
-                ? "First review"
-                : "Review"}
+            {reviewCtaLabel}
           </Link>
           {isSignedIn ? (
             <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-              One review per item per game day — edits replace today&apos;s scorecard.
+              {activeGame
+                ? "One review per item per game day — location certified at submit."
+                : "One review per item per game day — submit opens during active home-game windows."}
             </p>
-          ) : null}
+          ) : activeGame ? (
+            <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+              Sign in to leave a game-day certified review during this home game.
+            </p>
+          ) : (
+            <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+              Browse anytime — certified reviews open during home games.
+            </p>
+          )}
 
           <p className="text-xs text-[var(--slop-cream-dim)]">
             {venue.name} · {vendor ? vendor.name : "Vendor TBD"} · {foodItem.location}
