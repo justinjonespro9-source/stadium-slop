@@ -55,7 +55,7 @@ export function logAdminAccessCheck(
 export async function resolveAdminAccessForUserId(userId: string) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { role: true, email: true }
+    select: { id: true, role: true, email: true }
   });
 
   return {
