@@ -55,20 +55,31 @@ export async function updateGameSchedule(formData: FormData) {
     redirect("/admin/games?error=not-found");
   }
 
-  const startsAt = parseDatetimeLocalValue(String(formData.get("startsAt") ?? ""));
-  const pollingOpensAt = parseDatetimeLocalValue(
+  const rawStartsAt = parseDatetimeLocalValue(
+    String(formData.get("startsAt") ?? "")
+  );
+  const rawPollingOpensAt = parseDatetimeLocalValue(
     String(formData.get("pollingOpensAt") ?? "")
   );
-  const pollingClosesAt = parseDatetimeLocalValue(
+  const rawPollingClosesAt = parseDatetimeLocalValue(
     String(formData.get("pollingClosesAt") ?? "")
   );
   const awayTeamName = String(formData.get("awayTeamName") ?? "").trim();
   const statusRaw = String(formData.get("status") ?? "").trim();
   const recalculateWindow = formData.get("recalculateWindow") === "1";
 
-  if (!startsAt || !pollingOpensAt || !pollingClosesAt || !awayTeamName) {
+  if (
+    !rawStartsAt ||
+    !rawPollingOpensAt ||
+    !rawPollingClosesAt ||
+    !awayTeamName
+  ) {
     redirectGameDetail(gameId, { error: "invalid-fields" });
   }
+
+  const startsAt: Date = rawStartsAt;
+  const pollingOpensAt: Date = rawPollingOpensAt;
+  const pollingClosesAt: Date = rawPollingClosesAt;
 
   if (!GAME_STATUSES.has(statusRaw)) {
     redirectGameDetail(gameId, { error: "invalid-status" });
