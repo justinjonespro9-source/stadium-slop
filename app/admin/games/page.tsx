@@ -6,6 +6,7 @@ import {
   buildAdminGamesWhere,
   formatAdminGameDateTime,
   gameStatusLabel,
+  getVenueTimeZone,
   type AdminGamesListFilters
 } from "@/lib/admin/games";
 import { formatHomeTeamLabel } from "@/lib/game-day";
@@ -81,7 +82,7 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
         pollingClosesAt: true,
         status: true,
         externalId: true,
-        venue: { select: { name: true, slug: true } }
+        venue: { select: { name: true, slug: true, state: true, country: true } }
       }
     }),
     prisma.game.count({ where }),
@@ -113,8 +114,9 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
             Review imported MLB games and adjust first pitch, polling windows, and
-            status for delays or postponements. Public venue pages still only show
-            the active window or next home game.
+            status for delays or postponements. Times are shown in each
+            venue&apos;s local timezone. Public venue pages still only show the
+            active window or next home game.
           </p>
           <p className="mt-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
             {total} game{total === 1 ? "" : "s"}
@@ -232,6 +234,11 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
                 </tr>
               ) : (
                 games.map((game) => {
+                  const venueTimeZone = getVenueTimeZone({
+                    slug: game.venue.slug,
+                    state: game.venue.state,
+                    country: game.venue.country
+                  });
                   const isActive =
                     now >= game.pollingOpensAt &&
                     now <= game.pollingClosesAt &&
@@ -252,13 +259,13 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
                         <p className="text-xs text-zinc-500">{game.venue.slug}</p>
                       </td>
                       <td className="px-4 py-3 text-xs text-zinc-400">
-                        {formatAdminGameDateTime(game.startsAt)}
+                        {formatAdminGameDateTime(game.startsAt, venueTimeZone)}
                       </td>
                       <td className="px-4 py-3 text-xs text-zinc-500">
-                        {formatAdminGameDateTime(game.pollingOpensAt)}
+                        {formatAdminGameDateTime(game.pollingOpensAt, venueTimeZone)}
                       </td>
                       <td className="px-4 py-3 text-xs text-zinc-500">
-                        {formatAdminGameDateTime(game.pollingClosesAt)}
+                        {formatAdminGameDateTime(game.pollingClosesAt, venueTimeZone)}
                       </td>
                       <td className="px-4 py-3">
                         <span

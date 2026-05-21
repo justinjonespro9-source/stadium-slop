@@ -7,7 +7,8 @@ import { redirect } from "next/navigation";
 import {
   applyRecalculatedPollingWindow,
   extendPollingClosesAt,
-  parseDatetimeLocalValue
+  getVenueTimeZone,
+  parseDatetimeLocalInTimeZone
 } from "@/lib/admin/games";
 import { requireAdminAccess } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/prisma";
@@ -26,7 +27,7 @@ async function loadGameForAdmin(gameId: string) {
     where: { id: gameId },
     select: {
       id: true,
-      venue: { select: { slug: true } }
+      venue: { select: { slug: true, state: true, country: true } }
     }
   });
 }
@@ -55,14 +56,19 @@ export async function updateGameSchedule(formData: FormData) {
     redirect("/admin/games?error=not-found");
   }
 
-  const rawStartsAt = parseDatetimeLocalValue(
-    String(formData.get("startsAt") ?? "")
+  const timeZone = getVenueTimeZone(game.venue);
+
+  const rawStartsAt = parseDatetimeLocalInTimeZone(
+    String(formData.get("startsAt") ?? ""),
+    timeZone
   );
-  const rawPollingOpensAt = parseDatetimeLocalValue(
-    String(formData.get("pollingOpensAt") ?? "")
+  const rawPollingOpensAt = parseDatetimeLocalInTimeZone(
+    String(formData.get("pollingOpensAt") ?? ""),
+    timeZone
   );
-  const rawPollingClosesAt = parseDatetimeLocalValue(
-    String(formData.get("pollingClosesAt") ?? "")
+  const rawPollingClosesAt = parseDatetimeLocalInTimeZone(
+    String(formData.get("pollingClosesAt") ?? ""),
+    timeZone
   );
   const awayTeamName = String(formData.get("awayTeamName") ?? "").trim();
   const statusRaw = String(formData.get("status") ?? "").trim();
@@ -126,7 +132,7 @@ export async function extendGameReviewWindow(formData: FormData) {
     redirectGameDetail(gameId, { error: "invalid-extend" });
     return;
   }
-  
+
   const extendMode: "1h" | "2h" | "eod" = extend;
 
   const existing = await prisma.game.findUnique({
@@ -135,7 +141,7 @@ export async function extendGameReviewWindow(formData: FormData) {
       id: true,
       pollingClosesAt: true,
       startsAt: true,
-      venue: { select: { slug: true } }
+      venue: { select: { slug: true, state: true, country: true } }
     }
   });
 
@@ -148,10 +154,12 @@ export async function extendGameReviewWindow(formData: FormData) {
     redirectGameDetail(gameId, { error: "invalid-window" });
   }
 
+  const timeZone = getVenueTimeZone(existing.venue);
   const nextClose = extendPollingClosesAt(
     currentClose,
     extendMode,
-    existing.startsAt
+    existing.startsAt,
+    timeZone
   );
 
   if (nextClose.getTime() === currentClose.getTime()) {

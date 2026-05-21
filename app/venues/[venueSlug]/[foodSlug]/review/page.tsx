@@ -7,8 +7,9 @@ import { notFound, redirect } from "next/navigation";
 import { getPublicFoodItemBySlug, getPublicVenueBySlug, slugFilterInsensitive } from "@/lib/public-data";
 import {
   buildGameDayKey,
-  formatGameDayDateTime,
+  formatGameDateTimeForVenue,
   formatGameDayPollingWindowHoursLabel,
+  getVenueTimeZone,
   GAME_DAY_REVIEW_ERROR_MESSAGES,
   getVenueActiveGame,
   getVenueUpcomingGame,
@@ -596,6 +597,11 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     Boolean(dbVenue?.latitude && dbVenue?.longitude) ||
     Boolean(venue.latitude && venue.longitude);
   const pollingWindowHoursLabel = formatGameDayPollingWindowHoursLabel();
+  const venueTimeZone = getVenueTimeZone({
+    slug: venue.slug,
+    state: venue.state,
+    country: venue.country
+  });
 
   return (
     <main className="brand-page min-h-screen">
@@ -659,7 +665,11 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           </p>
           {!pollingOpen && upcomingGame ? (
             <p className="mt-1 text-[0.65rem] leading-relaxed text-zinc-600">
-              Next home game: {formatGameDayDateTime(upcomingGame.startsAt)}.
+              Next home game:{" "}
+              {formatGameDateTimeForVenue(upcomingGame.startsAt, venueTimeZone, {
+                includeZone: true
+              })}
+              .
             </p>
           ) : null}
           {!hasVenueCoords ? (

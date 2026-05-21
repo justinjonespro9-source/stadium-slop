@@ -1,16 +1,17 @@
 import type { Game } from "@prisma/client";
 
 import {
-  formatGameDayDateTime,
+  formatGameDateTimeForVenue,
   formatGameDayPollingWindowHoursLabel,
-  formatGameDayPollingWindowRange,
-  formatGameDayTime,
+  formatGameDayPollingWindowRangeForVenue,
+  formatGameTimeForVenue,
   formatHomeTeamLabel,
   isGameDayActive
 } from "@/lib/game-day";
 
 type GameDayModeCardProps = {
   homeTeamLabel: string;
+  venueTimeZone: string;
   activeGame: Game | null;
   upcomingGame: Game | null;
   now?: Date;
@@ -18,17 +19,21 @@ type GameDayModeCardProps = {
 
 export function GameDayModeCard({
   homeTeamLabel,
+  venueTimeZone,
   activeGame,
   upcomingGame,
   now = new Date()
 }: GameDayModeCardProps) {
   if (activeGame && isGameDayActive(activeGame, now)) {
     const matchup = `${activeGame.awayTeamName} at ${homeTeamLabel}`;
-    const windowRange = formatGameDayPollingWindowRange(
+    const windowRange = formatGameDayPollingWindowRangeForVenue(
       activeGame.pollingOpensAt,
-      activeGame.pollingClosesAt
+      activeGame.pollingClosesAt,
+      venueTimeZone
     );
-    const startLabel = formatGameDayTime(activeGame.startsAt);
+    const startLabel = formatGameTimeForVenue(activeGame.startsAt, venueTimeZone, {
+      includeZone: true
+    });
 
     return (
       <article
@@ -73,7 +78,10 @@ export function GameDayModeCard({
         Next home game
       </p>
       <p className="mt-0.5 text-sm font-bold text-[var(--slop-cream)]">
-        {matchup} — {formatGameDayDateTime(upcomingGame.startsAt)}
+        {matchup} —{" "}
+        {formatGameDateTimeForVenue(upcomingGame.startsAt, venueTimeZone, {
+          includeZone: true
+        })}
       </p>
     </article>
   );

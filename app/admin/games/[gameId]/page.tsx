@@ -9,12 +9,14 @@ import {
 import { requireAdminAccess } from "@/lib/auth/require-admin";
 import {
   formatAdminGameDateTime,
+  formatVenueTimeZoneAbbrev,
   gameStatusLabel,
-  toDatetimeLocalValue
+  getVenueTimeZone,
+  toDatetimeLocalValueForTimeZone
 } from "@/lib/admin/games";
 import {
   formatGameDayPollingWindowHoursLabel,
-  formatGameDayPollingWindowRange,
+  formatGameDayPollingWindowRangeForVenue,
   formatHomeTeamLabel
 } from "@/lib/game-day";
 import { prisma } from "@/lib/prisma";
@@ -71,7 +73,9 @@ export default async function AdminGameDetailPage({
       externalId: true,
       createdAt: true,
       updatedAt: true,
-      venue: { select: { id: true, name: true, slug: true } }
+      venue: {
+        select: { id: true, name: true, slug: true, state: true, country: true }
+      }
     }
   });
 
@@ -80,6 +84,8 @@ export default async function AdminGameDetailPage({
   }
 
   const homeLabel = formatHomeTeamLabel(game.homeTeamSlug);
+  const venueTimeZone = getVenueTimeZone(game.venue);
+  const venueZoneLabel = formatVenueTimeZoneAbbrev(venueTimeZone, game.startsAt);
   const now = new Date();
   const pollingActive =
     now >= game.pollingOpensAt &&
@@ -113,6 +119,9 @@ export default async function AdminGameDetailPage({
               Public venue page
             </Link>
           </p>
+          <p className="mt-2 text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
+            Times in venue local · {venueTimeZone} ({venueZoneLabel})
+          </p>
           <dl className="mt-4 grid gap-2 text-sm text-zinc-500 sm:grid-cols-2">
             <div>
               <dt className="text-xs font-bold uppercase tracking-wider">External ID</dt>
@@ -128,7 +137,9 @@ export default async function AdminGameDetailPage({
             </div>
             <div>
               <dt className="text-xs font-bold uppercase tracking-wider">Last updated</dt>
-              <dd className="mt-0.5">{formatAdminGameDateTime(game.updatedAt)}</dd>
+              <dd className="mt-0.5">
+                {formatAdminGameDateTime(game.updatedAt, venueTimeZone)}
+              </dd>
             </div>
             {game.estimatedEndsAt ? (
               <div>
@@ -136,7 +147,7 @@ export default async function AdminGameDetailPage({
                   Est. end
                 </dt>
                 <dd className="mt-0.5">
-                  {formatAdminGameDateTime(game.estimatedEndsAt)}
+                  {formatAdminGameDateTime(game.estimatedEndsAt, venueTimeZone)}
                 </dd>
               </div>
             ) : null}
@@ -161,10 +172,11 @@ export default async function AdminGameDetailPage({
           <h2 className="text-lg font-black">Edit schedule</h2>
           <p className="text-sm text-zinc-500">
             Default window rule: {formatGameDayPollingWindowHoursLabel()}. Current
-            range:{" "}
-            {formatGameDayPollingWindowRange(
+            range (venue local):{" "}
+            {formatGameDayPollingWindowRangeForVenue(
               game.pollingOpensAt,
-              game.pollingClosesAt
+              game.pollingClosesAt,
+              venueTimeZone
             )}
             .
           </p>
@@ -201,7 +213,10 @@ export default async function AdminGameDetailPage({
               name="startsAt"
               type="datetime-local"
               required
-              defaultValue={toDatetimeLocalValue(game.startsAt)}
+              defaultValue={toDatetimeLocalValueForTimeZone(
+                game.startsAt,
+                venueTimeZone
+              )}
               className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
             />
           </label>
@@ -212,7 +227,10 @@ export default async function AdminGameDetailPage({
               name="pollingOpensAt"
               type="datetime-local"
               required
-              defaultValue={toDatetimeLocalValue(game.pollingOpensAt)}
+              defaultValue={toDatetimeLocalValueForTimeZone(
+                game.pollingOpensAt,
+                venueTimeZone
+              )}
               className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
             />
           </label>
@@ -223,7 +241,10 @@ export default async function AdminGameDetailPage({
               name="pollingClosesAt"
               type="datetime-local"
               required
-              defaultValue={toDatetimeLocalValue(game.pollingClosesAt)}
+              defaultValue={toDatetimeLocalValueForTimeZone(
+                game.pollingClosesAt,
+                venueTimeZone
+              )}
               className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
             />
           </label>
@@ -250,7 +271,8 @@ export default async function AdminGameDetailPage({
           <h2 className="text-lg font-black">Extend review window</h2>
           <p className="mt-2 text-sm text-zinc-500">
             Pushes polling close later for rain delays or extra innings. Closes at{" "}
-            {formatAdminGameDateTime(game.pollingClosesAt)} today.
+            {formatAdminGameDateTime(game.pollingClosesAt, venueTimeZone)} (venue
+            local).
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {(

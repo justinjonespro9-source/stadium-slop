@@ -43,6 +43,7 @@ import {
 import { GameDayModeCard } from "@/components/game-day-mode-card";
 import {
   getVenueActiveGame,
+  getVenueTimeZone,
   getVenueUpcomingGame
 } from "@/lib/game-day";
 
@@ -364,6 +365,11 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     }
   }
   const homeTeamLabel = dbVenue?.teams[0] ?? venue.teams[0] ?? "";
+  const venueTimeZone = getVenueTimeZone({
+    slug: venue.slug,
+    state: venue.state,
+    country: venue.country
+  });
 
   const venueFoodItems = await getPublicFoodItemsByVenueSlug(venue.slug);
   const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
@@ -489,6 +495,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           <div className="pt-3 sm:pt-4">
             <GameDayModeCard
               homeTeamLabel={homeTeamLabel}
+              venueTimeZone={venueTimeZone}
               activeGame={activeGame}
               upcomingGame={upcomingGame}
             />

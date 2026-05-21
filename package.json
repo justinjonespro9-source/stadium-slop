@@ -18,6 +18,7 @@
     "db:seed": "prisma db seed",
     "seed:game-schedule": "tsx scripts/seed-game-schedule.ts",
     "sync:mlb-schedule": "tsx scripts/sync-mlb-schedule.ts",
+    "verify:venue-timezones": "tsx scripts/verify-venue-timezones.ts",
     "make-admin": "tsx scripts/make-admin.ts",
     "import:mlb": "tsx scripts/apply-mlb-import.ts",
     "import:league": "tsx scripts/apply-league-import.ts",
