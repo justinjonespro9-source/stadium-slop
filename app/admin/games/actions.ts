@@ -124,7 +124,10 @@ export async function extendGameReviewWindow(formData: FormData) {
 
   if (extend !== "1h" && extend !== "2h" && extend !== "eod") {
     redirectGameDetail(gameId, { error: "invalid-extend" });
+    return;
   }
+  
+  const extendMode: "1h" | "2h" | "eod" = extend;
 
   const existing = await prisma.game.findUnique({
     where: { id: gameId },
@@ -147,7 +150,7 @@ export async function extendGameReviewWindow(formData: FormData) {
 
   const nextClose = extendPollingClosesAt(
     currentClose,
-    extend,
+    extendMode,
     existing.startsAt
   );
 
