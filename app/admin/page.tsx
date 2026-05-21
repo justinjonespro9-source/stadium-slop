@@ -315,7 +315,8 @@ async function getAdminDashboardStats() {
       pendingPrices,
       pendingSuggestions,
       openFlags,
-      upcomingMlbGames
+      upcomingMlbGames,
+      upcomingGames
     ] = await Promise.all([
       prisma.venue.count(),
       prisma.vendor.count(),
@@ -330,6 +331,11 @@ async function getAdminDashboardStats() {
           league: "MLB",
           startsAt: { gte: now, lte: upcomingWindowEnd }
         }
+      }),
+      prisma.game.count({
+        where: {
+          startsAt: { gte: now, lte: upcomingWindowEnd }
+        }
       })
     ]);
 
@@ -342,7 +348,8 @@ async function getAdminDashboardStats() {
       pendingPrices,
       pendingSuggestions,
       openFlags,
-      upcomingMlbGames
+      upcomingMlbGames,
+      upcomingGames
     };
   } catch (error) {
     console.warn("Admin dashboard stats unavailable", error);
@@ -355,7 +362,8 @@ async function getAdminDashboardStats() {
       pendingPrices: 0,
       pendingSuggestions: 0,
       openFlags: 0,
-      upcomingMlbGames: 0
+      upcomingMlbGames: 0,
+      upcomingGames: 0
     };
   }
 }
@@ -490,11 +498,19 @@ export default async function AdminPage() {
       action: "Manage users"
     },
     {
-      title: "MLB schedule",
-      count: stats.upcomingMlbGames,
+      title: "Game schedules",
+      count: stats.upcomingGames,
       detail:
-        "Home games in the next 14 days (Stats API sync). Run npm run sync:mlb-schedule in production.",
-      action: "CLI sync"
+        "Review and edit imported home games, polling windows, and status. MLB sync: npm run sync:mlb-schedule.",
+      href: "/admin/games",
+      action: "Manage games"
+    },
+    {
+      title: "MLB import",
+      count: stats.upcomingMlbGames,
+      detail: "MLB home games in the next 14 days after Stats API sync.",
+      href: "/admin/games?league=MLB&range=upcoming",
+      action: "MLB games"
     }
   ];
 
