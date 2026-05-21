@@ -27,7 +27,23 @@ const SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
   "delta-center": ["Utah Hockey Club"],
   "capital-one-arena": ["Washington Capitals"],
   "gainbridge-fieldhouse": ["Indiana Fever"],
-  "grand-casino-arena": ["Minnesota Frost"]
+  "wells-fargo-center": ["Philadelphia Flyers"],
+  "grand-casino-arena": ["Minnesota Frost"],
+  "mercedes-benz-stadium": ["Atlanta United FC"],
+  "bank-of-america-stadium": ["Charlotte FC"],
+  "soldier-field": ["Chicago Fire FC"],
+  "gillette-stadium": ["New England Revolution", "Boston Legacy FC"],
+  "lumen-field": ["Seattle Sounders FC", "Seattle Reign FC"],
+  "yankee-stadium": ["New York City FC"],
+  "citi-field": ["New York City FC"],
+  "audi-field": ["D.C. United", "Washington Spirit"],
+  "shell-energy-stadium": ["Houston Dynamo FC", "Houston Dash"],
+  "bmo-stadium": ["LAFC", "Angel City FC"],
+  "providence-park": ["Portland Timbers", "Portland Thorns FC"],
+  "paypal-park": ["San Jose Earthquakes", "Bay FC"],
+  "snapdragon-stadium": ["San Diego FC", "San Diego Wave FC"],
+  "inter-co-stadium": ["Orlando City SC", "Orlando Pride"],
+  "sports-illustrated-stadium": ["New York Red Bulls", "NJ/NY Gotham FC"]
 };
 
 /** Preferred display order for known shared venues (primary tenant first). */
@@ -45,7 +61,15 @@ const SHARED_VENUE_TEAM_ORDER: Record<string, readonly string[]> = {
   "delta-center": ["Utah Jazz", "Utah Hockey Club"],
   "capital-one-arena": ["Washington Wizards", "Washington Capitals"],
   "gainbridge-fieldhouse": ["Indiana Pacers", "Indiana Fever"],
-  "grand-casino-arena": ["Minnesota Wild", "Minnesota Frost"]
+  "wells-fargo-center": ["Philadelphia 76ers", "Philadelphia Flyers"],
+  "grand-casino-arena": ["Minnesota Wild", "Minnesota Frost"],
+  "mercedes-benz-stadium": ["Atlanta Falcons", "Atlanta United FC"],
+  "bank-of-america-stadium": ["Carolina Panthers", "Charlotte FC"],
+  "soldier-field": ["Chicago Bears", "Chicago Fire FC"],
+  "gillette-stadium": ["New England Patriots", "New England Revolution", "Boston Legacy FC"],
+  "lumen-field": ["Seattle Seahawks", "Seattle Sounders FC", "Seattle Reign FC"],
+  "yankee-stadium": ["New York Yankees", "New York City FC"],
+  "citi-field": ["New York Mets", "New York City FC"]
 };
 
 function dedupeTeams(teams: string[]): string[] {
