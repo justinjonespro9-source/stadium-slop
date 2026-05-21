@@ -316,6 +316,8 @@ async function getAdminDashboardStats() {
       pendingSuggestions,
       openFlags,
       upcomingMlbGames,
+      upcomingMlsGames,
+      upcomingNwslGames,
       upcomingGames
     ] = await Promise.all([
       prisma.venue.count(),
@@ -329,6 +331,18 @@ async function getAdminDashboardStats() {
       prisma.game.count({
         where: {
           league: "MLB",
+          startsAt: { gte: now, lte: upcomingWindowEnd }
+        }
+      }),
+      prisma.game.count({
+        where: {
+          league: "MLS",
+          startsAt: { gte: now, lte: upcomingWindowEnd }
+        }
+      }),
+      prisma.game.count({
+        where: {
+          league: "NWSL",
           startsAt: { gte: now, lte: upcomingWindowEnd }
         }
       }),
@@ -349,6 +363,8 @@ async function getAdminDashboardStats() {
       pendingSuggestions,
       openFlags,
       upcomingMlbGames,
+      upcomingMlsGames,
+      upcomingNwslGames,
       upcomingGames
     };
   } catch (error) {
@@ -363,6 +379,8 @@ async function getAdminDashboardStats() {
       pendingSuggestions: 0,
       openFlags: 0,
       upcomingMlbGames: 0,
+      upcomingMlsGames: 0,
+      upcomingNwslGames: 0,
       upcomingGames: 0
     };
   }
@@ -501,7 +519,7 @@ export default async function AdminPage() {
       title: "Game schedules",
       count: stats.upcomingGames,
       detail:
-        "Review and edit imported home games, polling windows, and status. MLB sync: npm run sync:mlb-schedule.",
+        "Review and edit imported home games, polling windows, and status. Sync: npm run sync:mlb-schedule, sync:mls-schedule, sync:nwsl-schedule.",
       href: "/admin/games",
       action: "Manage games"
     },
@@ -511,6 +529,20 @@ export default async function AdminPage() {
       detail: "MLB home games in the next 14 days after Stats API sync.",
       href: "/admin/games?league=MLB&range=upcoming",
       action: "MLB games"
+    },
+    {
+      title: "MLS import",
+      count: stats.upcomingMlsGames,
+      detail: "MLS home games in the next 14 days after Stats API sync.",
+      href: "/admin/games?league=MLS&range=upcoming",
+      action: "MLS games"
+    },
+    {
+      title: "NWSL import",
+      count: stats.upcomingNwslGames,
+      detail: "NWSL home games in the next 14 days after fixture feed sync.",
+      href: "/admin/games?league=NWSL&range=upcoming",
+      action: "NWSL games"
     }
   ];
 

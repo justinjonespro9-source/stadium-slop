@@ -18,6 +18,7 @@ import {
 } from "./import-slugs";
 import type { MlsNwslDocxParseResult, MlsNwslDocxParseRow } from "./mls-nwsl-docx-parser";
 import { MLS_NWSL_VENUE_SLUG_ALIASES } from "./mls-nwsl-venue-registry";
+import { getMlsNwslVenueGeo } from "./mls-nwsl-venue-geo";
 import {
   MLS_NWSL_EXISTING_VENUE_SLUGS,
   MLS_NWSL_SHARED_VENUE_TEAMS,
@@ -26,7 +27,6 @@ import {
 import { resolveVenueTeams } from "./venue-teams";
 
 const DEFAULT_SEASON = "2026";
-const DEFAULT_REVIEW_RADIUS = 800;
 
 export type MlsNwslImportStats = {
   venuesCreated: number;
@@ -129,6 +129,7 @@ async function ensureVenueFromBlock(
   stats: MlsNwslImportStats
 ) {
   const meta = venueMetaForSlug(slug, slug);
+  const geo = getMlsNwslVenueGeo(slug);
   const existing = await prisma.venue.findUnique({ where: { slug } });
   const allTeams = mergeUniqueBySlug(
     mergeUniqueBySlug(teamNames, sharedTeamsForSlug(slug)),
@@ -138,13 +139,10 @@ async function ensureVenueFromBlock(
   const attached = countNewTeams(existing?.teams ?? [], resolvedTeams);
   stats.teamsAttached += attached;
 
-  const country = meta.country ?? "USA";
-  const lat =
-    meta.latitude ??
-    (existing && existing.latitude !== 0 ? existing.latitude : 0);
-  const lng =
-    meta.longitude ??
-    (existing && existing.longitude !== 0 ? existing.longitude : 0);
+  const country = geo?.country ?? meta.country ?? "USA";
+  const lat = geo?.latitude ?? meta.latitude ?? 0;
+  const lng = geo?.longitude ?? meta.longitude ?? 0;
+  const reviewRadiusMeters = geo?.reviewRadiusMeters ?? meta.reviewRadiusMeters ?? 750;
 
   if (!existing) {
     stats.venuesCreated += 1;
@@ -152,10 +150,10 @@ async function ensureVenueFromBlock(
       data: {
         slug,
         name: meta.name,
-        city: meta.city,
-        state: meta.state,
+        city: geo?.city ?? meta.city,
+        state: geo?.state ?? meta.state,
         country,
-        region: country === "Canada" ? "North America" : "North America",
+        region: "North America",
         leagues: mergeUniqueStrings([], leagues),
         teams: resolvedTeams,
         sports: ["Soccer"],
@@ -163,7 +161,7 @@ async function ensureVenueFromBlock(
         recurringEvents: [],
         latitude: lat,
         longitude: lng,
-        reviewRadiusMeters: DEFAULT_REVIEW_RADIUS,
+        reviewRadiusMeters,
         venueType: VenueType.STADIUM,
         status: EntityStatus.ACTIVE
       }
@@ -189,8 +187,19 @@ async function ensureVenueFromBlock(
       teams: resolvedTeams,
       sports: mergedSports,
       primarySport: keepPrimary ? existing.primarySport : existing.primarySport ?? "Soccer",
-      ...(lat !== 0 && existing.latitude === 0 ? { latitude: lat } : {}),
-      ...(lng !== 0 && existing.longitude === 0 ? { longitude: lng } : {}),
+      ...(geo
+        ? {
+            city: geo.city,
+            state: geo.state,
+            country: geo.country,
+            latitude: geo.latitude,
+            longitude: geo.longitude,
+            reviewRadiusMeters: geo.reviewRadiusMeters
+          }
+        : {
+            ...(lat !== 0 && existing.latitude === 0 ? { latitude: lat } : {}),
+            ...(lng !== 0 && existing.longitude === 0 ? { longitude: lng } : {})
+          }),
       status: EntityStatus.ACTIVE
     }
   });

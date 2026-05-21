@@ -1,4 +1,5 @@
 import { getMlbBallparkSeedRows } from "@/lib/mlb-ballpark-seed-data";
+import { buildMlsNwslVenueTimeZoneMap } from "@/lib/mls-nwsl-venue-geo";
 
 /** US state / territory → IANA timezone for MLB ballparks. */
 const US_STATE_IANA: Record<string, string> = {
@@ -73,6 +74,7 @@ const VENUE_SLUG_TIMEZONE_OVERRIDES: Record<string, string> = {
 };
 
 const MLB_SLUG_TIMEZONE: Record<string, string> = {};
+const MLS_NWSL_SLUG_TIMEZONE = buildMlsNwslVenueTimeZoneMap();
 
 for (const row of getMlbBallparkSeedRows()) {
   const slug = row.slug;
@@ -102,7 +104,9 @@ const DEFAULT_VENUE_TIMEZONE = "America/New_York";
 /** Resolve IANA timezone for a venue (slug map, then state/country). */
 export function getVenueTimeZone(venue: VenueTimeZoneInput): string {
   const fromSlug =
-    MLB_SLUG_TIMEZONE[venue.slug] ?? VENUE_SLUG_TIMEZONE_OVERRIDES[venue.slug];
+    MLB_SLUG_TIMEZONE[venue.slug] ??
+    MLS_NWSL_SLUG_TIMEZONE[venue.slug] ??
+    VENUE_SLUG_TIMEZONE_OVERRIDES[venue.slug];
   if (fromSlug) return fromSlug;
 
   const state = venue.state?.trim().toUpperCase();

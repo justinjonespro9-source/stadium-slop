@@ -113,10 +113,10 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
             Home games
           </h1>
           <p className="mt-4 max-w-3xl text-sm leading-6 text-zinc-400 sm:text-base">
-            Review imported MLB games and adjust first pitch, polling windows, and
-            status for delays or postponements. Times are shown in each
-            venue&apos;s local timezone. Public venue pages still only show the
-            active window or next home game.
+            Review imported MLB, MLS, and NWSL home games and adjust kickoff,
+            polling windows, and status for delays or postponements. Times are
+            shown in each venue&apos;s local timezone. Public venue pages still
+            only show the active window or next home game.
           </p>
           <p className="mt-2 text-xs font-bold uppercase tracking-[0.15em] text-zinc-500">
             {total} game{total === 1 ? "" : "s"}
@@ -205,8 +205,11 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
         <p className="mt-4 text-xs text-zinc-600">
           Sync MLB: <code className="text-zinc-400">npm run sync:mlb-schedule</code>
           {" · "}
+          MLS: <code className="text-zinc-400">npm run sync:mls-schedule</code>
+          {" · "}
+          NWSL: <code className="text-zinc-400">npm run sync:nwsl-schedule</code>
+          {" · "}
           Demo seed: <code className="text-zinc-400">npm run seed:game-schedule</code>
-          {/* TODO: MLS schedule import and filters when league data is wired. */}
         </p>
 
         <div className="mt-6 overflow-x-auto rounded-[2rem] border border-zinc-800">
