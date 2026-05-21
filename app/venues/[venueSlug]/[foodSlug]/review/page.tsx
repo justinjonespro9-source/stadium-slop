@@ -29,16 +29,21 @@ import {
 } from "@/lib/cloudinary";
 import { reviewPagePhotoErrorMessage } from "@/lib/review-photo-errors";
 import { prisma } from "@/lib/prisma";
-import { PhotoCropUpload } from "@/components/photo-crop-upload";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { isGoogleSignInConfigured } from "@/lib/auth/env";
 import { ReviewFormLocation } from "@/components/review-form-location";
+import { ReviewScorecardFormClient } from "@/components/review-scorecard-form-client";
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
-
-const slopScoreOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+import {
+  LOW_SCORE_PHOTO_MESSAGE,
+  SLOP_SCORE_DEFAULT,
+  clampSlopScore,
+  parseSlopScoreInput,
+  requiresLowScorePhoto
+} from "@/lib/review-scorecard";
 const replayValueOptions = [
   { label: "Game Day Starter", value: ReplayValue.GAME_DAY_STARTER },
   { label: "Solid Rotation Pick", value: ReplayValue.SOLID_ROTATION_PICK },
@@ -132,32 +137,6 @@ function SignalOption({
   );
 }
 
-function ScoreButton({
-  score,
-  defaultSelected,
-  radioRequired
-}: {
-  score: number;
-  defaultSelected?: boolean;
-  radioRequired?: boolean;
-}) {
-  return (
-    <label className="cursor-pointer touch-manipulation">
-      <input
-        className="peer sr-only"
-        type="radio"
-        name="slopScore"
-        value={score}
-        required={radioRequired}
-        defaultChecked={defaultSelected}
-      />
-      <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-800 bg-black text-base font-black text-zinc-300 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)] sm:h-12 sm:w-12 sm:rounded-2xl sm:text-lg">
-        {score}
-      </span>
-    </label>
-  );
-}
-
 function NapkinButton({
   value,
   label,
@@ -239,7 +218,7 @@ async function submitReview(formData: FormData) {
   const napkinEligible = isNapkinEligibleFromPrisma(foodItemRow);
   const canonicalItemPath = `/venues/${venue.slug}/${foodItemRow.slug}`;
 
-  const slopScore = Number(formData.get("slopScore"));
+  const slopScore = parseSlopScoreInput(formData.get("slopScore"));
   const napkinRaw = formData.get("napkinRating");
   let napkinRating: number;
 
@@ -253,7 +232,7 @@ async function submitReview(formData: FormData) {
   const priceCheck = formData.get("priceCheck");
   const noteValue = String(formData.get("note") ?? "").trim();
 
-  if (!Number.isFinite(slopScore) || slopScore < 1 || slopScore > 10) {
+  if (slopScore == null) {
     redirect(`${canonicalItemPath}/review?error=missing-score`);
   }
 
@@ -316,6 +295,31 @@ async function submitReview(formData: FormData) {
 
   if (!gameDayCheck.ok) {
     redirect(`${canonicalItemPath}/review?error=${gameDayCheck.code}`);
+  }
+
+  if (requiresLowScorePhoto(slopScore)) {
+    const hasNewPhoto = photoFieldPre != null;
+    if (!hasNewPhoto) {
+      const existingWithPhoto = await prisma.review.findUnique({
+        where: {
+          userId_foodItemId_gameDayKey: {
+            userId: user.id,
+            foodItemId: foodItemRow.id,
+            gameDayKey
+          }
+        },
+        select: {
+          photos: {
+            where: { status: "ACTIVE" },
+            take: 1,
+            select: { id: true }
+          }
+        }
+      });
+      if (!existingWithPhoto || existingWithPhoto.photos.length === 0) {
+        redirect(`${canonicalItemPath}/review?error=low-score-photo`);
+      }
+    }
   }
 
   const locationVerifiedAt = new Date();
@@ -469,8 +473,10 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const reviewFormErrorMessage = gameDayErrorCode
     ? GAME_DAY_REVIEW_ERROR_MESSAGES[gameDayErrorCode]
     : urlError === "missing-score"
-      ? "Slop Score (and Napkin Rating for food) are required."
-      : urlError === "missing-replay"
+      ? "Set a Slop Score from 1.0 to 10.0 (and Napkin Rating for food)."
+      : urlError === "low-score-photo"
+        ? LOW_SCORE_PHOTO_MESSAGE
+        : urlError === "missing-replay"
         ? "Pick a Replay Value — would you order this again?"
         : urlError === "missing-price"
           ? "Pick a Price Check — how was the value?"
@@ -482,7 +488,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     ? "Game-day review not accepted"
     : urlError === "missing-score" ||
         urlError === "missing-replay" ||
-        urlError === "missing-price"
+        urlError === "missing-price" ||
+        urlError === "low-score-photo"
       ? "Finish required fields"
       : "Photo not accepted";
 
@@ -531,8 +538,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
           <div className="mt-5 rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-4">
             <p className="text-sm leading-relaxed text-zinc-400">
-              Sign in with Google to leave a review, optional fan photo, and game-day
-              signals. No comment threads.
+              Sign in with Google to submit a Slop Scorecard — score, signals, and
+              optional fan photo. Browsing stays public; scorecards need your account.
             </p>
             <AuthConfigAlert className="mt-3" />
             <div className="mt-4">
@@ -557,9 +564,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     : null;
 
   const draftSlop =
-    draft != null
-      ? Math.min(10, Math.max(1, Math.round(Number(draft.slopScore))))
-      : undefined;
+    draft != null ? clampSlopScore(Number(draft.slopScore)) : SLOP_SCORE_DEFAULT;
   const draftNapkin = draft?.napkinRating;
   const draftReplay = draft?.replayValue ?? undefined;
   const draftPrice = draft?.priceCheck ?? undefined;
@@ -690,39 +695,23 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           <input type="hidden" name="foodSlug" value={foodItem.slug} />
 
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-zinc-500">
-            {napkinEligible ? "Food scorecard" : "Drink scorecard"}
+            Slop Scorecard
           </p>
           <p className="mt-1 text-xs leading-relaxed text-zinc-500">
             {napkinEligible
-              ? "Slop, napkins, replay, and price are required. Photo and note are optional."
-              : "Slop, replay, and price are required — no napkin row for drinks. Photo and note optional."}
+              ? "Slop score, napkins, replay, and price are required. Photo required under 5.0."
+              : "Slop score, replay, and price are required — no napkin row for drinks. Photo required under 5.0."}
           </p>
 
           <div className="mt-4 space-y-5">
-            <section aria-labelledby="slop-label">
-              <div className="flex items-baseline justify-between gap-2">
-                <h2 id="slop-label" className="text-sm font-black text-white">
-                  Slop Score <span className="text-[var(--slop-orange)]">*</span>
-                </h2>
-                <span className="text-[0.65rem] font-bold text-zinc-500">
-                  1–10
-                </span>
-              </div>
-              <p className="mt-0.5 text-xs text-zinc-500">
-                Fan score for what you got, not a restaurant write-up.
-              </p>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {slopScoreOptions.map((score) => (
-                  <ScoreButton
-                    key={score}
-                    score={score}
-                    defaultSelected={draftSlop === score}
-                    radioRequired={score === 1}
-                  />
-                ))}
-              </div>
-            </section>
-
+            <ReviewScorecardFormClient
+              formId="review-form"
+              defaultSlopScore={draftSlop}
+              cloudinaryReady={cloudinaryReady}
+              defaultCaption={draftCaption}
+              existingPhotoUrl={existingPhoto?.url ?? null}
+              existingPhotoAlt={existingPhoto?.alt ?? `${foodItem.name} fan photo`}
+            >
             {napkinEligible ? (
               <section aria-labelledby="napkin-label">
                 <h2 id="napkin-label" className="text-sm font-black text-white">
@@ -790,31 +779,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                 </div>
               </div>
             </section>
-
-            <section className="rounded-xl border border-zinc-800 bg-black/80 p-3 sm:p-4">
-              <h2 className="text-sm font-black text-white">
-                Fan photo{" "}
-                <span className="font-semibold text-zinc-500">(optional)</span>
-              </h2>
-              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
-                Snap or upload only if you want — we use it for Fresh signals and
-                your Slop Scorecard. No comments or threads.
-              </p>
-              {cloudinaryReady ? (
-                <PhotoCropUpload
-                  formId="review-form"
-                  inputName="reviewPhoto"
-                  captionName="photoCaption"
-                  defaultCaption={draftCaption}
-                  existingPhotoUrl={existingPhoto?.url ?? null}
-                  existingPhotoAlt={existingPhoto?.alt ?? `${foodItem.name} fan photo`}
-                />
-              ) : (
-                <p className="mt-3 rounded-lg border border-dashed border-zinc-700 px-3 py-2 text-xs text-zinc-500">
-                  Cloudinary not configured — save without a photo.
-                </p>
-              )}
-            </section>
+            </ReviewScorecardFormClient>
 
             <section>
               <h2 className="text-sm font-black text-white">
@@ -837,8 +802,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           <div className="mt-5 border-t border-zinc-800 pt-4">
             <p className="text-center text-[0.65rem] leading-relaxed text-zinc-500">
               {draft
-                ? "Updating today replaces your earlier Slop Score and signals for this item — one row per fan per game day."
-                : "One review per fan, item, and game day. You can edit later today if needed."}
+                ? "Updating today replaces your earlier Slop Scorecard for this item — one per fan per game day."
+                : "One Slop Scorecard per fan, item, and game day. You can edit later today if needed."}
             </p>
             <ReviewFormLocation
               formId="review-form"

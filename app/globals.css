@@ -278,3 +278,44 @@ body {
   outline: 2px solid var(--slop-gold-bright);
   outline-offset: 2px;
 }
+
+/* Slop Score slider — mobile-first decimal input */
+.slop-score-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    var(--slop-red-deep) 0%,
+    var(--slop-gold) 55%,
+    var(--slop-gold-bright) 100%
+  );
+  outline: none;
+}
+
+.slop-score-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  border: 2px solid var(--slop-ink);
+  background: linear-gradient(180deg, var(--slop-gold-bright), var(--slop-gold));
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  cursor: grab;
+}
+
+.slop-score-range::-moz-range-thumb {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  border: 2px solid var(--slop-ink);
+  background: linear-gradient(180deg, var(--slop-gold-bright), var(--slop-gold));
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  cursor: grab;
+}
+
+.slop-scorecard-shell {
+  perspective: 1200px;
+}

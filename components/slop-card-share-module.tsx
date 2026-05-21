@@ -289,7 +289,7 @@ export function SlopCardShareModule({
       </div>
 
       <p className="mt-3 text-center text-[0.6rem] leading-snug text-[var(--slop-cream-dim)]">
-        Tip: screenshot your scorecard in Photo reviews — looks great in stories.
+        Tip: screenshot your Slop Scorecard — looks great in stories.
       </p>
 
       <button

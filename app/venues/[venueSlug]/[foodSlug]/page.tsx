@@ -78,6 +78,7 @@ type FoodPageProps = {
     reviewSubmitted?: string;
     photoError?: string;
     price?: string;
+    helpful?: string;
   }>;
 };
 
@@ -213,6 +214,8 @@ async function markReviewHelpful(formData: FormData) {
   const itemPath = `/venues/${venueSlug}/${foodSlug}`;
   await requireContributorUserId(itemPath);
 
+  const userId = await requireContributorUserId(itemPath);
+
   const review = await prisma.review.findFirst({
     where: {
       id: reviewId,
@@ -224,8 +227,9 @@ async function markReviewHelpful(formData: FormData) {
         }
       }
     },
-    include: {
-      venue: true
+    select: {
+      id: true,
+      userId: true
     }
   });
 
@@ -233,7 +237,9 @@ async function markReviewHelpful(formData: FormData) {
     redirect(itemPath);
   }
 
-  const userId = await requireContributorUserId(itemPath);
+  if (review.userId === userId) {
+    redirect(`${itemPath}?helpful=own`);
+  }
 
   await prisma.helpfulLike.upsert({
     where: {
@@ -397,6 +403,14 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         : priceQuery === "unavailable"
           ? "This menu item is not in our live database yet, so we cannot save a price report. Try an imported stadium menu item instead."
           : null;
+
+  const helpfulQuery = query.helpful;
+  const helpfulStatusMessage =
+    helpfulQuery === "own"
+      ? "You can't mark your own Slop Scorecard as helpful — thanks for posting though."
+      : helpfulQuery === "marked"
+        ? "Marked helpful. One vote per fan per scorecard."
+        : null;
 
   const venue = await getPublicVenueBySlug(venueSlug);
 
@@ -837,10 +851,18 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-              Photo reviews
+              Slop Scorecards
             </h2>
             <FanPoweredGuideBadge />
           </div>
+          {helpfulStatusMessage ? (
+            <p
+              className="mt-2 rounded-lg border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.88)] px-3 py-2 text-xs font-semibold text-[var(--slop-cream-muted)]"
+              role="status"
+            >
+              {helpfulStatusMessage}
+            </p>
+          ) : null}
           <FanPoweredGuideNote preset="food-reviews" className="mt-1.5" />
           <ReportContentLink
             context={baseReportContext}
@@ -863,7 +885,20 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   dateLabel: review.dateLabel
                 });
 
-                const helpfulSlot = isSignedIn ? (
+                const isOwnScorecard =
+                  Boolean(contributorUserId) &&
+                  review.reviewerId === contributorUserId;
+
+                const helpfulSlot = isOwnScorecard ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="w-full cursor-not-allowed rounded-full border border-zinc-800 px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500"
+                    title="You can't mark your own Slop Scorecard helpful"
+                  >
+                    Your scorecard · {review.helpfulLikes} helpful
+                  </button>
+                ) : isSignedIn ? (
                   likedReviewIds.has(review.id) ? (
                     <button
                       type="button"
@@ -943,7 +978,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           ) : null}
 
           <p className="mt-1.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
-            Structured scores · helpful likes need sign-in
+            Fan Slop Scorecards · helpful votes need sign-in (not on your own)
           </p>
         </section>
 

@@ -6,7 +6,10 @@ import type { FoodReview } from "@/lib/sample-data";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { slopScoreDisplay } from "@/lib/slop-card-display";
 
-/** Portrait Slop Card — optimized for mobile screenshots and fan sharing. */
+/**
+ * Portrait Slop Scorecard — front face emphasizes photo, reviewer, Slop Score,
+ * and helpful count. Wrapper is ready for a future back-face flip.
+ */
 export function ReviewSlopCard({
   review,
   itemName,
@@ -57,9 +60,19 @@ export function ReviewSlopCard({
         ? [signalLine]
         : [];
 
+  const reviewerLabel = review.reviewerHandle
+    ? `@${review.reviewerHandle.replace(/^@/, "")}`
+    : review.reviewerName ?? "Fan";
+
   return (
-    <article className="slop-card-shell w-[min(100%,22rem)] max-w-full min-w-0 shrink-0 snap-center sm:w-[20rem]">
-      <div className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[color:rgba(244,179,33,0.38)] bg-[var(--slop-navy-deep)] shadow-[0_20px_48px_rgba(0,0,0,0.55),0_0_0_1px_rgba(196,30,58,0.18),inset_0_1px_0_rgba(255,255,255,0.07)]">
+    <article
+      className="slop-scorecard-shell slop-card-shell w-[min(100%,22rem)] max-w-full min-w-0 shrink-0 snap-center sm:w-[20rem]"
+      data-slop-scorecard
+    >
+      <div
+        className="slop-scorecard-inner flex min-w-0 flex-col overflow-hidden rounded-2xl border border-[color:rgba(244,179,33,0.38)] bg-[var(--slop-navy-deep)] shadow-[0_20px_48px_rgba(0,0,0,0.55),0_0_0_1px_rgba(196,30,58,0.18),inset_0_1px_0_rgba(255,255,255,0.07)]"
+        data-face="front"
+      >
         {/* Scoreboard header strip */}
         <div
           className="relative border-b border-[color:rgba(244,179,33,0.22)] bg-[linear-gradient(105deg,rgba(198,61,47,0.35)_0%,rgba(11,27,43,0.95)_38%,rgba(244,179,33,0.22)_100%)] px-3 pb-2.5 pt-2.5"
@@ -137,7 +150,7 @@ export function ReviewSlopCard({
               </span>
             ) : (
               <span className="inline-flex w-fit rounded-md border border-[var(--slop-line-strong)] bg-[rgba(4,10,18,0.88)] px-2 py-1 text-[0.55rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)]">
-                Fan review
+                Slop Scorecard
               </span>
             )}
             {duplicateHeroBadge ? (
@@ -158,19 +171,37 @@ export function ReviewSlopCard({
             </div>
           </div>
 
-          <div className="pointer-events-none absolute bottom-2.5 left-2.5 flex items-end gap-2">
-            <div className="relative">
-              <div
-                className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--slop-gold)]/75 bg-[var(--slop-navy-deep)] text-xs font-black text-[var(--slop-cream)] shadow-[0_4px_14px_rgba(0,0,0,0.45)]"
-                title={review.reviewerName ?? "Fan"}
-              >
-                {initials}
+          <div className="pointer-events-none absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between gap-2">
+            <div className="relative min-w-0">
+              <div className="flex items-center gap-2">
+                <div
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[var(--slop-gold)]/75 bg-[var(--slop-navy-deep)] text-xs font-black text-[var(--slop-cream)] shadow-[0_4px_14px_rgba(0,0,0,0.45)]"
+                  title={review.reviewerName ?? "Fan"}
+                >
+                  {initials}
+                </div>
+                <div className="min-w-0 rounded-md border border-[var(--slop-ink)]/80 bg-[rgba(4,10,18,0.88)] px-2 py-1 shadow-[0_4px_12px_rgba(0,0,0,0.45)]">
+                  <p className="truncate text-[0.62rem] font-black text-[var(--slop-cream)]">
+                    {reviewerLabel}
+                  </p>
+                  <p className="text-[0.48rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
+                    Scout
+                  </p>
+                </div>
               </div>
               {showFanScout ? (
-                <span className="absolute -bottom-1 left-1/2 w-max max-w-[5.5rem] -translate-x-1/2 rounded border border-[var(--slop-gold)]/40 bg-[var(--slop-ink)] px-1 py-px text-[0.45rem] font-black uppercase tracking-[0.08em] text-[var(--slop-gold-bright)]">
+                <span className="absolute -bottom-1 left-5 w-max max-w-[5.5rem] rounded border border-[var(--slop-gold)]/40 bg-[var(--slop-ink)] px-1 py-px text-[0.45rem] font-black uppercase tracking-[0.08em] text-[var(--slop-gold-bright)]">
                   Fan Scout
                 </span>
               ) : null}
+            </div>
+            <div className="shrink-0 rounded-lg border border-[var(--slop-line-strong)] bg-[rgba(4,10,18,0.88)] px-2 py-1 text-center shadow-[0_4px_12px_rgba(0,0,0,0.45)]">
+              <p className="text-[0.45rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
+                Helpful
+              </p>
+              <p className="text-sm font-black tabular-nums text-[var(--slop-cream)]">
+                {review.helpfulLikes}
+              </p>
             </div>
           </div>
         </div>
