@@ -408,7 +408,7 @@ export function parseMlsNwslDocxParagraphs(paragraphs: string[]): MlsNwslDocxPar
         }
         if (!vendor) vendor = itemName;
 
-        const resolvedSection = section || vendorCtx?.section || "Concourse";
+        const resolvedSection: string = section || vendorCtx?.section || "Concourse";
         if (!section && !vendorHint) flags.push("missing-section");
 
         if (looksLikeVendorName(itemName) && !vendorHint && description.length > 30) {
