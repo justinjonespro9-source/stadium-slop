@@ -24,6 +24,7 @@ import {
 } from "./mls-nwsl-venue-registry";
 import { resolveVenueTeams } from "./venue-teams";
 
+const DEFAULT_SEASON = "2026";
 const DEFAULT_REVIEW_RADIUS = 800;
 
 export type MlsNwslImportStats = {
