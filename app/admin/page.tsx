@@ -302,6 +302,10 @@ async function hidePhotoFromContentReport(formData: FormData) {
 
 async function getAdminDashboardStats() {
   try {
+    const now = new Date();
+    const upcomingWindowEnd = new Date(now);
+    upcomingWindowEnd.setDate(upcomingWindowEnd.getDate() + 14);
+
     const [
       venueCount,
       vendorCount,
@@ -310,7 +314,8 @@ async function getAdminDashboardStats() {
       userCount,
       pendingPrices,
       pendingSuggestions,
-      openFlags
+      openFlags,
+      upcomingMlbGames
     ] = await Promise.all([
       prisma.venue.count(),
       prisma.vendor.count(),
@@ -319,7 +324,13 @@ async function getAdminDashboardStats() {
       prisma.user.count(),
       prisma.priceReport.count({ where: { status: "PENDING" } }),
       prisma.suggestedItem.count({ where: { status: "PENDING" } }),
-      prisma.reportFlag.count({ where: { status: "OPEN" } })
+      prisma.reportFlag.count({ where: { status: "OPEN" } }),
+      prisma.game.count({
+        where: {
+          league: "MLB",
+          startsAt: { gte: now, lte: upcomingWindowEnd }
+        }
+      })
     ]);
 
     return {
@@ -330,7 +341,8 @@ async function getAdminDashboardStats() {
       userCount,
       pendingPrices,
       pendingSuggestions,
-      openFlags
+      openFlags,
+      upcomingMlbGames
     };
   } catch (error) {
     console.warn("Admin dashboard stats unavailable", error);
@@ -342,7 +354,8 @@ async function getAdminDashboardStats() {
       userCount: 0,
       pendingPrices: 0,
       pendingSuggestions: 0,
-      openFlags: 0
+      openFlags: 0,
+      upcomingMlbGames: 0
     };
   }
 }
@@ -475,6 +488,13 @@ export default async function AdminPage() {
       detail: "Roles, suspension, and contributor activity. No public profiles.",
       href: "/admin/users",
       action: "Manage users"
+    },
+    {
+      title: "MLB schedule",
+      count: stats.upcomingMlbGames,
+      detail:
+        "Home games in the next 14 days (Stats API sync). Run npm run sync:mlb-schedule in production.",
+      action: "CLI sync"
     }
   ];
 
