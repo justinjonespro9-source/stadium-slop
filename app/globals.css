@@ -319,3 +319,42 @@ body {
 .slop-scorecard-shell {
   perspective: 1200px;
 }
+
+.slop-scorecard-flip-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slop-scorecard-flip-inner {
+    transition-duration: 0.01ms;
+  }
+}
+
+.slop-scorecard-flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.slop-scorecard-face {
+  width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.slop-scorecard-face-back {
+  position: absolute;
+  inset: 0;
+  top: 0;
+  transform: rotateY(180deg);
+}
+
+.slop-scorecard-rolodex {
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x pan-y;
+}
+
+.slop-scorecard-carousel-wrap {
+  width: 100%;
+}

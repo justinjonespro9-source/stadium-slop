@@ -37,6 +37,7 @@ import {
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
+import { SlopScorecardCarousel } from "@/components/slop-scorecard-carousel";
 import {
   SlopCardShareModule,
   type SlopCardSharePreview
@@ -869,9 +870,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             variant="section"
             className="mt-1"
           />
-          <div className="slop-card-carousel mt-2 flex snap-x snap-mandatory gap-3 pb-2 sm:gap-3">
-            {photoBackedReviews.length > 0 ? (
-              photoBackedReviews.map((review) => {
+          {photoBackedReviews.length > 0 ? (
+            <SlopScorecardCarousel swipeHint={photoBackedReviews.length > 1}>
+              {photoBackedReviews.map((review, cardIndex) => {
                 const photoUrlNorm = normalizePublicImageUrl(review.photoUrl);
                 const heroDup =
                   Boolean(heroImageUrl) && photoUrlNorm === heroImageUrl;
@@ -945,6 +946,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 return (
                   <ReviewSlopCard
                     key={review.id}
+                    cardIndex={cardIndex}
                     review={review}
                     itemName={foodItem.name}
                     venueName={venue.name}
@@ -962,20 +964,15 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     reportSlot={reportSlot}
                   />
                 );
-              })
-            ) : (
-              <PhotoBackedReviewsEmpty
-                reviewHref={reviewPath}
-                venueSlug={venue.slug}
-                foodSlug={foodItem.slug}
-              />
-            )}
-          </div>
-          {photoBackedReviews.length > 1 ? (
-            <p className="mt-1 text-center text-[0.6rem] font-semibold text-[var(--slop-cream-dim)] sm:hidden">
-              Swipe scorecards
-            </p>
-          ) : null}
+              })}
+            </SlopScorecardCarousel>
+          ) : (
+            <PhotoBackedReviewsEmpty
+              reviewHref={reviewPath}
+              venueSlug={venue.slug}
+              foodSlug={foodItem.slug}
+            />
+          )}
 
           <p className="mt-1.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
             Fan Slop Scorecards · helpful votes need sign-in (not on your own)
