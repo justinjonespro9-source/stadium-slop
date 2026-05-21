@@ -85,6 +85,19 @@ function emptyMoves(): ModelMoveCounts {
   };
 }
 
+function emptyChildCounts(): VenueChildCounts {
+  return {
+    vendors: 0,
+    items: 0,
+    photos: 0,
+    reviews: 0,
+    priceReports: 0,
+    suggestedItems: 0,
+    games: 0,
+    homeUsers: 0
+  };
+}
+
 async function countVenueChildren(
   prisma: PrismaClient,
   venueId: string
@@ -145,10 +158,10 @@ export async function mergeVenuePair(
       aliasId: alias?.id ?? "",
       canonicalId: canonical?.id ?? "",
       before: {
-        alias: alias ? await countVenueChildren(prisma, alias.id) : emptyMoves(),
+        alias: alias ? await countVenueChildren(prisma, alias.id) : emptyChildCounts(),
         canonical: canonical
           ? await countVenueChildren(prisma, canonical.id)
-          : emptyMoves()
+          : emptyChildCounts()
       },
       moved,
       conflicts,
