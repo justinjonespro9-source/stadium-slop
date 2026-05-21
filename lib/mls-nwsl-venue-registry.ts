@@ -12,9 +12,48 @@ export const MLS_NWSL_VENUE_NAME_ALIASES: Record<string, string> = {
   "dick-s-sporting-goods-park": "DICK'S Sporting Goods Park",
   "lower-com-field": "Lower.com Field",
   "inter-co-stadium": "Inter&Co Stadium",
+  "co-stadium": "Inter&Co Stadium",
   "sports-illustrated-stadium": "Sports Illustrated Stadium",
   "st-louis-city-sc-stadium": "CITYPARK",
-  "citypark": "CITYPARK"
+  "citypark": "CITYPARK",
+  "stade-saputo-feels-less-like-american-stadium": "Stade Saputo",
+  "america-first-field": "America First Field"
+};
+
+/**
+ * Legacy orphan venue rows from early MLS/NWSL import — merge into canonical slugs
+ * via `npm run cleanup:mls-nwsl-orphans` (see scripts/cleanup-mls-nwsl-orphan-venues.ts).
+ */
+export const MLS_NWSL_ORPHAN_VENUE_MERGES = [
+  {
+    label: "NYCFC parser orphan → Citi Field",
+    aliasSlug: "citi-field-both-are-already-built-so-we-need-to-add-them-to-each",
+    canonicalSlug: "citi-field"
+  },
+  {
+    label: "Inter&Co parser orphan → Inter&Co Stadium",
+    aliasSlug: "co-stadium",
+    canonicalSlug: "inter-co-stadium"
+  },
+  {
+    label: "Stade Saputo parser orphan → Stade Saputo",
+    aliasSlug: "stade-saputo-feels-less-like-american-stadium",
+    canonicalSlug: "stade-saputo"
+  },
+  {
+    label: "Louisville parser typo → Lynn Family Stadium",
+    aliasSlug: "lyn-family-stadium",
+    canonicalSlug: "lynn-family-stadium"
+  }
+] as const;
+
+/** Parser/import slug corrections (bad intro text, typos). */
+export const MLS_NWSL_VENUE_SLUG_ALIASES: Record<string, string> = {
+  "co-stadium": "inter-co-stadium",
+  "stade-saputo-feels-less-like-american-stadium": "stade-saputo",
+  "citi-field-both-are-already-built-so-we-need-to-add-them-to-each": "citi-field",
+  "lyn-family-stadium": "lynn-family-stadium",
+  "wakemed-soccer-park": "wakemed-soccer-park"
 };
 
 /**
@@ -282,6 +321,13 @@ export const MLS_NWSL_VENUE_META: Record<string, MlsNwslVenueMeta> = {
     state: "KY",
     latitude: 38.254,
     longitude: -85.7594
+  },
+  "america-first-field": {
+    name: "America First Field",
+    city: "Sandy",
+    state: "UT",
+    latitude: 40.528,
+    longitude: -111.884
   }
 };
 
@@ -305,7 +351,7 @@ export const MLS_NWSL_SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
 };
 
 const VENUE_NAME_PATTERN =
-  /(?:stadium|field|park|arena|place|centre|center|bowl|garden|grounds|citypark)/i;
+  /(?:stadium|stade|field|park|arena|place|centre|center|bowl|garden|grounds|citypark|saputo)/i;
 
 export function looksLikeMlsNwslVenueName(name: string): boolean {
   const trimmed = name.trim();
@@ -346,18 +392,28 @@ export function normalizeMlsNwslVenueName(raw: string): string {
   if (/^geodis park$/i.test(name)) {
     return "GEODIS Park";
   }
+  if (/^america first field$/i.test(name)) {
+    return "America First Field";
+  }
+
+  const feelsIdx = name.search(/\s+feels\s+less\s+like\b/i);
+  if (feelsIdx > 0) {
+    name = name.slice(0, feelsIdx).trim();
+  }
 
   return name;
 }
 
 export function resolveMlsNwslVenueSlug(venueName: string): string {
   const normalized = normalizeMlsNwslVenueName(venueName);
-  const slug = venueSlugFromImport(normalized);
-  return MLS_NWSL_VENUE_NAME_ALIASES[slug]
-    ? slug
-    : slug === "st-louis-city-sc-stadium"
-      ? "citypark"
-      : slug;
+  let slug = venueSlugFromImport(normalized);
+  if (MLS_NWSL_VENUE_SLUG_ALIASES[slug]) {
+    slug = MLS_NWSL_VENUE_SLUG_ALIASES[slug]!;
+  }
+  if (slug === "st-louis-city-sc-stadium") {
+    slug = "citypark";
+  }
+  return slug;
 }
 
 export function venueMetaForSlug(slug: string, fallbackName: string): MlsNwslVenueMeta {

@@ -6,6 +6,7 @@
 import type { LeagueImportRow } from "./league-import-shape";
 import {
   looksLikeMlsNwslVenueName,
+  MLS_NWSL_VENUE_SLUG_ALIASES,
   normalizeMlsNwslVenueName,
   resolveMlsNwslVenueSlug,
   venueMetaForSlug,
@@ -16,6 +17,7 @@ import { extractDocxParagraphs } from "./nfl-stadium-docx-parser";
 export type MlsNwslDocxParseRow = LeagueImportRow & {
   venue_slug: string;
   reviewFlags: string[];
+  foodTags: string[];
   teams: Array<{ name: string; league: string }>;
 };
 
@@ -69,12 +71,35 @@ const SKIP_PREFIXES = [
   "You cannot",
   "Reflecting the",
   "Pro-Tip",
+  "Managed by",
+  "Because no one",
+  "Miami takes",
+  "Heading to the",
+  "What DHSP",
+  "True to Los",
+  "You cannot talk",
   "⚡",
   "👑",
   "🍨",
   "🥟",
-  "🌭"
+  "🌭",
+  "🇦🇷",
+  "🍔",
+  "🍹",
+  "🌮",
+  "🇰🇷",
+  "🌿",
+  "🍻"
 ];
+
+const NARRATIVE_NAME_RE =
+  /^(?:when|if|because|heading|what|true to|you cannot|the stadium|miami takes|managed by|for a sweet|if you manage)/i;
+
+const FOOD_KEYWORD_RE =
+  /(?:bbq|brisket|burger|taco|hot\s*dog|pizza|chicken|arepa|gelato|pupusas?|ramen|mac\s*&?\s*cheese|churro|nachos|sandwich|wings?|sausage|vegan|vegetarian|beer|wine|cocktail|margarita|soda|empanada|poutine|poke|sushi|omakase|asado|burrito|fries|donut|coffee|whisky|whiskey|brew|ipa|seltzer)/i;
+
+const VENDOR_SUFFIX_RE =
+  /(?:bar|grill|lounge|stand|cantina|kitchen|market|brew|tavern|pub|club|haus|pit|eats|taco|pizza|burger|gelato|churros?|smokehouse|taqueria|cantina|coop|co-op|hall|zone|outpost|station|winery|bodega)/i;
 
 const PRICE_MENU_RE = /^\$\d+(?:\.\d{2})?:\s/;
 const VENDOR_SECTION_RE = /^(.+?)\s*-\s*((?:Section|Sections|Near|Concourse|Stand|Club).+)$/i;
@@ -127,6 +152,7 @@ export function parseMlsNwslAnchorLine(line: string): MlsNwslVenueBlock | null {
     .replace(/\s*\(.*already imported.*\)\s*/gi, "")
     .replace(/\s*\(.*just need.*\)\s*/gi, "")
     .replace(/\s*\(.*both are already.*\)\s*/gi, "")
+    .replace(/\.\.\s*both are already built.*$/i, "")
     .replace(/\.\./g, " ")
     .trim();
 
@@ -159,7 +185,9 @@ export function parseMlsNwslAnchorLine(line: string): MlsNwslVenueBlock | null {
 
   const inferVenueFromIntro = venueNames.length === 0 && !teamOnly;
 
-  const venueSlugs = venueNames.map((name) => resolveMlsNwslVenueSlug(name));
+  const venueSlugs = venueNames.map((name) =>
+    canonicalVenueSlug(resolveMlsNwslVenueSlug(name))
+  );
 
   if (teams.length === 0) {
     return null;
@@ -178,14 +206,30 @@ export function parseMlsNwslAnchorLine(line: string): MlsNwslVenueBlock | null {
 function inferVenueNameFromIntroParagraphs(paragraphs: string[], start: number): string | null {
   const window = paragraphs.slice(start + 1, start + 6);
   for (const line of window) {
-    const into = /(?:into|at)\s+([A-Z0-9][^.!?\n]{2,60}?(?:Stadium|Field|Park|Arena|Place|Centre|Center|Bowl|Garden|Grounds|CITYPARK))/i.exec(
+    const into = /(?:into|at|for)\s+([A-Z0-9][^.!?\n]{2,55}?(?:Stadium|Stade|Field|Park|Arena|Place|Centre|Center|Bowl|Garden|Grounds|CITYPARK|Saputo))/i.exec(
       line
     );
+    const report = /scouting report for\s+([A-Z][^.!?\n]{2,50}?(?:Stadium|Stade|Field|Park|Arena|Place|CITYPARK|Saputo))/i.exec(
+      line
+    );
+    if (report?.[1]) {
+      const candidate = normalizeMlsNwslVenueName(report[1].trim());
+      if (looksLikeMlsNwslVenueName(candidate)) {
+        return candidate;
+      }
+    }
     if (into?.[1]) {
-      return normalizeMlsNwslVenueName(into[1].trim());
+      const candidate = normalizeMlsNwslVenueName(into[1].trim());
+      if (looksLikeMlsNwslVenueName(candidate)) {
+        return candidate;
+      }
     }
   }
   return null;
+}
+
+function canonicalVenueSlug(slug: string): string {
+  return MLS_NWSL_VENUE_SLUG_ALIASES[slug] ?? slug;
 }
 
 function splitVenueTargets(block: MlsNwslVenueBlock): Array<{
@@ -206,7 +250,7 @@ function splitVenueTargets(block: MlsNwslVenueBlock): Array<{
   }
 
   if (block.venueSlugs.length === 1) {
-    const slug = block.venueSlugs[0]!;
+    const slug = canonicalVenueSlug(block.venueSlugs[0]!);
     const name = block.venueNames[0] ?? venueMetaForSlug(slug, slug).name;
     const meta = venueMetaForSlug(slug, name);
     for (const team of block.teams) {
@@ -217,7 +261,7 @@ function splitVenueTargets(block: MlsNwslVenueBlock): Array<{
 
   // NYCFC: same team, multiple venues
   for (let i = 0; i < block.venueSlugs.length; i++) {
-    const slug = block.venueSlugs[i]!;
+    const slug = canonicalVenueSlug(block.venueSlugs[i]!);
     const name = block.venueNames[i] ?? venueMetaForSlug(slug, slug).name;
     const meta = venueMetaForSlug(slug, name);
     for (const team of block.teams) {
@@ -238,15 +282,23 @@ function shouldSkipLine(line: string): boolean {
   return false;
 }
 
+function lineSubject(line: string): string {
+  const colon = line.indexOf(":");
+  return (colon > 0 ? line.slice(0, colon) : line).trim();
+}
+
 function categoryFromHeader(line: string): string | null {
-  const lower = line.toLowerCase();
+  const lower = lineSubject(line).toLowerCase();
   if (/headliner|showstopper|cowboy hat|community first|burgundy bites|\$4\.99|\$5\b/.test(lower)) {
     return "Headline Item";
   }
   if (/local|michelin|icon|chef|james beard|h-town|district staple/.test(lower)) {
     return "Local Partner";
   }
-  if (/bar|lounge|club|sip|pour|cantina|margarita|brewery|social/.test(lower) && line.length < 90) {
+  if (
+    /bar|lounge|club|sip|pour|cantina|margarita|brewery|social/.test(lower) &&
+    lineSubject(line).length < 90
+  ) {
     return "Drinks/Social";
   }
   if (/vegan|plant|value|budget|dietary|gluten|clean eating/.test(lower)) {
@@ -257,7 +309,13 @@ function categoryFromHeader(line: string): string | null {
 
 function isCategoryHeader(line: string): boolean {
   if (ITEM_LINE_RE.test(line) || PRICED_ITEM_RE.test(line)) return false;
-  return Boolean(categoryFromHeader(line)) || (line.length < 72 && !line.includes("Section"));
+  const sub = SUB_ITEM_RE.exec(line);
+  if (sub && looksLikeImportItemName(sub[1]!.trim(), sub[2]!.trim())) return false;
+  const subject = lineSubject(line);
+  return (
+    Boolean(categoryFromHeader(line)) ||
+    (subject.length < 72 && !/section|stand|concourse/i.test(subject) && !line.includes(":"))
+  );
 }
 
 function conciseDescription(raw: string): string {
@@ -292,9 +350,112 @@ function parseLocation(locationRaw: string): {
 }
 
 function looksLikeVendorName(name: string): boolean {
-  return /(?:grill|bar|lounge|stand|cantina|taco|bbq|kitchen|market|brew|cart|tavern|pub|club|salsa|pizza|burger|cantina|field|haus|pit)/i.test(
-    name
-  );
+  return VENDOR_SUFFIX_RE.test(name) || FOOD_KEYWORD_RE.test(name);
+}
+
+function looksLikeImportItemName(name: string, description = ""): boolean {
+  const trimmed = name.trim();
+  if (trimmed.length < 3 || trimmed.length > 90) return false;
+  if (NARRATIVE_NAME_RE.test(trimmed)) return false;
+  if (/^(?:the|a)\s+(?:stadium|culinary|absolute|official|go-to|massive)\b/i.test(trimmed)) {
+    return false;
+  }
+  if (description.length >= 35 && FOOD_KEYWORD_RE.test(description)) {
+    if (/^(?:it|they|this|these)\s/i.test(trimmed)) return false;
+    if (/^(?:the|a)\s+(?:stadium|culinary|absolute|official|go-to|massive)\b/i.test(trimmed)) {
+      return false;
+    }
+    return true;
+  }
+  if (looksLikeVendorName(trimmed)) return true;
+  if (FOOD_KEYWORD_RE.test(trimmed)) return true;
+  if (/&/.test(trimmed) && trimmed.length < 70) return true;
+  if (/^(?:the\s+)?[A-Z][^.]{2,55}$/.test(trimmed) && FOOD_KEYWORD_RE.test(trimmed)) {
+    return true;
+  }
+  if (
+    /^(?:the\s+)?(?:poutine|montreal|match day|jersey|meatball|pesto|cowboy hat|float on|pupusas|avocado|seoul|mac cheezy|melissa)/i.test(
+      trimmed
+    )
+  ) {
+    return true;
+  }
+  return /^[A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,4}(?:\s+(?:&|and)\s+[A-Z])/.test(trimmed);
+}
+
+function isSectionCategoryHeader(name: string, description: string): boolean {
+  const lower = `${name} ${description}`.toLowerCase();
+  if (
+    /^(?:the\s+)?(?:headliners?|local|elevated|premium|tech|drinks?|sip|pour|north jersey|global|asian|la health|tailgate|soCal|argentinian|burgundy|value|dietary)/i.test(
+      name
+    ) &&
+    description.length < 120 &&
+    !FOOD_KEYWORD_RE.test(name)
+  ) {
+    return true;
+  }
+  if (/&\s*latin\s*flavors?$/i.test(name) || /stadium\s*staples/i.test(lower)) {
+    return true;
+  }
+  return false;
+}
+
+function extractSectionFromDescription(description: string): string {
+  const patterns = [
+    /\b(?:in|at|located in|found at)\s+(?:the\s+)?(Fan Zone|Mercado Food Hall|Section[s]?\s+[\d&]+(?:\s*&\s*[\d]+)?|Stand\s+\d+|Club Level|North Concourse|South Concourse|East Concourse|West Concourse|Plaza)\b/i,
+    /\b(Section[s]?\s+[\d]+(?:\s*&\s*[\d]+)?)\b/i,
+    /\b(Stand\s+\d+)\b/i
+  ];
+  for (const re of patterns) {
+    const m = re.exec(description);
+    if (m?.[1]) return m[1].trim();
+  }
+  return "";
+}
+
+export function inferMlsNwslFoodTags(itemName: string, description: string): string[] {
+  const text = `${itemName} ${description}`.toLowerCase();
+  const tags: string[] = [];
+  const add = (tag: string) => {
+    if (!tags.includes(tag)) tags.push(tag);
+  };
+
+  if (/\b(?:bbq|brisket|smokehouse|asado|pulled pork)\b/.test(text)) add("BBQ");
+  if (/\b(?:taco|taqueria|burrito|arepa|pupusas?|empanada)\b/.test(text)) add("tacos");
+  if (/\b(?:burger|smashburger)\b/.test(text)) add("burgers");
+  if (/\b(?:hot\s*dog|ripper|frank|sausage)\b/.test(text)) add("hot dogs");
+  if (/\b(?:chicken|fried chicken|tenders)\b/.test(text)) add("chicken");
+  if (/\b(?:pizza|pizzeria)\b/.test(text)) add("pizza");
+  if (/\b(?:gelato|churro|dessert|donut|cookie|ice cream|dole whip|sweet)\b/.test(text)) {
+    add("dessert");
+  }
+  if (/\b(?:beer|ipa|lager|brewery|craft beer|tavern)\b/.test(text)) add("beer");
+  if (/\b(?:vegan|plant-based|plant based)\b/.test(text)) add("vegan");
+  if (/\b(?:vegetarian|veggie)\b/.test(text) && !tags.includes("vegan")) add("vegetarian");
+  if (/\b(?:local|legendary|institution|miami staple|garden state|utah institution)\b/.test(text)) {
+    add("local favorite");
+  }
+  if (/\b(?:\$4\.99|\$5\b|value menu|budget|lineup)\b/.test(text)) add("value menu");
+  if (/\b(?:omakase|vip|premium club|james beard|michelin|ultra-luxe|club level)\b/.test(text)) {
+    add("premium");
+  }
+  if (/\b(?:zippin|grab-and-go|checkout-free|express)\b/.test(text)) add("grab-and-go");
+
+  return tags;
+}
+
+function buildFoodTags(
+  itemName: string,
+  description: string,
+  category: string | null
+): string[] {
+  const tags = inferMlsNwslFoodTags(itemName, description);
+  const cat = (category ?? "").toLowerCase();
+  if (cat.includes("local") && !tags.includes("local favorite")) tags.push("local favorite");
+  if (cat.includes("drink") && !tags.includes("beer")) tags.push("beer");
+  if (cat.includes("value") && !tags.includes("value menu")) tags.push("value menu");
+  if (cat.includes("headline") && !tags.includes("premium")) tags.push("premium");
+  return tags;
 }
 
 function buildRow(
@@ -312,23 +473,72 @@ function buildRow(
   description: string,
   reviewFlags: string[]
 ): MlsNwslDocxParseRow {
+  const desc = conciseDescription(description);
   return {
     league: target.team.league,
     team: target.team.name,
     venue: target.venueName,
-    venue_slug: target.venueSlug,
+    venue_slug: canonicalVenueSlug(target.venueSlug),
     city: target.meta.city,
     state: target.meta.state,
     vendor: vendor || itemName,
     stand_name: standName,
     section,
     item_name: itemName,
-    description: conciseDescription(description),
+    description: desc,
     category: category ?? "",
     season: DEFAULT_SEASON,
     reviewFlags,
+    foodTags: buildFoodTags(itemName, desc, category),
     teams: [{ name: target.team.name, league: target.team.league }]
   };
+}
+
+function pushItemRow(
+  rows: MlsNwslDocxParseRow[],
+  targets: ReturnType<typeof splitVenueTargets>,
+  category: string | null,
+  itemName: string,
+  vendor: string,
+  section: string,
+  standName: string,
+  description: string,
+  flags: string[],
+  vendorCtx: VendorContext | null
+): VendorContext {
+  let resolvedSection = section || vendorCtx?.section || "Concourse";
+  if (!section) {
+    const fromDesc = extractSectionFromDescription(description);
+    if (fromDesc) resolvedSection = fromDesc;
+  }
+
+  let resolvedVendor = vendor || itemName;
+  if (!vendor && looksLikeVendorName(itemName)) {
+    resolvedVendor = itemName;
+  }
+
+  const ctx: VendorContext = {
+    vendor: resolvedVendor,
+    section: resolvedSection,
+    standName: standName || vendorCtx?.standName || ""
+  };
+
+  for (const target of targets) {
+    rows.push(
+      buildRow(
+        target,
+        category,
+        itemName,
+        resolvedVendor,
+        resolvedSection,
+        ctx.standName,
+        description,
+        flags
+      )
+    );
+  }
+
+  return ctx;
 }
 
 type VendorContext = { vendor: string; section: string; standName: string };
@@ -401,74 +611,60 @@ export function parseMlsNwslDocxParagraphs(paragraphs: string[]): MlsNwslDocxPar
         const description = itemMatch[3]!.trim();
         const { vendorHint, section, standName } = parseLocation(locationRaw);
         const flags: string[] = [];
-
-        let vendor = vendorHint;
-        if (!vendor && looksLikeVendorName(itemName)) {
-          vendor = itemName;
-        }
-        if (!vendor) vendor = itemName;
-
-        const resolvedSection: string = section || vendorCtx?.section || "Concourse";
         if (!section && !vendorHint) flags.push("missing-section");
 
-        if (looksLikeVendorName(itemName) && !vendorHint && description.length > 30) {
-          vendorCtx = { vendor: itemName, section: resolvedSection, standName };
-          for (const target of targets) {
-            rows.push(
-              buildRow(
-                target,
-                category,
-                itemName,
-                vendor,
-                resolvedSection,
-                standName,
-                description,
-                flags
-              )
-            );
-          }
-          continue;
-        }
+        let vendor = vendorHint;
+        if (!vendor && looksLikeVendorName(itemName)) vendor = itemName;
 
-        vendorCtx = { vendor, section: resolvedSection, standName };
-        for (const target of targets) {
-          rows.push(
-            buildRow(
-              target,
-              category,
-              itemName,
-              vendor,
-              resolvedSection,
-              standName,
-              description,
-              flags
-            )
-          );
-        }
+        vendorCtx = pushItemRow(
+          rows,
+          targets,
+          category,
+          itemName,
+          vendor,
+          section,
+          standName,
+          description,
+          flags,
+          vendorCtx
+        );
         continue;
       }
 
       const subMatch = SUB_ITEM_RE.exec(line);
-      if (subMatch && vendorCtx) {
+      if (subMatch) {
         const itemName = subMatch[1]!.trim();
         const description = subMatch[2]!.trim();
-        if (itemName.length > 80 || /^The /i.test(itemName) && description.length > 120) {
+
+        if (!looksLikeImportItemName(itemName, description)) {
+          skippedLines.push(line.slice(0, 120));
           continue;
         }
-        for (const target of targets) {
-          rows.push(
-            buildRow(
-              target,
-              category,
-              itemName,
-              vendorCtx.vendor,
-              vendorCtx.section,
-              vendorCtx.standName,
-              description,
-              ["sub-line"]
-            )
-          );
+        if (isSectionCategoryHeader(itemName, description)) {
+          const headerCategory = categoryFromHeader(line);
+          if (headerCategory) category = headerCategory;
+          continue;
         }
+
+        const flags = vendorCtx ? ["sub-line"] : ["narrative-line"];
+        if (!vendorCtx) flags.push("missing-section");
+
+        const vendor =
+          vendorCtx?.vendor ??
+          (looksLikeVendorName(itemName) ? itemName : itemName.split(/\s*&\s*/)[0]!.trim());
+
+        vendorCtx = pushItemRow(
+          rows,
+          targets,
+          category,
+          itemName,
+          vendor,
+          vendorCtx?.section ?? "",
+          vendorCtx?.standName ?? "",
+          description,
+          flags,
+          vendorCtx
+        );
       }
     }
   }

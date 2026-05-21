@@ -17,6 +17,7 @@ import {
   vendorSlugFromImport
 } from "./import-slugs";
 import type { MlsNwslDocxParseResult, MlsNwslDocxParseRow } from "./mls-nwsl-docx-parser";
+import { MLS_NWSL_VENUE_SLUG_ALIASES } from "./mls-nwsl-venue-registry";
 import {
   MLS_NWSL_EXISTING_VENUE_SLUGS,
   MLS_NWSL_SHARED_VENUE_TEAMS,
@@ -101,8 +102,15 @@ function itemTypeFromCategory(category?: string): ItemType {
   return ItemType.FOOD;
 }
 
+function canonicalImportVenueSlug(slug: string): string {
+  return MLS_NWSL_VENUE_SLUG_ALIASES[slug] ?? slug;
+}
+
 function buildItemTags(row: MlsNwslDocxParseRow): string[] {
-  const tags = mergeUniqueStrings([], [row.league, "Import", "MLS-NWSL"]);
+  const tags = mergeUniqueStrings(
+    [],
+    [row.league, "Import", "MLS-NWSL", ...(row.foodTags ?? [])]
+  );
   if (row.season?.trim()) {
     tags.push(`import-season:${row.season.trim()}`);
   }
@@ -208,7 +216,7 @@ export async function applyMlsNwslImport(
   const venueTeamMap = new Map<string, { teams: string[]; leagues: string[] }>();
 
   for (const block of parsed.venueBlocks) {
-    for (const slug of block.venueSlugs) {
+    for (const slug of block.venueSlugs.map(canonicalImportVenueSlug)) {
       const entry = venueTeamMap.get(slug) ?? { teams: [], leagues: [] };
       for (const t of block.teams) {
         entry.teams = mergeUniqueBySlug(entry.teams, [t.name]);
@@ -231,7 +239,7 @@ export async function applyMlsNwslImport(
       continue;
     }
 
-    const venueSlug = row.venue_slug;
+    const venueSlug = canonicalImportVenueSlug(row.venue_slug);
     if (!venuesTouched.has(venueSlug)) {
       await ensureVenueFromBlock(prisma, venueSlug, [row.team], [row.league], stats);
       venuesTouched.add(venueSlug);
