@@ -31,7 +31,7 @@ const STADIUM_TO_VENUE_SLUG: Record<string, string> = {
   "bc place": "bc-place",
   "bmo field": "bmo-field",
   "bmo stadium": "bmo-stadium",
-  "bank of america stadium": "bank-of-america-stadium",
+  "bank of america stadium":,
   "citi field": "citi-field",
   "chase stadium": "chase-stadium",
   "nu stadium": "chase-stadium",
