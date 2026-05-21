@@ -129,13 +129,18 @@ export async function extendGameReviewWindow(formData: FormData) {
     redirect("/admin/games?error=not-found");
   }
 
+  const currentClose = existing.pollingClosesAt;
+  if (!currentClose) {
+    redirectGameDetail(gameId, { error: "invalid-window" });
+  }
+
   const nextClose = extendPollingClosesAt(
-    existing.pollingClosesAt,
+    currentClose,
     extend,
     existing.startsAt
   );
 
-  if (nextClose.getTime() === existing.pollingClosesAt.getTime()) {
+  if (nextClose.getTime() === currentClose.getTime()) {
     redirectGameDetail(gameId, { error: "extend-unchanged" });
   }
 
