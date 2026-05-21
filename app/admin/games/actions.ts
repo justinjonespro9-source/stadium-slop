@@ -68,18 +68,14 @@ export async function updateGameSchedule(formData: FormData) {
   const statusRaw = String(formData.get("status") ?? "").trim();
   const recalculateWindow = formData.get("recalculateWindow") === "1";
 
-  if (
-    !rawStartsAt ||
-    !rawPollingOpensAt ||
-    !rawPollingClosesAt ||
-    !awayTeamName
-  ) {
-    redirectGameDetail(gameId, { error: "invalid-fields" });
-  }
+  const startsAt = rawStartsAt ?? null;
+  const pollingOpensAt = rawPollingOpensAt ?? null;
+  const pollingClosesAt = rawPollingClosesAt ?? null;
 
-  const startsAt: Date = rawStartsAt;
-  const pollingOpensAt: Date = rawPollingOpensAt;
-  const pollingClosesAt: Date = rawPollingClosesAt;
+  if (!startsAt || !pollingOpensAt || !pollingClosesAt || !awayTeamName) {
+    redirectGameDetail(gameId, { error: "invalid-fields" });
+    return;
+  }
 
   if (!GAME_STATUSES.has(statusRaw)) {
     redirectGameDetail(gameId, { error: "invalid-status" });
