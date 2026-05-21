@@ -86,7 +86,11 @@ export async function updateGameSchedule(formData: FormData) {
   }
 
   const status = statusRaw as GameStatus;
-  const windowPatch = recalculateWindow
+  const windowPatch: {
+    pollingOpensAt?: Date;
+    pollingClosesAt?: Date;
+    estimatedEndsAt?: Date | null;
+  } = recalculateWindow
     ? applyRecalculatedPollingWindow(startsAt)
     : {};
 
