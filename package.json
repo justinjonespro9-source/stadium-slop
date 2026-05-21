@@ -28,6 +28,7 @@
     "import:mls-nwsl": "tsx scripts/import-mls-nwsl.ts",
     "cleanup:venues": "tsx scripts/cleanup-venues.ts",
     "cleanup:mls-nwsl-orphans": "tsx scripts/cleanup-mls-nwsl-orphan-venues.ts",
+    "cleanup:generic-items": "tsx scripts/cleanup-generic-items.ts",
     "merge:duplicate-venues": "tsx scripts/merge-duplicate-venues.ts",
     "import:league": "tsx scripts/apply-league-import.ts",
     "parse:nfl-docx": "tsx scripts/parse-nfl-stadium-docx.ts",
