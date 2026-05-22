@@ -13,7 +13,7 @@ import {
 import { validateProfileIdentityInput } from "@/lib/profile-identity";
 import { prisma } from "@/lib/prisma";
 
-function accountRedirect(query: Record<string, string>) {
+function accountRedirect(query: Record<string, string>): never {
   const params = new URLSearchParams(query);
   redirect(`/account?${params.toString()}`);
 }
@@ -39,6 +39,8 @@ export async function updateScorecardIdentity(formData: FormData) {
     accountRedirect({ error: code });
   }
 
+  const { displayName, handle } = parsed;
+
   const existing = await prisma.user.findUnique({
     where: { id: userId },
     select: { handle: true }
@@ -48,9 +50,9 @@ export async function updateScorecardIdentity(formData: FormData) {
     accountRedirect({ error: "identity-save" });
   }
 
-  if (parsed.handle !== existing.handle) {
+  if (handle !== existing.handle) {
     const taken = await prisma.user.findFirst({
-      where: { handle: parsed.handle, NOT: { id: userId } },
+      where: { handle, NOT: { id: userId } },
       select: { id: true }
     });
     if (taken) {
@@ -62,8 +64,8 @@ export async function updateScorecardIdentity(formData: FormData) {
     await prisma.user.update({
       where: { id: userId },
       data: {
-        displayName: parsed.displayName,
-        handle: parsed.handle
+        displayName,
+        handle
       }
     });
   } catch {
