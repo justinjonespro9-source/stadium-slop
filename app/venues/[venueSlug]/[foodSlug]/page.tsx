@@ -890,34 +890,37 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   Boolean(contributorUserId) &&
                   review.reviewerId === contributorUserId;
 
+                const scorecardActionBtn =
+                  "inline-flex shrink-0 max-w-[5.25rem] rounded-md border px-2 py-1 text-[0.48rem] font-black uppercase tracking-[0.08em]";
+
                 const helpfulSlot = isOwnScorecard ? (
                   <button
                     type="button"
                     disabled
-                    className="w-full cursor-not-allowed rounded-full border border-zinc-800 px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500"
+                    className={`${scorecardActionBtn} cursor-not-allowed border-zinc-800 text-zinc-500`}
                     title="You can't mark your own Slop Scorecard helpful"
                   >
-                    Your scorecard · {review.helpfulLikes} helpful
+                    Yours
                   </button>
                 ) : isSignedIn ? (
                   likedReviewIds.has(review.id) ? (
                     <button
                       type="button"
                       disabled
-                      className="w-full cursor-not-allowed rounded-full border border-[var(--slop-orange)] px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-orange)]"
+                      className={`${scorecardActionBtn} cursor-not-allowed border-[var(--slop-orange)] text-[var(--slop-orange)]`}
                     >
-                      Marked helpful · {review.helpfulLikes}
+                      Marked
                     </button>
                   ) : (
-                    <form action={markReviewHelpful}>
+                    <form action={markReviewHelpful} className="inline-flex">
                       <input type="hidden" name="venueSlug" value={venue.slug} />
                       <input type="hidden" name="foodSlug" value={foodItem.slug} />
                       <input type="hidden" name="reviewId" value={review.id} />
                       <button
                         type="submit"
-                        className="w-full rounded-full border border-zinc-800 px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                        className={`${scorecardActionBtn} border-zinc-800 text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]`}
                       >
-                        Mark helpful · {review.helpfulLikes}
+                        Helpful
                       </button>
                     </form>
                   )
@@ -926,9 +929,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     href={`/login?next=${encodeURIComponent(
                       `/venues/${venue.slug}/${foodItem.slug}`
                     )}`}
-                    className="inline-flex w-full justify-center rounded-full border border-zinc-800 px-3 py-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                    className={`${scorecardActionBtn} border-zinc-800 text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]`}
                   >
-                    Sign in to mark helpful · {review.helpfulLikes}
+                    Sign in
                   </Link>
                 );
 
