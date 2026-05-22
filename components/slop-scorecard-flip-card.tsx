@@ -243,10 +243,10 @@ export function SlopScorecardFlipCard({
               <ScorecardFrontHeader slopScore={review.slopScore} />
 
               <div className="flex min-h-0 flex-1 flex-col px-1.5 pt-1 pb-1.5">
-                <div className="slop-scorecard-photo-well slop-scorecard-chamfer-sm flex min-h-0 flex-1 flex-col">
+                <div className="slop-scorecard-photo-well flex min-h-0 flex-1 flex-col">
                   <button
                     type="button"
-                    className="slop-scorecard-photo-well-inner slop-scorecard-chamfer-sm relative block h-full min-h-[10.5rem] w-full flex-1 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-gold-bright)]"
+                    className="slop-scorecard-photo-well-inner relative block h-full min-h-[10.5rem] w-full flex-1 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-gold-bright)]"
                     aria-label={`Flip ${itemName} scorecard to details`}
                     aria-controls={flipRegionId}
                     aria-expanded={isFlipped}
