@@ -27,22 +27,31 @@ export function validateProfileIdentityInput(input: {
   displayName: string;
   handle: string;
 }): { ok: true; displayName: string; handle: string } | { ok: false; errors: ProfileIdentityFieldErrors } {
-  const displayName = input.displayName.trim().replace(/\s+/g, " ");
-  const handle = normalizeContributorHandle(input.handle);
+  const displayName =
+    typeof input.displayName === "string"
+      ? input.displayName.trim().replace(/\s+/g, " ")
+      : "";
+  const rawHandle = typeof input.handle === "string" ? input.handle.trim() : "";
+  const normalizedHandle = normalizeContributorHandle(rawHandle);
 
   const errors: ProfileIdentityFieldErrors = {};
+  const handleErrorMessage = `Use ${HANDLE_BODY_MIN}–${HANDLE_BODY_MAX} letters, numbers, or underscores.`;
 
   if (displayName.length < DISPLAY_NAME_MIN || displayName.length > DISPLAY_NAME_MAX) {
     errors.displayName = `Use ${DISPLAY_NAME_MIN}–${DISPLAY_NAME_MAX} characters.`;
   }
 
-  if (!handle) {
-    errors.handle = `Use ${HANDLE_BODY_MIN}–${HANDLE_BODY_MAX} letters, numbers, or underscores.`;
+  if (!normalizedHandle) {
+    errors.handle = handleErrorMessage;
   }
 
   if (Object.keys(errors).length > 0) {
     return { ok: false, errors };
   }
 
-  return { ok: true, displayName, handle };
+  if (normalizedHandle === null) {
+    return { ok: false, errors: { handle: handleErrorMessage } };
+  }
+
+  return { ok: true, displayName, handle: normalizedHandle };
 }
