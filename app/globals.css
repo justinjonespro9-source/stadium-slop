@@ -111,15 +111,6 @@ body {
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scroll-padding-inline: max(0.5rem, calc((100% - min(100%, 20rem)) / 2));
-  padding-inline: max(0.5rem, calc((100% - min(100%, 20rem)) / 2));
-}
-
-@media (min-width: 640px) {
-  .slop-card-carousel {
-    scroll-padding-inline: 0;
-    padding-inline: 0;
-  }
 }
 
 .brand-cta:focus-visible {
@@ -316,43 +307,70 @@ body {
   cursor: grab;
 }
 
-/* Collectible Slop Scorecard frame — angled cuts, gold trim (Stadium Slop palette) */
+/* Slop Scorecard — trading card 5:7, ~340px wide */
+:root {
+  --slop-scorecard-width: min(100%, 21.25rem);
+  --slop-scorecard-cut: 11px;
+}
+
+.slop-scorecard-chamfer {
+  clip-path: polygon(
+    var(--slop-scorecard-cut) 0%,
+    calc(100% - var(--slop-scorecard-cut)) 0%,
+    100% var(--slop-scorecard-cut),
+    100% calc(100% - var(--slop-scorecard-cut)),
+    calc(100% - var(--slop-scorecard-cut)) 100%,
+    var(--slop-scorecard-cut) 100%,
+    0% calc(100% - var(--slop-scorecard-cut)),
+    0% var(--slop-scorecard-cut)
+  );
+}
+
+/* Collectible frame — navy base, gold trim, 4-corner bevel */
 .slop-scorecard-frame {
-  --slop-card-cut: 10px;
   position: relative;
+  height: 100%;
+  width: 100%;
   padding: 2px;
   background: linear-gradient(
-    145deg,
+    155deg,
     var(--slop-gold-bright) 0%,
-    var(--slop-cream-dim) 22%,
-    var(--slop-gold) 48%,
-    var(--slop-gold-dim) 72%,
-    rgba(11, 27, 43, 0.95) 100%
+    var(--slop-cream-dim) 18%,
+    var(--slop-gold) 42%,
+    rgba(198, 61, 47, 0.35) 68%,
+    var(--slop-navy-deep) 100%
   );
+  filter: drop-shadow(0 0 12px rgba(100, 180, 255, 0.12))
+    drop-shadow(0 16px 32px rgba(0, 0, 0, 0.55));
+}
+
+.slop-scorecard-frame.slop-scorecard-chamfer {
   clip-path: polygon(
-    var(--slop-card-cut) 0,
-    100% 0,
-    100% calc(100% - var(--slop-card-cut)),
-    calc(100% - var(--slop-card-cut)) 100%,
-    0 100%,
-    0 var(--slop-card-cut)
+    var(--slop-scorecard-cut) 0%,
+    calc(100% - var(--slop-scorecard-cut)) 0%,
+    100% var(--slop-scorecard-cut),
+    100% calc(100% - var(--slop-scorecard-cut)),
+    calc(100% - var(--slop-scorecard-cut)) 100%,
+    var(--slop-scorecard-cut) 100%,
+    0% calc(100% - var(--slop-scorecard-cut)),
+    0% var(--slop-scorecard-cut)
   );
-  box-shadow:
-    0 0 0 1px rgba(0, 0, 0, 0.45),
-    0 14px 36px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .slop-scorecard-frame-inner {
-  min-height: 100%;
-  background: linear-gradient(168deg, var(--slop-navy-mid) 0%, var(--slop-navy-deep) 55%, #04080f 100%);
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(168deg, var(--slop-navy-mid) 0%, var(--slop-navy-deep) 52%, #04080f 100%);
   clip-path: polygon(
-    calc(var(--slop-card-cut) - 1px) 0,
-    100% 0,
-    100% calc(100% - var(--slop-card-cut) + 1px),
-    calc(100% - var(--slop-card-cut) + 1px) 100%,
-    0 100%,
-    0 calc(var(--slop-card-cut) - 1px)
+    calc(var(--slop-scorecard-cut) - 2px) 0%,
+    calc(100% - var(--slop-scorecard-cut) + 2px) 0%,
+    100% calc(var(--slop-scorecard-cut) - 2px),
+    100% calc(100% - var(--slop-scorecard-cut) + 2px),
+    calc(100% - var(--slop-scorecard-cut) + 2px) 100%,
+    calc(var(--slop-scorecard-cut) - 2px) 100%,
+    0% calc(100% - var(--slop-scorecard-cut) + 2px),
+    0% calc(var(--slop-scorecard-cut) - 2px)
   );
 }
 
@@ -380,12 +398,31 @@ body {
 }
 
 .slop-scorecard-shell {
+  position: relative;
   perspective: 1200px;
+  width: var(--slop-scorecard-width);
+  max-width: 21.25rem;
+  flex: none;
+  aspect-ratio: 5 / 7;
+  scroll-snap-align: center;
+  transform: scale(0.92);
+  opacity: 0.75;
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.slop-scorecard-shell[data-active="true"] {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 2;
 }
 
 .slop-scorecard-flip-inner {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
 }
@@ -406,18 +443,28 @@ body {
   -webkit-backface-visibility: hidden;
 }
 
+.slop-scorecard-face-front,
 .slop-scorecard-face-back {
-  position: absolute;
-  inset: 0;
-  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slop-scorecard-face-back {
   transform: rotateY(180deg);
 }
 
 .slop-scorecard-rolodex {
+  display: flex;
+  align-items: stretch;
+  gap: 0.65rem;
   scroll-snap-type: x mandatory;
   touch-action: pan-x pan-y;
+  scroll-padding-inline: max(1rem, calc((100% - min(100%, 21.25rem)) / 2));
+  padding-inline: max(1rem, calc((100% - min(100%, 21.25rem)) / 2));
 }
 
 .slop-scorecard-carousel-wrap {
   width: 100%;
+  overflow: hidden;
 }
+

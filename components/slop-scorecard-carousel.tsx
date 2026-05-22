@@ -79,6 +79,12 @@ export function SlopScorecardCarousel({
     });
 
     setActiveIndex(bestIndex);
+
+    cards.forEach((card) => {
+      const idx = Number(card.dataset.cardIndex);
+      const active = Number.isFinite(idx) && idx === bestIndex;
+      card.setAttribute("data-active", active ? "true" : "false");
+    });
   }, []);
 
   useEffect(() => {
@@ -95,6 +101,17 @@ export function SlopScorecardCarousel({
     };
   }, [updateActiveFromScroll, count]);
 
+  useEffect(() => {
+    const root = scrollRef.current;
+    if (!root || count === 0) {
+      return;
+    }
+    root.querySelectorAll<HTMLElement>("[data-card-index]").forEach((card) => {
+      const idx = Number(card.dataset.cardIndex);
+      card.setAttribute("data-active", idx === activeIndex ? "true" : "false");
+    });
+  }, [activeIndex, count]);
+
   const scrollToIndex = useCallback((index: number) => {
     const root = scrollRef.current;
     if (!root) {
@@ -107,6 +124,10 @@ export function SlopScorecardCarousel({
       block: "nearest"
     });
     setActiveIndex(index);
+    root.querySelectorAll<HTMLElement>("[data-card-index]").forEach((card) => {
+      const idx = Number(card.dataset.cardIndex);
+      card.setAttribute("data-active", idx === index ? "true" : "false");
+    });
     dispatchOnCard(root, index, SLOP_SCORECARD_FRONT_EVENT);
   }, []);
 
@@ -194,7 +215,7 @@ export function SlopScorecardCarousel({
 
       <div
         ref={scrollRef}
-        className="slop-card-carousel slop-scorecard-rolodex mt-0 flex snap-x snap-mandatory gap-3 pb-3 sm:gap-4"
+        className="slop-card-carousel slop-scorecard-rolodex mt-0 snap-x snap-mandatory pb-3"
         role="region"
         aria-label="Slop Scorecards"
       >

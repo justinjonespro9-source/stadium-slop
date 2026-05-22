@@ -12,7 +12,7 @@ export function SlopScorecardFrame({
 }) {
   return (
     <div
-      className={`slop-scorecard-frame slop-scorecard-frame--${face} ${className}`.trim()}
+      className={`slop-scorecard-frame slop-scorecard-chamfer slop-scorecard-frame--${face} ${className}`.trim()}
       data-face={face}
     >
       <div className="slop-scorecard-frame-inner">{children}</div>
