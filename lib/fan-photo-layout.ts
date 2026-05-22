@@ -29,24 +29,41 @@ function sortPhotoBackedReviews(a: FoodReview, b: FoodReview): number {
   return reviewPhotoTimeMs(b) - reviewPhotoTimeMs(a);
 }
 
-/** One review per URL (prefer higher helpful, then newer photo). */
+/** Stable key for carousel dedupe — real URL or placeholder-backed fan photo. */
+export function scorecardCarouselPhotoKey(review: FoodReview): string | null {
+  const url = normalizePublicImageUrl(review.photoUrl);
+  if (url) {
+    return url;
+  }
+  const placeholder = review.photoPlaceholder?.trim();
+  if (placeholder) {
+    return `placeholder:${review.id}`;
+  }
+  return null;
+}
+
+export function reviewHasScorecardVisual(review: FoodReview): boolean {
+  return scorecardCarouselPhotoKey(review) != null;
+}
+
+/** One review per visual key (prefer higher helpful, then newer photo). */
 function uniquePhotoBackedReviews(reviews: FoodReview[]): FoodReview[] {
   const byUrl = new Map<string, FoodReview>();
 
   for (const r of reviews) {
-    const url = normalizePublicImageUrl(r.photoUrl);
-    if (!url) {
+    const key = scorecardCarouselPhotoKey(r);
+    if (!key) {
       continue;
     }
 
-    const existing = byUrl.get(url);
+    const existing = byUrl.get(key);
     if (!existing) {
-      byUrl.set(url, r);
+      byUrl.set(key, r);
       continue;
     }
 
     if (sortPhotoBackedReviews(r, existing) < 0) {
-      byUrl.set(url, r);
+      byUrl.set(key, r);
     }
   }
 

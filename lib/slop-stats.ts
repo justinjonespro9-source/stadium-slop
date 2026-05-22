@@ -155,8 +155,12 @@ function dedupeReviewsByUserItemGameDay(reviews: FoodReview[]) {
       reviewsByKey.set(key, review);
       return;
     }
-    const nextHas = Boolean(normalizePublicImageUrl(review.photoUrl));
-    const prevHas = Boolean(normalizePublicImageUrl(existing.photoUrl));
+    const nextHas =
+      Boolean(normalizePublicImageUrl(review.photoUrl)) ||
+      Boolean(review.photoPlaceholder?.trim());
+    const prevHas =
+      Boolean(normalizePublicImageUrl(existing.photoUrl)) ||
+      Boolean(existing.photoPlaceholder?.trim());
     let pick = existing;
     if (nextHas && !prevHas) {
       pick = review;
@@ -506,13 +510,14 @@ export async function getDbBackedItemSlopStats(
 
     const reviews = fallbackReviews.map<FoodReview>((review) => {
       const usableFanPhotos = [...review.photos]
-        .filter((p) => normalizePublicImageUrl(p.url))
+        .filter((p) => normalizePublicImageUrl(p.url) || Boolean(p.placeholder?.trim()))
         .sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
       const primaryPhoto = usableFanPhotos[0];
       const photoUrl = normalizePublicImageUrl(primaryPhoto?.url);
+      const photoPlaceholder = primaryPhoto?.placeholder?.trim() || undefined;
 
       return {
         id: review.id,
@@ -535,11 +540,11 @@ export async function getDbBackedItemSlopStats(
           day: "numeric",
           year: "numeric"
         }),
-        hasPhoto: Boolean(photoUrl),
+        hasPhoto: Boolean(photoUrl || photoPlaceholder),
         photoUrl,
         photoAlt: primaryPhoto?.alt,
         photoLabel: primaryPhoto?.caption ?? undefined,
-        photoPlaceholder: primaryPhoto?.placeholder ?? undefined,
+        photoPlaceholder,
         reviewPhotoCreatedAt: primaryPhoto?.createdAt?.toISOString(),
         primaryFoodPhotoId: primaryPhoto?.id,
         note: review.note ?? undefined

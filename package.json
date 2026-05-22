@@ -17,6 +17,7 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "seed:game-schedule": "tsx scripts/seed-game-schedule.ts",
+    "seed:demo-scorecards": "tsx scripts/seed-demo-scorecards.ts",
     "sync:mlb-schedule": "tsx scripts/sync-mlb-schedule.ts",
     "sync:mls-schedule": "tsx scripts/sync-mls-schedule.ts",
     "sync:nwsl-schedule": "tsx scripts/sync-nwsl-schedule.ts",
