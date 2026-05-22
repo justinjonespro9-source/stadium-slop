@@ -6,6 +6,7 @@ import { isGameDayKeyTodayForVenue } from "./game-day";
 import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { slugFilterInsensitive } from "./public-data";
+import { reviewerCareerStatsByUserId } from "./scorecard-reviewer-stats";
 import {
   foodReviews,
   type FoodReview,
@@ -452,7 +453,8 @@ export async function getDbBackedItemSlopStats(
               select: {
                 id: true,
                 displayName: true,
-                handle: true
+                handle: true,
+                avatarUrl: true
               }
             },
             _count: {
@@ -508,7 +510,12 @@ export async function getDbBackedItemSlopStats(
         ? reviewsForMode
         : getDbReviewsForMode(item.reviews, "allTime", normalizedVenue);
 
+    const careerStats = await reviewerCareerStatsByUserId(
+      fallbackReviews.map((review) => review.user.id)
+    );
+
     const reviews = fallbackReviews.map<FoodReview>((review) => {
+      const stats = careerStats.get(review.user.id);
       const usableFanPhotos = [...review.photos]
         .filter((p) => normalizePublicImageUrl(p.url) || Boolean(p.placeholder?.trim()))
         .sort(
@@ -526,6 +533,11 @@ export async function getDbBackedItemSlopStats(
         reviewerId: review.user.id,
         reviewerName: review.user.displayName,
         reviewerHandle: review.user.handle,
+        reviewerAvatarUrl:
+          normalizePublicImageUrl(review.user.avatarUrl) ?? undefined,
+        reviewerVenuesReviewed: stats?.venuesReviewed,
+        reviewerItemsReviewed: stats?.itemsReviewed,
+        reviewerHelpfulEarned: stats?.helpfulEarned,
         slopScore: Number(review.slopScore),
         napkinRating: Math.min(5, Math.max(1, review.napkinRating)) as 1 | 2 | 3 | 4 | 5,
         labels: review.labels.map(consensusLabelFromDb),

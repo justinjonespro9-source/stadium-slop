@@ -3,30 +3,11 @@ import "server-only";
 import { UserRole } from "@prisma/client";
 
 import { resolveUserRoleForEmail } from "@/lib/auth/admin";
+import {
+  handleBaseFromEmail,
+  uniqueContributorHandle
+} from "@/lib/profile-identity-db";
 import { prisma } from "@/lib/prisma";
-
-function handleBaseFromEmail(email: string): string {
-  const local = email.split("@")[0] ?? "fan";
-  const cleaned = local.replace(/[^a-zA-Z0-9_]/g, "").toLowerCase();
-  return cleaned.slice(0, 24) || "fan";
-}
-
-async function uniqueHandle(base: string): Promise<string> {
-  let candidate = base.startsWith("@") ? base : `@${base}`;
-  let suffix = 0;
-
-  while (true) {
-    const existing = await prisma.user.findUnique({
-      where: { handle: candidate },
-      select: { id: true }
-    });
-    if (!existing) {
-      return candidate;
-    }
-    suffix += 1;
-    candidate = `@${base.replace(/^@/, "")}${suffix}`;
-  }
-}
 
 export type OAuthProfileInput = {
   email: string;
@@ -45,17 +26,23 @@ export async function syncUserFromOAuth(input: OAuthProfileInput) {
   });
 
   if (existing) {
+    const current = await prisma.user.findUnique({
+      where: { id: existing.id },
+      select: { avatarUrl: true }
+    });
     return prisma.user.update({
       where: { id: existing.id },
       data: {
-        displayName: input.displayName,
-        avatarUrl: input.avatarUrl ?? undefined,
+        avatarUrl:
+          current?.avatarUrl != null && current.avatarUrl !== ""
+            ? undefined
+            : (input.avatarUrl ?? undefined),
         role
       }
     });
   }
 
-  const handle = await uniqueHandle(handleBaseFromEmail(email));
+  const handle = await uniqueContributorHandle(handleBaseFromEmail(email));
 
   return prisma.user.create({
     data: {

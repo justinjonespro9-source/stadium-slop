@@ -16,6 +16,13 @@ export type SlopScorecardReviewerProfile = {
 };
 
 /** Public-safe reviewer surface for scorecard back (no profile page). */
+function formatCareerStat(value: number | undefined): string {
+  if (value === undefined || Number.isNaN(value)) {
+    return REVIEWER_PROFILE_STAT_PLACEHOLDER;
+  }
+  return String(value);
+}
+
 export function getSlopScorecardReviewerProfile(
   review: FoodReview
 ): SlopScorecardReviewerProfile {
@@ -23,9 +30,9 @@ export function getSlopScorecardReviewerProfile(
     displayName: getReviewerDisplayName(review),
     handle: getReviewerHandleLabel(review),
     initials: getReviewerInitials(review),
-    venuesReviewed: REVIEWER_PROFILE_STAT_PLACEHOLDER,
-    itemsReviewed: REVIEWER_PROFILE_STAT_PLACEHOLDER,
-    helpfulEarned: REVIEWER_PROFILE_STAT_PLACEHOLDER,
+    venuesReviewed: formatCareerStat(review.reviewerVenuesReviewed),
+    itemsReviewed: formatCareerStat(review.reviewerItemsReviewed),
+    helpfulEarned: formatCareerStat(review.reviewerHelpfulEarned),
     datePosted: review.dateLabel?.trim() || null,
     showFanScout: showFanScoutBadge(review),
     verifiedGameDay: review.verifiedGameDay

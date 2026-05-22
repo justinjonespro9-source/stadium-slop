@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { ActivityReviewCard } from "@/components/account/activity-review-card";
-import { authFieldClass, authLabelClass } from "@/components/auth-ui";
 import type { ProfileBadge, ScoutRank } from "@/lib/account-scout-profile";
 
 export type ProfileDashboardReview = {
@@ -27,8 +26,6 @@ type ProfileDashboardBodyProps = {
   homeVenueLabel: string;
   initials: string;
   avatarUrl: string | null | undefined;
-  cloudinaryReady: boolean;
-  uploadProfileAvatar: (formData: FormData) => Promise<void>;
   mockUserSignOut: () => Promise<void>;
   scoutRank: ScoutRank;
   activitySummary: string;
@@ -51,8 +48,6 @@ export function ProfileDashboardBody({
   homeVenueLabel,
   initials,
   avatarUrl,
-  cloudinaryReady,
-  uploadProfileAvatar,
   mockUserSignOut,
   scoutRank,
   activitySummary,
@@ -97,39 +92,9 @@ export function ProfileDashboardBody({
             homeVenueLabel={homeVenueLabel}
             initials={initials}
           />
-
-          <div className="mt-4 border-t border-[var(--slop-line)] pt-4">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-              Avatar
-            </p>
-            <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-              Your avatar appears on your profile. Food photos live on individual
-              reviews.
-            </p>
-            {cloudinaryReady ? (
-              <form action={uploadProfileAvatar} className="mt-3 space-y-2">
-                <label className={`block ${authLabelClass}`}>
-                  <span className="sr-only">Choose profile avatar</span>
-                  <input
-                    name="avatar"
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp,image/gif"
-                    className={`${authFieldClass} py-2 text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-[var(--slop-orange)] file:px-2.5 file:py-1.5 file:text-[0.65rem] file:font-black file:text-[var(--slop-ink)]`}
-                  />
-                </label>
-                <button
-                  type="submit"
-                  className="inline-flex min-h-9 items-center rounded-lg border border-[var(--slop-gold)]/50 bg-[color:rgba(244,179,33,0.12)] px-4 py-2 text-xs font-black text-[var(--slop-gold-bright)] transition hover:bg-[color:rgba(244,179,33,0.2)]"
-                >
-                  Save avatar
-                </button>
-              </form>
-            ) : (
-              <p className="mt-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-                Add Cloudinary env vars to upload an avatar (~8MB, JPEG/PNG/WebP/GIF).
-              </p>
-            )}
-          </div>
+          <p className="mt-3 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+            Edit your public Scorecard name, handle, and photo in the section above.
+          </p>
         </header>
 
         <div className="flex flex-col gap-4 lg:col-span-8">

@@ -199,6 +199,11 @@ export type FoodReview = {
   reviewerId?: string;
   reviewerName?: string;
   reviewerHandle?: string;
+  /** Contributor profile avatar (scorecard identity, not fan food photo). */
+  reviewerAvatarUrl?: string;
+  reviewerVenuesReviewed?: number;
+  reviewerItemsReviewed?: number;
+  reviewerHelpfulEarned?: number;
   slopScore: number;
   napkinRating: 1 | 2 | 3 | 4 | 5;
   labels: ReviewConsensusLabel[];

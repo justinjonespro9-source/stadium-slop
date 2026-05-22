@@ -163,12 +163,23 @@ function CompactReviewerStrip({ review }: { review: FoodReview }) {
   const handle = getReviewerHandleLabel(review);
   const name = getReviewerDisplayName(review);
   const fanScout = showFanScoutBadge(review);
+  const avatarUrl = normalizePublicImageUrl(review.reviewerAvatarUrl);
 
   return (
     <div className="flex min-w-0 max-w-[52%] items-center gap-2">
       <div className="relative shrink-0">
-        <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--slop-gold)] bg-[var(--slop-navy-deep)] text-[0.7rem] font-black text-[var(--slop-cream)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
-          {initials}
+        <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--slop-gold)] bg-[var(--slop-navy-deep)] text-[0.7rem] font-black text-[var(--slop-cream)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
+          {avatarUrl ? (
+            <Image
+              src={avatarUrl}
+              alt=""
+              fill
+              className="object-cover object-center"
+              sizes="44px"
+            />
+          ) : (
+            initials
+          )}
         </div>
         {fanScout ? (
           <span className="absolute -bottom-0.5 left-1/2 w-max -translate-x-1/2 rounded border border-[var(--slop-gold)]/45 bg-[var(--slop-ink)] px-1 py-px text-[0.36rem] font-black uppercase text-[var(--slop-gold-bright)]">
@@ -207,7 +218,8 @@ export function SlopScorecardFlipCard({
   const rootRef = useRef<HTMLElement>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const flipRegionId = useId();
-  const u = normalizePublicImageUrl(photoUrl);
+  const foodPhotoUrl = normalizePublicImageUrl(photoUrl);
+  const reviewerAvatarUrl = normalizePublicImageUrl(review.reviewerAvatarUrl);
   const reviewerProfile = useMemo(
     () => getSlopScorecardReviewerProfile(review),
     [review]
@@ -263,9 +275,9 @@ export function SlopScorecardFlipCard({
                     aria-expanded={isFlipped}
                     onClick={toggleFlip}
                   >
-                    {u ? (
+                    {foodPhotoUrl ? (
                       <Image
-                        src={u}
+                        src={foodPhotoUrl}
                         alt={photoAlt}
                         fill
                         className="object-cover object-center"
@@ -343,8 +355,8 @@ export function SlopScorecardFlipCard({
               <div className="mt-1 shrink-0">
                 <ReviewerProfileBlock
                   profile={reviewerProfile}
-                  avatarUrl={u}
-                  photoAlt={photoAlt}
+                  avatarUrl={reviewerAvatarUrl}
+                  photoAlt={`${reviewerProfile.displayName} profile photo`}
                 />
               </div>
 

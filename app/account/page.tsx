@@ -3,8 +3,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+import {
+  updateScorecardIdentity,
+  uploadProfileAvatar
+} from "@/app/account/actions";
 import { signOut } from "@/auth";
 import { ProfileDashboardBody } from "@/components/account/profile-dashboard-body";
+import { ScorecardIdentityEditor } from "@/components/account/scorecard-identity-editor";
 import { AuthPageScaffold } from "@/components/auth-ui";
 import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
@@ -17,12 +22,8 @@ import {
   scoutActivitySummary,
   type ScoutProfileInput
 } from "@/lib/account-scout-profile";
-import {
-  isCloudinaryConfigured,
-  logUploadFailure,
-  photoErrorQueryFromUploadFailure,
-  uploadImageFile
-} from "@/lib/cloudinary";
+import { isCloudinaryConfigured } from "@/lib/cloudinary";
+import { handleDisplayFromStored } from "@/lib/profile-identity-display";
 import { prisma } from "@/lib/prisma";
 import { isGameDayKeyTodayForVenue } from "@/lib/game-day";
 import {
@@ -39,45 +40,6 @@ async function contributorSignOut() {
     cookieStore.delete(MOCK_USER_COOKIE_NAME);
   }
   await signOut({ redirectTo: "/" });
-}
-
-async function uploadProfileAvatar(formData: FormData) {
-  "use server";
-
-  const userId = await getContributorUserId();
-  if (!userId) {
-    redirect("/login?next=/account");
-  }
-
-  const file = formData.get("avatar");
-  if (!(file instanceof File) || file.size === 0) {
-    redirect("/account?error=no-file");
-  }
-
-  if (!isCloudinaryConfigured()) {
-    redirect("/account?error=cloudinary");
-  }
-
-  try {
-    const { secureUrl } = await uploadImageFile(file, {
-      folder: `stadium-slop/profiles/${userId}`,
-      publicId: `${userId}-avatar`
-    });
-
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        avatarUrl: secureUrl
-      }
-    });
-  } catch (err) {
-    logUploadFailure("accountAvatar", file, err);
-    const code = photoErrorQueryFromUploadFailure(err);
-    redirect(`/account?error=${encodeURIComponent(code)}`);
-  }
-
-  revalidatePath("/account");
-  redirect("/account");
 }
 
 function reviewRowDateLabel(
@@ -134,12 +96,14 @@ function SignedOutAccount() {
 type AccountPageProps = {
   searchParams?: Promise<{
     error?: string;
+    saved?: string;
   }>;
 };
 
 export default async function AccountPage({ searchParams }: AccountPageProps) {
   const query = (await searchParams) ?? {};
   const uploadError = query.error;
+  const savedNotice = query.saved;
   const notAdminError = query.error === "not-admin";
   const sessionUser = await getSessionUser();
   const userId = await getContributorUserId();
@@ -295,8 +259,20 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       })
     : null;
 
-  const handleDisplay =
-    handle.startsWith("@") || handle.length === 0 ? handle : `@${handle}`;
+  const handleDisplay = handleDisplayFromStored(handle);
+
+  const identityErrorMessage =
+    uploadError === "identity-handle-taken"
+      ? "That handle is already taken. Try another."
+      : uploadError === "identity-handle"
+        ? "Handle must be 3–24 characters (letters, numbers, underscores)."
+        : uploadError === "identity-name"
+          ? "Display name must be 2–40 characters."
+          : uploadError === "identity-invalid"
+            ? "Check your display name and handle, then try again."
+            : uploadError === "identity-save"
+              ? "Could not save identity. Try again."
+              : null;
 
   const uploadErrorMessage =
     uploadError === "too_large"
@@ -351,6 +327,30 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </p>
           </div>
         ) : null}
+        {savedNotice === "identity" ? (
+          <div
+            role="status"
+            className="mb-4 rounded-xl border border-emerald-800/70 bg-emerald-950/40 px-3 py-2.5 text-sm text-emerald-100"
+          >
+            Scorecard identity saved. It will show on your Slop Scorecards.
+          </div>
+        ) : savedNotice === "avatar" ? (
+          <div
+            role="status"
+            className="mb-4 rounded-xl border border-emerald-800/70 bg-emerald-950/40 px-3 py-2.5 text-sm text-emerald-100"
+          >
+            Profile photo saved.
+          </div>
+        ) : null}
+        {identityErrorMessage ? (
+          <div
+            role="alert"
+            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
+          >
+            <p className="font-bold">Scorecard identity</p>
+            <p className="mt-0.5 text-amber-100/95">{identityErrorMessage}</p>
+          </div>
+        ) : null}
         {uploadErrorMessage ? (
           <div
             role="alert"
@@ -361,6 +361,30 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           </div>
         ) : null}
 
+        <div className="brand-card rounded-2xl border border-[var(--slop-gold)]/35 px-4 py-4 sm:px-5 sm:py-5">
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[var(--slop-gold-dim)]">
+            Scorecard identity
+          </p>
+          <p className="mt-1 max-w-2xl text-xs leading-snug text-[var(--slop-cream-dim)]">
+            What other fans see on your Slop Scorecards — name, handle, and photo. No public
+            profile page, bio, or followers.
+          </p>
+          <div className="mt-4">
+            <ScorecardIdentityEditor
+              initialDisplayName={displayName}
+              initialHandle={handle}
+              initials={initials}
+              avatarUrl={avatarUrl}
+              venuesReviewed={venuesReviewed}
+              itemsReviewed={totalReviews}
+              helpfulEarned={helpfulLikesReceived}
+              cloudinaryReady={cloudinaryReady}
+              updateScorecardIdentity={updateScorecardIdentity}
+              uploadProfileAvatar={uploadProfileAvatar}
+            />
+          </div>
+        </div>
+
         <ProfileDashboardBody
           displayName={displayName}
           handleDisplay={handleDisplay}
@@ -368,8 +392,6 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           homeVenueLabel={homeVenueLabel}
           initials={initials}
           avatarUrl={avatarUrl}
-          cloudinaryReady={cloudinaryReady}
-          uploadProfileAvatar={uploadProfileAvatar}
           mockUserSignOut={contributorSignOut}
           scoutRank={scoutRank}
           activitySummary={activitySummary}
