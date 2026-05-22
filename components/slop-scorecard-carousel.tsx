@@ -221,7 +221,7 @@ export function SlopScorecardCarousel({
 
       <div
         ref={scrollRef}
-        className="slop-card-carousel slop-scorecard-rolodex snap-x snap-mandatory"
+        className="slop-card-carousel slop-scorecard-rolodex"
         role="region"
         aria-label="Slop Scorecards"
       >

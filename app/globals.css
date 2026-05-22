@@ -105,11 +105,13 @@ body {
   scroll-snap-align: center;
 }
 
-/* Center Slop Cards in horizontal carousel on narrow viewports */
+/* Horizontal card track — vertical scroll stays on the page */
 .slop-card-carousel {
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x;
   scrollbar-width: thin;
 }
 
@@ -720,13 +722,12 @@ body {
   flex: none;
   aspect-ratio: 5 / 7;
   scroll-snap-align: center;
-  transform: scale(0.84);
-  opacity: 0.42;
-  filter: brightness(0.78) saturate(0.85);
+  scroll-snap-stop: normal;
+  opacity: 0.45;
+  filter: brightness(0.8) saturate(0.88);
   transition:
-    transform 0.32s cubic-bezier(0.22, 0.9, 0.3, 1),
-    opacity 0.32s ease,
-    filter 0.32s ease;
+    opacity 0.28s ease,
+    filter 0.28s ease;
 }
 
 .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-aura {
@@ -734,19 +735,22 @@ body {
 }
 
 .slop-scorecard-shell[data-active="true"] {
-  transform: scale(1.04);
   opacity: 1;
-  filter: brightness(1.04) saturate(1.02);
+  filter: brightness(1.02) saturate(1);
   z-index: 5;
 }
 
-@media (max-width: 639px) {
-  .slop-scorecard-shell[data-active="true"] {
-    transform: scale(1);
+@media (min-width: 640px) {
+  .slop-scorecard-shell {
+    transform: scale(0.9);
+    transition:
+      transform 0.28s ease,
+      opacity 0.28s ease,
+      filter 0.28s ease;
   }
 
-  .slop-scorecard-shell {
-    transform: scale(0.86);
+  .slop-scorecard-shell[data-active="true"] {
+    transform: scale(1.03);
   }
 }
 
@@ -790,10 +794,14 @@ body {
   align-items: center;
   gap: 1.35rem;
   order: 2;
-  scroll-snap-type: x mandatory;
-  touch-action: pan-x pan-y;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x;
+  scroll-snap-type: x proximity;
   scroll-padding-inline: max(1.25rem, calc((100% - min(100%, 21.25rem)) / 2));
-  scroll-padding-block: 0.35rem;
   padding-block: 0.5rem 0.65rem;
   padding-inline: max(1.25rem, calc((100% - min(100%, 21.25rem)) / 2));
 }
@@ -802,11 +810,10 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
+  overflow: visible;
   background: radial-gradient(
     ellipse 80% 60% at 50% 50%,
-    rgba(244, 179, 33, 0.05) 0%,
+    rgba(244, 179, 33, 0.04) 0%,
     transparent 70%
   );
 }
@@ -852,5 +859,39 @@ body {
   #fan-photo-reviews {
     scroll-margin-top: 5.5rem;
   }
+}
+
+/* Item page — compact stats scoreboard */
+.item-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--slop-line-strong);
+  border-radius: 0.5rem;
+  background: var(--slop-line);
+  overflow: hidden;
+}
+
+@media (min-width: 480px) {
+  .item-stats-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 640px) {
+  .item-stats-strip {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.item-stats-cell {
+  background: rgba(11, 27, 43, 0.88);
+}
+
+.item-review-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
 }
 

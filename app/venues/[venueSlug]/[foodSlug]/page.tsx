@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { revalidatePath } from "next/cache";
@@ -30,13 +29,13 @@ import type { ReportContentContext } from "@/lib/report-content";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import {
   FanSignalsPendingPanel,
-  FoodItemHeroPlaceholder,
   GameDayFreshPendingBlock,
   isUnratedItemStats,
   PhotoBackedReviewsEmpty
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
+import { FoodItemStatsStrip } from "@/components/food-item-stats-strip";
 import { SlopScorecardCarousel } from "@/components/slop-scorecard-carousel";
 import { SlopScorecardHelpfulAnchor } from "@/components/slop-scorecard-helpful-anchor";
 import { SlopScorecardHelpfulThumb } from "@/components/slop-scorecard-helpful-thumb";
@@ -62,11 +61,7 @@ import {
 import { FoodItemAwardChips } from "@/components/food-item-award-chips";
 import { ClaimListingCta } from "@/components/claim-listing-cta";
 import { SuggestCorrectionLink } from "@/components/suggest-correction-link";
-import {
-  FanPoweredGuideBadge,
-  FanPoweredGuideNote
-} from "@/components/fan-powered-guide-note";
-import { formatItemGuideTimestamp } from "@/lib/guide-disclaimers";
+import { FanPoweredGuideBadge } from "@/components/fan-powered-guide-note";
 import { isAlcoholRelatedFoodItem } from "@/lib/alcohol-content";
 import { AgeGateProvider } from "@/components/age-gate/age-gate-context";
 import { FoodItemAgeGate } from "@/components/age-gate/food-item-age-gate";
@@ -162,7 +157,7 @@ function FanSignalBreakdown({
   const topPct = maxConsensusPercentage(stats);
 
   return (
-    <div className="rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.85)] p-2.5 sm:p-3">
+    <div className="rounded-lg border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.55)] p-2 sm:p-2.5">
       <h3 className="text-xs font-black uppercase tracking-[0.08em] text-[var(--slop-cream-muted)]">
         {title}
       </h3>
@@ -469,19 +464,13 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     foodItem.slug
   );
 
-  const { heroEntry, additionalFanPhotos, photoBackedReviews } = buildItemFanPhotoLayout(
+  const { heroEntry, photoBackedReviews } = buildItemFanPhotoLayout(
     careerStats.reviews,
     foodPhotos,
     foodItem.name
   );
 
   const heroImageUrl = normalizePublicImageUrl(heroEntry?.url);
-  const heroAlt =
-    heroEntry?.alt ?? `${foodItem.name} fan photo`;
-  const heroEmoji =
-    foodPhotos.find((p) => !p.imageUrl)?.imagePlaceholder ??
-    foodPhotos[0]?.imagePlaceholder ??
-    "🍔";
   const contributorUserId = await getContributorUserId();
   const isSignedIn = Boolean(contributorUserId);
   let hasTodaysReview = false;
@@ -599,280 +588,128 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           />
         </Suspense>
 
-        <header className="space-y-2.5 pt-2 sm:space-y-3 sm:pt-3">
+        <header className="space-y-2 pt-1 sm:space-y-2.5 sm:pt-2">
           <div className="flex flex-wrap items-center gap-1.5">
             {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
-              <BrandBadgeIcon size={22} title="Featured on Stadium Slop" />
+              <BrandBadgeIcon size={20} title="Featured on Stadium Slop" />
             ) : null}
-            <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] bg-[rgba(245,233,208,0.06)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] sm:px-2.5 sm:text-xs">
+            <p className="inline-flex rounded-full border border-[var(--slop-line)] px-2 py-0.5 text-[0.6rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)]">
               {foodItem.itemType} · {foodItem.category}
             </p>
             {foodItem.ageRestricted ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] sm:text-xs">
+              <p className="inline-flex rounded-full border border-[var(--slop-line)] px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-cream-muted)]">
                 21+
               </p>
             ) : null}
             {foodItem.isPromoted ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.1)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] sm:text-xs">
+              <p className="inline-flex rounded-full border border-[var(--slop-gold)]/45 px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-gold-bright)]">
                 Promoted
               </p>
             ) : null}
             {foodItem.isNewThisSeason ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-line-strong)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] sm:text-xs">
+              <p className="inline-flex rounded-full border border-[var(--slop-line)] px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-cream-muted)]">
                 New
               </p>
             ) : null}
             {editorialVenueBadge ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-gold)] bg-[rgba(244,179,33,0.08)] px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] sm:text-xs">
+              <p className="inline-flex rounded-full border border-[var(--slop-gold)]/40 px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-gold-bright)]">
                 {editorialVenueBadge}
               </p>
             ) : null}
           </div>
 
-          <h1 className="brand-headline max-w-4xl text-2xl leading-[1.08] tracking-tight text-[var(--slop-cream)] sm:text-5xl">
+          <h1 className="brand-headline max-w-4xl text-2xl leading-[1.08] tracking-tight text-[var(--slop-cream)] sm:text-4xl">
             {foodItem.name}
           </h1>
 
           <FoodItemAwardChips chips={awardChips} />
 
-          <div className="flex flex-wrap items-center gap-2">
-            <FanPoweredGuideBadge />
-            <FanPoweredGuideNote
-              preset="food-scores"
-              className="min-w-0 flex-1"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 sm:grid sm:grid-cols-12 sm:gap-2.5">
-            <div className="slop-score-callout relative overflow-hidden rounded-xl px-3 py-2.5 sm:col-span-5 sm:rounded-lg sm:px-4 sm:py-3">
-              <p className="text-[0.55rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-                Slop score
-              </p>
-              <p className="mt-1 text-3xl font-black tabular-nums leading-none tracking-tight text-[var(--slop-orange)] sm:text-4xl">
-                {unratedSeason ? "—" : seasonStats.averageSlopScore.toFixed(1)}
-              </p>
-              {!unratedSeason ? (
-                <p className="mt-1 text-[0.65rem] font-bold leading-snug text-[var(--slop-cream-muted)]">
-                  {slopTier}
-                </p>
-              ) : (
-                <p className="mt-1 text-[0.65rem] text-[var(--slop-cream-dim)]">
-                  Awaiting first season score
-                </p>
-              )}
-            </div>
-
-            <div
-              className={`relative overflow-hidden rounded-xl px-3 py-2.5 sm:col-span-4 sm:rounded-lg sm:px-4 sm:py-3 ${
-                hasGameDayFreshToday
-                  ? "slop-fresh-glow border border-emerald-400/40 bg-[color:rgba(6,22,16,0.55)]"
-                  : "border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.88)] shadow-[var(--slop-shadow-inset)]"
-              }`}
-            >
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-[0.55rem] font-black uppercase tracking-[0.14em] text-emerald-200/95">
-                  Fresh signal
-                </p>
-                {hasGameDayFreshToday ? (
-                  <span className="inline-flex items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/55 px-1.5 py-0.5 text-[0.45rem] font-black uppercase tracking-wider text-emerald-100">
-                    <span
-                      className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400"
-                      aria-hidden
-                    />
-                    Live
-                  </span>
-                ) : null}
-              </div>
-              <p className="mt-1 text-2xl font-black tabular-nums leading-none text-[var(--slop-cream)] sm:text-3xl">
-                {hasGameDayFreshToday ? freshStats.averageSlopScore.toFixed(1) : "—"}
-              </p>
-              <p className="mt-1 text-[0.58rem] font-semibold text-[var(--slop-cream-dim)]">
-                {hasGameDayFreshToday
-                  ? foodItem.freshWindowLabel
-                    ? `Window · ${foodItem.freshWindowLabel}`
-                    : "Game-day takes"
-                  : "No Game Day Fresh yet."}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 sm:col-span-3 sm:grid-cols-1 sm:gap-2">
-              <div className="rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.88)] px-2.5 py-2 shadow-[var(--slop-shadow-inset)] sm:rounded-lg sm:px-3 sm:py-2.5">
-                <p className="text-[0.5rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-                  Reviews
-                </p>
-                <p className="mt-0.5 text-lg font-black tabular-nums text-[var(--slop-cream)] sm:text-xl">
-                  {seasonStats.reviewCount}
-                </p>
-                {napkinEligible ? (
-                  <p className="text-[0.55rem] text-[var(--slop-cream-dim)]">
-                    {seasonStats.roundedNapkinRating}/5 napkins
-                  </p>
-                ) : (
-                  <p className="text-[0.55rem] text-[var(--slop-cream-dim)]">Season scope</p>
-                )}
-              </div>
-              <div className="rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-2.5 py-2 shadow-[var(--slop-shadow-inset)] sm:rounded-lg sm:px-3 sm:py-2.5">
-                <p className="text-[0.5rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-                  Price
-                </p>
-                <p className="mt-0.5 text-base font-bold tabular-nums text-[var(--slop-cream-muted)] sm:text-lg">
-                  {priceIntel.displayPrice
-                    ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
-                    : "—"}
-                </p>
-                <p className="truncate text-[0.55rem] text-[var(--slop-cream-dim)]">
-                  {foodItem.priceLastConfirmedLabel
-                    ? foodItem.priceLastConfirmedLabel
-                    : priceIntel.reportCount
-                      ? `${priceIntel.reportCount} reports`
-                      : "Fan reports"}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div
-            aria-label={heroAlt}
-            className="brand-card relative aspect-[16/10] overflow-hidden rounded-2xl border bg-black sm:aspect-[16/9]"
-          >
-            {heroImageUrl ? (
-              <Image
-                src={heroImageUrl}
-                alt={heroAlt}
-                fill
-                className="object-contain object-center"
-                sizes="(max-width: 1024px) 100vw, 640px"
-                priority
-              />
-            ) : (
-              <FoodItemHeroPlaceholder
-                foodName={foodItem.name}
-                emoji={heroEmoji}
-                reviewHref={reviewPath}
-              />
-            )}
-          </div>
-
-          <Link
-            href={reviewPath}
-            className="brand-cta inline-flex w-full justify-center rounded-full px-5 py-2.5 text-sm font-black transition sm:w-auto sm:py-3"
-          >
-            {reviewCtaLabel}
-          </Link>
-          {isSignedIn ? (
-            <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-              {activeGame
-                ? "One review per item per game day — location certified at submit."
-                : "One review per item per game day — submit opens during active home-game windows."}
-            </p>
-          ) : activeGame ? (
-            <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-              Sign in to leave a game-day certified review during this home game.
-            </p>
-          ) : (
-            <p className="text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-              Browse anytime — certified reviews open during home games.
-            </p>
-          )}
-
-          <p className="text-xs text-[var(--slop-cream-dim)]">
+          <p className="text-[0.7rem] text-[var(--slop-cream-dim)]">
             {venue.name} · {vendor ? vendor.name : "Vendor TBD"} · {foodItem.location}
           </p>
 
           {foodItem.description ? (
-            <p className="line-clamp-2 text-sm leading-snug text-[var(--slop-cream-muted)]">
+            <p className="line-clamp-2 text-[0.75rem] leading-snug text-[var(--slop-cream-muted)]">
               {foodItem.description}
             </p>
           ) : null}
-          <FanPoweredGuideNote
-            preset="food-menu"
-            className="pt-0.5"
-            lastUpdated={formatItemGuideTimestamp(foodItem)}
-          />
-          <SuggestCorrectionLink
-            className="pt-1"
-            context={{
-              kind: "item",
-              venueName: venue.name,
-              venueSlug: venue.slug,
-              vendorName: vendor?.name,
-              vendorSlug: vendor?.slug,
-              itemName: foodItem.name,
-              itemSlug: foodItem.slug,
-              pagePath: `/venues/${venue.slug}/${foodItem.slug}`
-            }}
-          />
-        </header>
 
-        {!hasGameDayFreshToday ? (
-          <div className="mt-2">
-            <GameDayFreshPendingBlock />
+          <FoodItemStatsStrip
+            slopScore={unratedSeason ? "—" : seasonStats.averageSlopScore.toFixed(1)}
+            slopDetail={unratedSeason ? undefined : slopTier}
+            slopUnrated={unratedSeason}
+            freshScore={
+              hasGameDayFreshToday ? freshStats.averageSlopScore.toFixed(1) : "—"
+            }
+            freshLive={hasGameDayFreshToday}
+            freshDetail={
+              hasGameDayFreshToday
+                ? foodItem.freshWindowLabel
+                  ? foodItem.freshWindowLabel
+                  : "Game-day takes"
+                : "Opens on game day"
+            }
+            reviewCount={seasonStats.reviewCount}
+            reviewDetail={
+              napkinEligible
+                ? `${seasonStats.roundedNapkinRating}/5 napkins`
+                : "Season scope"
+            }
+            priceDisplay={
+              priceIntel.displayPrice
+                ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
+                : "—"
+            }
+            priceDetail={
+              foodItem.priceLastConfirmedLabel ??
+              (priceIntel.reportCount ? `${priceIntel.reportCount} reports` : "Fan reports")
+            }
+            replayLabel={
+              unratedSeason ? undefined : seasonStats.topReplayValue?.label
+            }
+            replayDetail={
+              seasonStats.topReplayValue && seasonStats.topReplayValue.percentage > 0
+                ? `${seasonStats.topReplayValue.percentage}% fans`
+                : undefined
+            }
+          />
+
+          <div className="item-review-cta-row">
+            <Link
+              href={reviewPath}
+              className="brand-cta inline-flex shrink-0 items-center justify-center rounded-full px-4 py-2 text-[0.7rem] font-black uppercase tracking-[0.06em] sm:text-xs"
+            >
+              {reviewCtaLabel}
+            </Link>
+            <p className="min-w-0 flex-1 text-[0.58rem] leading-snug text-[var(--slop-cream-dim)]">
+              {isSignedIn
+                ? activeGame
+                  ? "Certified reviews during this home game."
+                  : "Reviews open during verified home-game windows."
+                : activeGame
+                  ? "Sign in to review during this home game."
+                  : "Browse anytime — reviews open on game day."}
+            </p>
           </div>
-        ) : foodItem.freshSignal ? (
-          <section className="relative mt-2 overflow-hidden rounded-xl border border-emerald-500/35 bg-[color:rgba(6,22,16,0.45)] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_0_24px_rgba(52,211,153,0.08)] sm:py-2.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/45 px-1.5 py-0.5 text-[0.45rem] font-black uppercase tracking-wider text-emerald-100">
-                <span
-                  className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400"
-                  aria-hidden
-                />
-                Live board
-              </span>
-              <span className="rounded border border-[var(--slop-line)] px-1.5 py-0.5 text-[0.6rem] font-bold text-[var(--slop-cream-muted)]">
-                {foodItem.freshReviewCount} takes · {foodItem.freshWindowLabel ?? "today"}
-              </span>
-            </div>
-            <h2 className="mt-1.5 text-base font-black leading-tight text-[var(--slop-cream)] sm:text-lg">
-              {foodItem.freshSignal}
-            </h2>
-            {foodItem.freshSignalReason ? (
-              <p className="mt-1 line-clamp-2 text-[0.7rem] leading-snug text-[var(--slop-cream-muted)]">
-                {foodItem.freshSignalReason}
-              </p>
-            ) : null}
-          </section>
-        ) : null}
-
-        <section className="mt-3 border-t border-[var(--slop-line-strong)] pt-3 sm:mt-4 sm:pt-4">
-          <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            Fan signals
-          </h2>
-          {unratedSeason ? (
-            <div className="mt-2">
-              <FanSignalsPendingPanel />
-            </div>
-          ) : (
-            <div className="mt-2 grid gap-2 sm:grid-cols-2 sm:gap-2.5">
-              <FanSignalBreakdown title="Replay value" stats={seasonStats.replayValue} />
-              <FanSignalBreakdown title="Price check" stats={seasonStats.priceCheck} />
-            </div>
-          )}
-        </section>
+        </header>
 
         <section
           id="fan-photo-reviews"
-          className="scroll-mt-28 border-t border-[var(--slop-line-strong)] pt-4 pb-4 sm:scroll-mt-24 sm:pt-5 sm:pb-5"
+          className="scroll-mt-24 pt-2 pb-3 sm:scroll-mt-20 sm:pt-3 sm:pb-4"
         >
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
+            <h2 className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
               Slop Scorecards
             </h2>
-            <FanPoweredGuideBadge />
+            {helpfulStatusMessage ? (
+              <p
+                className="text-[0.58rem] font-semibold text-[var(--slop-cream-muted)]"
+                role="status"
+              >
+                {helpfulStatusMessage}
+              </p>
+            ) : null}
           </div>
-          {helpfulStatusMessage ? (
-            <p
-              className="mt-2 rounded-lg border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.88)] px-3 py-2 text-xs font-semibold text-[var(--slop-cream-muted)]"
-              role="status"
-            >
-              {helpfulStatusMessage}
-            </p>
-          ) : null}
-          <FanPoweredGuideNote preset="food-reviews" className="mt-1.5" />
-          <ReportContentLink
-            context={baseReportContext}
-            variant="section"
-            className="mt-1"
-          />
           <Suspense fallback={null}>
             <SlopScorecardHelpfulAnchor />
           </Suspense>
@@ -1020,39 +857,73 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               foodSlug={foodItem.slug}
             />
           )}
-
-          <p className="mt-1.5 text-[0.65rem] text-[var(--slop-cream-dim)]">
-            Fan Slop Scorecards · helpful votes need sign-in (not on your own)
-          </p>
         </section>
 
-        {additionalFanPhotos.length > 0 ? (
-          <section className="mt-2 rounded-2xl border border-zinc-800 bg-zinc-950/80 px-3 py-3 sm:px-4">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
-              More fan shots
-            </p>
-            <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-              {additionalFanPhotos.map((entry) => (
-                <div
-                  key={entry.url}
-                  className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-zinc-800 bg-black"
-                >
-                  <Image
-                    src={entry.url}
-                    alt={entry.alt}
-                    fill
-                    className="object-cover"
-                    sizes="64px"
+        {!hasGameDayFreshToday ? (
+          <div className="mt-3 border-t border-[var(--slop-line)] pt-3">
+            <GameDayFreshPendingBlock />
+          </div>
+        ) : foodItem.freshSignal ? (
+          <section className="mt-3 border-t border-[var(--slop-line)] pt-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-[0.55rem] font-black uppercase tracking-[0.12em] text-emerald-200/90">
+                Fresh signal
+              </p>
+              {hasGameDayFreshToday ? (
+                <span className="inline-flex items-center gap-1 text-[0.5rem] font-bold text-emerald-300/90">
+                  <span
+                    className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400"
+                    aria-hidden
                   />
-                </div>
-              ))}
+                  Live · {foodItem.freshReviewCount} takes
+                </span>
+              ) : null}
             </div>
+            <p className="mt-1 text-sm font-black text-[var(--slop-cream)]">
+              {foodItem.freshSignal}
+            </p>
+            {foodItem.freshSignalReason ? (
+              <p className="mt-0.5 line-clamp-2 text-[0.68rem] text-[var(--slop-cream-muted)]">
+                {foodItem.freshSignalReason}
+              </p>
+            ) : null}
           </section>
         ) : null}
 
+        <section className="mt-3 border-t border-[var(--slop-line)] pt-3 sm:mt-4">
+          <h2 className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+            Fan signals
+          </h2>
+          {unratedSeason ? (
+            <div className="mt-1.5">
+              <FanSignalsPendingPanel />
+            </div>
+          ) : (
+            <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
+              <FanSignalBreakdown title="Replay value" stats={seasonStats.replayValue} />
+              <FanSignalBreakdown title="Price check" stats={seasonStats.priceCheck} />
+            </div>
+          )}
+          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.58rem] text-[var(--slop-cream-dim)]">
+            <FanPoweredGuideBadge />
+            <ReportContentLink context={baseReportContext} variant="section" />
+            <SuggestCorrectionLink
+              context={{
+                kind: "item",
+                venueName: venue.name,
+                venueSlug: venue.slug,
+                vendorName: vendor?.name,
+                vendorSlug: vendor?.slug,
+                itemName: foodItem.name,
+                itemSlug: foodItem.slug,
+                pagePath: `/venues/${venue.slug}/${foodItem.slug}`
+              }}
+            />
+          </div>
+        </section>
 
         {vendor && moreFromVendor.length > 0 ? (
-          <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
+          <section className="mt-4 border-t border-[var(--slop-line)] py-3 sm:py-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-sm font-black text-[var(--slop-cream)]">
                 More · {vendor.name}
@@ -1093,8 +964,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           </section>
         ) : null}
 
-        <section className="border-t border-[var(--slop-line-strong)] py-4 sm:py-5">
-          <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+        <section className="mt-4 border-t border-[var(--slop-line)] py-3 sm:py-4">
+          <h2 className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
             Listing · price
           </h2>
           <p className="mt-1.5 text-xs text-[var(--slop-cream-dim)]">
