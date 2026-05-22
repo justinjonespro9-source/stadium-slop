@@ -39,6 +39,7 @@ import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
 import { SlopScorecardCarousel } from "@/components/slop-scorecard-carousel";
 import { SlopScorecardHelpfulAnchor } from "@/components/slop-scorecard-helpful-anchor";
+import { SlopScorecardHelpfulThumb } from "@/components/slop-scorecard-helpful-thumb";
 import {
   SlopCardShareModule,
   type SlopCardSharePreview
@@ -850,7 +851,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
         <section
           id="fan-photo-reviews"
-          className="scroll-mt-28 border-t border-[var(--slop-line-strong)] pt-6 pb-4 sm:scroll-mt-24 sm:py-5"
+          className="scroll-mt-28 border-t border-[var(--slop-line-strong)] pt-4 pb-4 sm:scroll-mt-24 sm:pt-5 sm:pb-5"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
@@ -895,7 +896,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   Boolean(contributorUserId) &&
                   review.reviewerId === contributorUserId;
 
-                const helpfulSlot = isOwnScorecard ? (
+                const backHelpfulSlot = isOwnScorecard ? (
                   <button
                     type="button"
                     disabled
@@ -932,6 +933,51 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   </Link>
                 );
 
+                const frontHelpfulMarked = likedReviewIds.has(review.id);
+                const frontHelpfulSlot = isOwnScorecard ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="slop-scorecard-helpful-icon slop-scorecard-helpful-icon--muted"
+                    title="You can't mark your own Slop Scorecard helpful"
+                    aria-label="Your scorecard"
+                  >
+                    <SlopScorecardHelpfulThumb />
+                  </button>
+                ) : isSignedIn ? (
+                  frontHelpfulMarked ? (
+                    <button
+                      type="button"
+                      disabled
+                      className="slop-scorecard-helpful-icon slop-scorecard-helpful-icon--marked"
+                      aria-label="Already marked helpful"
+                    >
+                      <SlopScorecardHelpfulThumb filled />
+                    </button>
+                  ) : (
+                    <form action={markReviewHelpful} className="inline-flex">
+                      <input type="hidden" name="venueSlug" value={venue.slug} />
+                      <input type="hidden" name="foodSlug" value={foodItem.slug} />
+                      <input type="hidden" name="reviewId" value={review.id} />
+                      <button
+                        type="submit"
+                        className="slop-scorecard-helpful-icon"
+                        aria-label="Mark helpful"
+                      >
+                        <SlopScorecardHelpfulThumb />
+                      </button>
+                    </form>
+                  )
+                ) : (
+                  <Link
+                    href={`/login?next=${encodeURIComponent(itemPageWithReviewsAnchor)}`}
+                    className="slop-scorecard-helpful-icon"
+                    aria-label="Sign in to mark helpful"
+                  >
+                    <SlopScorecardHelpfulThumb />
+                  </Link>
+                );
+
                 const reportSlot = (
                   <ReportContentLink
                     context={{
@@ -960,7 +1006,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     napkinEligible={napkinEligible}
                     signalLine={getPrimaryConsensusLabel(review)}
                     duplicateHeroBadge={heroDup}
-                    helpfulSlot={helpfulSlot}
+                    frontHelpfulSlot={frontHelpfulSlot}
+                    backHelpfulSlot={backHelpfulSlot}
                     reportSlot={reportSlot}
                   />
                 );

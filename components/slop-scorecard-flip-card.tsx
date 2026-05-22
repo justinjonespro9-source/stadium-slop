@@ -40,7 +40,10 @@ export type SlopScorecardFlipCardProps = {
   photoPlaceholderEmoji?: string;
   napkinEligible: boolean;
   signalLine?: string;
-  helpfulSlot: ReactNode;
+  /** Icon-only helpful control on the card front (does not flip the card). */
+  frontHelpfulSlot: ReactNode;
+  /** Full helpful / report controls on the card back. */
+  backHelpfulSlot: ReactNode;
   reportSlot: ReactNode;
   duplicateHeroBadge?: boolean;
 };
@@ -89,25 +92,17 @@ function SlopScoreBadge({ score }: { score: number }) {
   );
 }
 
-function ScorecardFrontHeader({
-  venueName,
-  slopScore
-}: {
-  venueName: string;
-  slopScore: number;
-}) {
+function ScorecardFrontHeader({ slopScore }: { slopScore: number }) {
   return (
-    <div className="slop-scorecard-header relative z-[2] flex shrink-0 items-start justify-between gap-2 px-2.5 py-2">
-      <div className="flex min-w-0 flex-1 items-center gap-2">
-        <BrandBadgeIcon size={30} title="Stadium Slop" />
-        <div className="min-w-0 leading-tight">
-          <p className="text-[0.62rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream)]">
-            Slop Scorecard
-          </p>
-          <p className="mt-0.5 truncate text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-            {venueName}
-          </p>
-        </div>
+    <div className="slop-scorecard-header slop-scorecard-header--front relative z-[2] grid shrink-0 grid-cols-[auto_1fr_auto] items-center gap-1 px-2 py-2">
+      <BrandBadgeIcon size={38} title="Stadium Slop" className="shrink-0" />
+      <div className="flex flex-col items-center justify-center leading-none">
+        <span className="text-[0.56rem] font-black uppercase tracking-[0.16em] text-[var(--slop-cream)]">
+          Slop
+        </span>
+        <span className="mt-0.5 text-[0.56rem] font-black uppercase tracking-[0.16em] text-[var(--slop-cream)]">
+          Scorecard
+        </span>
       </div>
       <SlopScoreBadge score={slopScore} />
     </div>
@@ -188,7 +183,8 @@ export function SlopScorecardFlipCard({
   photoPlaceholderEmoji,
   napkinEligible,
   signalLine,
-  helpfulSlot,
+  frontHelpfulSlot,
+  backHelpfulSlot,
   reportSlot,
   duplicateHeroBadge
 }: SlopScorecardFlipCardProps) {
@@ -246,7 +242,7 @@ export function SlopScorecardFlipCard({
         <div className="slop-scorecard-face slop-scorecard-face-front absolute inset-0">
           <SlopScorecardFrame face="front" className="h-full w-full">
             <div className="flex h-full min-h-0 flex-col">
-              <ScorecardFrontHeader venueName={venueName} slopScore={review.slopScore} />
+              <ScorecardFrontHeader slopScore={review.slopScore} />
 
               <div className="flex min-h-0 flex-1 flex-col px-1.5 pt-1 pb-1.5">
                 <div className="slop-scorecard-photo-well slop-scorecard-chamfer-sm flex min-h-0 flex-1 flex-col">
@@ -297,24 +293,16 @@ export function SlopScorecardFlipCard({
 
                 <div className="slop-scorecard-footer relative z-[2] flex shrink-0 items-end justify-between gap-2 px-2 py-2">
                   <CompactReviewerStrip review={review} />
-                  <div className="slop-scorecard-footer-actions">
-                    <span className="slop-scorecard-helpful-count">
-                      <span aria-hidden className="text-[0.55rem]">
-                        👍
+                  <ScorecardNoFlip>
+                    <div className="slop-scorecard-helpful-row">
+                      <span className="slop-scorecard-helpful-count tabular-nums">
+                        {review.helpfulLikes}
                       </span>
-                      <span className="tabular-nums">{review.helpfulLikes}</span>
-                    </span>
-                    <div className="slop-scorecard-footer-btn-row">
-                      <button
-                        type="button"
-                        className="slop-scorecard-btn-pill"
-                        onClick={toggleFlip}
-                      >
-                        Details
-                      </button>
-                      <div className="slop-scorecard-action-compact">{helpfulSlot}</div>
+                      <div className="slop-scorecard-helpful-icon-slot">
+                        {frontHelpfulSlot}
+                      </div>
                     </div>
-                  </div>
+                  </ScorecardNoFlip>
                 </div>
               </div>
             </div>
@@ -439,7 +427,7 @@ export function SlopScorecardFlipCard({
 
               <ScorecardNoFlip>
                 <div className="mt-2 shrink-0 space-y-1 border-t border-[var(--slop-line)] pt-2">
-                  {helpfulSlot}
+                  {backHelpfulSlot}
                   {reportSlot}
                 </div>
               </ScorecardNoFlip>

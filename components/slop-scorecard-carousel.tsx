@@ -157,51 +157,52 @@ export function SlopScorecardCarousel({
     return null;
   }
 
+  const carouselControls =
+    cardCount > 1 ? (
+      <div className="slop-scorecard-carousel-controls flex flex-wrap items-center justify-center gap-2 px-1">
+        <button
+          type="button"
+          onClick={goPrev}
+          disabled={activeIndex <= 0}
+          className="min-h-10 rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.9)] px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] transition enabled:hover:border-[var(--slop-gold)] enabled:hover:text-[var(--slop-gold-bright)] disabled:opacity-40"
+          aria-label="Previous scorecard"
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          onClick={flipActive}
+          className="min-h-10 rounded-full border border-[var(--slop-gold)]/55 bg-[color:rgba(244,179,33,0.14)] px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] transition hover:border-[var(--slop-gold)] hover:bg-[color:rgba(244,179,33,0.22)]"
+          aria-label="Flip active scorecard to details"
+        >
+          Details
+        </button>
+        <button
+          type="button"
+          onClick={goNext}
+          disabled={activeIndex >= cardCount - 1}
+          className="min-h-10 rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.9)] px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] transition enabled:hover:border-[var(--slop-gold)] enabled:hover:text-[var(--slop-gold-bright)] disabled:opacity-40"
+          aria-label="Next scorecard"
+        >
+          Next
+        </button>
+      </div>
+    ) : (
+      <div className="slop-scorecard-carousel-controls flex justify-center">
+        <button
+          type="button"
+          onClick={flipActive}
+          className="min-h-10 rounded-full border border-[var(--slop-gold)]/55 bg-[color:rgba(244,179,33,0.14)] px-5 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] transition hover:border-[var(--slop-gold)]"
+        >
+          Details
+        </button>
+      </div>
+    );
+
   return (
     <div className="slop-scorecard-carousel-wrap">
       {cardCount > 1 ? (
-        <div className="slop-scorecard-carousel-controls mb-3 flex flex-wrap items-center justify-center gap-2 px-1 pt-1">
-          <button
-            type="button"
-            onClick={goPrev}
-            disabled={activeIndex <= 0}
-            className="min-h-10 rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.9)] px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] transition enabled:hover:border-[var(--slop-gold)] enabled:hover:text-[var(--slop-gold-bright)] disabled:opacity-40"
-            aria-label="Previous scorecard"
-          >
-            Previous
-          </button>
-          <button
-            type="button"
-            onClick={flipActive}
-            className="min-h-10 rounded-full border border-[var(--slop-gold)]/55 bg-[color:rgba(244,179,33,0.14)] px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] transition hover:border-[var(--slop-gold)] hover:bg-[color:rgba(244,179,33,0.22)]"
-            aria-label="Flip active scorecard to details"
-          >
-            Details
-          </button>
-          <button
-            type="button"
-            onClick={goNext}
-            disabled={activeIndex >= cardCount - 1}
-            className="min-h-10 rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.9)] px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] transition enabled:hover:border-[var(--slop-gold)] enabled:hover:text-[var(--slop-gold-bright)] disabled:opacity-40"
-            aria-label="Next scorecard"
-          >
-            Next
-          </button>
-        </div>
-      ) : (
-        <div className="slop-scorecard-carousel-controls mb-3 flex justify-center pt-1">
-          <button
-            type="button"
-            onClick={flipActive}
-            className="min-h-10 rounded-full border border-[var(--slop-gold)]/55 bg-[color:rgba(244,179,33,0.14)] px-5 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] transition hover:border-[var(--slop-gold)]"
-          >
-            Details
-          </button>
-        </div>
-      )}
-
-      {cardCount > 1 ? (
-        <p className="mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[0.58rem] font-bold tabular-nums text-[var(--slop-cream-dim)]">
+        <p className="slop-scorecard-carousel-index mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[0.58rem] font-bold tabular-nums text-[var(--slop-cream-dim)]">
           <span>
             {activeIndex + 1} / {cardCount}
           </span>
@@ -220,17 +221,19 @@ export function SlopScorecardCarousel({
 
       <div
         ref={scrollRef}
-        className="slop-card-carousel slop-scorecard-rolodex mt-0 snap-x snap-mandatory pb-3"
+        className="slop-card-carousel slop-scorecard-rolodex snap-x snap-mandatory"
         role="region"
         aria-label="Slop Scorecards"
       >
         {children}
       </div>
 
+      {carouselControls}
+
       {swipeHint && cardCount > 1 ? (
-        <p className="mt-0.5 text-center text-[0.6rem] font-semibold text-[var(--slop-cream-dim)]">
+        <p className="slop-scorecard-carousel-hint mt-2 text-center text-[0.6rem] font-semibold text-[var(--slop-cream-dim)]">
           <span className="sm:hidden">Swipe the deck · </span>
-          Tap Details or the photo to flip
+          Tap the card or Details to flip
         </p>
       ) : null}
     </div>

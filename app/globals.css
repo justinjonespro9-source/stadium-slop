@@ -345,8 +345,12 @@ body {
   position: relative;
   height: 100%;
   width: 100%;
-  filter: drop-shadow(0 0 10px rgba(244, 179, 33, 0.12))
-    drop-shadow(0 18px 38px rgba(0, 0, 0, 0.58));
+  filter: none;
+}
+
+.slop-scorecard-shell[data-active="true"] .slop-scorecard-collectible {
+  filter: drop-shadow(0 0 10px rgba(244, 179, 33, 0.14))
+    drop-shadow(0 16px 32px rgba(0, 0, 0, 0.55));
 }
 
 .slop-scorecard-collectible-aura {
@@ -572,6 +576,10 @@ body {
   background: linear-gradient(180deg, rgba(17, 35, 55, 0.98) 0%, rgba(8, 18, 28, 0.94) 100%);
 }
 
+.slop-scorecard-header--front {
+  min-height: 3.25rem;
+}
+
 .slop-scorecard-info-block {
   padding: 0.5rem 0.65rem 0.35rem;
 }
@@ -579,12 +587,6 @@ body {
 .slop-scorecard-footer {
   border-top: 1px solid rgba(245, 233, 208, 0.1);
   background: linear-gradient(180deg, rgba(6, 14, 24, 0.92) 0%, rgba(4, 10, 18, 1) 100%);
-}
-
-.slop-scorecard-footer .slop-scorecard-action-compact button,
-.slop-scorecard-footer .slop-scorecard-action-compact a,
-.slop-scorecard-footer-btn-row .slop-scorecard-btn-pill {
-  box-sizing: border-box;
 }
 
 .slop-scorecard-btn-pill {
@@ -612,42 +614,62 @@ body {
   color: var(--slop-gold-bright);
 }
 
-.slop-scorecard-helpful-count {
+.slop-scorecard-helpful-row {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 0.25rem;
-  min-height: 0.9rem;
-  font-size: 0.48rem;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.slop-scorecard-helpful-count {
+  font-size: 0.58rem;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   color: var(--slop-cream-dim);
   line-height: 1;
 }
 
-.slop-scorecard-footer-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: 0.3rem;
-  flex-shrink: 0;
-  max-width: 46%;
-}
-
-.slop-scorecard-footer-btn-row {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.slop-scorecard-footer-btn-row .slop-scorecard-btn-pill,
-.slop-scorecard-footer-btn-row .slop-scorecard-action-compact form,
-.slop-scorecard-footer-btn-row .slop-scorecard-action-compact > a,
-.slop-scorecard-footer-btn-row .slop-scorecard-action-compact > button {
+.slop-scorecard-helpful-icon-slot {
   display: inline-flex;
   align-items: center;
-  height: 1.5rem;
+}
+
+.slop-scorecard-helpful-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--slop-cream);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.slop-scorecard-helpful-icon:hover:not(:disabled) {
+  color: var(--slop-gold-bright);
+  transform: scale(1.06);
+}
+
+.slop-scorecard-helpful-icon--marked {
+  color: var(--slop-gold-bright);
+  cursor: default;
+}
+
+.slop-scorecard-helpful-icon--muted {
+  color: var(--slop-cream-dim);
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.slop-scorecard-helpful-icon-slot form {
+  display: inline-flex;
+  margin: 0;
 }
 
 .slop-scorecard-btn-pill--muted {
@@ -691,26 +713,31 @@ body {
 
 .slop-scorecard-shell {
   position: relative;
+  isolation: isolate;
   perspective: 1200px;
   width: var(--slop-scorecard-width);
   max-width: 21.25rem;
   flex: none;
   aspect-ratio: 5 / 7;
   scroll-snap-align: center;
-  transform: scale(0.86);
-  opacity: 0.5;
-  filter: brightness(0.82) saturate(0.9);
+  transform: scale(0.84);
+  opacity: 0.42;
+  filter: brightness(0.78) saturate(0.85);
   transition:
     transform 0.32s cubic-bezier(0.22, 0.9, 0.3, 1),
     opacity 0.32s ease,
     filter 0.32s ease;
 }
 
+.slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-aura {
+  opacity: 0;
+}
+
 .slop-scorecard-shell[data-active="true"] {
   transform: scale(1.04);
   opacity: 1;
   filter: brightness(1.04) saturate(1.02);
-  z-index: 3;
+  z-index: 5;
 }
 
 @media (max-width: 639px) {
@@ -719,7 +746,7 @@ body {
   }
 
   .slop-scorecard-shell {
-    transform: scale(0.88);
+    transform: scale(0.86);
   }
 }
 
@@ -761,25 +788,60 @@ body {
 .slop-scorecard-rolodex {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1.35rem;
+  order: 2;
   scroll-snap-type: x mandatory;
   touch-action: pan-x pan-y;
   scroll-padding-inline: max(1.25rem, calc((100% - min(100%, 21.25rem)) / 2));
-  scroll-padding-block: 0.5rem;
-  padding-block: 1rem 1.25rem;
+  scroll-padding-block: 0.35rem;
+  padding-block: 0.5rem 0.65rem;
   padding-inline: max(1.25rem, calc((100% - min(100%, 21.25rem)) / 2));
 }
 
 .slop-scorecard-carousel-wrap {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   overflow-x: hidden;
   overflow-y: visible;
-  padding-top: 0.25rem;
   background: radial-gradient(
     ellipse 80% 60% at 50% 50%,
     rgba(244, 179, 33, 0.05) 0%,
     transparent 70%
   );
+}
+
+.slop-scorecard-carousel-index {
+  order: 1;
+  flex-shrink: 0;
+}
+
+.slop-scorecard-carousel-controls {
+  order: 3;
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.slop-scorecard-carousel-hint {
+  order: 4;
+}
+
+@media (min-width: 640px) {
+  .slop-scorecard-carousel-controls {
+    order: 1;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  .slop-scorecard-carousel-index {
+    order: 2;
+  }
+
+  .slop-scorecard-rolodex {
+    order: 3;
+    padding-block: 0.85rem 1.1rem;
+  }
 }
 
 #fan-photo-reviews {
