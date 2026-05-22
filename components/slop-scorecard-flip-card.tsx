@@ -21,8 +21,9 @@ import {
   getReviewerDisplayName,
   getReviewerHandleLabel,
   getReviewerInitials,
-  getSlopScorecardReviewerStatLines,
-  showFanScoutBadge
+  getSlopScorecardReviewerProfile,
+  showFanScoutBadge,
+  type SlopScorecardReviewerProfile
 } from "@/lib/slop-scorecard-reviewer";
 
 export const SLOP_SCORECARD_TOGGLE_EVENT = "slop-scorecard-toggle";
@@ -60,21 +61,74 @@ function ScorecardNoFlip({ children }: { children: ReactNode }) {
   );
 }
 
-function ScoreDetailRow({
-  label,
-  value
+function BackSectionLabel({ children }: { children: ReactNode }) {
+  return <p className="slop-scorecard-back-pill">{children}</p>;
+}
+
+function BackMetaRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="slop-scorecard-back-meta-row">
+      <span className="slop-scorecard-back-meta-label">{label}</span>
+      <span className="slop-scorecard-back-meta-value">{value}</span>
+    </div>
+  );
+}
+
+function BackStatRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="slop-scorecard-back-stat-row">
+      <span className="slop-scorecard-back-stat-label">{label}</span>
+      <span className="slop-scorecard-back-stat-value">{value}</span>
+    </div>
+  );
+}
+
+function ReviewerProfileBlock({
+  profile,
+  avatarUrl,
+  photoAlt
 }: {
-  label: string;
-  value: string;
+  profile: SlopScorecardReviewerProfile;
+  avatarUrl: string | undefined;
+  photoAlt: string;
 }) {
   return (
-    <div className="rounded-md border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.65)] px-2 py-1.5">
-      <p className="text-[0.48rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
-        {label}
-      </p>
-      <p className="mt-0.5 text-[0.68rem] font-bold leading-snug text-[var(--slop-cream)]">
-        {value}
-      </p>
+    <div className="flex gap-2">
+      {avatarUrl ? (
+        <div className="slop-scorecard-back-profile-photo">
+          <Image
+            src={avatarUrl}
+            alt={photoAlt}
+            fill
+            className="object-cover object-center"
+            sizes="72px"
+          />
+        </div>
+      ) : (
+        <div className="slop-scorecard-back-profile-initials" aria-hidden>
+          {profile.initials}
+        </div>
+      )}
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-[0.72rem] font-black leading-tight text-[var(--slop-cream)]">
+          {profile.displayName}
+        </p>
+        {profile.handle ? (
+          <p className="truncate text-[0.52rem] font-bold text-[var(--slop-cream-dim)]">
+            {profile.handle}
+          </p>
+        ) : null}
+        <div className="mt-1">
+          <BackMetaRow label="Venues reviewed" value={profile.venuesReviewed} />
+          <BackMetaRow label="Items reviewed" value={profile.itemsReviewed} />
+          <BackMetaRow label="Helpful earned" value={profile.helpfulEarned} />
+        </div>
+        {profile.showFanScout ? (
+          <span className="mt-1 inline-flex rounded border border-[var(--slop-gold)]/40 bg-[rgba(244,179,33,0.08)] px-1 py-px text-[0.36rem] font-black uppercase tracking-[0.08em] text-[var(--slop-gold-bright)]">
+            Fan Scout
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -139,36 +193,6 @@ function CompactReviewerStrip({ review }: { review: FoodReview }) {
   );
 }
 
-function ReviewerAvatarBlock({ review }: { review: FoodReview }) {
-  const initials = getReviewerInitials(review);
-  const handle = getReviewerHandleLabel(review);
-  const name = getReviewerDisplayName(review);
-  const fanScout = showFanScoutBadge(review);
-
-  return (
-    <div className="flex items-center gap-2">
-      <div className="relative shrink-0">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--slop-gold)]/75 bg-[var(--slop-navy-deep)] text-xs font-black text-[var(--slop-cream)]">
-          {initials}
-        </div>
-        {fanScout ? (
-          <span className="absolute -bottom-1 left-1/2 w-max -translate-x-1/2 rounded border border-[var(--slop-gold)]/40 bg-[var(--slop-ink)] px-1 py-px text-[0.4rem] font-black uppercase text-[var(--slop-gold-bright)]">
-            Fan Scout
-          </span>
-        ) : null}
-      </div>
-      <div className="min-w-0">
-        <p className="truncate text-sm font-black text-[var(--slop-cream)]">{name}</p>
-        {handle ? (
-          <p className="truncate text-[0.65rem] font-bold text-[var(--slop-cream-dim)]">
-            {handle}
-          </p>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
 export function SlopScorecardFlipCard({
   cardIndex,
   review,
@@ -190,7 +214,11 @@ export function SlopScorecardFlipCard({
   const [isFlipped, setIsFlipped] = useState(false);
   const flipRegionId = useId();
   const u = normalizePublicImageUrl(photoUrl);
-  const reviewerStats = getSlopScorecardReviewerStatLines(review);
+  const reviewerProfile = useMemo(
+    () => getSlopScorecardReviewerProfile(review),
+    [review]
+  );
+  const noteText = review.note?.trim() ?? "";
 
   const backBadgeLabels = useMemo(() => {
     const labels = [...highlightLabels];
@@ -329,98 +357,80 @@ export function SlopScorecardFlipCard({
                 </ScorecardNoFlip>
               </div>
 
+              <div className="mt-1.5 shrink-0">
+                <ReviewerProfileBlock
+                  profile={reviewerProfile}
+                  avatarUrl={u}
+                  photoAlt={photoAlt}
+                />
+              </div>
+
+              {reviewerProfile.verifiedGameDay ? (
+                <p className="mt-1.5 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/40 px-1.5 py-0.5 text-[0.42rem] font-black uppercase text-emerald-100">
+                  <span className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400" />
+                  Game-day certified
+                </p>
+              ) : null}
+
               {backBadgeLabels.length > 0 ? (
-                <div className="mt-1.5 shrink-0">
-                  <p className="text-[0.42rem] font-black uppercase tracking-[0.12em] text-[var(--slop-red)]">
-                    Fan signals
-                  </p>
-                  <SlopCardHighlightChips labels={backBadgeLabels} className="mt-0.5" />
+                <div className="mt-2 shrink-0">
+                  <BackSectionLabel>Slop Signals</BackSectionLabel>
+                  <SlopCardHighlightChips labels={backBadgeLabels} className="mt-1" />
                 </div>
               ) : null}
 
-              {review.verifiedGameDay ? (
-                <p className="mt-1.5 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/40 px-1.5 py-0.5 text-[0.45rem] font-black uppercase text-emerald-100">
-                  <span className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400" />
-                  Verified
-                </p>
-              ) : null}
-
               <div className="mt-2 shrink-0">
-                <ReviewerAvatarBlock review={review} />
+                <BackSectionLabel>Score breakdown</BackSectionLabel>
+                <div className="slop-scorecard-back-stat-panel mt-1">
+                  <BackStatRow
+                    label="Slop Score"
+                    value={`${slopScoreDisplay(review.slopScore)} / 10`}
+                  />
+                  <BackStatRow
+                    label="Napkin rating"
+                    value={napkinEligible ? `${review.napkinRating} / 5` : "N/A"}
+                  />
+                  <BackStatRow
+                    label="Replay value"
+                    value={review.replayValue ?? "—"}
+                  />
+                  <BackStatRow
+                    label="Price check"
+                    value={review.priceCheck ?? "—"}
+                  />
+                </div>
               </div>
 
-              {reviewerStats.length > 0 ? (
-                <ul className="mt-1.5 grid shrink-0 grid-cols-2 gap-1">
-                  {reviewerStats.map((row) => (
-                    <li
-                      key={`${row.label}-${row.value}`}
-                      className="rounded border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.55)] px-1.5 py-1"
-                    >
-                      <p className="text-[0.42rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
-                        {row.label}
-                      </p>
-                      <p className="text-[0.58rem] font-bold text-[var(--slop-cream)]">
-                        {row.value}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-
               <div className="mt-2 shrink-0">
-                <p className="text-[0.42rem] font-black uppercase tracking-[0.12em] text-[var(--slop-red)]">
-                  The take
-                </p>
-                {review.note?.trim() ? (
-                  <p className="mt-0.5 text-[0.65rem] leading-relaxed text-[var(--slop-cream-muted)]">
-                    &ldquo;{review.note.trim()}&rdquo;
+                <BackSectionLabel>Hot Take</BackSectionLabel>
+                {noteText ? (
+                  <p className="mt-1 text-[0.62rem] leading-relaxed text-[var(--slop-cream-muted)]">
+                    &ldquo;{noteText}&rdquo;
                   </p>
                 ) : (
-                  <p className="mt-0.5 text-[0.58rem] italic text-[var(--slop-cream-dim)]">
-                    No note on this card.
+                  <p className="mt-1 text-[0.52rem] italic text-[var(--slop-cream-dim)]">
+                    No hot take added.
                   </p>
                 )}
               </div>
 
-              <div className="mt-2 shrink-0">
-                <p className="text-[0.42rem] font-black uppercase tracking-[0.12em] text-[var(--slop-red)]">
-                  Score breakdown
-                </p>
-                <div className="mt-0.5 grid grid-cols-2 gap-1">
-                  <ScoreDetailRow
-                    label="Slop Score"
-                    value={`${slopScoreDisplay(review.slopScore)} / 10`}
-                  />
-                  <ScoreDetailRow
-                    label="Napkins"
-                    value={napkinEligible ? `${review.napkinRating}/5` : "N/A"}
-                  />
-                  {review.replayValue ? (
-                    <ScoreDetailRow label="Replay" value={review.replayValue} />
-                  ) : null}
-                  {review.priceCheck ? (
-                    <ScoreDetailRow label="Price" value={review.priceCheck} />
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="mt-2 shrink-0 rounded border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.55)] px-2 py-1">
-                <p className="text-[0.42rem] font-black uppercase tracking-[0.1em] text-[var(--slop-red)]">
-                  At the park
-                </p>
-                <p className="mt-0.5 text-[0.68rem] font-black text-[var(--slop-cream)]">
+              <div className="mt-2 shrink-0 rounded border border-[var(--slop-line)] bg-[rgba(6,14,24,0.45)] px-2 py-1.5">
+                <BackSectionLabel>This card</BackSectionLabel>
+                <p className="mt-1 text-[0.68rem] font-black leading-tight text-[var(--slop-cream)]">
                   {itemName}
                 </p>
-                <p className="text-[0.55rem] text-[var(--slop-cream-muted)]">{metaLine}</p>
-              </div>
-
-              <div className="mt-2 flex shrink-0 items-center justify-between rounded border border-[var(--slop-line)] px-2 py-1">
-                <span className="text-[0.48rem] font-black uppercase text-[var(--slop-cream-dim)]">
-                  Helpful votes
-                </span>
-                <span className="text-base font-black tabular-nums text-[var(--slop-red)]">
-                  {review.helpfulLikes}
-                </span>
+                <p className="text-[0.52rem] font-bold text-[var(--slop-cream-muted)]">
+                  {venueName}
+                </p>
+                <p className="mt-0.5 text-[0.5rem] leading-snug text-[var(--slop-cream-dim)]">
+                  {metaLine}
+                </p>
+                {reviewerProfile.datePosted ? (
+                  <BackMetaRow
+                    label="Date posted"
+                    value={reviewerProfile.datePosted}
+                  />
+                ) : null}
               </div>
 
               <ScorecardNoFlip>

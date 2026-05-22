@@ -1,36 +1,35 @@
 import type { FoodReview } from "@/lib/sample-data";
 
-export type SlopScorecardReviewerStatLine = {
-  label: string;
-  value: string;
+/** Shown when contributor aggregate stats are not loaded on the card yet. */
+export const REVIEWER_PROFILE_STAT_PLACEHOLDER = "—";
+
+export type SlopScorecardReviewerProfile = {
+  displayName: string;
+  handle: string | null;
+  initials: string;
+  venuesReviewed: string;
+  itemsReviewed: string;
+  helpfulEarned: string;
+  datePosted: string | null;
+  showFanScout: boolean;
+  verifiedGameDay: boolean;
 };
 
-/** Public-safe reviewer lines for scorecard back (no profile page). */
-export function getSlopScorecardReviewerStatLines(
+/** Public-safe reviewer surface for scorecard back (no profile page). */
+export function getSlopScorecardReviewerProfile(
   review: FoodReview
-): SlopScorecardReviewerStatLine[] {
-  const lines: SlopScorecardReviewerStatLine[] = [];
-
-  if (review.verifiedGameDay) {
-    lines.push({ label: "Certified", value: "Game day at venue" });
-  }
-
-  if (review.dateLabel?.trim()) {
-    lines.push({ label: "Posted", value: review.dateLabel.trim() });
-  }
-
-  if (review.seasonLabel?.trim()) {
-    lines.push({ label: "Season", value: review.seasonLabel.trim() });
-  }
-
-  if (review.helpfulLikes > 0) {
-    lines.push({
-      label: "This card",
-      value: `${review.helpfulLikes} helpful ${review.helpfulLikes === 1 ? "vote" : "votes"}`
-    });
-  }
-
-  return lines;
+): SlopScorecardReviewerProfile {
+  return {
+    displayName: getReviewerDisplayName(review),
+    handle: getReviewerHandleLabel(review),
+    initials: getReviewerInitials(review),
+    venuesReviewed: REVIEWER_PROFILE_STAT_PLACEHOLDER,
+    itemsReviewed: REVIEWER_PROFILE_STAT_PLACEHOLDER,
+    helpfulEarned: REVIEWER_PROFILE_STAT_PLACEHOLDER,
+    datePosted: review.dateLabel?.trim() || null,
+    showFanScout: showFanScoutBadge(review),
+    verifiedGameDay: review.verifiedGameDay
+  };
 }
 
 export function getReviewerDisplayName(review: FoodReview): string {

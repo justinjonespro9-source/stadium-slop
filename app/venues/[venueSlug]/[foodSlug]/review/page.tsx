@@ -737,7 +737,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
             <section className="rounded-xl border border-zinc-800 bg-black/80 p-3 sm:p-4">
               <h2 className="text-sm font-black text-white">
-                Ballpark signals{" "}
+                Slop Signals{" "}
                 <span className="text-[var(--slop-orange)]">*</span>
               </h2>
               <div className="mt-3 space-y-3">
