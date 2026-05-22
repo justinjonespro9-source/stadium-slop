@@ -45,6 +45,18 @@ export type SlopScorecardFlipCardProps = {
   duplicateHeroBadge?: boolean;
 };
 
+/** Stops back-face tap-to-flip from swallowing button/link/form clicks. */
+function ScorecardNoFlip({ children }: { children: ReactNode }) {
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+    >
+      {children}
+    </div>
+  );
+}
+
 function ScoreDetailRow({
   label,
   value
@@ -283,20 +295,16 @@ export function SlopScorecardFlipCard({
                   </p>
                 </div>
 
-                <div
-                  className="slop-scorecard-footer relative z-[2] flex shrink-0 items-end justify-between gap-2 px-2 py-2"
-                  onClick={(e) => e.stopPropagation()}
-                  onKeyDown={(e) => e.stopPropagation()}
-                >
+                <div className="slop-scorecard-footer relative z-[2] flex shrink-0 items-end justify-between gap-2 px-2 py-2">
                   <CompactReviewerStrip review={review} />
-                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <div className="slop-scorecard-footer-actions">
                     <span className="slop-scorecard-helpful-count">
                       <span aria-hidden className="text-[0.55rem]">
                         👍
                       </span>
                       <span className="tabular-nums">{review.helpfulLikes}</span>
                     </span>
-                    <div className="flex items-center gap-1">
+                    <div className="slop-scorecard-footer-btn-row">
                       <button
                         type="button"
                         className="slop-scorecard-btn-pill"
@@ -316,20 +324,23 @@ export function SlopScorecardFlipCard({
         {/* ——— Back ——— */}
         <div
           id={flipRegionId}
-          className="slop-scorecard-face slop-scorecard-face-back absolute inset-0"
+          className="slop-scorecard-face slop-scorecard-face-back absolute inset-0 cursor-pointer"
           aria-hidden={!isFlipped}
+          onClick={showFront}
         >
           <SlopScorecardFrame face="back" className="h-full w-full">
             <div className="flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-2.5 py-2">
               <div className="slop-scorecard-header flex shrink-0 items-center justify-between gap-2 px-0 py-1.5">
                 <BrandBadgeIcon size={26} title="Stadium Slop" />
-                <button
-                  type="button"
-                  className="slop-scorecard-btn-pill"
-                  onClick={showFront}
-                >
-                  Back to front
-                </button>
+                <ScorecardNoFlip>
+                  <button
+                    type="button"
+                    className="slop-scorecard-btn-pill"
+                    onClick={showFront}
+                  >
+                    Back to front
+                  </button>
+                </ScorecardNoFlip>
               </div>
 
               {backBadgeLabels.length > 0 ? (
@@ -426,10 +437,12 @@ export function SlopScorecardFlipCard({
                 </span>
               </div>
 
-              <div className="mt-2 shrink-0 space-y-1 border-t border-[var(--slop-line)] pt-2">
-                {helpfulSlot}
-                {reportSlot}
-              </div>
+              <ScorecardNoFlip>
+                <div className="mt-2 shrink-0 space-y-1 border-t border-[var(--slop-line)] pt-2">
+                  {helpfulSlot}
+                  {reportSlot}
+                </div>
+              </ScorecardNoFlip>
             </div>
           </SlopScorecardFrame>
         </div>

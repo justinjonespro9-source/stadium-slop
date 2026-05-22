@@ -38,6 +38,7 @@ import {
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewSlopCard } from "@/components/review-slop-card";
 import { SlopScorecardCarousel } from "@/components/slop-scorecard-carousel";
+import { SlopScorecardHelpfulAnchor } from "@/components/slop-scorecard-helpful-anchor";
 import {
   SlopCardShareModule,
   type SlopCardSharePreview
@@ -48,6 +49,7 @@ import {
   slopCardLocationLine
 } from "@/lib/slop-card-display";
 import { photoErrorMessageFromQuery } from "@/lib/review-photo-errors";
+import { itemPathWithHelpfulStatus } from "@/lib/review-celebration";
 import { resolveFoodItemForPriceReport } from "@/lib/price-report";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
@@ -239,7 +241,7 @@ async function markReviewHelpful(formData: FormData) {
   }
 
   if (review.userId === userId) {
-    redirect(`${itemPath}?helpful=own`);
+    redirect(itemPathWithHelpfulStatus(itemPath, "own"));
   }
 
   await prisma.helpfulLike.upsert({
@@ -257,7 +259,7 @@ async function markReviewHelpful(formData: FormData) {
   });
 
   revalidatePath(itemPath);
-  redirect(`${itemPath}?helpful=marked`);
+  redirect(itemPathWithHelpfulStatus(itemPath, "marked"));
 }
 
 async function submitPriceReport(formData: FormData) {
@@ -848,7 +850,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
         <section
           id="fan-photo-reviews"
-          className="scroll-mt-20 border-t border-[var(--slop-line-strong)] py-4 sm:py-5"
+          className="scroll-mt-28 border-t border-[var(--slop-line-strong)] pt-6 pb-4 sm:scroll-mt-24 sm:py-5"
         >
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
@@ -870,6 +872,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             variant="section"
             className="mt-1"
           />
+          <Suspense fallback={null}>
+            <SlopScorecardHelpfulAnchor />
+          </Suspense>
           {photoBackedReviews.length > 0 ? (
             <SlopScorecardCarousel swipeHint={photoBackedReviews.length > 1}>
               {photoBackedReviews.map((review, cardIndex) => {
@@ -890,14 +895,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   Boolean(contributorUserId) &&
                   review.reviewerId === contributorUserId;
 
-                const scorecardActionBtn =
-                  "inline-flex shrink-0 max-w-[5.25rem] rounded-md border px-2 py-1 text-[0.48rem] font-black uppercase tracking-[0.08em]";
-
                 const helpfulSlot = isOwnScorecard ? (
                   <button
                     type="button"
                     disabled
-                    className={`${scorecardActionBtn} cursor-not-allowed border-zinc-800 text-zinc-500`}
+                    className="slop-scorecard-btn-pill slop-scorecard-btn-pill--muted cursor-not-allowed"
                     title="You can't mark your own Slop Scorecard helpful"
                   >
                     Yours
@@ -907,7 +909,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     <button
                       type="button"
                       disabled
-                      className={`${scorecardActionBtn} cursor-not-allowed border-[var(--slop-orange)] text-[var(--slop-orange)]`}
+                      className="slop-scorecard-btn-pill slop-scorecard-btn-pill--marked cursor-not-allowed"
                     >
                       Marked
                     </button>
@@ -916,20 +918,15 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                       <input type="hidden" name="venueSlug" value={venue.slug} />
                       <input type="hidden" name="foodSlug" value={foodItem.slug} />
                       <input type="hidden" name="reviewId" value={review.id} />
-                      <button
-                        type="submit"
-                        className={`${scorecardActionBtn} border-zinc-800 text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]`}
-                      >
+                      <button type="submit" className="slop-scorecard-btn-pill">
                         Helpful
                       </button>
                     </form>
                   )
                 ) : (
                   <Link
-                    href={`/login?next=${encodeURIComponent(
-                      `/venues/${venue.slug}/${foodItem.slug}`
-                    )}`}
-                    className={`${scorecardActionBtn} border-zinc-800 text-zinc-400 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]`}
+                    href={`/login?next=${encodeURIComponent(itemPageWithReviewsAnchor)}`}
+                    className="slop-scorecard-btn-pill"
                   >
                     Sign in
                   </Link>

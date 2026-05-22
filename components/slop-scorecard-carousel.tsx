@@ -160,7 +160,7 @@ export function SlopScorecardCarousel({
   return (
     <div className="slop-scorecard-carousel-wrap">
       {cardCount > 1 ? (
-        <div className="mb-2 flex items-center justify-center gap-2 px-1">
+        <div className="slop-scorecard-carousel-controls mb-3 flex flex-wrap items-center justify-center gap-2 px-1 pt-1">
           <button
             type="button"
             onClick={goPrev}
@@ -189,7 +189,7 @@ export function SlopScorecardCarousel({
           </button>
         </div>
       ) : (
-        <div className="mb-2 flex justify-center">
+        <div className="slop-scorecard-carousel-controls mb-3 flex justify-center pt-1">
           <button
             type="button"
             onClick={flipActive}
@@ -201,11 +201,16 @@ export function SlopScorecardCarousel({
       )}
 
       {cardCount > 1 ? (
-        <p className="mb-1.5 text-center text-[0.58rem] font-bold tabular-nums text-[var(--slop-cream-dim)]">
-          {activeIndex + 1} / {cardCount}
+        <p className="mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[0.58rem] font-bold tabular-nums text-[var(--slop-cream-dim)]">
+          <span>
+            {activeIndex + 1} / {cardCount}
+          </span>
+          <span aria-hidden className="text-[var(--slop-cream-dim)]">
+            ·
+          </span>
           <button
             type="button"
-            className="ml-2 font-black uppercase tracking-[0.08em] text-[var(--slop-gold-dim)] underline-offset-2 hover:text-[var(--slop-gold-bright)] hover:underline"
+            className="font-black uppercase tracking-[0.08em] text-[var(--slop-gold-dim)] underline-offset-2 hover:text-[var(--slop-gold-bright)] hover:underline"
             onClick={showFrontActive}
           >
             Front
