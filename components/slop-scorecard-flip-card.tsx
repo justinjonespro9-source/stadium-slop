@@ -66,11 +66,11 @@ function ScoreDetailRow({
 
 function SlopScoreBadge({ score }: { score: number }) {
   return (
-    <div className="shrink-0 rounded-md border-2 border-[var(--slop-ink)] bg-[linear-gradient(165deg,var(--slop-gold-bright)_0%,var(--slop-gold)_100%)] px-2 py-1 text-center shadow-[0_4px_14px_rgba(0,0,0,0.45)]">
-      <p className="text-[0.38rem] font-black uppercase tracking-[0.14em] text-[var(--slop-navy)]">
+    <div className="slop-scorecard-score-octagon shrink-0 px-2.5 py-1.5 text-center">
+      <p className="text-[0.42rem] font-black uppercase tracking-[0.16em] text-[var(--slop-navy)]">
         Slop
       </p>
-      <p className="text-xl font-black tabular-nums leading-none text-[var(--slop-ink)]">
+      <p className="text-[1.35rem] font-black tabular-nums leading-none text-[var(--slop-ink)]">
         {slopScoreDisplay(score)}
       </p>
     </div>
@@ -85,14 +85,14 @@ function ScorecardFrontHeader({
   slopScore: number;
 }) {
   return (
-    <div className="relative z-[2] flex shrink-0 items-start justify-between gap-2 border-b border-[var(--slop-line)]/60 bg-[linear-gradient(180deg,rgba(11,27,43,0.98)_0%,rgba(8,18,28,0.92)_100%)] px-2 py-1.5">
-      <div className="flex min-w-0 flex-1 items-center gap-1.5">
-        <BrandBadgeIcon size={22} title="Stadium Slop" />
-        <div className="min-w-0 leading-none">
-          <p className="text-[0.5rem] font-black uppercase tracking-[0.16em] text-[var(--slop-cream)]">
+    <div className="slop-scorecard-header relative z-[2] flex shrink-0 items-start justify-between gap-2 px-2.5 py-2">
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        <BrandBadgeIcon size={30} title="Stadium Slop" />
+        <div className="min-w-0 leading-tight">
+          <p className="text-[0.62rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream)]">
             Slop Scorecard
           </p>
-          <p className="mt-0.5 truncate text-[0.42rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+          <p className="mt-0.5 truncate text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
             {venueName}
           </p>
         </div>
@@ -109,24 +109,24 @@ function CompactReviewerStrip({ review }: { review: FoodReview }) {
   const fanScout = showFanScoutBadge(review);
 
   return (
-    <div className="flex min-w-0 max-w-[55%] items-center gap-1.5">
+    <div className="flex min-w-0 max-w-[52%] items-center gap-2">
       <div className="relative shrink-0">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--slop-gold)]/80 bg-[var(--slop-navy-deep)] text-[0.6rem] font-black text-[var(--slop-cream)]">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[var(--slop-gold)] bg-[var(--slop-navy-deep)] text-[0.7rem] font-black text-[var(--slop-cream)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
           {initials}
         </div>
         {fanScout ? (
-          <span className="absolute -bottom-0.5 left-1/2 w-max -translate-x-1/2 rounded border border-[var(--slop-gold)]/40 bg-[var(--slop-ink)] px-0.5 text-[0.35rem] font-black uppercase text-[var(--slop-gold-bright)]">
+          <span className="absolute -bottom-0.5 left-1/2 w-max -translate-x-1/2 rounded border border-[var(--slop-gold)]/45 bg-[var(--slop-ink)] px-1 py-px text-[0.36rem] font-black uppercase text-[var(--slop-gold-bright)]">
             Scout
           </span>
         ) : null}
       </div>
       <div className="min-w-0 leading-tight">
-        <p className="truncate text-[0.58rem] font-black text-[var(--slop-cream)]">
-          {handle ?? name}
+        <p className="truncate text-[0.65rem] font-black text-[var(--slop-cream)]">
+          {name}
         </p>
         {handle ? (
-          <p className="truncate text-[0.48rem] font-semibold text-[var(--slop-cream-dim)]">
-            {name}
+          <p className="truncate text-[0.52rem] font-bold text-[var(--slop-cream-dim)]">
+            {handle}
           </p>
         ) : null}
       </div>
@@ -236,70 +236,70 @@ export function SlopScorecardFlipCard({
             <div className="flex h-full min-h-0 flex-col">
               <ScorecardFrontHeader venueName={venueName} slopScore={review.slopScore} />
 
-              <div className="relative min-h-0 flex-1">
-                <button
-                  type="button"
-                  className="absolute inset-0 h-full w-full cursor-pointer overflow-hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-gold-bright)]"
-                  aria-label={`Flip ${itemName} scorecard to details`}
-                  aria-controls={flipRegionId}
-                  aria-expanded={isFlipped}
-                  onClick={toggleFlip}
-                >
-                  <div className="absolute inset-0 bg-[#04080f]">
+              <div className="flex min-h-0 flex-1 flex-col px-1.5 pt-1 pb-1.5">
+                <div className="slop-scorecard-photo-well slop-scorecard-chamfer-sm flex min-h-0 flex-1 flex-col">
+                  <button
+                    type="button"
+                    className="slop-scorecard-photo-well-inner slop-scorecard-chamfer-sm relative block h-full min-h-[10.5rem] w-full flex-1 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-gold-bright)]"
+                    aria-label={`Flip ${itemName} scorecard to details`}
+                    aria-controls={flipRegionId}
+                    aria-expanded={isFlipped}
+                    onClick={toggleFlip}
+                  >
                     {u ? (
                       <Image
                         src={u}
                         alt={photoAlt}
                         fill
                         className="object-cover object-center"
-                        sizes="340px"
+                        sizes="300px"
                         priority={false}
                       />
                     ) : (
-                      <div className="flex h-full items-center justify-center">
+                      <div className="flex h-full min-h-[10.5rem] items-center justify-center">
                         <span
-                          className="flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-surface)] text-2xl"
+                          className="flex h-14 w-14 items-center justify-center rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-surface)] text-3xl"
                           aria-hidden
                         >
                           {photoPlaceholderEmoji ?? "📸"}
                         </span>
                       </div>
                     )}
-                  </div>
+                  </button>
+                </div>
 
-                  <div
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#04080f]/50 via-transparent to-[#04080f]"
-                    aria-hidden
-                  />
-
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] px-2 pb-14 pt-16">
-                    <p className="line-clamp-2 text-[0.8rem] font-black leading-tight text-[var(--slop-cream)] drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-                      {itemName}
-                    </p>
-                    <p className="mt-0.5 line-clamp-1 text-[0.52rem] font-bold text-[var(--slop-cream-muted)]">
-                      {venueName}
-                    </p>
-                    <p className="mt-0.5 line-clamp-2 text-[0.48rem] font-semibold leading-snug text-[var(--slop-cream-dim)]">
-                      {metaLine}
-                    </p>
-                  </div>
-                </button>
+                <div className="slop-scorecard-info-block shrink-0">
+                  <p className="line-clamp-2 text-[1rem] font-black leading-tight tracking-tight text-[var(--slop-cream)]">
+                    {itemName}
+                  </p>
+                  <p className="mt-0.5 line-clamp-1 text-[0.58rem] font-bold text-[var(--slop-cream-muted)]">
+                    {venueName}
+                  </p>
+                  <p className="mt-0.5 line-clamp-2 text-[0.5rem] font-semibold leading-snug text-[var(--slop-cream-dim)]">
+                    <span className="mr-0.5 opacity-80" aria-hidden>
+                      📍
+                    </span>
+                    {metaLine}
+                  </p>
+                </div>
 
                 <div
-                  className="absolute inset-x-0 bottom-0 z-[3] flex items-end justify-between gap-2 border-t border-[var(--slop-line)]/50 bg-[rgba(4,10,18,0.94)] px-2 py-1.5"
+                  className="slop-scorecard-footer relative z-[2] flex shrink-0 items-end justify-between gap-2 px-2 py-2"
                   onClick={(e) => e.stopPropagation()}
                   onKeyDown={(e) => e.stopPropagation()}
                 >
                   <CompactReviewerStrip review={review} />
-                  <div className="flex shrink-0 flex-col items-end gap-1">
-                    <span className="inline-flex items-center gap-0.5 text-[0.45rem] font-black tabular-nums text-[var(--slop-cream-dim)]">
-                      <span aria-hidden>👍</span>
-                      {review.helpfulLikes}
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <span className="slop-scorecard-helpful-count">
+                      <span aria-hidden className="text-[0.55rem]">
+                        👍
+                      </span>
+                      <span className="tabular-nums">{review.helpfulLikes}</span>
                     </span>
                     <div className="flex items-center gap-1">
                       <button
                         type="button"
-                        className="inline-flex shrink-0 rounded border border-[var(--slop-line-strong)] bg-[rgba(11,27,43,0.95)] px-1.5 py-0.5 text-[0.45rem] font-black uppercase tracking-[0.08em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-gold-bright)]"
+                        className="slop-scorecard-btn-pill"
                         onClick={toggleFlip}
                       >
                         Details
@@ -320,12 +320,12 @@ export function SlopScorecardFlipCard({
           aria-hidden={!isFlipped}
         >
           <SlopScorecardFrame face="back" className="h-full w-full">
-            <div className="flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-2 py-2">
-              <div className="flex shrink-0 items-center justify-between gap-2 border-b border-[var(--slop-line)] pb-1.5">
-                <BrandBadgeIcon size={18} />
+            <div className="flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-2.5 py-2">
+              <div className="slop-scorecard-header flex shrink-0 items-center justify-between gap-2 px-0 py-1.5">
+                <BrandBadgeIcon size={26} title="Stadium Slop" />
                 <button
                   type="button"
-                  className="inline-flex shrink-0 rounded-full border border-[var(--slop-gold)]/50 px-2 py-0.5 text-[0.45rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] transition hover:bg-[color:rgba(244,179,33,0.12)]"
+                  className="slop-scorecard-btn-pill"
                   onClick={showFront}
                 >
                   Back to front
