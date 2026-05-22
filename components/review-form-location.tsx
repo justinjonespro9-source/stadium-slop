@@ -7,6 +7,8 @@ type ReviewFormLocationProps = {
   pollingOpen: boolean;
   reviewRadiusMeters: number;
   isDraft?: boolean;
+  /** Admin QA: submit without geolocation or active game window. */
+  testReviewModeActive?: boolean;
 };
 
 type LocationPhase = "idle" | "certifying" | "captured" | "submitting";
@@ -15,7 +17,8 @@ export function ReviewFormLocation({
   formId,
   pollingOpen,
   reviewRadiusMeters,
-  isDraft = false
+  isDraft = false,
+  testReviewModeActive = false
 }: ReviewFormLocationProps) {
   const latRef = useRef<HTMLInputElement>(null);
   const lngRef = useRef<HTMLInputElement>(null);
@@ -24,9 +27,10 @@ export function ReviewFormLocation({
   const [capturedAt, setCapturedAt] = useState<string | null>(null);
   const [coordsCaptured, setCoordsCaptured] = useState(false);
 
+  const canSubmit = testReviewModeActive || pollingOpen;
   const certifyBusy = phase === "certifying";
   const submitBusy = phase === "submitting";
-  const locationReady = coordsCaptured && !certifyBusy;
+  const locationReady = testReviewModeActive || (coordsCaptured && !certifyBusy);
 
   const certifyLocation = useCallback(() => {
     setClientError(null);
@@ -78,15 +82,17 @@ export function ReviewFormLocation({
   const submitReview = useCallback(() => {
     setClientError(null);
 
-    if (!pollingOpen) {
+    if (!canSubmit) {
       return;
     }
 
-    const lat = latRef.current?.value?.trim();
-    const lng = lngRef.current?.value?.trim();
-    if (!lat || !lng) {
-      setClientError("Certify your location at the stadium before submitting.");
-      return;
+    if (!testReviewModeActive) {
+      const lat = latRef.current?.value?.trim();
+      const lng = lngRef.current?.value?.trim();
+      if (!lat || !lng) {
+        setClientError("Certify your location at the stadium before submitting.");
+        return;
+      }
     }
 
     const form = document.getElementById(formId);
@@ -96,7 +102,38 @@ export function ReviewFormLocation({
 
     setPhase("submitting");
     form.requestSubmit();
-  }, [formId, pollingOpen]);
+  }, [canSubmit, formId, testReviewModeActive]);
+
+  if (testReviewModeActive) {
+    return (
+      <div className="mt-4 space-y-3">
+        <div
+          role="status"
+          className="rounded-xl border border-amber-700/70 bg-amber-950/40 px-3 py-2.5 text-xs leading-relaxed text-amber-100"
+        >
+          <p className="font-bold">Test review mode (admin QA)</p>
+          <p className="mt-1">
+            No location certification required. This review is stored as a test
+            submission and is excluded from public Slop Score, Fresh Signal, price/replay
+            rollups, and fan-favorite awards. Scorecards may still show it with a test
+            label for layout QA.
+          </p>
+        </div>
+        <button
+          type="button"
+          disabled={submitBusy}
+          onClick={submitReview}
+          className="brand-cta w-full touch-manipulation rounded-full px-5 py-3.5 text-sm font-black disabled:cursor-not-allowed disabled:opacity-50 sm:py-4"
+        >
+          {submitBusy
+            ? "Submitting test review…"
+            : isDraft
+              ? "Submit test review"
+              : "Submit test review"}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-4 space-y-3">

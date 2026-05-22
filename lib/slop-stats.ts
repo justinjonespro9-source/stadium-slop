@@ -178,6 +178,10 @@ function dedupeReviewsByUserItemGameDay(reviews: FoodReview[]) {
   return Array.from(reviewsByKey.values());
 }
 
+function isProductionReview(review: FoodReview) {
+  return !review.isTestReview;
+}
+
 function countFreshTodaySampleReviews(venueSlug: string, foodSlug: string) {
   const vs = venueSlug.trim();
   return foodReviews.filter(
@@ -238,9 +242,10 @@ export function getItemSlopStats(
   const reviews = getReviewsForItem(itemSlug, mode, vn);
   const freshReviewCountToday = countFreshTodaySampleReviews(vn, itemSlug);
   const hasFreshToday = freshReviewCountToday > 0;
-  const fallbackReviews = dedupeReviewsByUserItemGameDay(
-    reviews.length > 0 ? reviews : getReviewsForItem(itemSlug, "allTime", vn)
+  const pool = (reviews.length > 0 ? reviews : getReviewsForItem(itemSlug, "allTime", vn)).filter(
+    isProductionReview
   );
+  const fallbackReviews = dedupeReviewsByUserItemGameDay(pool);
   const reviewCount = fallbackReviews.length;
   const averageSlopScore = average(fallbackReviews.map((review) => review.slopScore));
   const averageNapkinRating = average(
@@ -318,6 +323,7 @@ function getDbReviewsForMode(
     replayValue: string | null;
     priceCheck: string | null;
     verifiedGameDay: boolean;
+    isTestReview: boolean;
     seasonLabel: string;
     gameDayKey: string;
     note: string | null;
@@ -385,9 +391,11 @@ function getStatsFromReviews(
   itemSlug: string,
   mode: SlopStatsMode,
   reviews: FoodReview[],
-  freshReviewCountToday: number
+  freshReviewCountToday: number,
+  testReviews: FoodReview[] = []
 ): ItemSlopStats {
-  const dedupedReviews = dedupeReviewsByUserItemGameDay(reviews);
+  const productionReviews = reviews.filter(isProductionReview);
+  const dedupedReviews = dedupeReviewsByUserItemGameDay(productionReviews);
   const reviewCount = dedupedReviews.length;
   const averageSlopScore = average(dedupedReviews.map((review) => review.slopScore));
   const averageNapkinRating = average(
@@ -400,6 +408,7 @@ function getStatsFromReviews(
     itemSlug,
     mode,
     reviews: dedupedReviews,
+    testReviews: testReviews.length > 0 ? testReviews : undefined,
     averageSlopScore,
     averageNapkinRating,
     roundedNapkinRating: roundNapkins(averageNapkinRating),
@@ -492,7 +501,7 @@ export async function getDbBackedItemSlopStats(
   }
 
   const freshReviewCountToday = countFreshTodayFromDbReviews(
-    item.reviews,
+    item.reviews.filter((review) => !review.isTestReview),
     normalizedVenue
   );
 
@@ -515,7 +524,7 @@ export async function getDbBackedItemSlopStats(
       fallbackReviews.map((review) => review.user.id)
     );
 
-    const reviews = fallbackReviews.map<FoodReview>((review) => {
+    const mappedReviews = fallbackReviews.map<FoodReview>((review) => {
       const stats = careerStats.get(review.user.id);
       const usableFanPhotos = [...review.photos]
         .filter((p) => normalizePublicImageUrl(p.url) || Boolean(p.placeholder?.trim()))
@@ -546,6 +555,7 @@ export async function getDbBackedItemSlopStats(
         priceCheck: priceCheckFromDb(review.priceCheck),
         helpfulLikes: review._count.helpfulLikes,
         verifiedGameDay: review.verifiedGameDay,
+        isTestReview: review.isTestReview,
         seasonLabel: review.seasonLabel,
         gameDayKey: review.gameDayKey,
         dateLabel: review.createdAt.toLocaleDateString("en-US", {
@@ -564,7 +574,16 @@ export async function getDbBackedItemSlopStats(
       };
     });
 
-    return getStatsFromReviews(normalizedSlug, mode, reviews, freshReviewCountToday);
+    const productionReviews = mappedReviews.filter(isProductionReview);
+    const testReviews = mappedReviews.filter((review) => review.isTestReview);
+
+    return getStatsFromReviews(
+      normalizedSlug,
+      mode,
+      productionReviews,
+      freshReviewCountToday,
+      testReviews
+    );
   } catch (error) {
     console.warn("Slop stats mapping failed; using empty rollups for DB item", error);
     return getStatsFromReviews(

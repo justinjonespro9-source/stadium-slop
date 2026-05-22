@@ -360,7 +360,11 @@ export function SlopScorecardFlipCard({
                 />
               </div>
 
-              {reviewerProfile.verifiedGameDay ? (
+              {review.isTestReview ? (
+                <p className="mt-1 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-amber-500/50 bg-amber-950/50 px-1.5 py-0.5 text-[0.42rem] font-black uppercase text-amber-100">
+                  Test review · QA only
+                </p>
+              ) : reviewerProfile.verifiedGameDay ? (
                 <p className="mt-1 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/40 px-1.5 py-0.5 text-[0.42rem] font-black uppercase text-emerald-100">
                   <span className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400" />
                   Game-day certified

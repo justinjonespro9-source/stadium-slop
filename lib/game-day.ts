@@ -3,11 +3,19 @@ import { GameStatus, type Game } from "@prisma/client";
 /** Fallback on-site radius when a venue row has no valid `reviewRadiusMeters`. */
 export const DEFAULT_GAME_DAY_REVIEW_RADIUS_METERS = 750;
 
-/** Hours before first pitch when location-certified polling opens. */
-export const GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START = 3;
+/** Minutes before event start when location-certified review polling opens. */
+export const GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START = 90;
 
-/** Hours after first pitch when location-certified polling closes. */
-export const GAME_DAY_POLLING_CLOSES_HOURS_AFTER_START = 8;
+/** Minutes after event start when location-certified review polling closes. */
+export const GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START = 5 * 60;
+
+/** @deprecated Use {@link GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START}. */
+export const GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START =
+  GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START / 60;
+
+/** @deprecated Use {@link GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START}. */
+export const GAME_DAY_POLLING_CLOSES_HOURS_AFTER_START =
+  GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START / 60;
 
 /** Default estimated game length when `estimatedEndsAt` is unset (MLB regular season). */
 export const GAME_DAY_DEFAULT_DURATION_HOURS = 3;
@@ -53,22 +61,28 @@ export function isGameDayKeyTodayForVenue(gameDayKey: string, venueSlug: string,
   return gameDayKey === buildGameDayKey(venueSlug, d);
 }
 
-const MS_PER_HOUR = 60 * 60 * 1000;
+const MS_PER_MINUTE = 60 * 1000;
+const MS_PER_HOUR = 60 * MS_PER_MINUTE;
 
 /** Compute polling window timestamps from scheduled first pitch (UTC-safe instants). */
 export function getGameDayWindow(startsAt: Date): GameDayWindow {
   const startMs = startsAt.getTime();
   return {
     pollingOpensAt: new Date(
-      startMs - GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START * MS_PER_HOUR
+      startMs - GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START * MS_PER_MINUTE
     ),
     pollingClosesAt: new Date(
-      startMs + GAME_DAY_POLLING_CLOSES_HOURS_AFTER_START * MS_PER_HOUR
+      startMs + GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START * MS_PER_MINUTE
     ),
     estimatedEndsAt: new Date(
       startMs + GAME_DAY_DEFAULT_DURATION_HOURS * MS_PER_HOUR
     )
   };
+}
+
+/** Distinct gameDayKey for admin QA reviews (does not collide with certified keys). */
+export function buildTestReviewGameDayKey(venueSlug: string, d = new Date()) {
+  return `test-${buildGameDayKey(venueSlug, d)}`;
 }
 
 export function isGameDayInactiveStatus(status: GameStatus) {
@@ -111,9 +125,9 @@ export function formatGameDayTime(d: Date) {
   return gameDayTimeFormatter.format(d);
 }
 
-/** Fan-facing summary of the certified review window (hours only). */
+/** Fan-facing summary of the certified review window. */
 export function formatGameDayPollingWindowHoursLabel() {
-  return `${GAME_DAY_POLLING_OPENS_HOURS_BEFORE_START} hours before first pitch through ${GAME_DAY_POLLING_CLOSES_HOURS_AFTER_START} hours after`;
+  return `${GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START} minutes before first pitch through ${GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START / 60} hours after`;
 }
 
 /** Certified review window for a scheduled home game. */

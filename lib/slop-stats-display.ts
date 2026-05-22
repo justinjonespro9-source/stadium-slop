@@ -18,7 +18,10 @@ export type ConsensusStat = {
 export type ItemSlopStats = {
   itemSlug: string;
   mode: SlopStatsMode;
+  /** Production reviews only — used for averages, Fresh Signal, and consensus. */
   reviews: FoodReview[];
+  /** Admin QA reviews — optional carousel display, never in averages above. */
+  testReviews?: FoodReview[];
   averageSlopScore: number;
   averageNapkinRating: number;
   roundedNapkinRating: 1 | 2 | 3 | 4 | 5;

@@ -7,6 +7,7 @@ import { notFound, redirect } from "next/navigation";
 import { getPublicFoodItemBySlug, getPublicVenueBySlug, slugFilterInsensitive } from "@/lib/public-data";
 import {
   buildGameDayKey,
+  buildTestReviewGameDayKey,
   formatGameDateTimeForVenue,
   formatGameDayPollingWindowHoursLabel,
   getVenueTimeZone,
@@ -36,6 +37,10 @@ import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { isGoogleSignInConfigured } from "@/lib/auth/env";
 import { ReviewFormLocation } from "@/components/review-form-location";
 import { ReviewScorecardFormClient } from "@/components/review-scorecard-form-client";
+import {
+  canSubmitTestReviews,
+  getTestReviewModeStatus
+} from "@/lib/admin/test-reviews";
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 import {
   LOW_SCORE_PHOTO_MESSAGE,
@@ -267,7 +272,10 @@ async function submitReview(formData: FormData) {
 
   const today = new Date();
   const seasonLabel = String(today.getFullYear());
-  const gameDayKey = buildGameDayKey(venue.slug, today);
+  const testReviewMode = await canSubmitTestReviews(userId);
+  const gameDayKey = testReviewMode
+    ? buildTestReviewGameDayKey(venue.slug, today)
+    : buildGameDayKey(venue.slug, today);
   const replayValueData =
     typeof replayValue === "string" && replayValue in ReplayValue
       ? (replayValue as ReplayValue)
@@ -284,17 +292,43 @@ async function submitReview(formData: FormData) {
     redirect(`${canonicalItemPath}/review?error=missing-price`);
   }
 
-  const activeGame = await getVenueActiveGame(venue.id);
-  const gameDayCheck = validateGameDayReviewSubmission({
-    activeGame,
-    venueLatitude: venue.latitude,
-    venueLongitude: venue.longitude,
-    reviewRadiusMeters: venue.reviewRadiusMeters,
-    location: parseReviewLocationFromForm(formData)
-  });
+  let gameDayVerification: {
+    gameId: string | null;
+    verifiedGameDay: boolean;
+    locationVerifiedAt: Date | null;
+    distanceFromVenueMeters: number | null;
+    isTestReview: boolean;
+  };
 
-  if (!gameDayCheck.ok) {
-    redirect(`${canonicalItemPath}/review?error=${gameDayCheck.code}`);
+  if (testReviewMode) {
+    gameDayVerification = {
+      gameId: null,
+      verifiedGameDay: false,
+      locationVerifiedAt: null,
+      distanceFromVenueMeters: null,
+      isTestReview: true
+    };
+  } else {
+    const activeGame = await getVenueActiveGame(venue.id);
+    const gameDayCheck = validateGameDayReviewSubmission({
+      activeGame,
+      venueLatitude: venue.latitude,
+      venueLongitude: venue.longitude,
+      reviewRadiusMeters: venue.reviewRadiusMeters,
+      location: parseReviewLocationFromForm(formData)
+    });
+
+    if (!gameDayCheck.ok) {
+      redirect(`${canonicalItemPath}/review?error=${gameDayCheck.code}`);
+    }
+
+    gameDayVerification = {
+      gameId: gameDayCheck.game.id,
+      verifiedGameDay: true,
+      locationVerifiedAt: new Date(),
+      distanceFromVenueMeters: gameDayCheck.distanceFromVenueMeters,
+      isTestReview: false
+    };
   }
 
   if (requiresLowScorePhoto(slopScore)) {
@@ -321,14 +355,6 @@ async function submitReview(formData: FormData) {
       }
     }
   }
-
-  const locationVerifiedAt = new Date();
-  const gameDayVerification = {
-    gameId: gameDayCheck.game.id,
-    verifiedGameDay: true,
-    locationVerifiedAt,
-    distanceFromVenueMeters: gameDayCheck.distanceFromVenueMeters
-  };
 
   const review = await prisma.review.upsert({
     where: {
@@ -555,11 +581,15 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     );
   }
 
+  const testReviewStatus = await getTestReviewModeStatus(contributorUserId);
+  const testReviewModeActive = testReviewStatus.active;
+
   const draft = foodItem.id
     ? await findTodaysReviewForItem({
         userId: contributorUserId,
         foodItemId: foodItem.id,
-        venueSlug: venue.slug
+        venueSlug: venue.slug,
+        testReview: testReviewModeActive
       })
     : null;
 
@@ -664,9 +694,11 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
             {venue.name} · {venue.city}, {venue.state}
           </p>
           <p className="mt-2 text-xs leading-relaxed text-zinc-500">
-            {pollingOpen
-              ? `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium to submit.`
-              : "You can draft anytime. Certified reviews can only be submitted during an active home-game window while you’re at the stadium."}
+            {testReviewModeActive
+              ? "Test review mode is on for your admin account. Submissions skip location certification and do not affect public Slop Score, Fresh Signal, or awards."
+              : pollingOpen
+                ? `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium to submit.`
+                : "You can draft anytime. Certified reviews can only be submitted during an active home-game window while you’re at the stadium."}
           </p>
           {!pollingOpen && upcomingGame ? (
             <p className="mt-1 text-[0.65rem] leading-relaxed text-zinc-600">
@@ -810,6 +842,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               pollingOpen={pollingOpen}
               reviewRadiusMeters={reviewRadiusMeters}
               isDraft={Boolean(draft)}
+              testReviewModeActive={testReviewModeActive}
             />
           </div>
         </form>

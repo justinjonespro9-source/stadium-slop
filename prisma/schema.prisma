@@ -367,6 +367,8 @@ model Review {
   replayValue             ReplayValue?
   priceCheck              PriceCheck?
   verifiedGameDay         Boolean          @default(false)
+  /** QA/admin test submissions — excluded from public Slop Score, Fresh Signal, and awards. */
+  isTestReview            Boolean          @default(false)
   locationVerifiedAt      DateTime?
   distanceFromVenueMeters Int?
   seasonLabel             String
@@ -386,6 +388,7 @@ model Review {
   @@unique([userId, foodItemId, gameDayKey])
   @@index([foodItemId, seasonLabel])
   @@index([foodItemId, verifiedGameDay, createdAt])
+  @@index([foodItemId, isTestReview, status])
   @@index([venueId])
   @@index([gameId])
 }

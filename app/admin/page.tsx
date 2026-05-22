@@ -3,7 +3,13 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 
 import { signOut } from "@/auth";
+import { isAllowTestReviewsEnabled } from "@/lib/admin/test-reviews";
 import { requireAdminAccess } from "@/lib/auth/require-admin";
+import {
+  formatGameDayPollingWindowHoursLabel,
+  GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START,
+  GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START
+} from "@/lib/game-day";
 import { prisma } from "@/lib/prisma";
 import { FAN_REPORT_REASON_LABELS } from "@/lib/reports";
 import { formatPriceUsd } from "@/lib/price-report";
@@ -620,6 +626,45 @@ export default async function AdminPage() {
             </Link>
           </nav>
         </header>
+
+        <section
+          className="brand-card mt-6 rounded-2xl border border-amber-700/40 bg-amber-950/20 p-4 sm:p-5"
+          aria-labelledby="test-reviews-heading"
+        >
+          <h2
+            id="test-reviews-heading"
+            className="text-sm font-black uppercase tracking-[0.14em] text-amber-200"
+          >
+            Allow Test Reviews (QA only)
+          </h2>
+          <p className="mt-2 max-w-3xl text-sm leading-relaxed text-zinc-300">
+            For staging and admin QA only. When enabled via{" "}
+            <code className="text-amber-100">ALLOW_TEST_REVIEWS=1</code> on the
+            deployment, signed-in admins can submit reviews without on-site
+            geolocation or an active home-game window. Test rows are marked{" "}
+            <code className="text-amber-100">isTestReview</code> and are excluded
+            from public Slop Score averages, Fresh Signal, price/replay rollups,
+            and fan-favorite awards. Scorecards may still render with a &quot;Test
+            review&quot; label for layout checks.
+          </p>
+          <p className="mt-3 text-xs leading-relaxed text-zinc-500">
+            Certified review window for production fans: opens{" "}
+            {GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START} minutes before event
+            start, closes {GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START / 60} hours
+            after start ({formatGameDayPollingWindowHoursLabel()}). New synced
+            games pick up these times; re-sync schedules to refresh existing rows.
+          </p>
+          <p className="mt-3 text-sm font-bold text-zinc-200">
+            Status:{" "}
+            {isAllowTestReviewsEnabled() ? (
+              <span className="text-emerald-300">Enabled for admin accounts</span>
+            ) : (
+              <span className="text-zinc-400">
+                Disabled — set ALLOW_TEST_REVIEWS=1 in Vercel env and redeploy
+              </span>
+            )}
+          </p>
+        </section>
 
         <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
           {[

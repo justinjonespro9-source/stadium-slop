@@ -211,6 +211,8 @@ export type FoodReview = {
   priceCheck?: PriceCheckLabel;
   helpfulLikes: number;
   verifiedGameDay: boolean;
+  /** Admin QA review — excluded from public scoring rollups. */
+  isTestReview?: boolean;
   seasonLabel: string;
   gameDayKey?: string;
   dateLabel: string;

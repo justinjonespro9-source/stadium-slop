@@ -460,8 +460,12 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     foodItem.slug
   );
 
+  const scorecardReviews = [
+    ...careerStats.reviews,
+    ...(careerStats.testReviews ?? [])
+  ];
   const { heroEntry, photoBackedReviews } = buildItemFanPhotoLayout(
-    careerStats.reviews,
+    scorecardReviews,
     foodPhotos,
     foodItem.name
   );

@@ -164,7 +164,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
         }
       }),
       prisma.review.count({
-        where: { userId, status: "ACTIVE" }
+        where: { userId, status: "ACTIVE", isTestReview: false }
       }),
       prisma.helpfulLike.count({
         where: { review: { userId, status: "ACTIVE" } }
@@ -178,16 +178,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       }),
       prisma.review.groupBy({
         by: ["venueId"],
-        where: { userId, status: "ACTIVE" },
+        where: { userId, status: "ACTIVE", isTestReview: false },
         orderBy: { venueId: "asc" }
       }),
       prisma.review.count({
-        where: { userId, status: "ACTIVE", verifiedGameDay: true }
+        where: { userId, status: "ACTIVE", verifiedGameDay: true, isTestReview: false }
       }),
       prisma.review.count({
         where: {
           userId,
           status: "ACTIVE",
+          isTestReview: false,
           labels: { has: "WORTH_THE_WALK" }
         }
       }),
