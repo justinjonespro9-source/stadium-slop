@@ -1,6 +1,11 @@
+import { createRequire } from "node:module";
 import type { NextConfig } from "next";
 
+const require = createRequire(import.meta.url);
+
 const nextConfig: NextConfig = {
+  /** Vercel adapter modifyConfig needs projectDir; Next 16.2.x does not pass it yet. */
+  adapterPath: require.resolve("./lib/vercel-adapter-shim.cjs"),
   images: {
     qualities: [75, 100],
     remotePatterns: [
