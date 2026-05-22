@@ -139,10 +139,6 @@ export async function generateMetadata({
   };
 }
 
-function getPrimaryConsensusLabel(review: { labels: string[] }) {
-  return review.labels[0] ?? "Fan Rating";
-}
-
 function maxConsensusPercentage(stats: ConsensusStat[]) {
   return stats.reduce((max, row) => Math.max(max, row.percentage), 0);
 }
@@ -717,12 +713,6 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             <SlopScorecardCarousel swipeHint={photoBackedReviews.length > 1}>
               {photoBackedReviews.map((review, cardIndex) => {
                 const photoUrlNorm = normalizePublicImageUrl(review.photoUrl);
-                const heroDup =
-                  Boolean(heroImageUrl) && photoUrlNorm === heroImageUrl;
-                const highlightLabels = pickSlopCardHighlights(
-                  review.labels,
-                  awardLabelPool
-                );
                 const metaLine = formatSlopCardMetaRow({
                   locationLine: slopCardLocation,
                   verifiedGameDay: review.verifiedGameDay,
@@ -834,15 +824,12 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     itemName={foodItem.name}
                     venueName={venue.name}
                     metaLine={metaLine}
-                    highlightLabels={highlightLabels}
                     photoUrl={photoUrlNorm}
                     photoAlt={review.photoAlt ?? `Fan photo for ${foodItem.name}`}
                     photoPlaceholderEmoji={
                       review.photoPlaceholder ?? foodPhotos[0]?.imagePlaceholder
                     }
                     napkinEligible={napkinEligible}
-                    signalLine={getPrimaryConsensusLabel(review)}
-                    duplicateHeroBadge={heroDup}
                     frontHelpfulSlot={frontHelpfulSlot}
                     backHelpfulSlot={backHelpfulSlot}
                     reportSlot={reportSlot}

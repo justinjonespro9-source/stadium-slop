@@ -12,7 +12,6 @@ import {
 } from "react";
 
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
-import { SlopCardHighlightChips } from "@/components/slop-card-highlight-chips";
 import { SlopScorecardFrame } from "@/components/slop-scorecard-shell";
 import type { FoodReview } from "@/lib/sample-data";
 import { normalizePublicImageUrl } from "@/lib/image-url";
@@ -35,18 +34,15 @@ export type SlopScorecardFlipCardProps = {
   itemName: string;
   venueName: string;
   metaLine: string;
-  highlightLabels: string[];
   photoUrl: string | undefined;
   photoAlt: string;
   photoPlaceholderEmoji?: string;
   napkinEligible: boolean;
-  signalLine?: string;
   /** Icon-only helpful control on the card front (does not flip the card). */
   frontHelpfulSlot: ReactNode;
   /** Full helpful / report controls on the card back. */
   backHelpfulSlot: ReactNode;
   reportSlot: ReactNode;
-  duplicateHeroBadge?: boolean;
 };
 
 /** Stops back-face tap-to-flip from swallowing button/link/form clicks. */
@@ -93,7 +89,7 @@ function ReviewerProfileBlock({
   photoAlt: string;
 }) {
   return (
-    <div className="flex gap-2">
+    <div className="slop-scorecard-back-profile flex items-start gap-2.5">
       {avatarUrl ? (
         <div className="slop-scorecard-back-profile-photo">
           <Image
@@ -101,7 +97,7 @@ function ReviewerProfileBlock({
             alt={photoAlt}
             fill
             className="object-cover object-center"
-            sizes="72px"
+            sizes="96px"
           />
         </div>
       ) : (
@@ -109,25 +105,26 @@ function ReviewerProfileBlock({
           {profile.initials}
         </div>
       )}
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-[0.72rem] font-black leading-tight text-[var(--slop-cream)]">
+      <div className="min-w-0 flex-1 pt-0.5">
+        <p className="truncate text-[0.74rem] font-black leading-tight text-[var(--slop-cream)]">
           {profile.displayName}
         </p>
         {profile.handle ? (
-          <p className="truncate text-[0.52rem] font-bold text-[var(--slop-cream-dim)]">
+          <p className="truncate text-[0.54rem] font-bold leading-snug text-[var(--slop-cream-dim)]">
             {profile.handle}
           </p>
         ) : null}
-        <div className="mt-1">
-          <BackMetaRow label="Venues reviewed" value={profile.venuesReviewed} />
-          <BackMetaRow label="Items reviewed" value={profile.itemsReviewed} />
-          <BackMetaRow label="Helpful earned" value={profile.helpfulEarned} />
-        </div>
         {profile.showFanScout ? (
           <span className="mt-1 inline-flex rounded border border-[var(--slop-gold)]/40 bg-[rgba(244,179,33,0.08)] px-1 py-px text-[0.36rem] font-black uppercase tracking-[0.08em] text-[var(--slop-gold-bright)]">
             Fan Scout
           </span>
         ) : null}
+        <p className="slop-scorecard-back-career-label mt-1.5">Career Stats</p>
+        <div className="slop-scorecard-back-career-stats">
+          <BackMetaRow label="Venues Reviewed" value={profile.venuesReviewed} />
+          <BackMetaRow label="Items Reviewed" value={profile.itemsReviewed} />
+          <BackMetaRow label="Helpful Earned" value={profile.helpfulEarned} />
+        </div>
       </div>
     </div>
   );
@@ -199,16 +196,13 @@ export function SlopScorecardFlipCard({
   itemName,
   venueName,
   metaLine,
-  highlightLabels,
   photoUrl,
   photoAlt,
   photoPlaceholderEmoji,
   napkinEligible,
-  signalLine,
   frontHelpfulSlot,
   backHelpfulSlot,
-  reportSlot,
-  duplicateHeroBadge
+  reportSlot
 }: SlopScorecardFlipCardProps) {
   const rootRef = useRef<HTMLElement>(null);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -219,17 +213,6 @@ export function SlopScorecardFlipCard({
     [review]
   );
   const noteText = review.note?.trim() ?? "";
-
-  const backBadgeLabels = useMemo(() => {
-    const labels = [...highlightLabels];
-    if (signalLine && !labels.includes(signalLine)) {
-      labels.push(signalLine);
-    }
-    if (duplicateHeroBadge && !labels.includes("Hero match")) {
-      labels.unshift("Hero match");
-    }
-    return labels;
-  }, [highlightLabels, signalLine, duplicateHeroBadge]);
 
   const toggleFlip = useCallback(() => {
     setIsFlipped((prev) => !prev);
@@ -357,7 +340,7 @@ export function SlopScorecardFlipCard({
                 </ScorecardNoFlip>
               </div>
 
-              <div className="mt-1.5 shrink-0">
+              <div className="mt-1 shrink-0">
                 <ReviewerProfileBlock
                   profile={reviewerProfile}
                   avatarUrl={u}
@@ -366,36 +349,29 @@ export function SlopScorecardFlipCard({
               </div>
 
               {reviewerProfile.verifiedGameDay ? (
-                <p className="mt-1.5 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/40 px-1.5 py-0.5 text-[0.42rem] font-black uppercase text-emerald-100">
+                <p className="mt-1 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/40 px-1.5 py-0.5 text-[0.42rem] font-black uppercase text-emerald-100">
                   <span className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400" />
                   Game-day certified
                 </p>
               ) : null}
 
-              {backBadgeLabels.length > 0 ? (
-                <div className="mt-2 shrink-0">
-                  <BackSectionLabel>Slop Signals</BackSectionLabel>
-                  <SlopCardHighlightChips labels={backBadgeLabels} className="mt-1" />
-                </div>
-              ) : null}
-
               <div className="mt-2 shrink-0">
-                <BackSectionLabel>Score breakdown</BackSectionLabel>
+                <BackSectionLabel>Slop Signals</BackSectionLabel>
                 <div className="slop-scorecard-back-stat-panel mt-1">
                   <BackStatRow
                     label="Slop Score"
                     value={`${slopScoreDisplay(review.slopScore)} / 10`}
                   />
                   <BackStatRow
-                    label="Napkin rating"
+                    label="Napkin Rating"
                     value={napkinEligible ? `${review.napkinRating} / 5` : "N/A"}
                   />
                   <BackStatRow
-                    label="Replay value"
+                    label="Replay Value"
                     value={review.replayValue ?? "—"}
                   />
                   <BackStatRow
-                    label="Price check"
+                    label="Price Check"
                     value={review.priceCheck ?? "—"}
                   />
                 </div>
