@@ -566,7 +566,6 @@ export async function getDbBackedItemSlopStats(
         hasPhoto: Boolean(photoUrl || photoPlaceholder),
         photoUrl,
         photoAlt: primaryPhoto?.alt,
-        photoLabel: primaryPhoto?.caption ?? undefined,
         photoPlaceholder,
         reviewPhotoCreatedAt: primaryPhoto?.createdAt?.toISOString(),
         primaryFoodPhotoId: primaryPhoto?.id,

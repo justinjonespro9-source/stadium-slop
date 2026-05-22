@@ -55,7 +55,7 @@ function loadImageFromFile(file: File): Promise<HTMLImageElement> {
 export function PhotoCropUpload({
   inputName = "reviewPhoto",
   formId,
-  captionName = "photoCaption",
+  captionName,
   defaultCaption = "",
   existingPhotoUrl,
   existingPhotoAlt = "Current fan photo",
@@ -611,19 +611,21 @@ export function PhotoCropUpload({
         </div>
       ) : null}
 
-      <label className="block">
-        <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-          Caption (optional)
-        </span>
-        <input
-          name={captionName}
-          maxLength={120}
-          placeholder="e.g. First-bite cheese pull"
-          defaultValue={defaultCaption}
-          disabled={disabled}
-          className="mt-1 w-full rounded-lg border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3 py-2 text-sm text-[var(--slop-cream)] outline-none placeholder:text-[var(--slop-cream-dim)] focus:border-[var(--slop-orange)]"
-        />
-      </label>
+      {captionName ? (
+        <label className="block">
+          <span className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+            Caption (optional)
+          </span>
+          <input
+            name={captionName}
+            maxLength={120}
+            placeholder="e.g. First-bite cheese pull"
+            defaultValue={defaultCaption}
+            disabled={disabled}
+            className="mt-1 w-full rounded-lg border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3 py-2 text-sm text-[var(--slop-cream)] outline-none placeholder:text-[var(--slop-cream-dim)] focus:border-[var(--slop-orange)]"
+          />
+        </label>
+      ) : null}
     </div>
   );
 }

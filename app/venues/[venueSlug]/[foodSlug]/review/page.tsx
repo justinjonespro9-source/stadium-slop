@@ -417,8 +417,6 @@ async function submitReview(formData: FormData) {
       );
     }
 
-    const caption = String(formData.get("photoCaption") ?? "").trim().slice(0, 120);
-
     const publicUrl = normalizePublicImageUrl(secureUrl);
     if (!publicUrl) {
       revalidateFoodItemSurfaces(
@@ -446,8 +444,8 @@ async function submitReview(formData: FormData) {
           uploaderUserId: user.id,
           photoType: "FOOD",
           url: publicUrl,
-          alt: caption || `${foodItemRow.name} fan photo`,
-          caption: caption || null,
+          alt: `${foodItemRow.name} fan photo`,
+          caption: null,
           verifiedOnSite: true,
           status: "ACTIVE"
         }
@@ -601,8 +599,6 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const draftNote = draft?.note ?? "";
   const existingPhoto =
     draft?.photos.find((p) => normalizePublicImageUrl(p.url)) ?? undefined;
-  const draftCaption = existingPhoto?.caption ?? "";
-
   const dbVenue = await prisma.venue.findUnique({
     where: { slug: venue.slug },
     select: {
@@ -740,7 +736,6 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               formId="review-form"
               defaultSlopScore={draftSlop}
               cloudinaryReady={cloudinaryReady}
-              defaultCaption={draftCaption}
               existingPhotoUrl={existingPhoto?.url ?? null}
               existingPhotoAlt={existingPhoto?.alt ?? `${foodItem.name} fan photo`}
             >
@@ -815,16 +810,16 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
             <section>
               <h2 className="text-sm font-black text-white">
-                Quick note <span className="font-normal text-zinc-500">(optional)</span>
+                Hot Take <span className="font-normal text-zinc-500">(optional)</span>
               </h2>
               <p className="mt-0.5 text-xs text-zinc-500">
-                Food-only vibe check — max 300 characters.
+                This appears on the back of your Slop Scorecard. Max 300 characters.
               </p>
               <textarea
                 name="note"
                 maxLength={300}
                 rows={3}
-                placeholder="Temp, texture, would you run it back?"
+                placeholder="One-liner for fans flipping your card"
                 defaultValue={draftNote}
                 className="mt-2 w-full resize-y rounded-lg border border-zinc-800 bg-black px-3 py-2.5 text-sm text-zinc-200 outline-none placeholder:text-zinc-600"
               />

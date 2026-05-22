@@ -14,7 +14,6 @@ type ReviewScorecardFormClientProps = {
   formId: string;
   defaultSlopScore: number;
   cloudinaryReady: boolean;
-  defaultCaption: string;
   existingPhotoUrl: string | null;
   existingPhotoAlt: string;
   children: ReactNode;
@@ -24,7 +23,6 @@ export function ReviewScorecardFormClient({
   formId,
   defaultSlopScore,
   cloudinaryReady,
-  defaultCaption,
   existingPhotoUrl,
   existingPhotoAlt,
   children
@@ -120,8 +118,6 @@ export function ReviewScorecardFormClient({
             <PhotoCropUpload
               formId={formId}
               inputName="reviewPhoto"
-              captionName="photoCaption"
-              defaultCaption={defaultCaption}
               existingPhotoUrl={existingPhotoUrl}
               existingPhotoAlt={existingPhotoAlt}
             />
