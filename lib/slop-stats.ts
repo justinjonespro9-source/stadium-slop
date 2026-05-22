@@ -335,6 +335,7 @@ function getDbReviewsForMode(
       id: string;
       displayName: string;
       handle: string;
+      avatarUrl: string | null;
     };
     _count: {
       helpfulLikes: number;
