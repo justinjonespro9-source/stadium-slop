@@ -94,13 +94,11 @@ function SlopScoreBadge({ score }: { score: number }) {
 
 function ScorecardFrontHeader({ slopScore }: { slopScore: number }) {
   return (
-    <div className="slop-scorecard-header slop-scorecard-header--front relative z-[2] grid shrink-0 grid-cols-[auto_1fr_auto] items-center gap-1 px-2 py-2">
-      <BrandBadgeIcon size={38} title="Stadium Slop" className="shrink-0" />
-      <div className="flex flex-col items-center justify-center leading-none">
-        <span className="text-[0.56rem] font-black uppercase tracking-[0.16em] text-[var(--slop-cream)]">
-          Slop
-        </span>
-        <span className="mt-0.5 text-[0.56rem] font-black uppercase tracking-[0.16em] text-[var(--slop-cream)]">
+    <div className="slop-scorecard-header slop-scorecard-header--front relative z-[2] grid shrink-0 grid-cols-[auto_1fr_auto] items-center gap-1.5 px-2 py-2">
+      <BrandBadgeIcon size={46} title="Stadium Slop" className="shrink-0" />
+      <div className="slop-scorecard-title-stack min-w-0 px-0.5">
+        <span className="slop-scorecard-title-line">Slop</span>
+        <span className="slop-scorecard-title-line slop-scorecard-title-line--wide">
           Scorecard
         </span>
       </div>

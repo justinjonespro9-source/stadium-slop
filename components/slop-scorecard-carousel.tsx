@@ -159,12 +159,12 @@ export function SlopScorecardCarousel({
 
   const carouselControls =
     cardCount > 1 ? (
-      <div className="slop-scorecard-carousel-controls flex flex-wrap items-center justify-center gap-2 px-1">
+      <div className="slop-scorecard-carousel-controls grid w-full max-w-[21.5rem] grid-cols-3 gap-2 px-1 sm:max-w-md">
         <button
           type="button"
           onClick={goPrev}
           disabled={activeIndex <= 0}
-          className="min-h-10 rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.9)] px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] transition enabled:hover:border-[var(--slop-gold)] enabled:hover:text-[var(--slop-gold-bright)] disabled:opacity-40"
+          className="slop-scorecard-nav-pill slop-scorecard-nav-pill--secondary"
           aria-label="Previous scorecard"
         >
           Previous
@@ -172,7 +172,7 @@ export function SlopScorecardCarousel({
         <button
           type="button"
           onClick={flipActive}
-          className="min-h-10 rounded-full border border-[var(--slop-gold)]/55 bg-[color:rgba(244,179,33,0.14)] px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] transition hover:border-[var(--slop-gold)] hover:bg-[color:rgba(244,179,33,0.22)]"
+          className="slop-scorecard-nav-pill slop-scorecard-nav-pill--primary"
           aria-label="Flip active scorecard to details"
         >
           Details
@@ -181,7 +181,7 @@ export function SlopScorecardCarousel({
           type="button"
           onClick={goNext}
           disabled={activeIndex >= cardCount - 1}
-          className="min-h-10 rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(11,27,43,0.9)] px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] transition enabled:hover:border-[var(--slop-gold)] enabled:hover:text-[var(--slop-gold-bright)] disabled:opacity-40"
+          className="slop-scorecard-nav-pill slop-scorecard-nav-pill--secondary"
           aria-label="Next scorecard"
         >
           Next
