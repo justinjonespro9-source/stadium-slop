@@ -1,7 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { ScorecardShareActions } from "@/components/scorecard-share-actions";
+
 export type ActivityReviewCardProps = {
+  reviewId: string;
   foodName: string;
   venueName: string;
   venueSlug: string;
@@ -13,9 +16,13 @@ export type ActivityReviewCardProps = {
   helpfulLikes: number;
   verifiedGameDay: boolean;
   canEditToday: boolean;
+  shareUrl: string;
+  shareTitle: string;
+  shareDescription: string;
 };
 
 export function ActivityReviewCard({
+  reviewId,
   foodName,
   venueName,
   venueSlug,
@@ -26,10 +33,14 @@ export function ActivityReviewCard({
   photoCount,
   helpfulLikes,
   verifiedGameDay,
-  canEditToday
+  canEditToday,
+  shareUrl,
+  shareTitle,
+  shareDescription
 }: ActivityReviewCardProps) {
   const itemUrl = `/venues/${venueSlug}/${foodSlug}`;
   const reviewUrl = `${itemUrl}/review`;
+  const scorecardUrl = `/scorecards/${encodeURIComponent(reviewId)}`;
 
   return (
     <article className="group rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.72)] p-3 transition hover:border-[var(--slop-gold)]/35 sm:p-4">
@@ -58,10 +69,19 @@ export function ActivityReviewCard({
         </MetaChip>
       </ul>
 
+      <div className="mt-3">
+        <ScorecardShareActions
+          shareUrl={shareUrl}
+          shareTitle={shareTitle}
+          shareDescription={shareDescription}
+        />
+      </div>
+
       <CardActions
         canEditToday={canEditToday}
         reviewUrl={reviewUrl}
         itemUrl={itemUrl}
+        scorecardUrl={scorecardUrl}
       />
     </article>
   );
@@ -110,11 +130,13 @@ function SlopScoreBadge({ score }: { score: number }) {
 function CardActions({
   canEditToday,
   reviewUrl,
-  itemUrl
+  itemUrl,
+  scorecardUrl
 }: {
   canEditToday: boolean;
   reviewUrl: string;
   itemUrl: string;
+  scorecardUrl: string;
 }) {
   return (
     <div className="mt-3 flex flex-wrap gap-2">
@@ -126,6 +148,12 @@ function CardActions({
           Edit today&apos;s review
         </Link>
       ) : null}
+      <Link
+        href={scorecardUrl}
+        className="inline-flex min-h-9 items-center rounded-xl border border-[var(--slop-line-strong)] px-3.5 py-2 text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-cream)]"
+      >
+        View scorecard
+      </Link>
       <Link
         href={itemUrl}
         className="inline-flex min-h-9 items-center rounded-xl border border-[var(--slop-line-strong)] px-3.5 py-2 text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-cream)]"

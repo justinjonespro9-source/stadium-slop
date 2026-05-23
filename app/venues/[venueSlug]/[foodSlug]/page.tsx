@@ -48,6 +48,12 @@ import {
   pickSlopCardHighlights,
   slopCardLocationLine
 } from "@/lib/slop-card-display";
+import { ScorecardShareActions } from "@/components/scorecard-share-actions";
+import {
+  getScorecardShareDescription,
+  getScorecardShareTitle,
+  getScorecardShareUrl
+} from "@/lib/scorecard-share";
 import { photoErrorMessageFromQuery } from "@/lib/review-photo-errors";
 import { itemPathWithHelpfulStatus } from "@/lib/review-celebration";
 import { resolveFoodItemForPriceReport } from "@/lib/price-report";
@@ -474,6 +480,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const contributorUserId = await getContributorUserId();
   const isSignedIn = Boolean(contributorUserId);
   let hasTodaysReview = false;
+  let todaysReviewId: string | null = null;
   if (contributorUserId && foodItem.id) {
     const todaysRow = await findTodaysReviewForItem({
       userId: contributorUserId,
@@ -481,6 +488,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       venueSlug: venue.slug
     });
     hasTodaysReview = Boolean(todaysRow);
+    todaysReviewId = todaysRow?.id ?? null;
   }
   const likedReviewIds = contributorUserId
     ? await getLikedReviewIds(
@@ -538,6 +546,22 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const slopCardLocation = slopCardLocationLine(foodItem, vendor);
   const awardLabelPool = awardChips.map((chip) => chip.label);
   const leadReview = photoBackedReviews[0];
+  const submittedReview = todaysReviewId
+    ? photoBackedReviews.find((review) => review.id === todaysReviewId)
+    : undefined;
+  const celebrationShareUrl = submittedReview
+    ? getScorecardShareUrl(submittedReview.id)
+    : itemShareUrl;
+  const celebrationShareTitle = submittedReview
+    ? getScorecardShareTitle(foodItem.name, venue.name)
+    : `${foodItem.name} · ${venue.name}`;
+  const celebrationShareDescription = submittedReview
+    ? getScorecardShareDescription(
+        foodItem.name,
+        venue.name,
+        submittedReview.slopScore
+      )
+    : `Slop Score and fan signals for ${foodItem.name} at ${venue.name} on Stadium Slop.`;
   const shareSlopPreview: SlopCardSharePreview | null = leadReview
     ? {
         itemName: foodItem.name,
@@ -577,9 +601,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             itemPath={itemPath}
             celebrationFromServer={showReviewSaved}
             photoErrorCode={photoError ?? null}
-            shareUrl={itemShareUrl}
-            shareTitle={`${foodItem.name} · ${venue.name}`}
-            shareDescription={`Slop Score and fan signals for ${foodItem.name} at ${venue.name} on Stadium Slop.`}
+            shareUrl={celebrationShareUrl}
+            shareTitle={celebrationShareTitle}
+            shareDescription={celebrationShareDescription}
             photoErrorMessage={photoErrorFollowUp}
             photoRetryHref={
               showPhotoRetryCta ? `${reviewPath}?photoRetry=1` : null
@@ -820,6 +844,19 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                   />
                 );
 
+                const shareSlot = (
+                  <ScorecardShareActions
+                    shareUrl={getScorecardShareUrl(review.id)}
+                    shareTitle={getScorecardShareTitle(foodItem.name, venue.name)}
+                    shareDescription={getScorecardShareDescription(
+                      foodItem.name,
+                      venue.name,
+                      review.slopScore
+                    )}
+                    variant="compact"
+                  />
+                );
+
                 return (
                   <ReviewSlopCard
                     key={review.id}
@@ -836,6 +873,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     napkinEligible={napkinEligible}
                     frontHelpfulSlot={frontHelpfulSlot}
                     backHelpfulSlot={backHelpfulSlot}
+                    shareSlot={shareSlot}
                     reportSlot={reportSlot}
                   />
                 );

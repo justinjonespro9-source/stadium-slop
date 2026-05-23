@@ -41,6 +41,8 @@ export type SlopScorecardFlipCardProps = {
   napkinEligible: boolean;
   /** Icon-only helpful control on the card front (does not flip the card). */
   frontHelpfulSlot: ReactNode;
+  /** Copy/share controls on the card back. */
+  shareSlot?: ReactNode;
   /** Full helpful / report controls on the card back. */
   backHelpfulSlot: ReactNode;
   reportSlot: ReactNode;
@@ -214,6 +216,7 @@ export function SlopScorecardFlipCard({
   napkinEligible,
   frontHelpfulSlot,
   backHelpfulSlot,
+  shareSlot,
   reportSlot
 }: SlopScorecardFlipCardProps) {
   const rootRef = useRef<HTMLElement>(null);
@@ -440,6 +443,7 @@ export function SlopScorecardFlipCard({
 
               <ScorecardNoFlip>
                 <div className="mt-2 shrink-0 space-y-1 border-t border-[var(--slop-line)] pt-2">
+                  {shareSlot}
                   {backHelpfulSlot}
                   {reportSlot}
                 </div>

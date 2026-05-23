@@ -3,6 +3,11 @@ import Image from "next/image";
 
 import { ActivityReviewCard } from "@/components/account/activity-review-card";
 import type { ProfileBadge, ScoutRank } from "@/lib/account-scout-profile";
+import {
+  getScorecardShareDescription,
+  getScorecardShareTitle,
+  getScorecardShareUrl
+} from "@/lib/scorecard-share";
 
 export type ProfileDashboardReview = {
   id: string;
@@ -195,6 +200,7 @@ export function ProfileDashboardBody({
             {reviewHistory.map((review) => (
               <li key={review.id} className="min-w-0">
                 <ActivityReviewCard
+                  reviewId={review.id}
                   foodName={review.foodName}
                   venueName={review.venueName}
                   venueSlug={review.venueSlug}
@@ -213,6 +219,16 @@ export function ProfileDashboardBody({
                   canEditToday={canEditReviewToday(
                     review.gameDayKey,
                     review.venueSlug
+                  )}
+                  shareUrl={getScorecardShareUrl(review.id)}
+                  shareTitle={getScorecardShareTitle(
+                    review.foodName,
+                    review.venueName
+                  )}
+                  shareDescription={getScorecardShareDescription(
+                    review.foodName,
+                    review.venueName,
+                    review.slopScore
                   )}
                 />
               </li>
