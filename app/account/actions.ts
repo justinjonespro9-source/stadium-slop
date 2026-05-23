@@ -11,6 +11,7 @@ import {
   uploadImageFile
 } from "@/lib/cloudinary";
 import { validateProfileIdentityInput } from "@/lib/profile-identity";
+import { validateProfileSocialInput } from "@/lib/profile-social-links";
 import { prisma } from "@/lib/prisma";
 
 function accountRedirect(query: Record<string, string>): never {
@@ -111,4 +112,48 @@ export async function uploadProfileAvatar(formData: FormData) {
   revalidatePath("/account");
   revalidatePath("/venues", "layout");
   accountRedirect({ saved: "avatar" });
+}
+
+export async function updateProfileSocialSettings(formData: FormData) {
+  const userId = await getContributorUserId();
+  if (!userId) {
+    redirect("/login?next=/account");
+  }
+
+  const parsed = validateProfileSocialInput({
+    instagram: String(formData.get("instagram") ?? ""),
+    tiktok: String(formData.get("tiktok") ?? ""),
+    youtube: String(formData.get("youtube") ?? ""),
+    x: String(formData.get("x") ?? ""),
+    website: String(formData.get("website") ?? ""),
+    socialLinksPublic:
+      formData.get("socialLinksPublic") === "on" ||
+      formData.get("socialLinksPublic") === "true",
+    reviewHistoryVisibility: String(formData.get("reviewHistoryVisibility") ?? "")
+  });
+
+  if (!parsed.ok) {
+    const firstField = Object.keys(parsed.errors)[0];
+    accountRedirect({
+      error:
+        firstField === "reviewHistoryVisibility"
+          ? "social-visibility"
+          : firstField === "form"
+            ? "social-invalid"
+            : "social-field"
+    });
+  }
+
+  try {
+    await prisma.user.update({
+      where: { id: userId },
+      data: parsed.data
+    });
+  } catch {
+    accountRedirect({ error: "social-save" });
+  }
+
+  revalidatePath("/account");
+  revalidatePath("/venues", "layout");
+  accountRedirect({ saved: "social" });
 }

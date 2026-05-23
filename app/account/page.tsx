@@ -4,11 +4,13 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 import {
+  updateProfileSocialSettings,
   updateScorecardIdentity,
   uploadProfileAvatar
 } from "@/app/account/actions";
 import { signOut } from "@/auth";
 import { ProfileDashboardBody } from "@/components/account/profile-dashboard-body";
+import { ProfileSocialEditor } from "@/components/account/profile-social-editor";
 import { ScorecardIdentityEditor } from "@/components/account/scorecard-identity-editor";
 import { AuthPageScaffold } from "@/components/auth-ui";
 import { AuthConfigAlert } from "@/components/auth-config-alert";
@@ -23,6 +25,7 @@ import {
   type ScoutProfileInput
 } from "@/lib/account-scout-profile";
 import { isCloudinaryConfigured } from "@/lib/cloudinary";
+import type { StoredProfileSocial } from "@/lib/profile-social-links";
 import { handleDisplayFromStored } from "@/lib/profile-identity-display";
 import { prisma } from "@/lib/prisma";
 import { isGameDayKeyTodayForVenue } from "@/lib/game-day";
@@ -120,6 +123,13 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     handle: string;
     createdAt: Date;
     homeVenue: { name: string } | null;
+    instagramUrl: string | null;
+    tiktokUrl: string | null;
+    youtubeUrl: string | null;
+    xUrl: string | null;
+    websiteUrl: string | null;
+    socialLinksPublic: boolean;
+    reviewHistoryVisibility: StoredProfileSocial["reviewHistoryVisibility"];
   } | null = null;
   let totalReviews = 0;
   let helpfulLikesReceived = 0;
@@ -160,6 +170,13 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           displayName: true,
           handle: true,
           createdAt: true,
+          instagramUrl: true,
+          tiktokUrl: true,
+          youtubeUrl: true,
+          xUrl: true,
+          websiteUrl: true,
+          socialLinksPublic: true,
+          reviewHistoryVisibility: true,
           homeVenue: { select: { name: true } }
         }
       }),
@@ -262,6 +279,16 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
 
   const handleDisplay = handleDisplayFromStored(handle);
 
+  const socialProfile: StoredProfileSocial = {
+    instagramUrl: dbUser?.instagramUrl ?? null,
+    tiktokUrl: dbUser?.tiktokUrl ?? null,
+    youtubeUrl: dbUser?.youtubeUrl ?? null,
+    xUrl: dbUser?.xUrl ?? null,
+    websiteUrl: dbUser?.websiteUrl ?? null,
+    socialLinksPublic: dbUser?.socialLinksPublic ?? false,
+    reviewHistoryVisibility: dbUser?.reviewHistoryVisibility ?? "VENUE_CONTEXT_ONLY"
+  };
+
   const identityErrorMessage =
     uploadError === "identity-handle-taken"
       ? "That handle is already taken. Try another."
@@ -274,6 +301,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             : uploadError === "identity-save"
               ? "Could not save identity. Try again."
               : null;
+
+  const socialErrorMessage =
+    uploadError === "social-field"
+      ? "Check your social link handles or URLs and try again."
+      : uploadError === "social-visibility"
+        ? "Choose a review history visibility option."
+        : uploadError === "social-invalid"
+          ? "Could not save reviewer profile. Check your entries."
+          : uploadError === "social-save"
+            ? "Could not save reviewer profile. Try again."
+            : null;
 
   const uploadErrorMessage =
     uploadError === "too_large"
@@ -342,6 +380,13 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           >
             Profile photo saved.
           </div>
+        ) : savedNotice === "social" ? (
+          <div
+            role="status"
+            className="mb-4 rounded-xl border border-emerald-800/70 bg-emerald-950/40 px-3 py-2.5 text-sm text-emerald-100"
+          >
+            Reviewer profile saved.
+          </div>
         ) : null}
         {identityErrorMessage ? (
           <div
@@ -361,14 +406,22 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             <p className="mt-0.5 text-amber-100/95">{uploadErrorMessage}</p>
           </div>
         ) : null}
+        {socialErrorMessage ? (
+          <div
+            role="alert"
+            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
+          >
+            <p className="font-bold">Reviewer profile</p>
+            <p className="mt-0.5 text-amber-100/95">{socialErrorMessage}</p>
+          </div>
+        ) : null}
 
         <div className="brand-card rounded-2xl border border-[var(--slop-gold)]/35 px-4 py-4 sm:px-5 sm:py-5">
           <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[var(--slop-gold-dim)]">
             Scorecard identity
           </p>
           <p className="mt-1 max-w-2xl text-xs leading-snug text-[var(--slop-cream-dim)]">
-            What other fans see on your Slop Scorecards — name, handle, and photo. No public
-            profile page, bio, or followers.
+            What other fans see on your Slop Scorecards — name, handle, and photo.
           </p>
           <div className="mt-4">
             <ScorecardIdentityEditor
@@ -382,6 +435,25 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               cloudinaryReady={cloudinaryReady}
               updateScorecardIdentity={updateScorecardIdentity}
               uploadProfileAvatar={uploadProfileAvatar}
+            />
+          </div>
+        </div>
+
+        <div
+          id="reviewer-profile"
+          className="brand-card mt-4 rounded-2xl border border-[var(--slop-line-strong)] px-4 py-4 sm:mt-5 sm:px-5 sm:py-5"
+        >
+          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[var(--slop-gold-dim)]">
+            Find me elsewhere
+          </p>
+          <p className="mt-1 max-w-2xl text-xs leading-snug text-[var(--slop-cream-dim)]">
+            Optional external links and history visibility. Stadium Slop is not a follower
+            platform — reviews stay on food items and venues.
+          </p>
+          <div className="mt-4">
+            <ProfileSocialEditor
+              initialSocial={socialProfile}
+              updateProfileSocialSettings={updateProfileSocialSettings}
             />
           </div>
         </div>

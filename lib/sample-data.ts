@@ -2,6 +2,7 @@ import {
   sixParkConcessionsFoodItems,
   sixParkConcessionsVendors
 } from "./mlb-ballpark-concessions-seed";
+import type { PublicReviewerSocialLinks } from "./profile-social-links";
 import {
   getMlbBallparkSeedRows,
   type MlbBallparkSeedRow
@@ -228,6 +229,8 @@ export type FoodReview = {
   primaryFoodPhotoId?: string;
   hasMenuPriceProof?: boolean;
   note?: string;
+  /** Opt-in external links for scorecard back (only when socialLinksPublic). */
+  reviewerSocialLinks?: PublicReviewerSocialLinks;
 };
 
 export type HelpfulLike = {

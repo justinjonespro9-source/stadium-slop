@@ -12,6 +12,7 @@ import {
 } from "react";
 
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
+import { ReviewerExternalLinks } from "@/components/reviewer-external-links";
 import { SlopScorecardFrame } from "@/components/slop-scorecard-shell";
 import type { FoodReview } from "@/lib/sample-data";
 import { normalizePublicImageUrl } from "@/lib/image-url";
@@ -405,6 +406,18 @@ export function SlopScorecardFlipCard({
                   </p>
                 )}
               </div>
+
+              {review.reviewerSocialLinks ? (
+                <ScorecardNoFlip>
+                  <div className="mt-2 shrink-0">
+                    <ReviewerExternalLinks
+                      social={review.reviewerSocialLinks}
+                      heading="Find me elsewhere"
+                      compact
+                    />
+                  </div>
+                </ScorecardNoFlip>
+              ) : null}
 
               <div className="mt-2 shrink-0 rounded border border-[var(--slop-line)] bg-[rgba(6,14,24,0.45)] px-2 py-1.5">
                 <BackSectionLabel>This card</BackSectionLabel>

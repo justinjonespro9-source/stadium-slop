@@ -7,6 +7,7 @@ import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { slugFilterInsensitive } from "./public-data";
 import { reviewerCareerStatsByUserId } from "./scorecard-reviewer-stats";
+import { reviewerSocialForScorecard } from "./profile-social-links";
 import {
   foodReviews,
   type FoodReview,
@@ -342,6 +343,12 @@ function getDbReviewsForMode(
       displayName: string;
       handle: string;
       avatarUrl: string | null;
+      instagramUrl: string | null;
+      tiktokUrl: string | null;
+      youtubeUrl: string | null;
+      xUrl: string | null;
+      websiteUrl: string | null;
+      socialLinksPublic: boolean;
     };
     _count: {
       helpfulLikes: number;
@@ -464,7 +471,13 @@ export async function getDbBackedItemSlopStats(
                 id: true,
                 displayName: true,
                 handle: true,
-                avatarUrl: true
+                avatarUrl: true,
+                instagramUrl: true,
+                tiktokUrl: true,
+                youtubeUrl: true,
+                xUrl: true,
+                websiteUrl: true,
+                socialLinksPublic: true
               }
             },
             _count: {
@@ -535,6 +548,7 @@ export async function getDbBackedItemSlopStats(
       const primaryPhoto = usableFanPhotos[0];
       const photoUrl = normalizePublicImageUrl(primaryPhoto?.url);
       const photoPlaceholder = primaryPhoto?.placeholder?.trim() || undefined;
+      const reviewerSocialLinks = reviewerSocialForScorecard(review.user);
 
       return {
         id: review.id,
@@ -569,7 +583,8 @@ export async function getDbBackedItemSlopStats(
         photoPlaceholder,
         reviewPhotoCreatedAt: primaryPhoto?.createdAt?.toISOString(),
         primaryFoodPhotoId: primaryPhoto?.id,
-        note: review.note ?? undefined
+        note: review.note ?? undefined,
+        reviewerSocialLinks
       };
     });
 

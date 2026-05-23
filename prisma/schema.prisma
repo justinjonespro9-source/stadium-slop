@@ -220,6 +220,13 @@ model User {
   helpfulLikesReceived       Int             @default(0)
   verifiedGameDayReviewCount Int             @default(0)
   photoUploadCount           Int             @default(0)
+  instagramUrl               String?
+  tiktokUrl                  String?
+  youtubeUrl                 String?
+  xUrl                       String?
+  websiteUrl                 String?
+  socialLinksPublic          Boolean         @default(false)
+  reviewHistoryVisibility    ReviewHistoryVisibility @default(VENUE_CONTEXT_ONLY)
   createdAt                  DateTime        @default(now())
   updatedAt                  DateTime        @updatedAt
 
