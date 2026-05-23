@@ -12,6 +12,13 @@ enum UserRole {
   ADMIN
 }
 
+enum ReviewHistoryVisibility {
+  HIGHLIGHTS_ONLY
+  VENUE_CONTEXT_ONLY
+  PUBLIC
+  PRIVATE
+}
+
 enum EntityStatus {
   ACTIVE
   HIDDEN

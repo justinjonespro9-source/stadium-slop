@@ -38,6 +38,10 @@
   ],
   "exclude": [
     "node_modules",
-    ".next/dev"
+    ".next/dev",
+    "node_modules_old",
+    ".next",
+    "out",
+    "dist"
   ]
 }
