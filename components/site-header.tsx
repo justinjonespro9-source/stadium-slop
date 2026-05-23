@@ -62,9 +62,9 @@ export async function SiteHeader() {
           </Link>
           <Link
             href="/venues"
-            className="flex-1 rounded-full border border-[var(--slop-line-strong)] bg-[rgba(11,27,43,0.75)] px-4 py-2 font-bold text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-gold-bright)] md:min-w-56"
+            className="flex-1 rounded-full border border-[var(--slop-gold)]/40 bg-[rgba(244,179,33,0.1)] px-3 py-2 text-center text-sm font-black text-[var(--slop-cream)] transition hover:border-[var(--slop-gold)] hover:bg-[rgba(244,179,33,0.18)] hover:text-[var(--slop-gold-bright)] md:flex-none md:shrink-0"
           >
-            Find a venue...
+            Find a venue
           </Link>
           <Link
             href={accountHref}
