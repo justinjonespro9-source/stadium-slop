@@ -10,9 +10,7 @@ export async function ensureMockReviewerUser(homeVenueId?: string) {
     where: { id: MOCK_REVIEWER_USER_ID },
     update: {
       email: MOCK_REVIEWER_EMAIL,
-      displayName: mockReviewerProfile.displayName,
-      handle: mockReviewerProfile.handle,
-      homeVenueId
+      ...(homeVenueId !== undefined ? { homeVenueId } : {})
     },
     create: {
       id: MOCK_REVIEWER_USER_ID,

@@ -67,9 +67,11 @@ export async function updateScorecardIdentity(formData: FormData) {
       data: {
         displayName,
         handle
-      }
+      },
+      select: { id: true }
     });
-  } catch {
+  } catch (err) {
+    console.error("[account:identity-save]", err);
     accountRedirect({ error: "identity-save" });
   }
 
@@ -101,7 +103,8 @@ export async function uploadProfileAvatar(formData: FormData) {
 
     await prisma.user.update({
       where: { id: userId },
-      data: { avatarUrl: secureUrl }
+      data: { avatarUrl: secureUrl },
+      select: { id: true }
     });
   } catch (err) {
     logUploadFailure("accountAvatar", file, err);
@@ -147,9 +150,11 @@ export async function updateProfileSocialSettings(formData: FormData) {
   try {
     await prisma.user.update({
       where: { id: userId },
-      data: parsed.data
+      data: parsed.data,
+      select: { id: true }
     });
-  } catch {
+  } catch (err) {
+    console.error("[account:social-save]", err);
     accountRedirect({ error: "social-save" });
   }
 

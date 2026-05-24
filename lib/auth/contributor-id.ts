@@ -13,6 +13,11 @@ import {
 
 /** Signed-in contributor id (Google session or dev mock cookie). */
 export async function getContributorUserId(): Promise<string | null> {
+  const sessionUser = await getSessionUser();
+  if (sessionUser?.id) {
+    return sessionUser.id;
+  }
+
   const cookieStore = await cookies();
   const mockCookie = cookieStore.get(MOCK_USER_COOKIE_NAME)?.value;
 
@@ -21,8 +26,7 @@ export async function getContributorUserId(): Promise<string | null> {
     return user.id;
   }
 
-  const sessionUser = await getSessionUser();
-  return sessionUser?.id ?? null;
+  return null;
 }
 
 export async function requireContributorUserId(

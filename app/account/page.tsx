@@ -151,6 +151,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     venueName: string;
     updatedAt: Date;
   }[] = [];
+  let profileLoadFailed = false;
 
   try {
     const [
@@ -253,12 +254,17 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
       updatedAt: r.updatedAt
     }));
   } catch (error) {
-    console.warn("Account dashboard DB read failed", error);
+    profileLoadFailed = true;
+    console.error("Account dashboard DB read failed", error);
   }
 
   const displayName =
-    dbUser?.displayName ?? sessionUser?.name ?? mockReviewerProfile.displayName;
-  const handle = dbUser?.handle ?? mockReviewerProfile.handle;
+    dbUser?.displayName ??
+    sessionUser?.name ??
+    (allowMockUserAccess() ? mockReviewerProfile.displayName : "Stadium fan");
+  const handle =
+    dbUser?.handle ??
+    (allowMockUserAccess() ? mockReviewerProfile.handle : "@fan");
   const homeVenueLabel =
     dbUser?.homeVenue?.name ?? mockReviewerProfile.homeVenue;
   const avatarUrl = dbUser?.avatarUrl ?? sessionUser?.image ?? null;
@@ -328,6 +334,10 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
                 ? "Choose a photo file before saving."
                 : null;
 
+  const profileLoadErrorMessage = profileLoadFailed
+    ? "Could not load your saved profile from the database. Identity and photo saves may not appear until migrations are applied (npm run db:migrate:deploy) or the connection is fixed."
+    : null;
+
   const scoutInput: ScoutProfileInput = {
     totalReviews,
     venuesReviewed,
@@ -364,6 +374,15 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               This account is signed in but is not an admin. Admin tools require{" "}
               <code className="text-amber-50">User.role = ADMIN</code> in the database.
             </p>
+          </div>
+        ) : null}
+        {profileLoadErrorMessage ? (
+          <div
+            role="alert"
+            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
+          >
+            <p className="font-bold">Profile data</p>
+            <p className="mt-0.5 text-amber-100/95">{profileLoadErrorMessage}</p>
           </div>
         ) : null}
         {savedNotice === "identity" ? (
