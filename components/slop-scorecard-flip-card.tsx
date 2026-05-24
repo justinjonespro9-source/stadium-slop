@@ -372,9 +372,6 @@ export function SlopScorecardFlipCard({
                   </ScorecardNoFlip>
                   <ScorecardNoFlip>
                     <div className="slop-scorecard-helpful-row">
-                      <span className="slop-scorecard-helpful-count tabular-nums">
-                        {review.helpfulLikes}
-                      </span>
                       <div className="slop-scorecard-helpful-icon-slot">
                         {frontHelpfulSlot}
                       </div>

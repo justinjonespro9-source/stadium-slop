@@ -22,6 +22,7 @@ import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import { getVenueActiveGame } from "@/lib/game-day";
 import { buildItemFanPhotoLayout } from "@/lib/fan-photo-layout";
+import { sortScorecardReviews, DEFAULT_SCORECARD_SORT } from "@/lib/scorecard-carousel-sort";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 
 import { ReportContentLink } from "@/components/report-content-link";
@@ -34,11 +35,9 @@ import {
   PhotoBackedReviewsEmpty
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
-import { ReviewSlopCard } from "@/components/review-slop-card";
+import { FoodItemScorecardDeck } from "@/components/food-item-scorecard-deck";
 import { FoodItemStatsStrip } from "@/components/food-item-stats-strip";
-import { SlopScorecardCarousel } from "@/components/slop-scorecard-carousel";
 import { SlopScorecardHelpfulAnchor } from "@/components/slop-scorecard-helpful-anchor";
-import { SlopScorecardHelpfulThumb } from "@/components/slop-scorecard-helpful-thumb";
 import {
   SlopCardShareModule,
   type SlopCardSharePreview
@@ -48,7 +47,6 @@ import {
   pickSlopCardHighlights,
   slopCardLocationLine
 } from "@/lib/slop-card-display";
-import { ScorecardShareActions } from "@/components/scorecard-share-actions";
 import {
   getScorecardShareDescription,
   getScorecardShareTitle,
@@ -545,7 +543,10 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const alcoholRelated = isAlcoholRelatedFoodItem(foodItem, vendor);
   const slopCardLocation = slopCardLocationLine(foodItem, vendor);
   const awardLabelPool = awardChips.map((chip) => chip.label);
-  const leadReview = photoBackedReviews[0];
+  const defaultSortedReviews = sortScorecardReviews(photoBackedReviews, DEFAULT_SCORECARD_SORT, {
+    venueSlug: venue.slug
+  });
+  const leadReview = defaultSortedReviews[0];
   const submittedReview = todaysReviewId
     ? photoBackedReviews.find((review) => review.id === todaysReviewId)
     : undefined;
@@ -738,147 +739,22 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             <SlopScorecardHelpfulAnchor />
           </Suspense>
           {photoBackedReviews.length > 0 ? (
-            <SlopScorecardCarousel swipeHint={photoBackedReviews.length > 1}>
-              {photoBackedReviews.map((review, cardIndex) => {
-                const photoUrlNorm = normalizePublicImageUrl(review.photoUrl);
-                const metaLine = formatSlopCardMetaRow({
-                  locationLine: slopCardLocation,
-                  verifiedGameDay: review.verifiedGameDay,
-                  dateLabel: review.dateLabel
-                });
-
-                const isOwnScorecard =
-                  Boolean(contributorUserId) &&
-                  review.reviewerId === contributorUserId;
-
-                const backHelpfulSlot = isOwnScorecard ? (
-                  <button
-                    type="button"
-                    disabled
-                    className="slop-scorecard-btn-pill slop-scorecard-btn-pill--muted cursor-not-allowed"
-                    title="You can't mark your own Slop Scorecard helpful"
-                  >
-                    Yours
-                  </button>
-                ) : isSignedIn ? (
-                  likedReviewIds.has(review.id) ? (
-                    <button
-                      type="button"
-                      disabled
-                      className="slop-scorecard-btn-pill slop-scorecard-btn-pill--marked cursor-not-allowed"
-                    >
-                      Marked
-                    </button>
-                  ) : (
-                    <form action={markReviewHelpful} className="inline-flex">
-                      <input type="hidden" name="venueSlug" value={venue.slug} />
-                      <input type="hidden" name="foodSlug" value={foodItem.slug} />
-                      <input type="hidden" name="reviewId" value={review.id} />
-                      <button type="submit" className="slop-scorecard-btn-pill">
-                        Helpful
-                      </button>
-                    </form>
-                  )
-                ) : (
-                  <Link
-                    href={`/login?next=${encodeURIComponent(itemPageWithReviewsAnchor)}`}
-                    className="slop-scorecard-btn-pill"
-                  >
-                    Sign in
-                  </Link>
-                );
-
-                const frontHelpfulMarked = likedReviewIds.has(review.id);
-                const frontHelpfulSlot = isOwnScorecard ? (
-                  <button
-                    type="button"
-                    disabled
-                    className="slop-scorecard-helpful-icon slop-scorecard-helpful-icon--muted"
-                    title="You can't mark your own Slop Scorecard helpful"
-                    aria-label="Your scorecard"
-                  >
-                    <SlopScorecardHelpfulThumb />
-                  </button>
-                ) : isSignedIn ? (
-                  frontHelpfulMarked ? (
-                    <button
-                      type="button"
-                      disabled
-                      className="slop-scorecard-helpful-icon slop-scorecard-helpful-icon--marked"
-                      aria-label="Already marked helpful"
-                    >
-                      <SlopScorecardHelpfulThumb filled />
-                    </button>
-                  ) : (
-                    <form action={markReviewHelpful} className="inline-flex">
-                      <input type="hidden" name="venueSlug" value={venue.slug} />
-                      <input type="hidden" name="foodSlug" value={foodItem.slug} />
-                      <input type="hidden" name="reviewId" value={review.id} />
-                      <button
-                        type="submit"
-                        className="slop-scorecard-helpful-icon"
-                        aria-label="Mark helpful"
-                      >
-                        <SlopScorecardHelpfulThumb />
-                      </button>
-                    </form>
-                  )
-                ) : (
-                  <Link
-                    href={`/login?next=${encodeURIComponent(itemPageWithReviewsAnchor)}`}
-                    className="slop-scorecard-helpful-icon"
-                    aria-label="Sign in to mark helpful"
-                  >
-                    <SlopScorecardHelpfulThumb />
-                  </Link>
-                );
-
-                const reportSlot = (
-                  <ReportContentLink
-                    context={{
-                      ...baseReportContext,
-                      reviewId: review.id,
-                      photoUrl: photoUrlNorm ?? undefined
-                    }}
-                    variant="card"
-                  />
-                );
-
-                const shareSlot = (
-                  <ScorecardShareActions
-                    shareUrl={getScorecardShareUrl(review.id)}
-                    shareTitle={getScorecardShareTitle(foodItem.name, venue.name)}
-                    shareDescription={getScorecardShareDescription(
-                      foodItem.name,
-                      venue.name,
-                      review.slopScore
-                    )}
-                    variant="compact"
-                  />
-                );
-
-                return (
-                  <ReviewSlopCard
-                    key={review.id}
-                    cardIndex={cardIndex}
-                    review={review}
-                    itemName={foodItem.name}
-                    venueName={venue.name}
-                    metaLine={metaLine}
-                    photoUrl={photoUrlNorm}
-                    photoAlt={review.photoAlt ?? `Fan photo for ${foodItem.name}`}
-                    photoPlaceholderEmoji={
-                      review.photoPlaceholder ?? foodPhotos[0]?.imagePlaceholder
-                    }
-                    napkinEligible={napkinEligible}
-                    frontHelpfulSlot={frontHelpfulSlot}
-                    backHelpfulSlot={backHelpfulSlot}
-                    shareSlot={shareSlot}
-                    reportSlot={reportSlot}
-                  />
-                );
-              })}
-            </SlopScorecardCarousel>
+            <FoodItemScorecardDeck
+              reviews={photoBackedReviews}
+              venueSlug={venue.slug}
+              foodSlug={foodItem.slug}
+              foodName={foodItem.name}
+              venueName={venue.name}
+              napkinEligible={napkinEligible}
+              slopCardLocation={slopCardLocation}
+              contributorUserId={contributorUserId}
+              likedReviewIds={[...likedReviewIds]}
+              photoPlaceholderDefault={foodPhotos[0]?.imagePlaceholder}
+              isSignedIn={isSignedIn}
+              itemPageWithReviewsAnchor={itemPageWithReviewsAnchor}
+              baseReportContext={baseReportContext}
+              markReviewHelpful={markReviewHelpful}
+            />
           ) : (
             <PhotoBackedReviewsEmpty
               reviewHref={reviewPath}
