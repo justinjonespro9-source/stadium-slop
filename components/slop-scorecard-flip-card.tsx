@@ -13,6 +13,7 @@ import {
 
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { ReviewerExternalLinks } from "@/components/reviewer-external-links";
+import { ScorecardReviewerLink } from "@/components/scorecard-reviewer-link";
 import { SlopScorecardFrame } from "@/components/slop-scorecard-shell";
 import type { FoodReview } from "@/lib/sample-data";
 import { normalizePublicImageUrl } from "@/lib/image-url";
@@ -86,13 +87,15 @@ function BackStatRow({ label, value }: { label: string; value: string }) {
 function ReviewerProfileBlock({
   profile,
   avatarUrl,
-  photoAlt
+  photoAlt,
+  venueHistoryHref
 }: {
   profile: SlopScorecardReviewerProfile;
   avatarUrl: string | undefined;
   photoAlt: string;
+  venueHistoryHref?: string;
 }) {
-  return (
+  const profileBody = (
     <div className="slop-scorecard-back-profile flex items-start gap-2.5">
       {avatarUrl ? (
         <div className="slop-scorecard-back-profile-photo">
@@ -123,6 +126,11 @@ function ReviewerProfileBlock({
             Fan Scout
           </span>
         ) : null}
+        {venueHistoryHref ? (
+          <p className="mt-1 text-[0.48rem] font-bold text-[var(--slop-gold-dim)]">
+            More at this venue →
+          </p>
+        ) : null}
         <p className="slop-scorecard-back-career-label mt-1.5">Career Stats</p>
         <div className="slop-scorecard-back-career-stats">
           <BackMetaRow label="Venues Reviewed" value={profile.venuesReviewed} />
@@ -131,6 +139,20 @@ function ReviewerProfileBlock({
         </div>
       </div>
     </div>
+  );
+
+  if (!venueHistoryHref) {
+    return profileBody;
+  }
+
+  return (
+    <ScorecardReviewerLink
+      href={venueHistoryHref}
+      ariaLabel={`More from ${profile.displayName} at this venue`}
+      className="block"
+    >
+      {profileBody}
+    </ScorecardReviewerLink>
   );
 }
 
@@ -162,14 +184,20 @@ function ScorecardFrontHeader({ slopScore }: { slopScore: number }) {
   );
 }
 
-function CompactReviewerStrip({ review }: { review: FoodReview }) {
+function CompactReviewerStrip({
+  review,
+  venueHistoryHref
+}: {
+  review: FoodReview;
+  venueHistoryHref?: string;
+}) {
   const initials = getReviewerInitials(review);
   const handle = getReviewerHandleLabel(review);
   const name = getReviewerDisplayName(review);
   const fanScout = showFanScoutBadge(review);
   const avatarUrl = normalizePublicImageUrl(review.reviewerAvatarUrl);
 
-  return (
+  const strip = (
     <div className="flex min-w-0 max-w-[52%] items-center gap-2">
       <div className="relative shrink-0">
         <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--slop-gold)] bg-[var(--slop-navy-deep)] text-[0.7rem] font-black text-[var(--slop-cream)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
@@ -202,6 +230,20 @@ function CompactReviewerStrip({ review }: { review: FoodReview }) {
         ) : null}
       </div>
     </div>
+  );
+
+  if (!venueHistoryHref) {
+    return strip;
+  }
+
+  return (
+    <ScorecardReviewerLink
+      href={venueHistoryHref}
+      ariaLabel={`More from ${name} at this venue`}
+      className="min-w-0 max-w-[52%]"
+    >
+      {strip}
+    </ScorecardReviewerLink>
   );
 }
 
@@ -322,7 +364,12 @@ export function SlopScorecardFlipCard({
                 </div>
 
                 <div className="slop-scorecard-footer relative z-[2] flex shrink-0 items-end justify-between gap-2 px-2 py-2">
-                  <CompactReviewerStrip review={review} />
+                  <ScorecardNoFlip>
+                    <CompactReviewerStrip
+                      review={review}
+                      venueHistoryHref={review.reviewerVenueHistoryHref}
+                    />
+                  </ScorecardNoFlip>
                   <ScorecardNoFlip>
                     <div className="slop-scorecard-helpful-row">
                       <span className="slop-scorecard-helpful-count tabular-nums">
@@ -362,11 +409,14 @@ export function SlopScorecardFlipCard({
               </div>
 
               <div className="mt-1 shrink-0">
-                <ReviewerProfileBlock
-                  profile={reviewerProfile}
-                  avatarUrl={reviewerAvatarUrl}
-                  photoAlt={`Reviewer avatar for ${reviewerProfile.displayName}`}
-                />
+                <ScorecardNoFlip>
+                  <ReviewerProfileBlock
+                    profile={reviewerProfile}
+                    avatarUrl={reviewerAvatarUrl}
+                    photoAlt={`Reviewer avatar for ${reviewerProfile.displayName}`}
+                    venueHistoryHref={review.reviewerVenueHistoryHref}
+                  />
+                </ScorecardNoFlip>
               </div>
 
               {review.isTestReview ? (

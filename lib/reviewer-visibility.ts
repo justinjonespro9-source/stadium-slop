@@ -19,7 +19,7 @@ export const REVIEW_HISTORY_VISIBILITY_OPTIONS: {
     value: "VENUE_CONTEXT_ONLY",
     label: "Venue context only",
     description:
-      "Fans can see more of your reviews when browsing a venue you’ve rated — not a global stadium-to-stadium archive."
+      "Fans can tap your name on a Slop Scorecard to see more of your reviews at that venue — not a global archive."
   },
   {
     value: "PUBLIC",
@@ -66,13 +66,9 @@ export function allowsGlobalReviewerHistory(
   return visibility === "PUBLIC";
 }
 
-/** Venue-scoped “more from this fan” browsing. */
+/** Venue-scoped “more from this fan” browsing (same venue only). */
 export function allowsVenueContextHistory(
   visibility: ReviewHistoryVisibility
 ): boolean {
-  return (
-    visibility === "VENUE_CONTEXT_ONLY" ||
-    visibility === "PUBLIC" ||
-    visibility === "HIGHLIGHTS_ONLY"
-  );
+  return visibility === "VENUE_CONTEXT_ONLY" || visibility === "PUBLIC";
 }

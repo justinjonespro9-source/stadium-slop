@@ -1,6 +1,6 @@
 import "server-only";
 
-import { PhotoType } from "@prisma/client";
+import { PhotoType, type ReviewHistoryVisibility } from "@prisma/client";
 
 import { isGameDayKeyTodayForVenue } from "./game-day";
 import { normalizePublicImageUrl } from "./image-url";
@@ -8,6 +8,7 @@ import { prisma } from "./prisma";
 import { slugFilterInsensitive } from "./public-data";
 import { reviewerCareerStatsByUserId } from "./scorecard-reviewer-stats";
 import { reviewerSocialForScorecard, buildReviewerExternalLinks } from "./profile-social-links";
+import { reviewerVenueHistoryHrefForReview } from "./slop-scorecard-reviewer";
 import {
   foodReviews,
   type FoodReview,
@@ -349,6 +350,7 @@ function getDbReviewsForMode(
       xUrl: string | null;
       websiteUrl: string | null;
       socialLinksPublic: boolean;
+      reviewHistoryVisibility: ReviewHistoryVisibility;
     };
     _count: {
       helpfulLikes: number;
@@ -477,7 +479,8 @@ export async function getDbBackedItemSlopStats(
                 youtubeUrl: true,
                 xUrl: true,
                 websiteUrl: true,
-                socialLinksPublic: true
+                socialLinksPublic: true,
+                reviewHistoryVisibility: true
               }
             },
             _count: {
@@ -552,6 +555,12 @@ export async function getDbBackedItemSlopStats(
       const reviewerExternalLinks = reviewerSocialLinks
         ? buildReviewerExternalLinks(reviewerSocialLinks)
         : undefined;
+      const reviewerHistoryVisibility = review.user.reviewHistoryVisibility;
+      const reviewerVenueHistoryHref = reviewerVenueHistoryHrefForReview({
+        venueSlug: normalizedVenue,
+        reviewerId: review.user.id,
+        reviewerHistoryVisibility
+      });
 
       return {
         id: review.id,
@@ -591,7 +600,9 @@ export async function getDbBackedItemSlopStats(
         reviewerExternalLinks:
           reviewerExternalLinks && reviewerExternalLinks.length > 0
             ? reviewerExternalLinks
-            : undefined
+            : undefined,
+        reviewerHistoryVisibility,
+        reviewerVenueHistoryHref
       };
     });
 

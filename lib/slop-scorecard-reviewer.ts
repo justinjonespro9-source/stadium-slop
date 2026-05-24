@@ -2,6 +2,7 @@ import {
   buildReviewerExternalLinks,
   type ReviewerExternalLink
 } from "@/lib/profile-social-links";
+import { allowsVenueContextHistory } from "@/lib/reviewer-visibility";
 import type { FoodReview } from "@/lib/sample-data";
 
 /** Shown when contributor aggregate stats are not loaded on the card yet. */
@@ -83,4 +84,30 @@ export function getReviewerExternalLinksForScorecard(
     return [];
   }
   return buildReviewerExternalLinks(review.reviewerSocialLinks);
+}
+
+export function reviewerVenueHistoryPath(
+  venueSlug: string,
+  reviewerId: string
+): string {
+  const venue = venueSlug.trim();
+  const reviewer = reviewerId.trim();
+  return `/venues/${encodeURIComponent(venue)}/reviewers/${encodeURIComponent(reviewer)}`;
+}
+
+export function reviewerVenueHistoryHrefForReview(
+  review: Pick<
+    FoodReview,
+    "venueSlug" | "reviewerId" | "reviewerHistoryVisibility"
+  >
+): string | undefined {
+  const reviewerId = review.reviewerId?.trim();
+  const venueSlug = review.venueSlug?.trim();
+  if (!reviewerId || !venueSlug || !review.reviewerHistoryVisibility) {
+    return undefined;
+  }
+  if (!allowsVenueContextHistory(review.reviewerHistoryVisibility)) {
+    return undefined;
+  }
+  return reviewerVenueHistoryPath(venueSlug, reviewerId);
 }

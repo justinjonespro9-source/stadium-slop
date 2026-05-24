@@ -6,6 +6,7 @@ import type {
   PublicReviewerSocialLinks,
   ReviewerExternalLink
 } from "./profile-social-links";
+import type { ReviewHistoryVisibility } from "./reviewer-visibility";
 import {
   getMlbBallparkSeedRows,
   type MlbBallparkSeedRow
@@ -236,6 +237,10 @@ export type FoodReview = {
   reviewerSocialLinks?: PublicReviewerSocialLinks;
   /** Pre-built link list for scorecard back UI (from reviewerSocialLinks). */
   reviewerExternalLinks?: ReviewerExternalLink[];
+  /** Review history visibility — controls venue-scoped archive link on scorecards. */
+  reviewerHistoryVisibility?: ReviewHistoryVisibility;
+  /** When allowed, link to venue-scoped reviewer history at this venue. */
+  reviewerVenueHistoryHref?: string;
 };
 
 export type HelpfulLike = {

@@ -7,6 +7,7 @@ import { isNapkinEligibleFromPrisma } from "@/lib/item-eligibility";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { prisma } from "@/lib/prisma";
 import { reviewerSocialForScorecard, buildReviewerExternalLinks } from "@/lib/profile-social-links";
+import { reviewerVenueHistoryHrefForReview } from "@/lib/slop-scorecard-reviewer";
 import { reviewerCareerStatsByUserId } from "@/lib/scorecard-reviewer-stats";
 import {
   formatSlopCardMetaRow,
@@ -166,6 +167,12 @@ export async function getPublicScorecardByReviewId(
   const reviewerExternalLinks = reviewerSocialLinks
     ? buildReviewerExternalLinks(reviewerSocialLinks)
     : undefined;
+  const reviewerHistoryVisibility = row.user.reviewHistoryVisibility;
+  const reviewerVenueHistoryHref = reviewerVenueHistoryHrefForReview({
+    venueSlug,
+    reviewerId: row.user.id,
+    reviewerHistoryVisibility
+  });
 
   const review: FoodReview = {
     id: row.id,
@@ -200,7 +207,9 @@ export async function getPublicScorecardByReviewId(
     reviewerExternalLinks:
       reviewerExternalLinks && reviewerExternalLinks.length > 0
         ? reviewerExternalLinks
-        : undefined
+        : undefined,
+    reviewerHistoryVisibility,
+    reviewerVenueHistoryHref
   };
 
   const metaLine = formatSlopCardMetaRow({
