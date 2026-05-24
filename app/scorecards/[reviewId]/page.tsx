@@ -13,7 +13,7 @@ import {
   getScorecardPath,
   getScorecardShareUrl
 } from "@/lib/scorecard-share";
-import { getAbsoluteUrl } from "@/lib/site-metadata";
+import { getAbsoluteUrl, OG_CARD } from "@/lib/site-metadata";
 
 type PublicScorecardPageProps = {
   params: Promise<{ reviewId: string }>;
@@ -29,6 +29,10 @@ export async function generateMetadata({
   }
 
   const canonical = getScorecardShareUrl(reviewId);
+  const ogImagePath = `${getScorecardPath(reviewId)}/opengraph-image`;
+  const ogImageUrl = getAbsoluteUrl(ogImagePath);
+  const ogImageAlt = `${view.itemName} · Official Stadium Slop Scorecard`;
+
   return {
     title: `${view.itemName} · Official Slop Scorecard`,
     description: view.shareDescription,
@@ -38,12 +42,21 @@ export async function generateMetadata({
       description: view.shareDescription,
       url: canonical,
       type: "website",
-      siteName: "Stadium Slop"
+      siteName: "Stadium Slop",
+      images: [
+        {
+          url: ogImageUrl,
+          width: OG_CARD.width,
+          height: OG_CARD.height,
+          alt: ogImageAlt
+        }
+      ]
     },
     twitter: {
       card: "summary_large_image",
       title: view.shareTitle,
-      description: view.shareDescription
+      description: view.shareDescription,
+      images: [ogImageUrl]
     }
   };
 }
