@@ -48,9 +48,16 @@ export function ScorecardShareActions({
     await copyShareLink();
   }, [shareTitle, shareDescription, shareUrl, copyShareLink]);
 
+  const shareHelper = (
+    <p className="text-[0.48rem] leading-snug text-[var(--slop-cream-dim)] sm:text-[0.52rem]">
+      Share copies your scorecard link. Post it anywhere — not a direct post to social.
+    </p>
+  );
+
   if (variant === "compact") {
     return (
-      <div className="flex flex-wrap gap-1.5">
+      <div className="space-y-1">
+        <div className="flex flex-wrap gap-1.5">
         <button
           type="button"
           onClick={() => void copyShareLink()}
@@ -71,12 +78,15 @@ export function ScorecardShareActions({
         >
           {shareState === "shared" ? "Shared" : "Share"}
         </button>
+        </div>
+        {shareHelper}
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-2 sm:flex-row">
+    <div className="space-y-2">
+      <div className="flex flex-col gap-2 sm:flex-row">
       <button
         type="button"
         onClick={() => void shareScorecard()}
@@ -95,6 +105,8 @@ export function ScorecardShareActions({
             ? "Copy failed"
             : "Copy scorecard link"}
       </button>
+      </div>
+      {shareHelper}
     </div>
   );
 }

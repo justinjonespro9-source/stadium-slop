@@ -19,6 +19,7 @@ import { normalizePublicImageUrl } from "@/lib/image-url";
 import { slopScoreDisplay } from "@/lib/slop-card-display";
 import {
   getReviewerDisplayName,
+  getReviewerExternalLinksForScorecard,
   getReviewerHandleLabel,
   getReviewerInitials,
   getSlopScorecardReviewerProfile,
@@ -228,6 +229,10 @@ export function SlopScorecardFlipCard({
     () => getSlopScorecardReviewerProfile(review),
     [review]
   );
+  const reviewerExternalLinks = useMemo(
+    () => getReviewerExternalLinksForScorecard(review),
+    [review]
+  );
   const noteText = review.note?.trim() ?? "";
 
   const toggleFlip = useCallback(() => {
@@ -360,7 +365,7 @@ export function SlopScorecardFlipCard({
                 <ReviewerProfileBlock
                   profile={reviewerProfile}
                   avatarUrl={reviewerAvatarUrl}
-                  photoAlt={`${reviewerProfile.displayName} profile photo`}
+                  photoAlt={`Reviewer avatar for ${reviewerProfile.displayName}`}
                 />
               </div>
 
@@ -373,6 +378,18 @@ export function SlopScorecardFlipCard({
                   <span className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400" />
                   Game-day certified
                 </p>
+              ) : null}
+
+              {reviewerExternalLinks.length > 0 ? (
+                <ScorecardNoFlip>
+                  <div className="mt-2 shrink-0">
+                    <ReviewerExternalLinks
+                      links={reviewerExternalLinks}
+                      heading="Find me elsewhere"
+                      compact
+                    />
+                  </div>
+                </ScorecardNoFlip>
               ) : null}
 
               <div className="mt-2 shrink-0">
@@ -409,18 +426,6 @@ export function SlopScorecardFlipCard({
                   </p>
                 )}
               </div>
-
-              {review.reviewerSocialLinks ? (
-                <ScorecardNoFlip>
-                  <div className="mt-2 shrink-0">
-                    <ReviewerExternalLinks
-                      social={review.reviewerSocialLinks}
-                      heading="Find me elsewhere"
-                      compact
-                    />
-                  </div>
-                </ScorecardNoFlip>
-              ) : null}
 
               <div className="mt-2 shrink-0 rounded border border-[var(--slop-line)] bg-[rgba(6,14,24,0.45)] px-2 py-1.5">
                 <BackSectionLabel>This card</BackSectionLabel>

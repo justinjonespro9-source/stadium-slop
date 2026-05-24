@@ -6,7 +6,7 @@ import {
 } from "@/lib/profile-social-links";
 
 type ReviewerExternalLinksProps = {
-  social: Pick<
+  social?: Pick<
     StoredProfileSocial,
     | "instagramUrl"
     | "tiktokUrl"
@@ -29,7 +29,7 @@ export function ReviewerExternalLinks({
   className = "",
   compact = false
 }: ReviewerExternalLinksProps) {
-  const resolved = links ?? buildReviewerExternalLinks(social);
+  const resolved = links ?? (social ? buildReviewerExternalLinks(social) : []);
   if (resolved.length === 0) {
     return null;
   }

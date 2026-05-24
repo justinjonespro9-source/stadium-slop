@@ -64,8 +64,9 @@ export function ScorecardIdentityEditor({
           How your Scorecard identity appears
         </p>
         <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-          Public on Slop Scorecards only — not a full profile page. Fan food photos stay on
-          the card front; your avatar is your reviewer identity.
+          One reviewer avatar powers your name on every Slop Scorecard (round on the front
+          strip, square on the back). The large photo on each card front is the fan food
+          photo from that review — uploaded when you submit a review, not here.
         </p>
         <div className="mt-3">
           <ScorecardIdentityPreview
@@ -131,11 +132,11 @@ export function ScorecardIdentityEditor({
 
       <div className="border-t border-[var(--slop-line)] pt-4">
         <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-          Profile photo
+          Reviewer avatar
         </p>
         <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
-          Same Cloudinary upload path as fan photos (~8MB, JPEG/PNG/WebP/GIF). Dedicated
-          avatar moderation is not wired yet — flagged-photo review covers reported content.
+          This is your Scorecard identity photo only — not the fan food photo on the card
+          front. Same Cloudinary path as review photos (~8MB, JPEG/PNG/WebP/GIF).
         </p>
         {cloudinaryReady ? (
           <form action={uploadProfileAvatar} className="mt-3 space-y-2">

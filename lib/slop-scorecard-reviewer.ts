@@ -1,3 +1,7 @@
+import {
+  buildReviewerExternalLinks,
+  type ReviewerExternalLink
+} from "@/lib/profile-social-links";
 import type { FoodReview } from "@/lib/sample-data";
 
 /** Shown when contributor aggregate stats are not loaded on the card yet. */
@@ -66,4 +70,17 @@ export function getReviewerInitials(review: FoodReview): string {
 
 export function showFanScoutBadge(review: FoodReview): boolean {
   return review.verifiedGameDay || review.helpfulLikes >= 2;
+}
+
+/** Resolved external links for scorecard back (empty when hidden or none saved). */
+export function getReviewerExternalLinksForScorecard(
+  review: FoodReview
+): ReviewerExternalLink[] {
+  if (review.reviewerExternalLinks?.length) {
+    return review.reviewerExternalLinks;
+  }
+  if (!review.reviewerSocialLinks) {
+    return [];
+  }
+  return buildReviewerExternalLinks(review.reviewerSocialLinks);
 }

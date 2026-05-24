@@ -12,6 +12,21 @@ type ScorecardIdentityPreviewProps = {
   helpfulEarned: number;
 };
 
+function PreviewFanFoodPhotoNote() {
+  return (
+    <div className="rounded-lg border border-dashed border-[var(--slop-line)] bg-[rgba(6,14,24,0.35)] px-2 py-2">
+      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+        Card front · fan food photo
+      </p>
+      <div className="mt-1.5 flex min-h-[4.5rem] items-center justify-center rounded-md border border-[var(--slop-line)]/60 bg-[rgba(3,7,14,0.6)]">
+        <span className="text-center text-[0.55rem] leading-snug text-[var(--slop-cream-dim)]">
+          Uploaded with each review — not set here
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function PreviewFrontStrip({
   displayName,
   handleDisplay,
@@ -26,7 +41,10 @@ function PreviewFrontStrip({
   return (
     <div className="rounded-lg border border-[var(--slop-line)] bg-[rgba(6,14,24,0.55)] px-2 py-2">
       <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-        Front · reviewer strip
+        Card front · reviewer strip (round)
+      </p>
+      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--slop-cream-dim)]">
+        Same avatar as below
       </p>
       <div className="mt-1.5 flex items-center gap-2">
         <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-[var(--slop-gold)] bg-[var(--slop-navy-deep)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
@@ -71,7 +89,10 @@ function PreviewBackProfile({
   return (
     <div className="rounded-lg border border-[var(--slop-line)] bg-[rgba(6,14,24,0.55)] px-2 py-2">
       <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-        Back · profile block
+        Card back · reviewer profile (square)
+      </p>
+      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--slop-cream-dim)]">
+        Same avatar — square crop only
       </p>
       <div className="slop-scorecard-back-profile mt-1.5 flex items-start gap-2">
         {avatar ? (
@@ -119,8 +140,11 @@ function PreviewBackProfile({
 
 export function ScorecardIdentityPreview(props: ScorecardIdentityPreviewProps) {
   return (
-    <div className="grid gap-2 sm:grid-cols-2">
-      <PreviewFrontStrip {...props} />
+    <div className="space-y-2">
+      <div className="grid gap-2 sm:grid-cols-2">
+        <PreviewFanFoodPhotoNote />
+        <PreviewFrontStrip {...props} />
+      </div>
       <PreviewBackProfile {...props} />
     </div>
   );

@@ -279,6 +279,9 @@ export function SlopCardShareModule({
               ? "Copy failed — try Share"
               : "Copy link"}
         </button>
+        <p className="text-center text-[0.6rem] leading-snug text-[var(--slop-cream-dim)]">
+          Share copies your scorecard link. Post it anywhere — not a direct post to social.
+        </p>
         <Link
           href={itemHrefWithCelebration}
           onClick={onViewItem}

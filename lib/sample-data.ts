@@ -2,7 +2,10 @@ import {
   sixParkConcessionsFoodItems,
   sixParkConcessionsVendors
 } from "./mlb-ballpark-concessions-seed";
-import type { PublicReviewerSocialLinks } from "./profile-social-links";
+import type {
+  PublicReviewerSocialLinks,
+  ReviewerExternalLink
+} from "./profile-social-links";
 import {
   getMlbBallparkSeedRows,
   type MlbBallparkSeedRow
@@ -231,6 +234,8 @@ export type FoodReview = {
   note?: string;
   /** Opt-in external links for scorecard back (only when socialLinksPublic). */
   reviewerSocialLinks?: PublicReviewerSocialLinks;
+  /** Pre-built link list for scorecard back UI (from reviewerSocialLinks). */
+  reviewerExternalLinks?: ReviewerExternalLink[];
 };
 
 export type HelpfulLike = {

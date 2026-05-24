@@ -7,7 +7,7 @@ import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { slugFilterInsensitive } from "./public-data";
 import { reviewerCareerStatsByUserId } from "./scorecard-reviewer-stats";
-import { reviewerSocialForScorecard } from "./profile-social-links";
+import { reviewerSocialForScorecard, buildReviewerExternalLinks } from "./profile-social-links";
 import {
   foodReviews,
   type FoodReview,
@@ -549,6 +549,9 @@ export async function getDbBackedItemSlopStats(
       const photoUrl = normalizePublicImageUrl(primaryPhoto?.url);
       const photoPlaceholder = primaryPhoto?.placeholder?.trim() || undefined;
       const reviewerSocialLinks = reviewerSocialForScorecard(review.user);
+      const reviewerExternalLinks = reviewerSocialLinks
+        ? buildReviewerExternalLinks(reviewerSocialLinks)
+        : undefined;
 
       return {
         id: review.id,
@@ -584,7 +587,11 @@ export async function getDbBackedItemSlopStats(
         reviewPhotoCreatedAt: primaryPhoto?.createdAt?.toISOString(),
         primaryFoodPhotoId: primaryPhoto?.id,
         note: review.note ?? undefined,
-        reviewerSocialLinks
+        reviewerSocialLinks,
+        reviewerExternalLinks:
+          reviewerExternalLinks && reviewerExternalLinks.length > 0
+            ? reviewerExternalLinks
+            : undefined
       };
     });
 
