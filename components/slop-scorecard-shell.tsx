@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Trading-card shell: gold outer trim + navy body (no decorative layers). */
+/** Premium trading-card frame: layered rim, gold trim, corner accents. */
 export function SlopScorecardFrame({
   face,
   children,
@@ -15,8 +15,13 @@ export function SlopScorecardFrame({
       className={`slop-scorecard-collectible slop-scorecard-collectible--${face} ${className}`.trim()}
       data-face={face}
     >
-      <div className="slop-scorecard-collectible-gold slop-scorecard-chamfer">
-        <div className="slop-scorecard-collectible-inner">{children}</div>
+      <div className="slop-scorecard-collectible-frame slop-scorecard-chamfer">
+        <div className="slop-scorecard-collectible-outer">
+          <div className="slop-scorecard-collectible-gold">
+            <div className="slop-scorecard-collectible-inner">{children}</div>
+          </div>
+        </div>
+        <div className="slop-scorecard-collectible-corners" aria-hidden="true" />
       </div>
     </div>
   );
