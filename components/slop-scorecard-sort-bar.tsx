@@ -1,6 +1,6 @@
 "use client";
 
-import type { ScorecardSortMode, ScorecardSortOption } from "@/lib/scorecard-carousel-sort";
+import type { ScorecardSortMode, ScorecardSortOption } from "@/lib/scorecard-sort-client";
 
 type SlopScorecardSortBarProps = {
   sort: ScorecardSortMode;

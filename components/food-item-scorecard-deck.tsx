@@ -15,7 +15,7 @@ import {
   getScorecardSortOptions,
   sortScorecardReviews,
   type ScorecardSortMode
-} from "@/lib/scorecard-carousel-sort";
+} from "@/lib/scorecard-sort-client";
 import { formatSlopCardMetaRow } from "@/lib/slop-card-display";
 import type { FoodReview } from "@/lib/sample-data";
 import {

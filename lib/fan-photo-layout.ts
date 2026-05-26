@@ -1,5 +1,5 @@
 import type { FoodPhoto, FoodReview } from "@/lib/sample-data";
-import { compareFreshest } from "@/lib/scorecard-carousel-sort";
+import { compareFreshest } from "@/lib/scorecard-sort-client";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 
 export type FanPhotoHeroEntry = {
