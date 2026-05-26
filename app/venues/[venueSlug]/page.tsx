@@ -41,11 +41,13 @@ import {
   getFanFavoriteBadgesForItem
 } from "@/lib/venue-awards";
 import { GameDayModeCard } from "@/components/game-day-mode-card";
+import { VenueFreshFeed } from "@/components/venue-fresh-feed";
 import {
   getVenueActiveGame,
   getVenueTimeZone,
   getVenueUpcomingGame
 } from "@/lib/game-day";
+import { getVenueFreshFeedReviews } from "@/lib/venue-fresh-feed";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -371,8 +373,11 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     country: venue.country
   });
 
-  const venueFoodItems = await getPublicFoodItemsByVenueSlug(venue.slug);
-  const venueVendors = await getPublicVendorsByVenueSlug(venue.slug);
+  const [venueFoodItems, venueVendors, venueFreshReviews] = await Promise.all([
+    getPublicFoodItemsByVenueSlug(venue.slug),
+    getPublicVendorsByVenueSlug(venue.slug),
+    getVenueFreshFeedReviews(venue.slug)
+  ]);
   const fanFavoriteEntries = await Promise.all(
     venueFoodItems.map(async (item) => ({
       itemSlug: item.slug,
@@ -500,6 +505,14 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               upcomingGame={upcomingGame}
             />
           </div>
+        ) : null}
+
+        {venueFreshReviews.length > 0 ? (
+          <VenueFreshFeed
+            reviews={venueFreshReviews}
+            venueSlug={venue.slug}
+            venueName={venue.name}
+          />
         ) : null}
 
         <section
