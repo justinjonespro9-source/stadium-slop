@@ -47,33 +47,63 @@ function ScorecardHeroPanel({
   photoUrl?: string;
   placeholderEmoji?: string;
 }) {
+  const frameOuter = (content: ReactElement) => (
+    <div
+      style={{
+        display: "flex",
+        padding: 3,
+        borderRadius: 18,
+        background: "linear-gradient(155deg, #11191f 0%, #080e16 100%)"
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          padding: 4,
+          borderRadius: 15,
+          background: `linear-gradient(145deg, ${OG.goldBright} 0%, ${OG.gold} 55%, #a07818 100%)`,
+          boxShadow: "0 0 14px rgba(244,179,33,0.25)"
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            padding: 2,
+            borderRadius: 11,
+            background: `linear-gradient(160deg, ${OG.red} 0%, #9a2f24 100%)`
+          }}
+        >
+          {content}
+        </div>
+      </div>
+    </div>
+  );
+
   if (photoUrl) {
-    return (
+    return frameOuter(
       // eslint-disable-next-line @next/next/no-img-element -- next/og ImageResponse
       <img
         src={photoUrl}
         alt=""
-        width={420}
-        height={420}
+        width={400}
+        height={400}
         style={{
-          width: 420,
-          height: 420,
-          borderRadius: 16,
+          width: 400,
+          height: 400,
+          borderRadius: 9,
           objectFit: "cover",
-          border: "3px solid rgba(244,179,33,0.55)",
           boxShadow: "0 20px 48px rgba(0,0,0,0.55)"
         }}
       />
     );
   }
 
-  return (
+  return frameOuter(
     <div
       style={{
-        width: 420,
-        height: 420,
-        borderRadius: 16,
-        border: "2px dashed rgba(244,179,33,0.4)",
+        width: 400,
+        height: 400,
+        borderRadius: 9,
         background: `linear-gradient(160deg, ${OG.navyMid}, ${OG.navyDeep})`,
         display: "flex",
         alignItems: "center",
@@ -92,42 +122,59 @@ function SlopScoreBadge({ score }: { score: number }) {
     <div
       style={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minWidth: 148,
-        padding: "16px 20px",
-        borderRadius: 14,
-        border: `3px solid ${OG.gold}`,
-        background: `linear-gradient(165deg, rgba(255,159,28,0.22), rgba(6,15,24,0.85))`,
-        boxShadow: "0 8px 28px rgba(0,0,0,0.45)"
+        padding: 3,
+        borderRadius: 16,
+        background: "linear-gradient(155deg, #11191f 0%, #080e16 100%)"
       }}
     >
-      <p
+      <div
         style={{
-          margin: 0,
-          fontSize: 14,
-          fontWeight: 900,
-          letterSpacing: "0.18em",
-          color: OG.creamMuted,
-          textTransform: "uppercase"
+          display: "flex",
+          padding: 3,
+          borderRadius: 13,
+          background: `linear-gradient(145deg, ${OG.goldBright} 0%, ${OG.gold} 55%, #a07818 100%)`
         }}
       >
-        Slop Score
-      </p>
-      <p
-        style={{
-          margin: "6px 0 0",
-          fontFamily: FONT,
-          fontSize: 72,
-          fontWeight: 900,
-          lineHeight: 1,
-          color: OG.goldBright,
-          letterSpacing: "-0.03em"
-        }}
-      >
-        {slopScoreDisplay(score)}
-      </p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            minWidth: 140,
+            padding: "14px 18px",
+            borderRadius: 10,
+            background: "linear-gradient(165deg, rgba(18,37,54,0.95) 0%, rgba(6,15,24,0.98) 100%)",
+            boxShadow: "inset 0 0 20px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(244,179,33,0.12)"
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              fontSize: 14,
+              fontWeight: 900,
+              letterSpacing: "0.18em",
+              color: OG.creamMuted,
+              textTransform: "uppercase"
+            }}
+          >
+            Slop Score
+          </p>
+          <p
+            style={{
+              margin: "6px 0 0",
+              fontFamily: FONT,
+              fontSize: 72,
+              fontWeight: 900,
+              lineHeight: 1,
+              color: OG.goldBright,
+              letterSpacing: "-0.03em"
+            }}
+          >
+            {slopScoreDisplay(score)}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -237,8 +284,9 @@ function ScorecardLoadedInner({ view }: { view: PublicScorecardView }): ReactEle
               style={{
                 padding: "12px 16px",
                 borderRadius: 12,
-                border: "1px solid rgba(245,233,208,0.16)",
-                background: "rgba(0,0,0,0.28)"
+                border: "1px solid rgba(244,179,33,0.18)",
+                background: "rgba(0,0,0,0.32)",
+                boxShadow: "inset 0 0 12px rgba(0,0,0,0.25)"
               }}
             >
               <p
@@ -289,9 +337,10 @@ function ScorecardLoadedInner({ view }: { view: PublicScorecardView }): ReactEle
               marginTop: 18,
               padding: "14px 18px",
               borderRadius: 12,
-              border: "1px solid rgba(245,233,208,0.12)",
-              background: "rgba(6,15,24,0.55)",
-              maxWidth: 680
+              border: "1px solid rgba(244,179,33,0.14)",
+              background: "rgba(6,15,24,0.6)",
+              maxWidth: 680,
+              boxShadow: "inset 0 0 16px rgba(0,0,0,0.3)"
             }}
           >
             <p
