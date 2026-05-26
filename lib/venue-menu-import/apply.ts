@@ -1,0 +1,246 @@
+import { Prisma, type ItemType, type ItemCategory, type PrismaClient } from "@prisma/client";
+import {
+  normalizeMenuItemName,
+  slugifyMenuItemName,
+  fuzzyMenuNameMatch,
+  buildFoodItemTags,
+  inferItemType
+} from "./normalize";
+import type {
+  VenueMenuImportRow,
+  VenueMenuImportSummary,
+  VenueMenuParseResult,
+  VenueMenuSourceItem
+} from "./types";
+
+function mapItemType(source: VenueMenuSourceItem): ItemType {
+  const t = inferItemType(source.category, source.fare);
+  if (t === "Alcoholic Drink") return "ALCOHOLIC_DRINK";
+  if (t === "Non-Alcoholic Drink") return "NON_ALCOHOLIC_DRINK";
+  return "FOOD";
+}
+
+function mapItemCategory(source: VenueMenuSourceItem): ItemCategory {
+  if (source.fare === "Desserts") return "SWEET";
+  if (source.fare === "Snacks") return "SNACK";
+  if (source.category === "Alcoholic Drink") return "ALCOHOLIC_BEVERAGE";
+  if (source.category === "Non-Alcoholic Drink") return "BEVERAGE";
+  return "SAVORY";
+}
+
+function vendorSlugFromName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function slugFilterInsensitive(slug: string) {
+  return { equals: slug, mode: "insensitive" as const };
+}
+
+export async function applyVenueMenuImport(
+  db: PrismaClient,
+  parseResult: VenueMenuParseResult,
+  options: { dryRun: boolean }
+): Promise<VenueMenuImportSummary> {
+  const { venueSlug, venueName, sourceUrl, items } = parseResult;
+  const { dryRun } = options;
+
+  const venue = await db.venue.findFirst({
+    where: { slug: slugFilterInsensitive(venueSlug), status: "ACTIVE" },
+    select: { id: true, name: true }
+  });
+
+  if (!venue) {
+    throw new Error(`Venue "${venueSlug}" not found or inactive`);
+  }
+
+  const existingItems = await db.foodItem.findMany({
+    where: { venueId: venue.id },
+    select: { id: true, slug: true, name: true, vendorId: true, status: true }
+  });
+
+  const existingVendors = await db.vendor.findMany({
+    where: { venueId: venue.id },
+    select: { id: true, slug: true, name: true }
+  });
+
+  const existingByNormName = new Map(
+    existingItems.map((item) => [normalizeMenuItemName(item.name), item])
+  );
+  const existingBySlug = new Map(
+    existingItems.map((item) => [item.slug.toLowerCase(), item])
+  );
+  const vendorBySlug = new Map(
+    existingVendors.map((v) => [v.slug.toLowerCase(), v])
+  );
+
+  const rows: VenueMenuImportRow[] = [];
+  let added = 0;
+  let matched = 0;
+  let skipped = 0;
+  let duplicates = 0;
+
+  const seenNormNames = new Set<string>();
+
+  for (const sourceItem of items) {
+    const normName = normalizeMenuItemName(sourceItem.name);
+    const slug = slugifyMenuItemName(sourceItem.name);
+
+    if (seenNormNames.has(normName)) {
+      rows.push({
+        action: "duplicate",
+        name: sourceItem.name,
+        normalizedName: normName,
+        reason: "Duplicate within import batch",
+        vendorName: sourceItem.vendorName
+      });
+      duplicates++;
+      continue;
+    }
+    seenNormNames.add(normName);
+
+    const existingByName = existingByNormName.get(normName);
+    if (existingByName) {
+      rows.push({
+        action: "matched",
+        name: sourceItem.name,
+        normalizedName: normName,
+        existingSlug: existingByName.slug,
+        vendorName: sourceItem.vendorName
+      });
+      matched++;
+      continue;
+    }
+
+    const existingSlugMatch = existingBySlug.get(slug);
+    if (existingSlugMatch) {
+      rows.push({
+        action: "matched",
+        name: sourceItem.name,
+        normalizedName: normName,
+        existingSlug: existingSlugMatch.slug,
+        reason: "Slug collision with existing item",
+        vendorName: sourceItem.vendorName
+      });
+      matched++;
+      continue;
+    }
+
+    const fuzzyMatch = existingItems.find(
+      (item) =>
+        item.status === "ACTIVE" && fuzzyMenuNameMatch(item.name, sourceItem.name)
+    );
+    if (fuzzyMatch) {
+      rows.push({
+        action: "duplicate",
+        name: sourceItem.name,
+        normalizedName: normName,
+        existingSlug: fuzzyMatch.slug,
+        reason: `Fuzzy match: "${fuzzyMatch.name}"`,
+        vendorName: sourceItem.vendorName
+      });
+      duplicates++;
+      continue;
+    }
+
+    let vendorId: string | null = null;
+    if (sourceItem.vendorName) {
+      const vSlug = vendorSlugFromName(sourceItem.vendorName);
+      const existing = vendorBySlug.get(vSlug);
+      if (existing) {
+        vendorId = existing.id;
+      } else if (!dryRun) {
+        const created = await db.vendor.create({
+          data: {
+            slug: vSlug,
+            name: sourceItem.vendorName,
+            venueId: venue.id,
+            section: sourceItem.vendorLocationHint ?? "",
+            location: sourceItem.vendorLocationHint ?? ""
+          }
+        });
+        vendorId = created.id;
+        vendorBySlug.set(vSlug, { id: created.id, slug: vSlug, name: sourceItem.vendorName });
+      }
+    }
+
+    if (!vendorId && !dryRun) {
+      const generalSlug = "general-concessions";
+      let general = vendorBySlug.get(generalSlug);
+      if (!general) {
+        const created = await db.vendor.create({
+          data: {
+            slug: generalSlug,
+            name: "General Concessions",
+            venueId: venue.id,
+            section: "",
+            location: ""
+          }
+        });
+        general = { id: created.id, slug: generalSlug, name: "General Concessions" };
+        vendorBySlug.set(generalSlug, general);
+      }
+      vendorId = general.id;
+    }
+
+    if (!dryRun && vendorId) {
+      const tags = buildFoodItemTags(sourceItem.fare, sourceItem.dietaryTags);
+      await db.foodItem.create({
+        data: {
+          slug,
+          name: sourceItem.name,
+          venueId: venue.id,
+          vendorId,
+          itemType: mapItemType(sourceItem),
+          category: mapItemCategory(sourceItem),
+          location: sourceItem.vendorLocationHint ?? "",
+          description: sourceItem.description ?? "",
+          basePrice: sourceItem.price
+            ? new Prisma.Decimal(sourceItem.price)
+            : null,
+          tags,
+          isNewThisSeason: true,
+          seasonIntroduced: String(new Date().getFullYear())
+        }
+      });
+
+      existingBySlug.set(slug, {
+        id: "new",
+        slug,
+        name: sourceItem.name,
+        vendorId,
+        status: "ACTIVE"
+      });
+      existingByNormName.set(normName, {
+        id: "new",
+        slug,
+        name: sourceItem.name,
+        vendorId,
+        status: "ACTIVE"
+      });
+    }
+
+    rows.push({
+      action: "added",
+      name: sourceItem.name,
+      normalizedName: normName,
+      vendorName: sourceItem.vendorName
+    });
+    added++;
+  }
+
+  return {
+    venueSlug,
+    venueName: venue.name ?? venueName,
+    dryRun,
+    rows,
+    added,
+    matched,
+    skipped,
+    duplicates,
+    sourceUrl
+  };
+}
