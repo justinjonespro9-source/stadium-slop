@@ -100,6 +100,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "t-mobile-park": async () => {
     const { parseTMobileParkMenu } = await import("./t-mobile-park");
     return parseTMobileParkMenu;
+  },
+  "globe-life-field": async () => {
+    const { parseGlobeLifeFieldMenu } = await import("./globe-life-field");
+    return parseGlobeLifeFieldMenu;
   }
 };
 
