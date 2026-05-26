@@ -120,6 +120,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "petco-park": async () => {
     const { parsePetcoParkMenu } = await import("./petco-park");
     return parsePetcoParkMenu;
+  },
+  "oracle-park": async () => {
+    const { parseOracleParkMenu } = await import("./oracle-park");
+    return parseOracleParkMenu;
   }
 };
 
