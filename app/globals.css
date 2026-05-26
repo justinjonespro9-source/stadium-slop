@@ -314,8 +314,9 @@ body {
   --slop-scorecard-width: min(100%, 21.25rem);
   --slop-scorecard-cut: 12px;
   --slop-scorecard-cut-sm: 7px;
-  --slop-scorecard-rim-outer: 3px;
-  --slop-scorecard-rim-gold: 4px;
+  --slop-scorecard-rim-outer: 4px;
+  --slop-scorecard-rim-gold: 5px;
+  --slop-scorecard-rim-accent: 1.5px;
 }
 
 .slop-scorecard-chamfer {
@@ -344,14 +345,16 @@ body {
   );
 }
 
-/* Collectible shell — dark outer rim + gold trim + inner navy (chamfer clip on frame) */
+/* Collectible shell — gunmetal rim → gold trim → crimson accent → inner navy */
 .slop-scorecard-collectible {
   position: relative;
   height: 100%;
   width: 100%;
-  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35))
-    drop-shadow(0 0 18px rgba(244, 179, 33, 0.1));
+  filter:
+    drop-shadow(0 18px 36px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4))
+    drop-shadow(0 0 24px rgba(244, 179, 33, 0.14))
+    drop-shadow(0 0 3px rgba(244, 179, 33, 0.2));
 }
 
 .slop-scorecard-collectible-frame {
@@ -360,37 +363,65 @@ body {
   width: 100%;
 }
 
+/* Layer 1: dark gunmetal outer rim with brushed-metal micro-texture */
 .slop-scorecard-collectible-outer {
   height: 100%;
   overflow: hidden;
   padding: var(--slop-scorecard-rim-outer);
-  background: linear-gradient(
-    155deg,
-    #02060c 0%,
-    #0a121c 38%,
-    #060d14 100%
-  );
+  background:
+    repeating-linear-gradient(
+      115deg,
+      transparent,
+      transparent 1px,
+      rgba(255, 255, 255, 0.018) 1px,
+      rgba(255, 255, 255, 0.018) 2px
+    ),
+    linear-gradient(155deg, #02060c 0%, #11191f 30%, #080e16 60%, #0a1018 100%);
   box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.85),
-    inset 0 2px 0 rgba(255, 255, 255, 0.04);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.6);
 }
 
+/* Layer 2: metallic gold primary trim */
 .slop-scorecard-collectible-gold {
   height: 100%;
   overflow: hidden;
   padding: var(--slop-scorecard-rim-gold);
+  background:
+    linear-gradient(
+      145deg,
+      #ffeba8 0%,
+      #ffd458 12%,
+      var(--slop-gold-bright) 28%,
+      var(--slop-gold) 52%,
+      #b8891f 78%,
+      #a07818 88%,
+      var(--slop-gold-dim) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 245, 200, 0.65),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    inset 1px 0 0 rgba(255, 236, 170, 0.25),
+    inset -1px 0 0 rgba(0, 0, 0, 0.2),
+    0 0 16px rgba(244, 179, 33, 0.28);
+}
+
+/* Layer 3: thin warm crimson/stadium-light accent */
+.slop-scorecard-collectible-accent {
+  height: 100%;
+  overflow: hidden;
+  padding: var(--slop-scorecard-rim-accent);
   background: linear-gradient(
-    145deg,
-    #ffe08a 0%,
-    var(--slop-gold-bright) 18%,
-    var(--slop-gold) 52%,
-    #b8891f 88%,
-    var(--slop-gold-dim) 100%
+    160deg,
+    #c63d2f 0%,
+    #d94a3d 30%,
+    #b83428 60%,
+    #9a2f24 100%
   );
   box-shadow:
-    inset 0 1px 0 rgba(255, 236, 170, 0.55),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.35),
-    0 0 12px rgba(244, 179, 33, 0.22);
+    inset 0 1px 0 rgba(255, 120, 100, 0.2),
+    0 0 6px rgba(198, 61, 47, 0.25);
 }
 
 .slop-scorecard-collectible-inner {
@@ -398,8 +429,9 @@ body {
   overflow: hidden;
   background: #03070e;
   box-shadow:
-    inset 0 0 0 1px rgba(244, 179, 33, 0.22),
-    inset 0 0 24px rgba(0, 0, 0, 0.45);
+    inset 0 0 0 1px rgba(244, 179, 33, 0.18),
+    inset 0 0 30px rgba(0, 0, 0, 0.55),
+    inset 0 0 8px rgba(198, 61, 47, 0.06);
 }
 
 .slop-scorecard-collectible-inner > * {
@@ -416,23 +448,61 @@ body {
   background: linear-gradient(180deg, #0a1522 0%, #050a12 100%);
 }
 
-/* Subtle L-bracket accents at chamfered corners */
+/* Corner accents — longer L-brackets with rivet-dot anchors */
 .slop-scorecard-collectible-corners {
   position: absolute;
   inset: 0;
   z-index: 6;
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.82;
   background:
-    linear-gradient(to right, rgba(255, 201, 74, 0.9), transparent) 0 0 / 16px 2px,
-    linear-gradient(to bottom, rgba(255, 201, 74, 0.75), transparent) 0 0 / 2px 16px,
-    linear-gradient(to left, rgba(255, 201, 74, 0.9), transparent) 100% 0 / 16px 2px,
-    linear-gradient(to bottom, rgba(255, 201, 74, 0.75), transparent) 100% 0 / 2px 16px,
-    linear-gradient(to right, rgba(255, 201, 74, 0.85), transparent) 0 100% / 16px 2px,
-    linear-gradient(to top, rgba(255, 201, 74, 0.7), transparent) 0 100% / 2px 16px,
-    linear-gradient(to left, rgba(255, 201, 74, 0.85), transparent) 100% 100% / 16px 2px,
-    linear-gradient(to top, rgba(255, 201, 74, 0.7), transparent) 100% 100% / 2px 16px;
+    /* top-left L */
+    linear-gradient(to right, rgba(255, 210, 80, 0.95), transparent) 0 0 / 22px 2.5px,
+    linear-gradient(to bottom, rgba(255, 210, 80, 0.8), transparent) 0 0 / 2.5px 22px,
+    /* top-right L */
+    linear-gradient(to left, rgba(255, 210, 80, 0.95), transparent) 100% 0 / 22px 2.5px,
+    linear-gradient(to bottom, rgba(255, 210, 80, 0.8), transparent) 100% 0 / 2.5px 22px,
+    /* bottom-left L */
+    linear-gradient(to right, rgba(255, 210, 80, 0.9), transparent) 0 100% / 22px 2.5px,
+    linear-gradient(to top, rgba(255, 210, 80, 0.75), transparent) 0 100% / 2.5px 22px,
+    /* bottom-right L */
+    linear-gradient(to left, rgba(255, 210, 80, 0.9), transparent) 100% 100% / 22px 2.5px,
+    linear-gradient(to top, rgba(255, 210, 80, 0.75), transparent) 100% 100% / 2.5px 22px;
   background-repeat: no-repeat;
+}
+
+/* Rivet dots at each chamfered corner */
+.slop-scorecard-collectible-corners::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle 2.5px at 8px 8px, rgba(255, 220, 100, 0.7) 0%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 8px) 8px, rgba(255, 220, 100, 0.7) 0%, transparent 100%),
+    radial-gradient(circle 2.5px at 8px calc(100% - 8px), rgba(255, 220, 100, 0.65) 0%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 8px) calc(100% - 8px), rgba(255, 220, 100, 0.65) 0%, transparent 100%);
+  background-repeat: no-repeat;
+}
+
+/* Embossed micro-mark at bottom center of frame */
+.slop-scorecard-collectible-mark {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 7;
+  pointer-events: none;
+  font-size: 0.32rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(244, 179, 33, 0.35);
+  text-shadow:
+    0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 236, 170, 0.08);
+  white-space: nowrap;
+  user-select: none;
 }
 
 /* Scorecard back — profile + compact stat rows */
@@ -811,8 +881,17 @@ body {
     box-shadow: none;
   }
 
+  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-accent {
+    background: linear-gradient(160deg, #5a2420 0%, #4a201c 100%);
+    box-shadow: none;
+  }
+
   .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-corners {
     opacity: 0.25;
+  }
+
+  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-mark {
+    opacity: 0.15;
   }
 
   .slop-scorecard-shell[data-active="true"] {
@@ -912,8 +991,17 @@ body {
     box-shadow: none;
   }
 
+  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-accent {
+    background: linear-gradient(160deg, #5a2420 0%, #4a201c 100%);
+    box-shadow: none;
+  }
+
   .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-corners {
     opacity: 0.2;
+  }
+
+  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-mark {
+    opacity: 0.1;
   }
 }
 
