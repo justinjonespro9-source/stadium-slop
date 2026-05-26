@@ -128,6 +128,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "mercedes-benz-stadium": async () => {
     const { parseMercedesBenzStadiumMenu } = await import("./mercedes-benz-stadium");
     return parseMercedesBenzStadiumMenu;
+  },
+  "lower-com-field": async () => {
+    const { parseLowerComFieldMenu } = await import("./lower-com-field");
+    return parseLowerComFieldMenu;
   }
 };
 
