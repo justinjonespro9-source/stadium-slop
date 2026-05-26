@@ -4,6 +4,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "allianz-field": async () => {
     const { parseAllianzFieldMenu } = await import("./allianz-field");
     return parseAllianzFieldMenu;
+  },
+  "target-field": async () => {
+    const { parseTargetFieldMenu } = await import("./target-field");
+    return parseTargetFieldMenu;
   }
 };
 
