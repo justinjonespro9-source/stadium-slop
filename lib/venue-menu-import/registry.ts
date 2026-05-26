@@ -32,6 +32,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "truist-park": async () => {
     const { parseTruistParkMenu } = await import("./truist-park");
     return parseTruistParkMenu;
+  },
+  "loandepot-park": async () => {
+    const { parseLoanDepotParkMenu } = await import("./loandepot-park");
+    return parseLoanDepotParkMenu;
   }
 };
 
