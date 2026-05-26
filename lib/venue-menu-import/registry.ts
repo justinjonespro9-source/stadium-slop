@@ -104,6 +104,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "globe-life-field": async () => {
     const { parseGlobeLifeFieldMenu } = await import("./globe-life-field");
     return parseGlobeLifeFieldMenu;
+  },
+  "chase-field": async () => {
+    const { parseChaseFieldMenu } = await import("./chase-field");
+    return parseChaseFieldMenu;
   }
 };
 
