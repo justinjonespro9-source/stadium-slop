@@ -6,6 +6,15 @@ import {
   PUBLIC_TRUST_STATEMENT,
   SITE_SOCIAL_LINKS
 } from "@/lib/site-contact";
+import {
+  WORLD_CUP_GUIDE_PATH_EN,
+  WORLD_CUP_GUIDE_PATH_ES
+} from "@/lib/world-cup-stadium-food-guide-content";
+
+const guideLinks = [
+  { href: WORLD_CUP_GUIDE_PATH_EN, label: "World Cup Food Guide" },
+  { href: WORLD_CUP_GUIDE_PATH_ES, label: "Guía Mundial 2026" }
+] as const;
 
 const legalLinks = [
   { href: "/terms", label: "Terms" },
@@ -72,6 +81,22 @@ export function SiteFooter() {
                   </a>
                 );
               })}
+            </nav>
+          </div>
+
+          <div>
+            <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
+              Guides
+            </p>
+            <nav
+              className="mt-2 flex flex-wrap gap-2 md:justify-end"
+              aria-label="Guides"
+            >
+              {guideLinks.map((link) => (
+                <Link key={link.href} href={link.href} className={classNameForLegalLink}>
+                  {link.label}
+                </Link>
+              ))}
             </nav>
           </div>
 

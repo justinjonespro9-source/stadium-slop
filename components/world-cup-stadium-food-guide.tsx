@@ -1,27 +1,26 @@
 import Link from "next/link";
 
+import type { WorldCupGuideContent } from "@/lib/world-cup-stadium-food-guide-content";
 import type { ResolvedWorldCupHostVenue } from "@/lib/world-cup-stadium-food-guide";
-import {
-  WORLD_CUP_FAQ_ITEMS,
-  WORLD_CUP_HOW_IT_WORKS_STEPS,
-  WORLD_CUP_PLATFORM_DISCLAIMER,
-  worldCupHostsByCountry
-} from "@/lib/world-cup-stadium-food-guide";
+import { worldCupHostsByCountry } from "@/lib/world-cup-stadium-food-guide";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 
 type WorldCupStadiumFoodGuideProps = {
+  content: WorldCupGuideContent;
   hosts: ResolvedWorldCupHostVenue[];
 };
 
-function countryLabel(country: ResolvedWorldCupHostVenue["country"]): string {
-  if (country === "USA") return "United States";
-  if (country === "Canada") return "Canada";
-  return "Mexico";
-}
-
-function WorldCupVenueCard({ host }: { host: ResolvedWorldCupHostVenue }) {
+function WorldCupVenueCard({
+  host,
+  content
+}: {
+  host: ResolvedWorldCupHostVenue;
+  content: WorldCupGuideContent;
+}) {
+  const { venues: v } = content;
   const isLive = Boolean(host.slug);
+  const isStarter = isLive && host.foodItemCount === 0;
   const cardClass =
     "brand-card flex h-full flex-col rounded-xl border border-[var(--slop-line-strong)] p-3.5 transition sm:rounded-2xl sm:p-4 " +
     (isLive
@@ -56,27 +55,28 @@ function WorldCupVenueCard({ host }: { host: ResolvedWorldCupHostVenue }) {
               : "—"}
         </p>
       ) : (
-        <p className="mt-2 text-xs text-[var(--slop-cream-dim)]">
-          Venue page coming to Stadium Slop.
-        </p>
+        <p className="mt-2 text-xs text-[var(--slop-cream-dim)]">{v.venuePageComing}</p>
       )}
 
       <div className="mt-auto pt-3">
         {isLive ? (
           <>
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
-              <span className="tabular-nums text-[var(--slop-cream-muted)]">
-                {host.foodItemCount}
-              </span>{" "}
-              {host.foodItemCount === 1 ? "food item" : "food items"} listed
-            </p>
+            {isStarter ? (
+              <p className="text-xs leading-relaxed text-[var(--slop-cream-muted)]">
+                {v.starterCoverage}
+              </p>
+            ) : (
+              <p className="text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
+                {v.foodItemsListed(host.foodItemCount)}
+              </p>
+            )}
             <p className="mt-2 text-xs font-black uppercase tracking-[0.12em] text-[var(--slop-gold)]">
-              Browse venue →
+              {v.browseVenue}
             </p>
           </>
         ) : (
           <span className="inline-flex rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-3 py-1.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
-            Coming soon
+            {v.comingSoon}
           </span>
         )}
       </div>
@@ -94,25 +94,29 @@ function WorldCupVenueCard({ host }: { host: ResolvedWorldCupHostVenue }) {
   return <article className={cardClass}>{inner}</article>;
 }
 
-export function WorldCupStadiumFoodGuide({ hosts }: WorldCupStadiumFoodGuideProps) {
+export function WorldCupStadiumFoodGuide({
+  content,
+  hosts
+}: WorldCupStadiumFoodGuideProps) {
   const groups = worldCupHostsByCountry(hosts);
   const liveCount = hosts.filter((h) => h.slug).length;
+  const { venues: v, howItWorks, cta, faq } = content;
 
   return (
     <>
       <section className="brand-panel rounded-2xl border border-[var(--slop-line-strong)] p-4 shadow-lg sm:p-6">
         <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-          2026 host venues · {liveCount} of {hosts.length} live on Stadium Slop
+          {v.sectionEyebrow(liveCount, hosts.length)}
         </p>
         <div className="mt-4 grid gap-6">
           {groups.map(({ country, hosts: countryHosts }) => (
             <div key={country}>
               <h2 className="text-sm font-black uppercase tracking-[0.12em] text-[var(--slop-cream)]">
-                {countryLabel(country)}
+                {v.countryLabels[country]}
               </h2>
               <div className="mt-3 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
                 {countryHosts.map((host) => (
-                  <WorldCupVenueCard key={host.id} host={host} />
+                  <WorldCupVenueCard key={host.id} host={host} content={content} />
                 ))}
               </div>
             </div>
@@ -125,16 +129,16 @@ export function WorldCupStadiumFoodGuide({ hosts }: WorldCupStadiumFoodGuideProp
           id="wcg-how-heading"
           className="text-lg font-black text-[var(--slop-cream)] sm:text-xl"
         >
-          How Stadium Slop Works
+          {howItWorks.heading}
         </h2>
         <ol className="mt-4 grid gap-3 sm:grid-cols-2">
-          {WORLD_CUP_HOW_IT_WORKS_STEPS.map((step, index) => (
+          {howItWorks.steps.map((step, index) => (
             <li
               key={step.title}
               className="brand-card rounded-xl border border-[var(--slop-line-strong)] p-4 sm:rounded-2xl"
             >
               <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-                Step {index + 1}
+                {howItWorks.stepLabel(index + 1)}
               </p>
               <h3 className="mt-1 text-base font-black text-[var(--slop-cream)]">
                 {step.title}
@@ -155,21 +159,20 @@ export function WorldCupStadiumFoodGuide({ hosts }: WorldCupStadiumFoodGuideProp
           id="wcg-cta-heading"
           className="text-lg font-black text-[var(--slop-cream)] sm:text-xl"
         >
-          Be one of the first fans to help rank World Cup stadium food.
+          {cta.heading}
         </h2>
         <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-[var(--slop-cream-muted)]">
-          Pick a host venue, leave a verified review, and help travelers know what
-          is worth ordering before kickoff.
+          {cta.body}
         </p>
         <div className="mt-5 flex flex-col items-stretch justify-center gap-2 sm:flex-row sm:items-center">
           <Link href="/venues" className="brand-cta rounded-full px-6 py-3 text-sm font-black">
-            Find a venue
+            {cta.findVenue}
           </Link>
           <Link
             href="/signup"
             className="brand-cta-secondary rounded-full px-6 py-3 text-sm font-black"
           >
-            Create an account
+            {cta.createAccount}
           </Link>
         </div>
       </section>
@@ -179,10 +182,10 @@ export function WorldCupStadiumFoodGuide({ hosts }: WorldCupStadiumFoodGuideProp
           id="wcg-faq-heading"
           className="text-lg font-black text-[var(--slop-cream)] sm:text-xl"
         >
-          Frequently asked questions
+          {faq.heading}
         </h2>
         <div className="mt-4 space-y-3">
-          {WORLD_CUP_FAQ_ITEMS.map((item) => (
+          {faq.items.map((item) => (
             <article
               key={item.question}
               className="brand-card rounded-xl border border-[var(--slop-line-strong)] p-4 sm:rounded-2xl"
@@ -197,10 +200,6 @@ export function WorldCupStadiumFoodGuide({ hosts }: WorldCupStadiumFoodGuideProp
           ))}
         </div>
       </section>
-
-      <p className="mt-8 border-t border-[var(--slop-line-strong)] pt-6 text-xs leading-relaxed text-[var(--slop-cream-dim)] sm:text-sm">
-        {WORLD_CUP_PLATFORM_DISCLAIMER}
-      </p>
     </>
   );
 }

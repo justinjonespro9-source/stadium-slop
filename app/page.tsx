@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 import { HomeSlopNetwork } from "@/components/home-slop-network";
@@ -43,6 +44,15 @@ export default async function Home() {
 
         <p className="mx-auto max-w-2xl px-1 text-center text-sm font-semibold leading-snug text-[var(--slop-cream-muted)] sm:text-base">
           Fan-powered food ratings with game-day signals on what&apos;s fresh.
+        </p>
+
+        <p className="mx-auto mt-3 max-w-2xl text-center">
+          <Link
+            href="/world-cup-stadium-food-guide"
+            className="text-sm font-bold text-[var(--slop-gold-dim)] transition hover:text-[var(--slop-gold-bright)]"
+          >
+            2026 World Cup Stadium Food Guide →
+          </Link>
         </p>
 
         <div className="mx-auto mt-3 max-w-2xl sm:mt-4 lg:mt-1.5">

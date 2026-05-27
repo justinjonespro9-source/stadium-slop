@@ -38,6 +38,7 @@
     "validate:league-import": "tsx scripts/validate-league-import.ts",
     "sync:venue-teams": "tsx scripts/sync-shared-venue-teams.ts",
     "import:venue-menu": "tsx scripts/import-venue-menu.ts",
+    "ensure:world-cup-mexico-venues": "tsx scripts/ensure-world-cup-mexico-venues.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {

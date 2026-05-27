@@ -36,7 +36,12 @@ const VENUE_SLUG_BY_NAME: Record<string, string> = {
   "reliant stadium": "nrg-stadium",
   "levi's stadium": "levis-stadium",
   "levis stadium": "levis-stadium",
-  "hard rock stadium": "hard-rock-stadium"
+  "hard rock stadium": "hard-rock-stadium",
+  "estadio azteca": "estadio-azteca",
+  "estadio bbva": "estadio-bbva",
+  "estadio bbva gnp": "estadio-bbva",
+  "estadio akron": "estadio-akron",
+  "estadio chivas": "estadio-akron"
 };
 
 /** Legacy / alias slugs → canonical venue slug (DB / import). */
@@ -62,7 +67,12 @@ const VENUE_SLUG_ALIASES: Record<string, string> = {
   "san-francisco-49ers-stadium": "levis-stadium",
   "hardrock-stadium": "hard-rock-stadium",
   "dolphins-stadium": "hard-rock-stadium",
-  "miami-dolphins-stadium": "hard-rock-stadium"
+  "miami-dolphins-stadium": "hard-rock-stadium",
+  azteca: "estadio-azteca",
+  "bbva-stadium": "estadio-bbva",
+  "estadio-bbva-gnp": "estadio-bbva",
+  "akron-stadium": "estadio-akron",
+  "estadio-chivas": "estadio-akron"
 };
 
 /** Venue URL segment — prefer explicit slug, else ballpark name. */

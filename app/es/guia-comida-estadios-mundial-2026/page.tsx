@@ -6,11 +6,11 @@ import { buildWorldCupGuideMetadata } from "@/lib/world-cup-stadium-food-guide-m
 /** Loads live venue and menu data from the database. */
 export const dynamic = "force-dynamic";
 
-export const metadata = buildWorldCupGuideMetadata("en");
+export const metadata = buildWorldCupGuideMetadata("es");
 
-export default async function WorldCupStadiumFoodGuidePage() {
+export default async function GuiaComidaEstadiosMundial2026Page() {
   const hosts = await loadWorldCupGuideHosts();
-  const content = getWorldCupGuideContent("en");
+  const content = getWorldCupGuideContent("es");
 
   return <WorldCupStadiumFoodGuideShell content={content} hosts={hosts} />;
 }

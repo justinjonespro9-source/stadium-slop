@@ -17,13 +17,7 @@ export type ResolvedWorldCupHostVenue = WorldCupHostVenueDef & {
   foodItemCount: number;
 };
 
-export const WORLD_CUP_GUIDE_PATH = "/world-cup-stadium-food-guide";
-
-export const WORLD_CUP_GUIDE_TITLE =
-  "2026 World Cup Stadium Food Guide | Stadium Slop";
-
-export const WORLD_CUP_GUIDE_DESCRIPTION =
-  "Find food at 2026 World Cup host stadiums with Stadium Slop. Browse venue menus, fan photos, rankings, and verified in-stadium reviews.";
+export { WORLD_CUP_GUIDE_PATH_EN as WORLD_CUP_GUIDE_PATH } from "@/lib/world-cup-stadium-food-guide-content";
 
 export const WORLD_CUP_HOST_VENUES: WorldCupHostVenueDef[] = [
   {
@@ -139,56 +133,6 @@ export const WORLD_CUP_HOST_VENUES: WorldCupHostVenueDef[] = [
     slugCandidates: ["estadio-akron", "akron-stadium", "estadio-chivas"]
   }
 ];
-
-export const WORLD_CUP_HOW_IT_WORKS_STEPS = [
-  {
-    title: "Pick a host venue",
-    body: "Choose a 2026 World Cup stadium to see what fans are eating inside the building."
-  },
-  {
-    title: "Browse food items",
-    body: "Explore menus, vendors, and standout bites before you head to your match."
-  },
-  {
-    title: "See fan photos and rankings",
-    body: "Compare Slop Scores, Napkin Ratings, and real photos from the stands."
-  },
-  {
-    title: "Leave a verified in-stadium review",
-    body: "Share a game-day review with location verification so rankings stay trustworthy."
-  }
-] as const;
-
-export const WORLD_CUP_FAQ_ITEMS = [
-  {
-    question: "What is Stadium Slop?",
-    answer:
-      "Stadium Slop is a fan-powered guide to stadium food. Fans browse items, photos, and rankings, then leave verified in-stadium reviews to help others know what to order."
-  },
-  {
-    question: "Which World Cup stadiums are on Stadium Slop?",
-    answer:
-      "This guide lists all sixteen confirmed host venues across the United States, Canada, and Mexico. Stadium pages go live on Stadium Slop as menus and reviews are added—check each card for availability."
-  },
-  {
-    question: "Are Stadium Slop reviews official?",
-    answer:
-      "No. Reviews come from fans in the building, not from FIFA, teams, or venue operators. Stadium Slop is an independent platform."
-  },
-  {
-    question: "How do verified in-stadium reviews work?",
-    answer:
-      "When you review food at a venue, Stadium Slop can confirm you are inside the stadium geofence on game day. That helps rankings reflect real fan experiences in the stands."
-  },
-  {
-    question: "Can I use Stadium Slop before traveling to a match?",
-    answer:
-      "Yes. Browse host venues ahead of time to see what items exist, what fans rate highly, and what photos look like—so you can plan what to try once you arrive."
-  }
-] as const;
-
-export const WORLD_CUP_PLATFORM_DISCLAIMER =
-  "Stadium Slop is an independent fan platform and is not affiliated with or endorsed by FIFA or the FIFA World Cup.";
 
 const COUNTRY_ORDER: WorldCupHostCountry[] = ["USA", "Canada", "Mexico"];
 
