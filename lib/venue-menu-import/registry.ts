@@ -196,6 +196,12 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "paypal-park": async () => {
     const { parsePayPalParkMenu } = await import("./paypal-park");
     return parsePayPalParkMenu;
+  },
+  "bank-of-america-stadium": async () => {
+    const { parseBankOfAmericaStadiumMenu } = await import(
+      "./bank-of-america-stadium"
+    );
+    return parseBankOfAmericaStadiumMenu;
   }
 };
 
