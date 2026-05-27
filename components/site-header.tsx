@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { getSessionUser } from "@/lib/auth/require-user";
+import { WORLD_CUP_GUIDE_PATH_EN } from "@/lib/world-cup-stadium-food-guide-content";
 import {
   MOCK_USER_COOKIE_NAME,
   allowMockUserAccess,
@@ -55,6 +56,13 @@ export async function SiteHeader() {
             className="shrink-0 rounded-full px-2 py-1.5 font-black transition hover:bg-[rgba(244,179,33,0.12)] hover:text-[var(--slop-gold-bright)] md:px-3 md:py-2"
           >
             Home
+          </Link>
+          <Link
+            href={WORLD_CUP_GUIDE_PATH_EN}
+            className="hidden shrink-0 whitespace-nowrap rounded-full border border-[var(--slop-line-strong)] px-2 py-1.5 font-black text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)]/50 hover:text-[var(--slop-gold-bright)] min-[420px]:inline-flex md:px-3 md:py-2"
+          >
+            <span className="md:hidden">WC Guide</span>
+            <span className="hidden md:inline">World Cup Guide</span>
           </Link>
           <Link
             href="/venues"

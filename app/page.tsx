@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 
 import { HomeSlopNetwork } from "@/components/home-slop-network";
 import { HomeVenueSearch } from "@/components/home-venue-search";
+import { HomeWorldCupGuidePromo } from "@/components/home-world-cup-guide-promo";
 import { getPublicVenues } from "@/lib/public-data";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 
@@ -46,18 +46,11 @@ export default async function Home() {
           Fan-powered food ratings with game-day signals on what&apos;s fresh.
         </p>
 
-        <p className="mx-auto mt-3 max-w-2xl text-center">
-          <Link
-            href="/world-cup-stadium-food-guide"
-            className="text-sm font-bold text-[var(--slop-gold-dim)] transition hover:text-[var(--slop-gold-bright)]"
-          >
-            2026 World Cup Stadium Food Guide →
-          </Link>
-        </p>
-
         <div className="mx-auto mt-3 max-w-2xl sm:mt-4 lg:mt-1.5">
           <HomeVenueSearch venues={venues} />
         </div>
+
+        <HomeWorldCupGuidePromo />
       </section>
 
       <HomeSlopNetwork />
