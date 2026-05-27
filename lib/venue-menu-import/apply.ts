@@ -52,7 +52,11 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   "cowboys-stadium": "att-stadium",
   /** GEHA Field — importer CLI slug; NFL import created `geha-field-at-arrowhead-stadium`. */
   "arrowhead-stadium": "geha-field-at-arrowhead-stadium",
-  "arrowhead": "geha-field-at-arrowhead-stadium"
+  "arrowhead": "geha-field-at-arrowhead-stadium",
+  /** SoFi Stadium / Hollywood Park dining guide aliases. */
+  "so-fi-stadium": "sofi-stadium",
+  "hollywood-park": "sofi-stadium",
+  "hollywood-park-stadium": "sofi-stadium"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {

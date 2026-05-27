@@ -34,6 +34,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     longitude: -97.0945,
     reviewRadiusMeters: 1000,
     timeZone: "America/Chicago"
+  },
+  "sofi-stadium": {
+    name: "SoFi Stadium",
+    city: "Inglewood",
+    state: "CA",
+    country: "USA",
+    latitude: 33.9535,
+    longitude: -118.3392,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/Los_Angeles"
   }
 };
 
