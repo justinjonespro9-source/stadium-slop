@@ -83,6 +83,7 @@ export const SHARED_ARENA_LEAGUES: Record<string, readonly string[]> = {
   "lincoln-financial-field": ["NFL"],
   "nrg-stadium": ["NFL"],
   "levis-stadium": ["NFL"],
+  "hard-rock-stadium": ["NFL", "F1", "Tennis"],
   "td-garden": ["NBA", "NHL"],
   "united-center": ["NBA", "NHL"],
   "american-airlines-center": ["NBA", "NHL"],

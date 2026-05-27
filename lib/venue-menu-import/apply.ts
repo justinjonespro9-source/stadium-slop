@@ -71,7 +71,11 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   /** Levi's Stadium — NFL import slug is `levi-s-stadium`; importer CLI uses `levis-stadium`. */
   "levis-stadium": "levi-s-stadium",
   "levi-stadium": "levi-s-stadium",
-  "san-francisco-49ers-stadium": "levi-s-stadium"
+  "san-francisco-49ers-stadium": "levi-s-stadium",
+  /** Hard Rock Stadium — Miami Dolphins. */
+  "hardrock-stadium": "hard-rock-stadium",
+  "dolphins-stadium": "hard-rock-stadium",
+  "miami-dolphins-stadium": "hard-rock-stadium"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {
@@ -176,14 +180,14 @@ export async function applyVenueMenuImport(
     );
     if (fuzzyMatch) {
       rows.push({
-        action: "duplicate",
+        action: "matched",
         name: sourceItem.name,
         normalizedName: normName,
         existingSlug: fuzzyMatch.slug,
         reason: `Fuzzy match: "${fuzzyMatch.name}"`,
         vendorName: sourceItem.vendorName
       });
-      duplicates++;
+      matched++;
       continue;
     }
 

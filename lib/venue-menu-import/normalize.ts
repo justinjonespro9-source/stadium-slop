@@ -9,11 +9,14 @@
 const SIZE_PATTERN = /\b\d+(\.\d+)?\s*(oz|fl\.?\s*oz|ml|ct|pk|pack)\b/gi;
 const NON_ALPHANUM = /[^a-z0-9]+/g;
 
+/** Decorative / CSV-escaped quotes (e.g. NFL import `The "Beef Hammer"`). */
+const DECORATIVE_QUOTE_PATTERN = /[\u201c\u201d\u201e\u201f\u2033\u2036"'`"]/g;
+
 export function normalizeMenuItemName(raw: string): string {
   return raw
     .toLowerCase()
     .replace(SIZE_PATTERN, "")
-    .replace(/[''`]/g, "")
+    .replace(DECORATIVE_QUOTE_PATTERN, "")
     .replace(/&/g, "and")
     .trim()
     .replace(/\s+/g, " ");

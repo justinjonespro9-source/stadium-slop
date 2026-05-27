@@ -84,6 +84,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     longitude: -121.9694,
     reviewRadiusMeters: 1000,
     timeZone: "America/Los_Angeles"
+  },
+  "hard-rock-stadium": {
+    name: "Hard Rock Stadium",
+    city: "Miami Gardens",
+    state: "FL",
+    country: "USA",
+    latitude: 25.958,
+    longitude: -80.2389,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/New_York"
   }
 };
 
