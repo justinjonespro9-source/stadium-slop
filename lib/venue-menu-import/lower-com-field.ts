@@ -5,7 +5,11 @@
  * section has a Menu: line whose comma-separated items are split into
  * individual food item candidates. Generic staples (hot dog, popcorn,
  * candy, nachos, fries, chips, pretzels) are excluded unless tied to a
- * named local vendor or branded as a signature item.
+ * named local vendor or branded as a signature item. Vendor/stand names
+ * are stored as vendorName metadata, NOT as food item names.
+ *
+ * Platter and standalone variants of the same sausage are consolidated
+ * into one item (e.g. Bahama Mama covers both à la carte and platter).
  *
  * Source: https://www.columbuscrew.com/stadium/concessions
  * Re-verify each season to pick up menu changes.
@@ -75,14 +79,14 @@ const MENU_DATA: RawItem[] = [
   // ── Philly - Section 103 ────────────────────────────────────────
 
   {
-    name: "Philly Cheesesteak Sandwich",
+    name: "Cheesesteak Sandwich",
     fare: "Meals",
     vendor: "Philly",
     vendorHint: "Section 103",
     tags: ["mls"]
   },
   {
-    name: "Philly Cheesesteak Nacho",
+    name: "Cheesesteak Nacho",
     fare: "Meals",
     vendor: "Philly",
     vendorHint: "Section 103",
@@ -183,7 +187,6 @@ const MENU_DATA: RawItem[] = [
     name: "Walking Taco",
     description: "Served in Doritos or Fritos bag",
     fare: "Snacks",
-    vendor: "Walking Taco",
     vendorHint: "Section 109",
     tags: ["mls"]
   },
@@ -258,22 +261,8 @@ const MENU_DATA: RawItem[] = [
   // ── Schmidt's - Section 128 ─────────────────────────────────────
 
   {
-    name: "Bahama Mama Platter",
-    fare: "Meals",
-    vendor: "Schmidt's",
-    vendorHint: "Section 128",
-    tags: ["mls", "local-vendor"]
-  },
-  {
     name: "Bahama Mama",
-    description: "Schmidt's signature smoked sausage",
-    fare: "Meals",
-    vendor: "Schmidt's",
-    vendorHint: "Section 128",
-    tags: ["mls", "local-vendor"]
-  },
-  {
-    name: "Bratwurst Platter",
+    description: "Schmidt's signature smoked sausage; also available as platter",
     fare: "Meals",
     vendor: "Schmidt's",
     vendorHint: "Section 128",
@@ -281,6 +270,7 @@ const MENU_DATA: RawItem[] = [
   },
   {
     name: "Schmidt's Bratwurst",
+    description: "Also available as platter",
     fare: "Meals",
     vendor: "Schmidt's",
     vendorHint: "Section 128",
@@ -294,14 +284,8 @@ const MENU_DATA: RawItem[] = [
     tags: ["mls", "local-vendor"]
   },
   {
-    name: "Garlic Knockwurst Platter",
-    fare: "Meals",
-    vendor: "Schmidt's",
-    vendorHint: "Section 128",
-    tags: ["mls", "local-vendor"]
-  },
-  {
     name: "Garlic Knockwurst",
+    description: "Also available as platter",
     fare: "Meals",
     vendor: "Schmidt's",
     vendorHint: "Section 128",
