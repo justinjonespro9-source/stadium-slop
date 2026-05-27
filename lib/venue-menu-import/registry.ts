@@ -160,6 +160,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "snapdragon-stadium": async () => {
     const { parseSnapdragonStadiumMenu } = await import("./snapdragon-stadium");
     return parseSnapdragonStadiumMenu;
+  },
+  "energizer-park": async () => {
+    const { parseEnergizerParkMenu } = await import("./energizer-park");
+    return parseEnergizerParkMenu;
   }
 };
 
