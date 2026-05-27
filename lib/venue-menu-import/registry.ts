@@ -202,6 +202,12 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
       "./bank-of-america-stadium"
     );
     return parseBankOfAmericaStadiumMenu;
+  },
+  "dick-s-sporting-goods-park": async () => {
+    const { parseDickSSportingGoodsParkMenu } = await import(
+      "./dick-s-sporting-goods-park"
+    );
+    return parseDickSSportingGoodsParkMenu;
   }
 };
 
