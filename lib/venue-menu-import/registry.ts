@@ -244,6 +244,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "att-stadium": async () => {
     const { parseAttStadiumMenu } = await import("./att-stadium");
     return parseAttStadiumMenu;
+  },
+  "arrowhead-stadium": async () => {
+    const { parseArrowheadStadiumMenu } = await import("./arrowhead-stadium");
+    return parseArrowheadStadiumMenu;
   }
 };
 

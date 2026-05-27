@@ -49,7 +49,10 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   /** AT&T Stadium — common alternate slugs (NFL import auto-slug is at-t-stadium). */
   "at&t-stadium": "att-stadium",
   "at-t-stadium": "att-stadium",
-  "cowboys-stadium": "att-stadium"
+  "cowboys-stadium": "att-stadium",
+  /** GEHA Field — importer CLI slug; NFL import created `geha-field-at-arrowhead-stadium`. */
+  "arrowhead-stadium": "geha-field-at-arrowhead-stadium",
+  "arrowhead": "geha-field-at-arrowhead-stadium"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {

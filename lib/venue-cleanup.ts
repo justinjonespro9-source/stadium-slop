@@ -68,6 +68,11 @@ export const KNOWN_DUPLICATE_GROUPS: Array<{
     label: "AT&T Stadium (Dallas Cowboys)",
     canonicalSlug: "att-stadium",
     aliasSlugs: ["at-t-stadium", "cowboys-stadium"]
+  },
+  {
+    label: "GEHA Field at Arrowhead Stadium (Kansas City Chiefs)",
+    canonicalSlug: "arrowhead-stadium",
+    aliasSlugs: ["geha-field-at-arrowhead-stadium", "arrowhead"]
   }
 ];
 
@@ -95,7 +100,9 @@ export const SHARED_ARENA_LEAGUES: Record<string, readonly string[]> = {
   "lumen-field": ["NFL", "MLS"],
   "yankee-stadium": ["MLB", "MLS"],
   "citi-field": ["MLB", "MLS"],
-  "att-stadium": ["NFL"]
+  "att-stadium": ["NFL"],
+  "arrowhead-stadium": ["NFL"],
+  "geha-field-at-arrowhead-stadium": ["NFL"]
 };
 
 /** Explicit team additions beyond what is already on the venue row. */

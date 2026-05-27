@@ -25,14 +25,18 @@ export function slugifyImportKey(raw: string, maxLen = SLUG_MAX): string {
 /** Canonical slugs when auto-slugify would split punctuation awkwardly. */
 const VENUE_SLUG_BY_NAME: Record<string, string> = {
   "at&t stadium": "att-stadium",
-  "att stadium": "att-stadium"
+  "att stadium": "att-stadium",
+  "geha field at arrowhead stadium": "geha-field-at-arrowhead-stadium",
+  "arrowhead stadium": "geha-field-at-arrowhead-stadium"
 };
 
-/** Legacy / alias slugs → canonical venue slug. */
+/** Legacy / alias slugs → canonical venue slug (DB / import). */
 const VENUE_SLUG_ALIASES: Record<string, string> = {
   "at-t-stadium": "att-stadium",
   "at&t-stadium": "att-stadium",
-  "cowboys-stadium": "att-stadium"
+  "cowboys-stadium": "att-stadium",
+  "arrowhead-stadium": "geha-field-at-arrowhead-stadium",
+  "arrowhead": "geha-field-at-arrowhead-stadium"
 };
 
 /** Venue URL segment — prefer explicit slug, else ballpark name. */

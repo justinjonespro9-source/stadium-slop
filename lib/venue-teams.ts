@@ -69,6 +69,8 @@ const SHARED_VENUE_TEAM_ORDER: Record<string, readonly string[]> = {
   "gillette-stadium": ["New England Patriots", "New England Revolution", "Boston Legacy FC"],
   "lumen-field": ["Seattle Seahawks", "Seattle Sounders FC", "Seattle Reign FC"],
   "att-stadium": ["Dallas Cowboys"],
+  "arrowhead-stadium": ["Kansas City Chiefs"],
+  "geha-field-at-arrowhead-stadium": ["Kansas City Chiefs"],
   "yankee-stadium": ["New York Yankees", "New York City FC"],
   "citi-field": ["New York Mets", "New York City FC"]
 };

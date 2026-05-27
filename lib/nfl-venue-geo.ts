@@ -15,6 +15,16 @@ export type NflVenueGeo = {
 };
 
 export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
+  "arrowhead-stadium": {
+    name: "GEHA Field at Arrowhead Stadium",
+    city: "Kansas City",
+    state: "MO",
+    country: "USA",
+    latitude: 39.0489,
+    longitude: -94.4839,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/Chicago"
+  },
   "att-stadium": {
     name: "AT&T Stadium",
     city: "Arlington",
