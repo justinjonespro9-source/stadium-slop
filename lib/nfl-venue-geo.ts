@@ -74,6 +74,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     longitude: -95.4107,
     reviewRadiusMeters: 1000,
     timeZone: "America/Chicago"
+  },
+  "levis-stadium": {
+    name: "Levi's Stadium",
+    city: "Santa Clara",
+    state: "CA",
+    country: "USA",
+    latitude: 37.403,
+    longitude: -121.9694,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/Los_Angeles"
   }
 };
 

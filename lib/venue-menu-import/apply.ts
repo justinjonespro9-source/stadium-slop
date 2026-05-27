@@ -67,7 +67,11 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   linc: "lincoln-financial-field",
   /** NRG Stadium — former Reliant Stadium. */
   "reliant-stadium": "nrg-stadium",
-  "houston-texans-stadium": "nrg-stadium"
+  "houston-texans-stadium": "nrg-stadium",
+  /** Levi's Stadium — NFL import slug is `levi-s-stadium`; importer CLI uses `levis-stadium`. */
+  "levis-stadium": "levi-s-stadium",
+  "levi-stadium": "levi-s-stadium",
+  "san-francisco-49ers-stadium": "levi-s-stadium"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {
