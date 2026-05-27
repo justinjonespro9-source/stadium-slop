@@ -22,13 +22,32 @@ export function slugifyImportKey(raw: string, maxLen = SLUG_MAX): string {
   return slug.slice(0, maxLen).replace(/-$/, "");
 }
 
+/** Canonical slugs when auto-slugify would split punctuation awkwardly. */
+const VENUE_SLUG_BY_NAME: Record<string, string> = {
+  "at&t stadium": "att-stadium",
+  "att stadium": "att-stadium"
+};
+
+/** Legacy / alias slugs → canonical venue slug. */
+const VENUE_SLUG_ALIASES: Record<string, string> = {
+  "at-t-stadium": "att-stadium",
+  "at&t-stadium": "att-stadium",
+  "cowboys-stadium": "att-stadium"
+};
+
 /** Venue URL segment — prefer explicit slug, else ballpark name. */
 export function venueSlugFromImport(venueName: string, explicitSlug?: string): string {
   const trimmed = explicitSlug?.trim();
   if (trimmed) {
-    return slugifyImportKey(trimmed);
+    const alias = VENUE_SLUG_ALIASES[slugifyImportKey(trimmed)] ?? slugifyImportKey(trimmed);
+    return alias;
   }
-  return slugifyImportKey(venueName);
+  const byName = VENUE_SLUG_BY_NAME[venueName.trim().toLowerCase()];
+  if (byName) {
+    return byName;
+  }
+  const slug = slugifyImportKey(venueName);
+  return VENUE_SLUG_ALIASES[slug] ?? slug;
 }
 
 /** Team dedupe key (stored on Venue.teams as display names, not slugs). */

@@ -240,6 +240,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "bc-place": async () => {
     const { parseBcPlaceMenu } = await import("./bc-place");
     return parseBcPlaceMenu;
+  },
+  "att-stadium": async () => {
+    const { parseAttStadiumMenu } = await import("./att-stadium");
+    return parseAttStadiumMenu;
   }
 };
 

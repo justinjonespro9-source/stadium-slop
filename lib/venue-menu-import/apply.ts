@@ -45,7 +45,11 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   /** FC Dallas at Toyota Stadium (Frisco TX) — not Colorado Rapids. */
   "toyota-stadium-frisco": "toyota-stadium",
   /** Inter&Co Stadium — CLI slug without hyphen matches DB `inter-co-stadium`. */
-  "interco-stadium": "inter-co-stadium"
+  "interco-stadium": "inter-co-stadium",
+  /** AT&T Stadium — common alternate slugs (NFL import auto-slug is at-t-stadium). */
+  "at&t-stadium": "att-stadium",
+  "at-t-stadium": "att-stadium",
+  "cowboys-stadium": "att-stadium"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {

@@ -63,6 +63,11 @@ export const KNOWN_DUPLICATE_GROUPS: Array<{
     label: "Grand Casino Arena / Xcel Energy Center",
     canonicalSlug: "grand-casino-arena",
     aliasSlugs: ["xcel-energy-center"]
+  },
+  {
+    label: "AT&T Stadium (Dallas Cowboys)",
+    canonicalSlug: "att-stadium",
+    aliasSlugs: ["at-t-stadium", "cowboys-stadium"]
   }
 ];
 
@@ -89,7 +94,8 @@ export const SHARED_ARENA_LEAGUES: Record<string, readonly string[]> = {
   "gillette-stadium": ["NFL", "MLS"],
   "lumen-field": ["NFL", "MLS"],
   "yankee-stadium": ["MLB", "MLS"],
-  "citi-field": ["MLB", "MLS"]
+  "citi-field": ["MLB", "MLS"],
+  "att-stadium": ["NFL"]
 };
 
 /** Explicit team additions beyond what is already on the venue row. */
