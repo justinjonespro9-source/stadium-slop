@@ -136,6 +136,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "shell-energy-stadium": async () => {
     const { parseShellEnergyStadiumMenu } = await import("./shell-energy-stadium");
     return parseShellEnergyStadiumMenu;
+  },
+  "bmo-field": async () => {
+    const { parseBmoFieldMenu } = await import("./bmo-field");
+    return parseBmoFieldMenu;
   }
 };
 
