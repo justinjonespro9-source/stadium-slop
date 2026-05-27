@@ -184,6 +184,18 @@ export const MLS_NWSL_VENUE_GEO: Record<string, MlsNwslVenueGeo> = {
     timeZone: "America/New_York",
     venueClass: "soccer-specific"
   },
+  // Nu Stadium replaced Chase Stadium as Inter Miami CF's home in 2026
+  "nu-stadium": {
+    name: "Nu Stadium",
+    city: "Miami",
+    state: "FL",
+    country: "USA",
+    latitude: 25.7796,
+    longitude: -80.3185,
+    reviewRadiusMeters: 800,
+    timeZone: "America/New_York",
+    venueClass: "soccer-specific"
+  },
   "dignity-health-sports-park": {
     name: "Dignity Health Sports Park",
     city: "Carson",

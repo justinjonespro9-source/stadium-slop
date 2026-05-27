@@ -123,7 +123,8 @@ export const MLS_NWSL_SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
   "snapdragon-stadium": ["San Diego FC", "San Diego Wave FC"],
   "inter-co-stadium": ["Orlando City SC", "Orlando Pride"],
   "sports-illustrated-stadium": ["New York Red Bulls", "NJ/NY Gotham FC"],
-  "sporting-park": ["Sporting Kansas City"]
+  "sporting-park": ["Sporting Kansas City"],
+  "nu-stadium": ["Inter Miami CF"]
 };
 
 const VENUE_NAME_PATTERN =
