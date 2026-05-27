@@ -64,6 +64,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     longitude: -75.1675,
     reviewRadiusMeters: 1000,
     timeZone: "America/New_York"
+  },
+  "nrg-stadium": {
+    name: "NRG Stadium",
+    city: "Houston",
+    state: "TX",
+    country: "USA",
+    latitude: 29.6847,
+    longitude: -95.4107,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/Chicago"
   }
 };
 

@@ -64,7 +64,10 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   /** Lincoln Financial Field / The Linc. */
   "lincoln-financial": "lincoln-financial-field",
   "the-linc": "lincoln-financial-field",
-  linc: "lincoln-financial-field"
+  linc: "lincoln-financial-field",
+  /** NRG Stadium — former Reliant Stadium. */
+  "reliant-stadium": "nrg-stadium",
+  "houston-texans-stadium": "nrg-stadium"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {

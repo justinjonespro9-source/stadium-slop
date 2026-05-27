@@ -31,7 +31,9 @@ const VENUE_SLUG_BY_NAME: Record<string, string> = {
   "sofi stadium": "sofi-stadium",
   "hollywood park": "sofi-stadium",
   "metlife stadium": "metlife-stadium",
-  "lincoln financial field": "lincoln-financial-field"
+  "lincoln financial field": "lincoln-financial-field",
+  "nrg stadium": "nrg-stadium",
+  "reliant stadium": "nrg-stadium"
 };
 
 /** Legacy / alias slugs → canonical venue slug (DB / import). */
@@ -49,7 +51,9 @@ const VENUE_SLUG_ALIASES: Record<string, string> = {
   "jets-stadium": "metlife-stadium",
   "lincoln-financial": "lincoln-financial-field",
   "the-linc": "lincoln-financial-field",
-  linc: "lincoln-financial-field"
+  linc: "lincoln-financial-field",
+  "reliant-stadium": "nrg-stadium",
+  "houston-texans-stadium": "nrg-stadium"
 };
 
 /** Venue URL segment — prefer explicit slug, else ballpark name. */
