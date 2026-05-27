@@ -132,6 +132,10 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "lower-com-field": async () => {
     const { parseLowerComFieldMenu } = await import("./lower-com-field");
     return parseLowerComFieldMenu;
+  },
+  "shell-energy-stadium": async () => {
+    const { parseShellEnergyStadiumMenu } = await import("./shell-energy-stadium");
+    return parseShellEnergyStadiumMenu;
   }
 };
 
