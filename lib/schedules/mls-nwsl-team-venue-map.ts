@@ -65,7 +65,9 @@ const STADIUM_TO_VENUE_SLUG: Record<string, string> = {
   "toyota stadium": "toyota-stadium",
   "yankee stadium": "yankee-stadium",
   "first horizon stadium at wakemed soccer park": "wakemed-soccer-park",
-  "wakemed soccer park": "wakemed-soccer-park"
+  "wakemed soccer park": "wakemed-soccer-park",
+  "sporting park": "sporting-park",
+  "children's mercy park": "sporting-park"
 };
 
 const MLS_TEAM_ALIASES: Record<string, string> = {
@@ -114,7 +116,9 @@ const MLS_TEAM_ALIASES: Record<string, string> = {
   "st louis city sc": "St. Louis City SC",
   "toronto fc": "Toronto FC",
   "vancouver whitecaps": "Vancouver Whitecaps FC",
-  "vancouver whitecaps fc": "Vancouver Whitecaps FC"
+  "vancouver whitecaps fc": "Vancouver Whitecaps FC",
+  "sporting kansas city": "Sporting Kansas City",
+  "sporting kc": "Sporting Kansas City"
 };
 
 const NWSL_TEAM_ALIASES: Record<string, string> = {
@@ -203,7 +207,8 @@ function buildTeamToVenueFromRegistry(): Map<string, SoccerHomeVenueMapping> {
     ["Seattle Sounders FC", "lumen-field"],
     ["St. Louis City SC", "citypark"],
     ["Toronto FC", "bmo-field"],
-    ["Vancouver Whitecaps FC", "bc-place"]
+    ["Vancouver Whitecaps FC", "bc-place"],
+    ["Sporting Kansas City", "sporting-park"]
   ];
 
   for (const [teamName, venueSlug] of explicitMls) {

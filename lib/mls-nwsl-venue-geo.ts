@@ -403,6 +403,17 @@ export const MLS_NWSL_VENUE_GEO: Record<string, MlsNwslVenueGeo> = {
     reviewRadiusMeters: 750,
     timeZone: "America/Denver",
     venueClass: "soccer-specific"
+  },
+  "sporting-park": {
+    name: "Sporting Park",
+    city: "Kansas City",
+    state: "KS",
+    country: "USA",
+    latitude: 39.1216,
+    longitude: -94.8233,
+    reviewRadiusMeters: 750,
+    timeZone: "America/Chicago",
+    venueClass: "soccer-specific"
   }
 };
 
