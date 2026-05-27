@@ -208,6 +208,12 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
       "./dick-s-sporting-goods-park"
     );
     return parseDickSSportingGoodsParkMenu;
+  },
+  "toyota-stadium-frisco": async () => {
+    const { parseToyotaStadiumFriscoMenu } = await import(
+      "./toyota-stadium-frisco"
+    );
+    return parseToyotaStadiumFriscoMenu;
   }
 };
 

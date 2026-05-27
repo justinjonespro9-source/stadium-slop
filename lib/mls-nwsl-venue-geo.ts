@@ -151,6 +151,7 @@ export const MLS_NWSL_VENUE_GEO: Record<string, MlsNwslVenueGeo> = {
     timeZone: "America/New_York",
     venueClass: "soccer-specific"
   },
+  /** FC Dallas (MLS). Not Colorado Rapids — see dick-s-sporting-goods-park. */
   "toyota-stadium": {
     name: "Toyota Stadium",
     city: "Frisco",

@@ -27,6 +27,11 @@ Soccer tenants merge into existing NFL/MLB venues (no duplicate slugs):
 
 Multi-tenant soccer-only venues (e.g. Audi Field, Shell Energy Stadium, BMO Stadium) are created or updated in place.
 
+Soccer-specific venues with a single MLS tenant include:
+
+- Toyota Stadium (`toyota-stadium`) — FC Dallas, Frisco TX
+- DICK'S Sporting Goods Park (`dick-s-sporting-goods-park`) — Colorado Rapids, Commerce City CO
+
 ## Output
 
 - `mls-nwsl-venues-import.cleaned.csv` — flat rows for review / `import:league` compatibility

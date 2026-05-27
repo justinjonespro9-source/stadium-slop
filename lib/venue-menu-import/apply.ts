@@ -40,6 +40,16 @@ function slugFilterInsensitive(slug: string) {
   return { equals: slug, mode: "insensitive" as const };
 }
 
+/** Import CLI slugs that map to an existing venue row slug in the DB. */
+const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
+  /** FC Dallas at Toyota Stadium (Frisco TX) — not Colorado Rapids. */
+  "toyota-stadium-frisco": "toyota-stadium"
+};
+
+function resolveVenueMenuImportSlug(venueSlug: string): string {
+  return VENUE_MENU_IMPORT_SLUG_ALIASES[venueSlug.toLowerCase()] ?? venueSlug;
+}
+
 export async function applyVenueMenuImport(
   db: PrismaClient,
   parseResult: VenueMenuParseResult,
@@ -47,14 +57,17 @@ export async function applyVenueMenuImport(
 ): Promise<VenueMenuImportSummary> {
   const { venueSlug, venueName, sourceUrl, items } = parseResult;
   const { dryRun } = options;
+  const dbVenueSlug = resolveVenueMenuImportSlug(venueSlug);
 
   const venue = await db.venue.findFirst({
-    where: { slug: slugFilterInsensitive(venueSlug), status: "ACTIVE" },
+    where: { slug: slugFilterInsensitive(dbVenueSlug), status: "ACTIVE" },
     select: { id: true, name: true }
   });
 
   if (!venue) {
-    throw new Error(`Venue "${venueSlug}" not found or inactive`);
+    throw new Error(
+      `Venue "${venueSlug}"${dbVenueSlug !== venueSlug ? ` (resolved to "${dbVenueSlug}")` : ""} not found or inactive`
+    );
   }
 
   const existingItems = await db.foodItem.findMany({
