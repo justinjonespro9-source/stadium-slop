@@ -44,6 +44,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     longitude: -118.3392,
     reviewRadiusMeters: 1000,
     timeZone: "America/Los_Angeles"
+  },
+  "metlife-stadium": {
+    name: "MetLife Stadium",
+    city: "East Rutherford",
+    state: "NJ",
+    country: "USA",
+    latitude: 40.8128,
+    longitude: -74.0742,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/New_York"
   }
 };
 

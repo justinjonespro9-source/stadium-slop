@@ -56,7 +56,11 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   /** SoFi Stadium / Hollywood Park dining guide aliases. */
   "so-fi-stadium": "sofi-stadium",
   "hollywood-park": "sofi-stadium",
-  "hollywood-park-stadium": "sofi-stadium"
+  "hollywood-park-stadium": "sofi-stadium",
+  /** MetLife Stadium — Giants/Jets shared venue. */
+  "met-life-stadium": "metlife-stadium",
+  "giants-stadium": "metlife-stadium",
+  "jets-stadium": "metlife-stadium"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {
