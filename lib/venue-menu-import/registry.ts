@@ -274,6 +274,18 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "hard-rock-stadium": async () => {
     const { parseHardRockStadiumMenu } = await import("./hard-rock-stadium");
     return parseHardRockStadiumMenu;
+  },
+  "estadio-azteca": async () => {
+    const { parseEstadioAztecaMenu } = await import("./estadio-azteca");
+    return parseEstadioAztecaMenu;
+  },
+  "estadio-bbva": async () => {
+    const { parseEstadioBbvaMenu } = await import("./estadio-bbva");
+    return parseEstadioBbvaMenu;
+  },
+  "estadio-akron": async () => {
+    const { parseEstadioAkronMenu } = await import("./estadio-akron");
+    return parseEstadioAkronMenu;
   }
 };
 

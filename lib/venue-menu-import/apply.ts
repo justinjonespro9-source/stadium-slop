@@ -75,7 +75,13 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   /** Hard Rock Stadium — Miami Dolphins. */
   "hardrock-stadium": "hard-rock-stadium",
   "dolphins-stadium": "hard-rock-stadium",
-  "miami-dolphins-stadium": "hard-rock-stadium"
+  "miami-dolphins-stadium": "hard-rock-stadium",
+  /** Mexico World Cup 2026 host venues. */
+  "estadio-bbva-gnp": "estadio-bbva",
+  "bbva-stadium": "estadio-bbva",
+  "estadio-chivas": "estadio-akron",
+  "akron-stadium": "estadio-akron",
+  azteca: "estadio-azteca"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {
