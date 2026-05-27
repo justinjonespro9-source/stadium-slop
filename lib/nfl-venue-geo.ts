@@ -54,6 +54,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     longitude: -74.0742,
     reviewRadiusMeters: 1000,
     timeZone: "America/New_York"
+  },
+  "lincoln-financial-field": {
+    name: "Lincoln Financial Field",
+    city: "Philadelphia",
+    state: "PA",
+    country: "USA",
+    latitude: 39.9008,
+    longitude: -75.1675,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/New_York"
   }
 };
 

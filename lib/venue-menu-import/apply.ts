@@ -60,7 +60,11 @@ const VENUE_MENU_IMPORT_SLUG_ALIASES: Record<string, string> = {
   /** MetLife Stadium — Giants/Jets shared venue. */
   "met-life-stadium": "metlife-stadium",
   "giants-stadium": "metlife-stadium",
-  "jets-stadium": "metlife-stadium"
+  "jets-stadium": "metlife-stadium",
+  /** Lincoln Financial Field / The Linc. */
+  "lincoln-financial": "lincoln-financial-field",
+  "the-linc": "lincoln-financial-field",
+  linc: "lincoln-financial-field"
 };
 
 function resolveVenueMenuImportSlug(venueSlug: string): string {

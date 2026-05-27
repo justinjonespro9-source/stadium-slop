@@ -30,7 +30,8 @@ const VENUE_SLUG_BY_NAME: Record<string, string> = {
   "arrowhead stadium": "geha-field-at-arrowhead-stadium",
   "sofi stadium": "sofi-stadium",
   "hollywood park": "sofi-stadium",
-  "metlife stadium": "metlife-stadium"
+  "metlife stadium": "metlife-stadium",
+  "lincoln financial field": "lincoln-financial-field"
 };
 
 /** Legacy / alias slugs → canonical venue slug (DB / import). */
@@ -45,7 +46,10 @@ const VENUE_SLUG_ALIASES: Record<string, string> = {
   "hollywood-park-stadium": "sofi-stadium",
   "met-life-stadium": "metlife-stadium",
   "giants-stadium": "metlife-stadium",
-  "jets-stadium": "metlife-stadium"
+  "jets-stadium": "metlife-stadium",
+  "lincoln-financial": "lincoln-financial-field",
+  "the-linc": "lincoln-financial-field",
+  linc: "lincoln-financial-field"
 };
 
 /** Venue URL segment — prefer explicit slug, else ballpark name. */

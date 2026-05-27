@@ -80,6 +80,7 @@ export const KNOWN_DUPLICATE_GROUPS: Array<{
 export const SHARED_ARENA_LEAGUES: Record<string, readonly string[]> = {
   "sofi-stadium": ["NFL"],
   "metlife-stadium": ["NFL"],
+  "lincoln-financial-field": ["NFL"],
   "td-garden": ["NBA", "NHL"],
   "united-center": ["NBA", "NHL"],
   "american-airlines-center": ["NBA", "NHL"],
