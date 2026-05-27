@@ -67,11 +67,12 @@ export async function applyVenueMenuImport(
     select: { id: true, slug: true, name: true }
   });
 
+  const activeItems = existingItems.filter((item) => item.status === "ACTIVE");
   const existingByNormName = new Map(
-    existingItems.map((item) => [normalizeMenuItemName(item.name), item])
+    activeItems.map((item) => [normalizeMenuItemName(item.name), item])
   );
   const existingBySlug = new Map(
-    existingItems.map((item) => [item.slug.toLowerCase(), item])
+    activeItems.map((item) => [item.slug.toLowerCase(), item])
   );
   const vendorBySlug = new Map(
     existingVendors.map((v) => [v.slug.toLowerCase(), v])
@@ -129,9 +130,8 @@ export async function applyVenueMenuImport(
       continue;
     }
 
-    const fuzzyMatch = existingItems.find(
-      (item) =>
-        item.status === "ACTIVE" && fuzzyMenuNameMatch(item.name, sourceItem.name)
+    const fuzzyMatch = activeItems.find((item) =>
+      fuzzyMenuNameMatch(item.name, sourceItem.name)
     );
     if (fuzzyMatch) {
       rows.push({

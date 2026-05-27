@@ -41,8 +41,16 @@ type RawItem = {
 
 const MENU_DATA: RawItem[] = [
   // ── 2026 New Items (official announcement + map) ────────────────
-  // Decade Dogs omitted — already ACTIVE in DB (prior import, name "\"Decade Dogs\"").
 
+  {
+    name: "Decade Dogs",
+    description:
+      "Trio of stadium hot dog options for Providence Park's 100th anniversary season",
+    fare: "Meals",
+    vendor: "Park Provisions",
+    vendorHint: "Concessions throughout the concourse",
+    tags: ["mls", "nwsl", "new-in-2026", "local-specialty"]
+  },
   {
     name: "Shoyu Chicken Bowl",
     fare: "Meals",
