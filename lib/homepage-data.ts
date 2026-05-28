@@ -1,0 +1,210 @@
+import "server-only";
+
+import { EntityStatus } from "@prisma/client";
+
+import { prisma } from "@/lib/prisma";
+
+export type HomepageStats = {
+  venueCount: number;
+  menuItemCount: number;
+  reviewCount: number;
+  rankedItemCount: number;
+};
+
+export type HomepageFeaturedItem = {
+  name: string;
+  venueSlug: string;
+  venueName: string;
+  foodSlug: string;
+  slopScore?: number;
+  reviewCount: number;
+  badge?: string;
+};
+
+const EMPTY_STATS: HomepageStats = {
+  venueCount: 0,
+  menuItemCount: 0,
+  reviewCount: 0,
+  rankedItemCount: 0
+};
+
+export async function getHomepageStats(): Promise<HomepageStats> {
+  try {
+    const reviewWhere = {
+      status: EntityStatus.ACTIVE,
+      isTestReview: false
+    } as const;
+
+    const [venueCount, menuItemCount, reviewCount, rankedGroups] = await Promise.all([
+      prisma.venue.count({ where: { status: EntityStatus.ACTIVE } }),
+      prisma.foodItem.count({ where: { status: EntityStatus.ACTIVE } }),
+      prisma.review.count({ where: reviewWhere }),
+      prisma.review.groupBy({
+        by: ["foodItemId"],
+        where: reviewWhere,
+        _count: { foodItemId: true }
+      })
+    ]);
+
+    return {
+      venueCount,
+      menuItemCount,
+      reviewCount,
+      rankedItemCount: rankedGroups.length
+    };
+  } catch (error) {
+    console.warn("[homepage] Failed to load stats", error);
+    return EMPTY_STATS;
+  }
+}
+
+function averageSlopScore(scores: number[]): number | undefined {
+  if (scores.length === 0) {
+    return undefined;
+  }
+  const sum = scores.reduce((a, b) => a + b, 0);
+  return Math.round((sum / scores.length) * 10) / 10;
+}
+
+async function mapFeaturedRows(
+  rows: {
+    slug: string;
+    name: string;
+    venue: { slug: string; name: string };
+    isPromoted: boolean;
+    venueBadge: string | null;
+    reviews: { slopScore: { toNumber(): number } }[];
+    createdAt: Date;
+  }[]
+): Promise<HomepageFeaturedItem[]> {
+  return rows
+    .map((item) => {
+      const scores = item.reviews.map((r) => r.slopScore.toNumber());
+      return {
+        name: item.name,
+        venueSlug: item.venue.slug,
+        venueName: item.venue.name,
+        foodSlug: item.slug,
+        slopScore: averageSlopScore(scores),
+        reviewCount: scores.length,
+        badge: item.isPromoted
+          ? "Promoted"
+          : item.venueBadge
+            ? item.venueBadge.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+            : undefined
+      };
+    })
+    .filter((item) => item.reviewCount > 0 || item.badge);
+}
+
+export async function getHomepageTopSlopItems(
+  limit = 6
+): Promise<HomepageFeaturedItem[]> {
+  try {
+    const items = await prisma.foodItem.findMany({
+      where: {
+        status: EntityStatus.ACTIVE,
+        reviews: {
+          some: {
+            status: EntityStatus.ACTIVE,
+            isTestReview: false
+          }
+        }
+      },
+      include: {
+        venue: { select: { slug: true, name: true } },
+        reviews: {
+          where: { status: EntityStatus.ACTIVE, isTestReview: false },
+          select: { slopScore: true }
+        }
+      },
+      take: 80
+    });
+
+    const ranked = items
+      .map((item) => ({
+        item,
+        avg: averageSlopScore(item.reviews.map((r) => r.slopScore.toNumber())) ?? 0
+      }))
+      .sort((a, b) => b.avg - a.avg || b.item.reviews.length - a.item.reviews.length)
+      .slice(0, limit)
+      .map(({ item }) => item);
+
+    return mapFeaturedRows(ranked);
+  } catch (error) {
+    console.warn("[homepage] Failed to load top slop items", error);
+    return [];
+  }
+}
+
+export async function getHomepageRecentlyAddedItems(
+  limit = 6
+): Promise<HomepageFeaturedItem[]> {
+  try {
+    const items = await prisma.foodItem.findMany({
+      where: { status: EntityStatus.ACTIVE },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+      include: {
+        venue: { select: { slug: true, name: true } },
+        reviews: {
+          where: { status: EntityStatus.ACTIVE, isTestReview: false },
+          select: { slopScore: true }
+        }
+      }
+    });
+
+    return mapFeaturedRows(items);
+  } catch (error) {
+    console.warn("[homepage] Failed to load recent items", error);
+    return [];
+  }
+}
+
+export async function getHomepageFanFavoriteItems(
+  limit = 6
+): Promise<HomepageFeaturedItem[]> {
+  try {
+    const items = await prisma.foodItem.findMany({
+      where: {
+        status: EntityStatus.ACTIVE,
+        OR: [
+          { isPromoted: true },
+          { venueBadge: "FAN_FAVORITE" },
+          {
+            reviews: {
+              some: { status: EntityStatus.ACTIVE, isTestReview: false }
+            }
+          }
+        ]
+      },
+      include: {
+        venue: { select: { slug: true, name: true } },
+        reviews: {
+          where: { status: EntityStatus.ACTIVE, isTestReview: false },
+          select: { slopScore: true }
+        },
+        _count: {
+          select: {
+            reviews: {
+              where: { status: EntityStatus.ACTIVE, isTestReview: false }
+            }
+          }
+        }
+      },
+      orderBy: {
+        reviews: { _count: "desc" }
+      },
+      take: limit * 3
+    });
+
+    const sorted = [...items].sort(
+      (a, b) => b._count.reviews - a._count.reviews || (b.isPromoted ? 1 : 0) - (a.isPromoted ? 1 : 0)
+    );
+
+    return mapFeaturedRows(sorted.slice(0, limit));
+  } catch (error) {
+    console.warn("[homepage] Failed to load fan favorites", error);
+    return [];
+  }
+}

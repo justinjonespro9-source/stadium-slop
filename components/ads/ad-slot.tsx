@@ -17,103 +17,230 @@ function isExternalHref(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
 
-function AdSlotInner({
+function isLocalAssetPath(src: string): boolean {
+  return src.startsWith("/");
+}
+
+function AdLabel({
+  label,
+  sponsorName
+}: {
+  label: string;
+  sponsorName?: string | null;
+}) {
+  return (
+    <p className="text-[0.6rem] font-black uppercase tracking-[0.14em] text-[var(--slop-cream-dim)]">
+      {label}
+      {sponsorName ? (
+        <span className="text-[var(--slop-gold-dim)]"> · {sponsorName}</span>
+      ) : null}
+    </p>
+  );
+}
+
+function BannerAd({
   ad,
-  variant,
   className,
   label
 }: {
   ad: ActiveAd;
-  variant: AdSlotVariant;
+  className?: string;
+  label: string;
+}) {
+  const ctaHref = ad.ctaHref?.trim();
+  const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
+  const hasImage = Boolean(ad.imageUrl?.trim());
+  const imageSrc = ad.imageUrl?.trim() ?? "";
+
+  const inner = (
+    <article
+      className={[
+        "relative overflow-hidden rounded-2xl border border-[var(--slop-line-strong)] shadow-[0_12px_40px_rgba(0,0,0,0.35)]",
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      role="complementary"
+      aria-label={`${label}: ${ad.sponsorName ?? ad.title}`}
+    >
+      {hasImage ? (
+        <>
+          <div
+            className="relative h-36 w-full bg-[var(--slop-navy-deep)] sm:absolute sm:inset-0 sm:h-full sm:min-h-[9.5rem]"
+            aria-hidden
+          >
+            <Image
+              src={imageSrc}
+              alt=""
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 640px) 100vw, 1152px"
+              priority={false}
+              unoptimized={!isLocalAssetPath(imageSrc)}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(6,15,24,0.92)] via-[rgba(6,15,24,0.55)] to-[rgba(6,15,24,0.35)] sm:bg-gradient-to-r sm:from-[rgba(6,15,24,0.94)] sm:via-[rgba(6,15,24,0.72)] sm:to-[rgba(6,15,24,0.25)]" />
+          </div>
+          <div className="relative flex flex-col gap-3 p-4 sm:min-h-[9.5rem] sm:max-w-[62%] sm:justify-center sm:p-6 sm:pl-8">
+            <AdLabel label={label} sponsorName={ad.sponsorName} />
+            <div>
+              <p className="text-lg font-black leading-tight text-[var(--slop-cream)] sm:text-2xl">
+                {ad.title}
+              </p>
+              {ad.body ? (
+                <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-[var(--slop-cream-muted)] sm:text-[0.95rem]">
+                  {ad.body}
+                </p>
+              ) : null}
+            </div>
+            {showCta ? (
+              <span className="brand-cta inline-flex w-fit rounded-full px-5 py-2.5 text-xs font-black sm:text-sm">
+                {ad.ctaLabel}
+              </span>
+            ) : null}
+          </div>
+        </>
+      ) : (
+        <div className="brand-panel flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:p-5">
+          <div className="min-w-0 flex-1">
+            <AdLabel label={label} sponsorName={ad.sponsorName} />
+            <p className="mt-1.5 text-lg font-black text-[var(--slop-cream)] sm:text-xl">
+              {ad.title}
+            </p>
+            {ad.body ? (
+              <p className="mt-1 text-sm leading-relaxed text-[var(--slop-cream-muted)]">
+                {ad.body}
+              </p>
+            ) : null}
+          </div>
+          {showCta ? (
+            <span className="brand-cta-secondary inline-flex shrink-0 rounded-full px-4 py-2 text-xs font-black sm:text-sm">
+              {ad.ctaLabel}
+            </span>
+          ) : null}
+        </div>
+      )}
+    </article>
+  );
+
+  if (showCta && ctaHref) {
+    const external = isExternalHref(ctaHref);
+    return (
+      <Link
+        href={ctaHref}
+        className="group block transition hover:opacity-[0.98]"
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {inner}
+      </Link>
+    );
+  }
+
+  return inner;
+}
+
+function CardAd({
+  ad,
+  className,
+  label
+}: {
+  ad: ActiveAd;
+  className?: string;
+  label: string;
+}) {
+  const ctaHref = ad.ctaHref?.trim();
+  const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
+  const hasImage = Boolean(ad.imageUrl?.trim());
+
+  const shell = (
+    <article
+      className={[
+        "relative overflow-hidden rounded-2xl border border-[var(--slop-line-strong)]",
+        hasImage ? "min-h-[7.5rem]" : "brand-card p-4 sm:p-5",
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
+      role="complementary"
+      aria-label={`${label}: ${ad.sponsorName ?? ad.title}`}
+    >
+      {hasImage && ad.imageUrl ? (
+        <>
+          <Image
+            src={ad.imageUrl}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="400px"
+            unoptimized={!isLocalAssetPath(ad.imageUrl)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(6,15,24,0.95)] via-[rgba(6,15,24,0.7)] to-[rgba(6,15,24,0.4)]" />
+        </>
+      ) : null}
+      <div className={hasImage ? "relative flex h-full min-h-[7.5rem] flex-col justify-end p-4" : ""}>
+        <AdLabel label={label} sponsorName={ad.sponsorName} />
+        <p className="mt-1 text-base font-black leading-snug text-[var(--slop-cream)]">
+          {ad.title}
+        </p>
+        {ad.body ? (
+          <p className="mt-1 line-clamp-2 text-sm text-[var(--slop-cream-muted)]">{ad.body}</p>
+        ) : null}
+        {showCta ? (
+          <span className="brand-cta-secondary mt-3 inline-flex w-fit rounded-full px-4 py-2 text-xs font-black">
+            {ad.ctaLabel}
+          </span>
+        ) : null}
+      </div>
+    </article>
+  );
+
+  if (showCta && ctaHref) {
+    const external = isExternalHref(ctaHref);
+    return (
+      <Link
+        href={ctaHref}
+        className="group block"
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {shell}
+      </Link>
+    );
+  }
+
+  return shell;
+}
+
+function InlineAd({
+  ad,
+  className,
+  label
+}: {
+  ad: ActiveAd;
   className?: string;
   label: string;
 }) {
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
 
-  const shellClass =
-    variant === "banner"
-      ? "brand-panel rounded-2xl border border-[var(--slop-line-strong)] p-4 sm:flex sm:items-center sm:justify-between sm:gap-6 sm:p-5"
-      : variant === "inline"
-        ? "rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.45)] px-3 py-2.5 sm:px-4"
-        : "brand-card rounded-2xl border border-[var(--slop-line-strong)] p-4 sm:p-5";
-
   const content = (
     <div
-      className={[shellClass, className].filter(Boolean).join(" ")}
+      className={[
+        "rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.5)] px-3 py-2.5 sm:px-4",
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
       role="complementary"
       aria-label={`${label}: ${ad.sponsorName ?? ad.title}`}
     >
-      <div className={variant === "banner" ? "min-w-0 flex-1" : "min-w-0"}>
-        <p className="text-[0.6rem] font-black uppercase tracking-[0.14em] text-[var(--slop-cream-dim)]">
-          {label}
-          {ad.sponsorName ? (
-            <span className="text-[var(--slop-gold-dim)]"> · {ad.sponsorName}</span>
-          ) : null}
+      <AdLabel label={label} sponsorName={ad.sponsorName} />
+      <p className="mt-1 text-sm font-black text-[var(--slop-cream)]">{ad.title}</p>
+      {ad.body ? (
+        <p className="mt-0.5 line-clamp-2 text-xs text-[var(--slop-cream-muted)]">{ad.body}</p>
+      ) : null}
+      {showCta ? (
+        <p className="mt-1.5 text-xs font-bold text-[var(--slop-gold-dim)] group-hover:text-[var(--slop-gold-bright)]">
+          {ad.ctaLabel} →
         </p>
-        <div
-          className={
-            ad.imageUrl && variant !== "inline"
-              ? "mt-2 flex gap-3 sm:gap-4"
-              : "mt-1.5"
-          }
-        >
-          {ad.imageUrl ? (
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] sm:h-16 sm:w-16">
-              <Image
-                src={ad.imageUrl}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="64px"
-                unoptimized={isExternalHref(ad.imageUrl)}
-              />
-            </div>
-          ) : null}
-          <div className="min-w-0">
-            <p
-              className={
-                variant === "inline"
-                  ? "text-sm font-black leading-snug text-[var(--slop-cream)]"
-                  : "text-base font-black leading-snug text-[var(--slop-cream)] sm:text-lg"
-              }
-            >
-              {ad.title}
-            </p>
-            {ad.body ? (
-              <p
-                className={
-                  variant === "inline"
-                    ? "mt-0.5 line-clamp-2 text-xs leading-relaxed text-[var(--slop-cream-muted)]"
-                    : "mt-1 text-sm leading-relaxed text-[var(--slop-cream-muted)]"
-                }
-              >
-                {ad.body}
-              </p>
-            ) : null}
-          </div>
-        </div>
-      </div>
-      {showCta && ctaHref ? (
-        <div
-          className={
-            variant === "banner"
-              ? "mt-3 shrink-0 sm:mt-0"
-              : variant === "inline"
-                ? "mt-2"
-                : "mt-4"
-          }
-        >
-          <span
-            className={
-              variant === "inline"
-                ? "text-xs font-bold text-[var(--slop-gold-dim)] transition group-hover:text-[var(--slop-gold-bright)]"
-                : "brand-cta-secondary inline-flex rounded-full px-4 py-2 text-xs font-black sm:text-sm"
-            }
-          >
-            {ad.ctaLabel}
-          </span>
-        </div>
       ) : null}
     </div>
   );
@@ -123,10 +250,8 @@ function AdSlotInner({
     return (
       <Link
         href={ctaHref}
-        className="group block transition hover:opacity-[0.98]"
-        {...(external
-          ? { target: "_blank", rel: "noopener noreferrer" }
-          : {})}
+        className="group block"
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {content}
       </Link>
@@ -147,7 +272,11 @@ export async function AdSlot({
     return null;
   }
 
-  return (
-    <AdSlotInner ad={ad} variant={variant} className={className} label={label} />
-  );
+  if (variant === "banner") {
+    return <BannerAd ad={ad} className={className} label={label} />;
+  }
+  if (variant === "inline") {
+    return <InlineAd ad={ad} className={className} label={label} />;
+  }
+  return <CardAd ad={ad} className={className} label={label} />;
 }

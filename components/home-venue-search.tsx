@@ -23,9 +23,12 @@ const HOME_RESULTS_MAX = 8;
 
 type HomeVenueSearchProps = {
   venues: Venue[];
+  /** Larger hero search — less chrome when nested in HomeHero. */
+  variant?: "default" | "hero";
 };
 
-export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
+export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearchProps) {
+  const isHero = variant === "hero";
   const router = useRouter();
   const listboxId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -108,7 +111,13 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
   };
 
   return (
-    <div className="brand-panel rounded-2xl border p-1.5 shadow-2xl sm:rounded-[1.85rem] sm:p-2">
+    <div
+      className={
+        isHero
+          ? "p-0.5"
+          : "brand-panel rounded-2xl border p-1.5 shadow-2xl sm:rounded-[1.85rem] sm:p-2"
+      }
+    >
       <label className="block px-0.5 pt-0.5">
         <span className="sr-only">Search venues</span>
         <input
@@ -127,11 +136,15 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={onInputKeyDown}
-          placeholder="Venue, city, team, league…"
-          className="w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3.5 py-3 text-[0.95rem] font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-[1.35rem] sm:px-4 sm:py-3.5 sm:text-base"
+          placeholder="Search venues, cities, teams…"
+          className={
+            isHero
+              ? "w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-4 py-3.5 text-base font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-2xl sm:px-5 sm:py-4 sm:text-lg"
+              : "w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3.5 py-3 text-[0.95rem] font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-[1.35rem] sm:px-4 sm:py-3.5 sm:text-base"
+          }
         />
       </label>
-      <FanPoweredGuideNote preset="home" className="mt-1.5 px-1" />
+      {!isHero ? <FanPoweredGuideNote preset="home" className="mt-1.5 px-1" /> : null}
 
       {showEmpty ? (
         <div className="border-t border-[var(--slop-line)] px-2 py-3">
@@ -220,14 +233,16 @@ export function HomeVenueSearch({ venues }: HomeVenueSearchProps) {
         </div>
       ) : null}
 
-      <p className="border-t border-[var(--slop-line)] px-4 py-1.5 text-center text-[0.68rem] text-[color:rgba(255,244,223,0.45)] sm:py-2">
-        <Link
-          href="/venues"
-          className="font-bold text-[var(--slop-gold)] underline-offset-2 hover:underline"
-        >
-          Browse all venues
-        </Link>
-      </p>
+      {!isHero ? (
+        <p className="border-t border-[var(--slop-line)] px-4 py-1.5 text-center text-[0.68rem] text-[color:rgba(255,244,223,0.45)] sm:py-2">
+          <Link
+            href="/venues"
+            className="font-bold text-[var(--slop-gold)] underline-offset-2 hover:underline"
+          >
+            Browse all venues
+          </Link>
+        </p>
+      ) : null}
     </div>
   );
 }

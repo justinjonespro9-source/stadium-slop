@@ -16,14 +16,21 @@ type SeedAd = {
   ctaLabel: string;
   ctaHref: string;
   sponsorName: string;
+  imageUrl?: string;
+  status?: EntityStatus;
 };
 
 const TEAM_M8TES: Omit<SeedAd, "placementKey"> = {
   title: "Single sports fan? Find your Team-M8.",
-  body: "Team-M8tes connects fans through the teams they love — because loyalty matters.",
-  ctaLabel: "Check it out",
+  body: "Connect with fans who love your teams as much as you do.",
+  ctaLabel: "Find your M8",
   ctaHref: "https://team-m8tes.com",
   sponsorName: "Team-M8tes"
+};
+
+const TEAM_M8TES_BANNER: Omit<SeedAd, "placementKey"> = {
+  ...TEAM_M8TES,
+  imageUrl: "/ads/team-m8tes-poster.svg"
 };
 
 const SNG_LABS: Omit<SeedAd, "placementKey"> = {
@@ -35,8 +42,12 @@ const SNG_LABS: Omit<SeedAd, "placementKey"> = {
 };
 
 const PLACEMENTS: SeedAd[] = [
-  { placementKey: "home.hero.secondary", ...SNG_LABS },
-  { placementKey: "home.featured.banner", ...TEAM_M8TES },
+  {
+    placementKey: "home.hero.secondary",
+    ...SNG_LABS,
+    status: EntityStatus.HIDDEN
+  },
+  { placementKey: "home.featured.banner", ...TEAM_M8TES_BANNER },
   { placementKey: "venue.sidebar", ...SNG_LABS },
   { placementKey: "venue.mobile.inline", ...TEAM_M8TES },
   { placementKey: "item.detail.inline", ...TEAM_M8TES },
@@ -63,7 +74,8 @@ async function main() {
       ctaLabel: seed.ctaLabel,
       ctaHref: seed.ctaHref,
       sponsorName: seed.sponsorName,
-      status: EntityStatus.ACTIVE,
+      imageUrl: seed.imageUrl ?? null,
+      status: seed.status ?? EntityStatus.ACTIVE,
       startsAt: null,
       endsAt: null
     };
