@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { PriceCheck, ReplayValue } from "@prisma/client";
 import { cookies } from "next/headers";
@@ -35,6 +34,7 @@ import { isNapkinEligibleFromPrisma, isNapkinEligibleItem } from "@/lib/item-eli
 import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { isGoogleSignInConfigured } from "@/lib/auth/env";
+import { ReviewPageHero } from "@/components/review/review-page-hero";
 import { ReviewFormLocation } from "@/components/review-form-location";
 import { ReviewScorecardFormClient } from "@/components/review-scorecard-form-client";
 import {
@@ -117,14 +117,21 @@ function SignalOption({
   name,
   value,
   defaultSelected,
-  required: radioRequired
+  required: radioRequired,
+  tone = "media"
 }: {
   label: string;
   name: SignalField;
   value: string;
   defaultSelected?: boolean;
   required?: boolean;
+  tone?: "brand" | "media";
 }) {
+  const choiceClass =
+    tone === "media"
+      ? "media-review-choice"
+      : "flex min-h-11 items-center justify-center rounded-full border border-zinc-800 bg-black px-3 py-2.5 text-center text-xs font-bold leading-snug text-zinc-400 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)] sm:min-h-12 sm:px-4 sm:text-sm";
+
   return (
     <label className="cursor-pointer touch-manipulation">
       <input
@@ -135,9 +142,7 @@ function SignalOption({
         required={radioRequired}
         defaultChecked={defaultSelected}
       />
-      <span className="flex min-h-11 items-center justify-center rounded-full border border-zinc-800 bg-black px-3 py-2.5 text-center text-xs font-bold leading-snug text-zinc-400 peer-checked:border-[var(--slop-orange)] peer-checked:bg-[var(--slop-orange)] peer-checked:text-[var(--slop-ink)] sm:min-h-12 sm:px-4 sm:text-sm">
-        {label}
-      </span>
+      <span className={choiceClass}>{label}</span>
     </label>
   );
 }
@@ -146,13 +151,20 @@ function NapkinButton({
   value,
   label,
   defaultSelected,
-  radioRequired
+  radioRequired,
+  tone = "media"
 }: {
   value: number;
   label: string;
   defaultSelected?: boolean;
   radioRequired?: boolean;
+  tone?: "brand" | "media";
 }) {
+  const napkinClass =
+    tone === "media"
+      ? "media-review-napkin"
+      : "flex min-h-[3.25rem] flex-col justify-center rounded-xl border border-zinc-800 bg-black px-2.5 py-2 text-left peer-checked:border-[var(--slop-orange)] peer-checked:bg-[color:rgba(255,159,28,0.14)] sm:min-h-[3.5rem] sm:rounded-2xl sm:px-3";
+
   return (
     <label className="cursor-pointer touch-manipulation">
       <input
@@ -163,16 +175,24 @@ function NapkinButton({
         required={radioRequired}
         defaultChecked={defaultSelected}
       />
-      <span className="flex min-h-[3.25rem] flex-col justify-center rounded-xl border border-zinc-800 bg-black px-2.5 py-2 text-left peer-checked:border-[var(--slop-orange)] peer-checked:bg-[color:rgba(255,159,28,0.14)] sm:min-h-[3.5rem] sm:rounded-2xl sm:px-3">
-        <span className="block text-sm leading-none sm:text-base">
-          {"▰".repeat(value)}
-        </span>
-        <span className="mt-1 block text-xs font-bold text-zinc-300">
-          {value}/5
-        </span>
-        <span className="mt-0.5 line-clamp-2 text-[0.65rem] leading-tight text-zinc-500 sm:text-xs">
-          {label}
-        </span>
+      <span className={napkinClass}>
+        {tone === "media" ? (
+          <>
+            <span className="media-review-napkin-bars">{"▰".repeat(value)}</span>
+            <span className="media-review-napkin-value">{value}/5</span>
+            <span className="media-review-napkin-label">{label}</span>
+          </>
+        ) : (
+          <>
+            <span className="block text-sm leading-none sm:text-base">
+              {"▰".repeat(value)}
+            </span>
+            <span className="mt-1 block text-xs font-bold text-zinc-300">{value}/5</span>
+            <span className="mt-0.5 line-clamp-2 text-[0.65rem] leading-tight text-zinc-500 sm:text-xs">
+              {label}
+            </span>
+          </>
+        )}
       </span>
     </label>
   );
@@ -537,44 +557,45 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const reviewPath = `/venues/${venue.slug}/${foodItem.slug}/review`;
   const contributorUserId = await getContributorUserId();
 
+  const itemHref = `/venues/${venue.slug}/${foodItem.slug}`;
+  const heroTitle = `Rate ${foodItem.name}`;
+  const heroMeta = (
+    <span>
+      {venue.name} · {venue.city}, {venue.state}
+    </span>
+  );
+
   if (!contributorUserId) {
     return (
-      <main className="brand-page min-h-screen">
-        <section className="mx-auto w-full max-w-lg px-4 py-5 sm:max-w-xl sm:px-6">
-          <Link
-            href={`/venues/${venue.slug}/${foodItem.slug}`}
-            className="inline-flex text-xs font-bold text-zinc-400 hover:text-white sm:text-sm"
-          >
-            ← Item
-          </Link>
-
-          <header className="pt-4">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-zinc-500">
+      <main className="media-page-shell min-h-screen">
+        <ReviewPageHero
+          title={heroTitle}
+          venueName={venue.name}
+          itemHref={itemHref}
+          metaLine={heroMeta}
+          badges={
+            <span className="media-item-hero-badge media-item-hero-badge--accent">
               Sign in required
-            </p>
-            <h1 className="mt-1 text-2xl font-black leading-tight text-white sm:text-3xl">
-              Rate {foodItem.name}
-            </h1>
-            <p className="mt-1 text-sm text-zinc-400">
-              {venue.name}
-            </p>
-          </header>
-
-          <div className="mt-5 rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-4">
-            <p className="text-sm leading-relaxed text-zinc-400">
-              Sign in with Google to submit a Slop Scorecard — score, signals, and
-              optional fan photo. Browsing stays public; scorecards need your account.
+            </span>
+          }
+        />
+        <div className="media-review-content">
+          <article className="media-review-card">
+            <p className="media-review-card-title">Continue with Google</p>
+            <p className="media-review-card-hint">
+              Sign in to submit a Slop Scorecard — score, signals, and optional fan photo.
+              Browsing stays public; scorecards need your account.
             </p>
             <AuthConfigAlert className="mt-3" />
             <div className="mt-4">
               <GoogleSignInButton
                 callbackUrl={reviewPath}
-                className="brand-cta rounded-full px-5 py-3.5 text-sm font-black"
+                className="media-primary-button w-full justify-center px-5 py-3.5 text-sm sm:w-auto"
                 disabled={!isGoogleSignInConfigured()}
               />
             </div>
-          </div>
-        </section>
+          </article>
+        </div>
       </main>
     );
   }
@@ -634,121 +655,110 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     country: venue.country
   });
 
-  return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-lg px-4 py-5 sm:max-w-xl sm:px-6 lg:max-w-2xl">
-        <Link
-          href={`/venues/${venue.slug}/${foodItem.slug}`}
-          className="inline-flex text-xs font-bold text-zinc-400 hover:text-white sm:text-sm"
-        >
-          ← Item
-        </Link>
+  const statusNote = (
+    <>
+      {testReviewModeActive
+        ? "Test review mode is on for your admin account. Submissions skip location certification and do not affect public Slop Score, Fresh Signal, or awards."
+        : pollingOpen
+          ? `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium to submit.`
+          : "You can draft anytime. Certified reviews can only be submitted during an active home-game window while you're at the stadium."}
+      {!pollingOpen && upcomingGame ? (
+        <>
+          {" "}
+          Next home game:{" "}
+          {formatGameDateTimeForVenue(upcomingGame.startsAt, venueTimeZone, {
+            includeZone: true
+          })}
+          .
+        </>
+      ) : null}
+      {!hasVenueCoords ? (
+        <>
+          {" "}
+          Stadium coordinates are not on file for this venue yet — location certification may
+          fail until coords are added.
+        </>
+      ) : null}
+    </>
+  );
 
-        <header className="py-4 sm:py-6">
-          {showPhotoRetryHint || urlPhotoError ? (
-            <div
-              role="status"
-              className="mb-3 rounded-xl border border-sky-800/80 bg-sky-950/40 px-3 py-2.5 text-sm text-sky-100"
-            >
-              <p className="font-bold">Photo retry</p>
-              <p className="mt-1 text-xs leading-relaxed text-sky-100/90">
-                Score and signals are saved. Add a JPEG/PNG/WebP/GIF (about 8MB
-                max) — same-day submit replaces today&apos;s row, no duplicates.
-              </p>
-              {urlPhotoError ? (
-                <p className="mt-2 text-[0.65rem] text-amber-200/95">
-                  Last issue: {urlPhotoError.replace(/_/g, " ")}.
-                </p>
-              ) : null}
-            </div>
+  const heroAlerts = (
+    <>
+      {showPhotoRetryHint || urlPhotoError ? (
+        <div role="status" className="media-review-alert media-review-alert--info">
+          <p className="font-bold">Photo retry</p>
+          <p className="mt-1 text-xs leading-relaxed opacity-90">
+            Score and signals are saved. Add a JPEG/PNG/WebP/GIF (about 8MB max) — same-day submit
+            replaces today&apos;s row, no duplicates.
+          </p>
+          {urlPhotoError ? (
+            <p className="mt-2 text-[0.65rem] font-semibold">
+              Last issue: {urlPhotoError.replace(/_/g, " ")}.
+            </p>
           ) : null}
-          {reviewFormErrorMessage ? (
-            <div
-              role="alert"
-              className="mb-3 rounded-xl border border-amber-800/80 bg-amber-950/40 px-3 py-2.5 text-sm text-amber-100"
-            >
-              <p className="font-bold">{reviewErrorAlertTitle}</p>
-              <p className="mt-1 text-xs leading-relaxed text-amber-100/95">
-                {reviewFormErrorMessage}
-              </p>
-            </div>
-          ) : null}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex rounded-full border border-zinc-700 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-zinc-300">
+        </div>
+      ) : null}
+      {reviewFormErrorMessage ? (
+        <div role="alert" className="media-review-alert media-review-alert--warn">
+          <p className="font-bold">{reviewErrorAlertTitle}</p>
+          <p className="mt-1 text-xs leading-relaxed">{reviewFormErrorMessage}</p>
+        </div>
+      ) : null}
+    </>
+  );
+
+  return (
+    <main className="media-page-shell min-h-screen">
+      <ReviewPageHero
+        title={draft ? `Edit · ${foodItem.name}` : foodItem.name}
+        venueName={venue.name}
+        itemHref={itemHref}
+        metaLine={heroMeta}
+        statusNote={statusNote}
+        alerts={heroAlerts}
+        badges={
+          <>
+            <span className="media-item-hero-badge">
               Game day · {foodItem.itemType}
             </span>
             {foodItem.ageRestricted ? (
-              <span className="inline-flex rounded-full border border-zinc-700 px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-zinc-300">
-                21+
-              </span>
+              <span className="media-item-hero-badge">21+</span>
             ) : null}
-          </div>
-          <h1 className="mt-2 text-2xl font-black leading-tight tracking-tight text-white sm:text-4xl">
-            {draft ? `Edit · ${foodItem.name}` : foodItem.name}
-          </h1>
-          <p className="mt-1 text-sm text-zinc-400">
-            {venue.name} · {venue.city}, {venue.state}
-          </p>
-          <p className="mt-2 text-xs leading-relaxed text-zinc-500">
-            {testReviewModeActive
-              ? "Test review mode is on for your admin account. Submissions skip location certification and do not affect public Slop Score, Fresh Signal, or awards."
-              : pollingOpen
-                ? `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium to submit.`
-                : "You can draft anytime. Certified reviews can only be submitted during an active home-game window while you’re at the stadium."}
-          </p>
-          {!pollingOpen && upcomingGame ? (
-            <p className="mt-1 text-[0.65rem] leading-relaxed text-zinc-600">
-              Next home game:{" "}
-              {formatGameDateTimeForVenue(upcomingGame.startsAt, venueTimeZone, {
-                includeZone: true
-              })}
-              .
-            </p>
-          ) : null}
-          {!hasVenueCoords ? (
-            <p className="mt-1 text-[0.65rem] text-amber-200/90">
-              Stadium coordinates are not on file for this venue yet — location
-              certification may fail until coords are added.
-            </p>
-          ) : null}
-        </header>
+          </>
+        }
+      />
 
+      <div className="media-review-content">
         <form
           id="review-form"
           action={submitReview}
           encType="multipart/form-data"
-          className="rounded-2xl border border-[var(--slop-line)] bg-[color:rgba(11,15,20,0.55)] p-3 sm:p-5"
+          className="space-y-4"
         >
           <input type="hidden" name="venueSlug" value={venue.slug} />
           <input type="hidden" name="foodSlug" value={foodItem.slug} />
 
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-zinc-500">
-            Slop Scorecard
-          </p>
-          <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+          <p className="text-center text-[0.7rem] leading-relaxed text-[var(--media-ink-muted)]">
             {napkinEligible
               ? "Slop score, napkins, replay, and price are required. Photo required under 5.0."
               : "Slop score, replay, and price are required — no napkin row for drinks. Photo required under 5.0."}
           </p>
 
-          <div className="mt-4 space-y-5">
-            <ReviewScorecardFormClient
-              formId="review-form"
-              defaultSlopScore={draftSlop}
-              cloudinaryReady={cloudinaryReady}
-              existingPhotoUrl={existingPhoto?.url ?? null}
-              existingPhotoAlt={existingPhoto?.alt ?? `${foodItem.name} fan photo`}
-            >
+          <ReviewScorecardFormClient
+            formId="review-form"
+            tone="media"
+            defaultSlopScore={draftSlop}
+            cloudinaryReady={cloudinaryReady}
+            existingPhotoUrl={existingPhoto?.url ?? null}
+            existingPhotoAlt={existingPhoto?.alt ?? `${foodItem.name} fan photo`}
+          >
             {napkinEligible ? (
-              <section aria-labelledby="napkin-label">
-                <h2 id="napkin-label" className="text-sm font-black text-white">
-                  Napkin rating{" "}
-                  <span className="text-[var(--slop-orange)]">*</span>
+              <section className="media-review-card" aria-labelledby="napkin-label">
+                <h2 id="napkin-label" className="media-review-card-title">
+                  Napkin rating <span className="text-[var(--media-orange)]">*</span>
                 </h2>
-                <p className="mt-0.5 text-xs text-zinc-500">
-                  Messiness, not quality.
-                </p>
-                <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
+                <p className="media-review-card-hint">Messiness, not quality.</p>
+                <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
                   {napkinOptions.map((option) => (
                     <NapkinButton
                       key={option.value}
@@ -756,24 +766,24 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                       label={option.label}
                       defaultSelected={draftNapkin === option.value}
                       radioRequired={option.value === 1}
+                      tone="media"
                     />
                   ))}
                 </div>
               </section>
             ) : null}
 
-            <section className="rounded-xl border border-zinc-800 bg-black/80 p-3 sm:p-4">
-              <h2 className="text-sm font-black text-white">
-                Slop Signals{" "}
-                <span className="text-[var(--slop-orange)]">*</span>
+            <section className="media-review-card">
+              <h2 className="media-review-card-title">
+                Slop Signals <span className="text-[var(--media-orange)]">*</span>
               </h2>
-              <div className="mt-3 space-y-3">
+              <div className="mt-4 space-y-4">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
+                  <p className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--media-ink-dim)]">
                     Replay value
                   </p>
-                  <p className="text-[0.65rem] text-zinc-600">Order again?</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <p className="media-review-card-hint">Order again?</p>
+                  <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                     {replayValueOptions.map((option, idx) => (
                       <SignalOption
                         key={option.value}
@@ -782,16 +792,17 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                         value={option.value}
                         defaultSelected={draftReplay === option.value}
                         required={idx === 0}
+                        tone="media"
                       />
                     ))}
                   </div>
                 </div>
-                <div className="border-t border-zinc-800 pt-3">
-                  <p className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
+                <div className="border-t border-[var(--media-border)] pt-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--media-ink-dim)]">
                     Price check
                   </p>
-                  <p className="text-[0.65rem] text-zinc-600">Worth it?</p>
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <p className="media-review-card-hint">Worth it?</p>
+                  <div className="mt-2 flex flex-col gap-2 sm:flex-wrap sm:flex-row">
                     {priceCheckOptions.map((option, idx) => (
                       <SignalOption
                         key={option.value}
@@ -800,59 +811,59 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                         value={option.value}
                         defaultSelected={draftPrice === option.value}
                         required={idx === 0}
+                        tone="media"
                       />
                     ))}
                   </div>
                 </div>
               </div>
             </section>
-            </ReviewScorecardFormClient>
+          </ReviewScorecardFormClient>
 
-            <section>
-              <h2 className="text-sm font-black text-white">
-                Hot Take <span className="font-normal text-zinc-500">(optional)</span>
-              </h2>
-              <p className="mt-0.5 text-xs text-zinc-500">
-                This appears on the back of your Slop Scorecard. Max 300 characters.
-              </p>
-              <textarea
-                name="note"
-                maxLength={300}
-                rows={3}
-                placeholder="One-liner for fans flipping your card"
-                defaultValue={draftNote}
-                className="mt-2 w-full resize-y rounded-lg border border-zinc-800 bg-black px-3 py-2.5 text-sm text-zinc-200 outline-none placeholder:text-zinc-600"
-              />
-            </section>
-          </div>
+          <section className="media-review-card">
+            <h2 className="media-review-card-title">
+              Hot Take <span className="font-normal text-[var(--media-ink-dim)]">(optional)</span>
+            </h2>
+            <p className="media-review-card-hint">
+              This appears on the back of your Slop Scorecard. Max 300 characters.
+            </p>
+            <textarea
+              name="note"
+              maxLength={300}
+              rows={3}
+              placeholder="One-liner for fans flipping your card"
+              defaultValue={draftNote}
+              className="media-review-textarea"
+            />
+          </section>
 
-          <div className="mt-5 border-t border-zinc-800 pt-4">
-            <p className="text-center text-[0.65rem] leading-relaxed text-zinc-500">
+          <section className="media-review-card">
+            <p className="text-center text-[0.7rem] leading-relaxed text-[var(--media-ink-muted)]">
               {draft
                 ? "Updating today replaces your earlier Slop Scorecard for this item — one per fan per game day."
                 : "One Slop Scorecard per fan, item, and game day. You can edit later today if needed."}
             </p>
             <ReviewFormLocation
               formId="review-form"
+              tone="media"
               pollingOpen={pollingOpen}
               reviewRadiusMeters={reviewRadiusMeters}
               isDraft={Boolean(draft)}
               testReviewModeActive={testReviewModeActive}
             />
-          </div>
+          </section>
         </form>
 
         {foodItem.alcoholic ? (
-          <p className="mt-3 rounded-lg border border-zinc-800 bg-zinc-950/80 px-3 py-2 text-center text-xs text-zinc-400">
+          <p className="media-review-card mt-4 px-3 py-2.5 text-center text-xs text-[var(--media-ink-muted)]">
             21+ where served. Drink responsibly — availability varies by park.
           </p>
         ) : null}
 
-        <p className="mt-4 text-center text-[0.65rem] leading-relaxed text-zinc-600">
-          Promotions can buy visibility, not ratings. No followers, DMs, or
-          comment threads.
+        <p className="mt-4 text-center text-[0.65rem] leading-relaxed text-[var(--media-ink-dim)]">
+          Promotions can buy visibility, not ratings. No followers, DMs, or comment threads.
         </p>
-      </section>
+      </div>
     </main>
   );
 }
