@@ -324,7 +324,17 @@ body {
   cursor: grab;
 }
 
-/* Slop Scorecard — trading card 5:7, ~340px wide */
+/* Slop Scorecard — trading card 5:7, ~340px wide (black / orange / white) */
+:root {
+  --slop-card-orange: #ff5a14;
+  --slop-card-orange-bright: #ff7638;
+  --slop-card-orange-dim: #e04e0a;
+  --slop-card-gray: #a8b0bd;
+  --slop-card-gray-dim: #6b7280;
+  --slop-card-ink: #0a0a0a;
+  --slop-card-surface: #141414;
+  --media-nav-height: 4.85rem;
+}
 :root {
   --slop-scorecard-width: min(100%, 21.25rem);
   --slop-scorecard-cut: 12px;
@@ -360,7 +370,7 @@ body {
   );
 }
 
-/* Collectible shell — gunmetal rim → gold trim → crimson accent → inner navy */
+/* Collectible shell — black rim → orange trim → accent → inner */
 .slop-scorecard-collectible {
   position: relative;
   height: 100%;
@@ -368,8 +378,8 @@ body {
   filter:
     drop-shadow(0 18px 36px rgba(0, 0, 0, 0.6))
     drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4))
-    drop-shadow(0 0 24px rgba(244, 179, 33, 0.14))
-    drop-shadow(0 0 3px rgba(244, 179, 33, 0.2));
+    drop-shadow(0 0 24px rgba(255, 107, 26, 0.16))
+    drop-shadow(0 0 3px rgba(255, 107, 26, 0.22));
 }
 
 .slop-scorecard-collectible-frame {
@@ -391,14 +401,14 @@ body {
       rgba(255, 255, 255, 0.018) 1px,
       rgba(255, 255, 255, 0.018) 2px
     ),
-    linear-gradient(155deg, #02060c 0%, #11191f 30%, #080e16 60%, #0a1018 100%);
+    linear-gradient(155deg, #050505 0%, #121212 30%, #0a0a0a 60%, #080808 100%);
   box-shadow:
     inset 0 0 0 1px rgba(0, 0, 0, 0.9),
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     inset 0 -1px 0 rgba(0, 0, 0, 0.6);
 }
 
-/* Layer 2: metallic gold primary trim */
+/* Layer 2: brand orange primary trim */
 .slop-scorecard-collectible-gold {
   height: 100%;
   overflow: hidden;
@@ -406,20 +416,20 @@ body {
   background:
     linear-gradient(
       145deg,
-      #ffeba8 0%,
-      #ffd458 12%,
-      var(--slop-gold-bright) 28%,
-      var(--slop-gold) 52%,
-      #b8891f 78%,
-      #a07818 88%,
-      var(--slop-gold-dim) 100%
+      #ffb088 0%,
+      #ff8a45 12%,
+      var(--slop-card-orange-bright) 28%,
+      var(--slop-card-orange) 52%,
+      #e04e0a 78%,
+      #cc4508 88%,
+      #a83806 100%
     );
   box-shadow:
-    inset 0 1px 0 rgba(255, 245, 200, 0.65),
+    inset 0 1px 0 rgba(255, 220, 190, 0.55),
     inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-    inset 1px 0 0 rgba(255, 236, 170, 0.25),
+    inset 1px 0 0 rgba(255, 200, 160, 0.22),
     inset -1px 0 0 rgba(0, 0, 0, 0.2),
-    0 0 16px rgba(244, 179, 33, 0.28);
+    0 0 16px rgba(255, 107, 26, 0.32);
 }
 
 /* Layer 3: thin warm crimson/stadium-light accent */
@@ -444,7 +454,7 @@ body {
   overflow: hidden;
   background: #03070e;
   box-shadow:
-    inset 0 0 0 1px rgba(244, 179, 33, 0.18),
+    inset 0 0 0 1px rgba(255, 107, 26, 0.22),
     inset 0 0 30px rgba(0, 0, 0, 0.55),
     inset 0 0 8px rgba(198, 61, 47, 0.06);
 }
@@ -453,14 +463,14 @@ body {
   height: 100%;
   background: linear-gradient(
     180deg,
-    var(--slop-navy-mid) 0%,
-    var(--slop-navy-deep) 52%,
-    #050a12 100%
+    var(--slop-card-surface) 0%,
+    var(--slop-card-ink) 52%,
+    #050505 100%
   );
 }
 
 .slop-scorecard-collectible--back .slop-scorecard-collectible-inner > * {
-  background: linear-gradient(180deg, #0a1522 0%, #050a12 100%);
+  background: linear-gradient(180deg, #161616 0%, #080808 100%);
 }
 
 /* Corner accents — longer L-brackets with rivet-dot anchors */
@@ -472,17 +482,17 @@ body {
   opacity: 0.82;
   background:
     /* top-left L */
-    linear-gradient(to right, rgba(255, 210, 80, 0.95), transparent) 0 0 / 22px 2.5px,
-    linear-gradient(to bottom, rgba(255, 210, 80, 0.8), transparent) 0 0 / 2.5px 22px,
+    linear-gradient(to right, rgba(255, 133, 51, 0.95), transparent) 0 0 / 22px 2.5px,
+    linear-gradient(to bottom, rgba(255, 133, 51, 0.8), transparent) 0 0 / 2.5px 22px,
     /* top-right L */
-    linear-gradient(to left, rgba(255, 210, 80, 0.95), transparent) 100% 0 / 22px 2.5px,
-    linear-gradient(to bottom, rgba(255, 210, 80, 0.8), transparent) 100% 0 / 2.5px 22px,
+    linear-gradient(to left, rgba(255, 133, 51, 0.95), transparent) 100% 0 / 22px 2.5px,
+    linear-gradient(to bottom, rgba(255, 133, 51, 0.8), transparent) 100% 0 / 2.5px 22px,
     /* bottom-left L */
-    linear-gradient(to right, rgba(255, 210, 80, 0.9), transparent) 0 100% / 22px 2.5px,
-    linear-gradient(to top, rgba(255, 210, 80, 0.75), transparent) 0 100% / 2.5px 22px,
+    linear-gradient(to right, rgba(255, 133, 51, 0.9), transparent) 0 100% / 22px 2.5px,
+    linear-gradient(to top, rgba(255, 133, 51, 0.75), transparent) 0 100% / 2.5px 22px,
     /* bottom-right L */
-    linear-gradient(to left, rgba(255, 210, 80, 0.9), transparent) 100% 100% / 22px 2.5px,
-    linear-gradient(to top, rgba(255, 210, 80, 0.75), transparent) 100% 100% / 2.5px 22px;
+    linear-gradient(to left, rgba(255, 133, 51, 0.9), transparent) 100% 100% / 22px 2.5px,
+    linear-gradient(to top, rgba(255, 133, 51, 0.75), transparent) 100% 100% / 2.5px 22px;
   background-repeat: no-repeat;
 }
 
@@ -493,10 +503,10 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle 2.5px at 8px 8px, rgba(255, 220, 100, 0.7) 0%, transparent 100%),
-    radial-gradient(circle 2.5px at calc(100% - 8px) 8px, rgba(255, 220, 100, 0.7) 0%, transparent 100%),
-    radial-gradient(circle 2.5px at 8px calc(100% - 8px), rgba(255, 220, 100, 0.65) 0%, transparent 100%),
-    radial-gradient(circle 2.5px at calc(100% - 8px) calc(100% - 8px), rgba(255, 220, 100, 0.65) 0%, transparent 100%);
+    radial-gradient(circle 2.5px at 8px 8px, rgba(255, 133, 51, 0.75) 0%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 8px) 8px, rgba(255, 133, 51, 0.75) 0%, transparent 100%),
+    radial-gradient(circle 2.5px at 8px calc(100% - 8px), rgba(255, 133, 51, 0.7) 0%, transparent 100%),
+    radial-gradient(circle 2.5px at calc(100% - 8px) calc(100% - 8px), rgba(255, 133, 51, 0.7) 0%, transparent 100%);
   background-repeat: no-repeat;
 }
 
@@ -512,10 +522,10 @@ body {
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(244, 179, 33, 0.35);
+  color: rgba(255, 107, 26, 0.4);
   text-shadow:
     0 -1px 0 rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 236, 170, 0.08);
+    0 1px 0 rgba(255, 200, 160, 0.08);
   white-space: nowrap;
   user-select: none;
 }
@@ -523,15 +533,15 @@ body {
 /* Scorecard back — profile + compact stat rows */
 .slop-scorecard-back-pill {
   display: inline-flex;
-  border: 1px solid rgba(244, 179, 33, 0.35);
+  border: 1px solid rgba(255, 107, 26, 0.4);
   border-radius: 0.2rem;
-  background: rgba(244, 179, 33, 0.1);
+  background: rgba(255, 107, 26, 0.12);
   padding: 0.12rem 0.45rem;
   font-size: 0.42rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--slop-gold-bright);
+  color: var(--slop-card-orange-bright);
   line-height: 1.2;
 }
 
@@ -541,7 +551,7 @@ body {
   width: 4.75rem;
   flex-shrink: 0;
   overflow: hidden;
-  border: 2px solid rgba(244, 179, 33, 0.45);
+  border: 2px solid rgba(255, 107, 26, 0.45);
   border-radius: 0.3rem;
   background: #04080f;
 }
@@ -553,7 +563,7 @@ body {
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(244, 179, 33, 0.45);
+  border: 2px solid rgba(255, 107, 26, 0.45);
   border-radius: 0.3rem;
   background: var(--slop-navy-deep);
   font-size: 1rem;
@@ -566,7 +576,7 @@ body {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--slop-gold-dim);
+  color: var(--slop-card-gray);
   line-height: 1.2;
 }
 
@@ -653,9 +663,9 @@ body {
   padding: 2px;
   background: linear-gradient(
     160deg,
-    var(--slop-gold-bright) 0%,
-    var(--slop-gold) 55%,
-    var(--slop-gold-dim) 100%
+    var(--slop-card-orange-bright) 0%,
+    var(--slop-card-orange) 55%,
+    var(--slop-card-orange-dim) 100%
   );
 }
 
@@ -681,15 +691,15 @@ body {
     0% var(--oct-cut)
   );
   border: 2px solid var(--slop-ink);
-  background: linear-gradient(165deg, var(--slop-gold-bright) 0%, var(--slop-gold) 100%);
+  background: linear-gradient(165deg, var(--slop-card-orange-bright) 0%, var(--slop-card-orange) 100%);
   box-shadow:
     0 4px 14px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .slop-scorecard-header {
-  border-bottom: 1px solid rgba(245, 233, 208, 0.12);
-  background: linear-gradient(180deg, rgba(17, 35, 55, 0.98) 0%, rgba(8, 18, 28, 0.94) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, #1c1c1c 0%, #101010 100%);
 }
 
 .slop-scorecard-header--front {
@@ -730,8 +740,8 @@ body {
 }
 
 .slop-scorecard-footer {
-  border-top: 1px solid rgba(245, 233, 208, 0.1);
-  background: linear-gradient(180deg, rgba(6, 14, 24, 0.92) 0%, rgba(4, 10, 18, 1) 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, #121212 0%, #080808 100%);
 }
 
 .slop-scorecard-btn-pill {
@@ -755,8 +765,8 @@ body {
 }
 
 .slop-scorecard-btn-pill:hover {
-  border-color: var(--slop-gold);
-  color: var(--slop-gold-bright);
+  border-color: var(--slop-card-orange);
+  color: var(--slop-card-orange-bright);
 }
 
 .slop-scorecard-helpful-row {
@@ -797,12 +807,12 @@ body {
 }
 
 .slop-scorecard-helpful-icon:hover:not(:disabled) {
-  color: var(--slop-gold-bright);
+  color: var(--slop-card-orange-bright);
   transform: scale(1.06);
 }
 
 .slop-scorecard-helpful-icon--marked {
-  color: var(--slop-gold-bright);
+  color: var(--slop-card-orange-bright);
   cursor: default;
 }
 
@@ -824,8 +834,8 @@ body {
 }
 
 .slop-scorecard-btn-pill--marked {
-  color: var(--slop-gold-bright);
-  border-color: rgba(244, 179, 33, 0.45);
+  color: var(--slop-card-orange-bright);
+  border-color: rgba(255, 107, 26, 0.45);
 }
 
 .slop-scorecard-action-compact form,
@@ -883,16 +893,11 @@ body {
   }
 
   .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible {
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 6px rgba(244, 179, 33, 0.04));
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 6px rgba(255, 90, 20, 0.06));
   }
 
   .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-gold {
-    background: linear-gradient(
-      145deg,
-      #6b5c3a 0%,
-      #4a4030 55%,
-      #3d3424 100%
-    );
+    background: linear-gradient(145deg, #5a3820 0%, #3d2414 55%, #2a180c 100%);
     box-shadow: none;
   }
 
@@ -1060,8 +1065,8 @@ body {
 }
 
 .slop-scorecard-nav-pill--secondary:hover:not(:disabled) {
-  border-color: var(--slop-gold);
-  color: var(--slop-gold-bright);
+  border-color: var(--slop-card-orange);
+  color: var(--slop-card-orange-bright);
 }
 
 .slop-scorecard-nav-pill--secondary:disabled {
@@ -1070,14 +1075,14 @@ body {
 }
 
 .slop-scorecard-nav-pill--primary {
-  border: 1px solid rgba(244, 179, 33, 0.55);
-  background: rgba(244, 179, 33, 0.14);
-  color: var(--slop-gold-bright);
+  border: 1px solid rgba(255, 107, 26, 0.55);
+  background: rgba(255, 107, 26, 0.14);
+  color: var(--slop-card-orange-bright);
 }
 
 .slop-scorecard-nav-pill--primary:hover {
-  border-color: var(--slop-gold);
-  background: rgba(244, 179, 33, 0.22);
+  border-color: var(--slop-card-orange);
+  background: rgba(255, 107, 26, 0.22);
 }
 
 .slop-scorecard-carousel-hint {
@@ -1173,7 +1178,16 @@ body {
   background-color: #060a10;
   background-image: url("/media/home-hero-bg.svg");
   background-size: cover;
-  background-position: center 35%;
+  background-position: center 42%;
+}
+
+.media-home-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, rgba(6, 10, 16, 0.92) 0%, rgba(6, 10, 16, 0.72) 38%, rgba(6, 10, 16, 0.25) 62%, rgba(6, 10, 16, 0.45) 100%),
+    linear-gradient(180deg, rgba(6, 10, 16, 0.35) 0%, rgba(6, 10, 16, 0.15) 45%, rgba(6, 10, 16, 0.75) 100%);
+  pointer-events: none;
 }
 
 .media-home-hero__visual-wrap {
@@ -1284,6 +1298,104 @@ body {
   background: var(--media-nav);
   color: #fff;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.media-nav-bar {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr 2.75rem;
+  align-items: center;
+  column-gap: 0.35rem;
+  min-height: var(--media-nav-height);
+  padding-block: 0.5rem;
+}
+
+.media-nav-logo {
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  justify-self: center;
+}
+
+.media-nav-account-icon {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+
+.media-nav-actions {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --media-nav-height: 3.85rem;
+  }
+
+  .media-nav-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1rem;
+    min-height: 0;
+    padding-block: 0.875rem 1rem;
+  }
+
+  .media-nav-logo {
+    grid-column: auto;
+    grid-row: auto;
+    justify-self: auto;
+    flex: none;
+  }
+
+  .media-nav-account-icon {
+    display: none;
+  }
+
+  .media-nav-actions {
+    grid-column: auto;
+    grid-row: auto;
+    margin-left: auto;
+  }
+}
+
+.media-nav-mobile-link {
+  display: flex;
+  min-height: 2.75rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.1rem;
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.media-nav-mobile-link:hover,
+.media-nav-mobile-link:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.media-nav-mobile-link--active {
+  background: rgba(255, 107, 26, 0.14);
+  color: #fff;
+}
+
+.media-nav-mobile-link__label {
+  line-height: 1.25;
+}
+
+.media-nav-mobile-link__desc {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .media-nav-link {
@@ -1480,7 +1592,25 @@ body {
 }
 
 .media-sponsor-banner--partner-fallback .media-sponsor-banner__image {
-  background: linear-gradient(135deg, #0d4d8c 0%, #1a3a5c 45%, #0a2540 100%);
+  background: linear-gradient(135deg, #0a4d8c 0%, #1565b8 42%, #0d3a6b 100%);
+}
+
+.media-sponsor-banner--partner-fallback .media-sponsor-banner__image > div:last-child {
+  background: linear-gradient(
+    105deg,
+    rgba(6, 10, 16, 0.55) 0%,
+    rgba(6, 10, 16, 0.2) 42%,
+    transparent 68%
+  ) !important;
+}
+
+@media (min-width: 640px) {
+  .media-sponsor-banner--partner-fallback .media-sponsor-banner__body {
+    max-width: 52%;
+    background: rgba(6, 10, 16, 0.62);
+    backdrop-filter: blur(6px);
+    border-radius: 0 0 0 1.25rem;
+  }
 }
 
 .media-sponsor-banner__image {

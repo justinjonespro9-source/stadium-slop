@@ -2,7 +2,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 import { StadiumSlopWordmark } from "@/components/brand/stadium-slop-wordmark";
-import { SiteHeaderNav } from "@/components/site-header-nav";
+import { SiteHeaderMobileAccount, SiteHeaderNav } from "@/components/site-header-nav";
 import { getSessionUser } from "@/lib/auth/require-user";
 import {
   MOCK_USER_COOKIE_NAME,
@@ -22,13 +22,15 @@ export async function SiteHeader() {
 
   return (
     <header className="media-nav sticky top-0 z-50 backdrop-blur-md">
-      <div className="relative mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-2 px-3 py-2.5 sm:px-6 sm:py-3 lg:px-10">
+      <div className="media-nav-bar relative mx-auto w-full max-w-6xl px-3 sm:px-6 lg:px-10">
+        <SiteHeaderMobileAccount href={accountHref} label={accountLabel} />
+
         <Link
           href="/"
-          className="relative z-10 flex min-w-0 shrink items-center transition-opacity hover:opacity-85"
+          className="media-nav-logo flex justify-center transition-opacity hover:opacity-85 md:justify-start"
           aria-label="Stadium Slop home"
         >
-          <StadiumSlopWordmark />
+          <StadiumSlopWordmark size="header" priority />
         </Link>
 
         <SiteHeaderNav accountHref={accountHref} accountLabel={accountLabel} />

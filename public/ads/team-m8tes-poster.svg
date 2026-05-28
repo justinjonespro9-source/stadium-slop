@@ -1,24 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 420" role="img" aria-label="Team-M8tes">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a4d8c"/>
-      <stop offset="50%" stop-color="#1565b8"/>
-      <stop offset="100%" stop-color="#0d3a6b"/>
+      <stop offset="0%" stop-color="#0a5ea8"/>
+      <stop offset="45%" stop-color="#1878c8"/>
+      <stop offset="100%" stop-color="#0c3f72"/>
     </linearGradient>
     <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
-      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.12"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.16"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
   </defs>
   <rect width="1400" height="420" fill="url(#bg)"/>
   <rect width="1400" height="420" fill="url(#shine)"/>
-  <circle cx="1180" cy="90" r="180" fill="#ffffff" fill-opacity="0.08"/>
-  <circle cx="180" cy="330" r="140" fill="#ff6b1a" fill-opacity="0.15"/>
-  <text x="72" y="195" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="76" font-weight="800" letter-spacing="-1">Team-M8tes</text>
-  <text x="72" y="265" fill="#e8f4ff" font-family="system-ui, sans-serif" font-size="34" font-weight="600">Find fans who love your teams</text>
-  <g transform="translate(960 70)">
-    <circle cx="200" cy="140" r="120" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-opacity="0.35" stroke-width="3"/>
-    <text x="200" y="155" text-anchor="middle" font-size="80">🤝</text>
+  <circle cx="1200" cy="80" r="200" fill="#ffffff" fill-opacity="0.1"/>
+  <circle cx="160" cy="320" r="150" fill="#ff6b1a" fill-opacity="0.18"/>
+  <text x="72" y="198" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="80" font-weight="800" letter-spacing="-1">Team-M8tes</text>
+  <text x="72" y="268" fill="#e8f4ff" font-family="system-ui, sans-serif" font-size="36" font-weight="600">Find fans who love your teams</text>
+  <g transform="translate(980 65)">
+    <circle cx="200" cy="145" r="125" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.4" stroke-width="3"/>
+    <text x="200" y="160" text-anchor="middle" font-size="84">🤝</text>
   </g>
 </svg>

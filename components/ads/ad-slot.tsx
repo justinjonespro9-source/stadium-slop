@@ -77,7 +77,13 @@ function MediaBannerAd({
             sizes="(max-width: 640px) 100vw, 1152px"
             unoptimized={!isLocalAssetPath(imageSrc)}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,13,20,0.95)] via-[rgba(8,13,20,0.5)] to-transparent sm:bg-gradient-to-r sm:from-[rgba(8,13,20,0.92)] sm:via-[rgba(8,13,20,0.65)] sm:to-transparent" />
+          <div
+            className={
+              partnerFallback
+                ? "absolute inset-0 bg-gradient-to-t from-[rgba(6,10,16,0.88)] via-[rgba(6,10,16,0.35)] to-transparent sm:bg-gradient-to-r sm:from-[rgba(6,10,16,0.72)] sm:via-[rgba(6,10,16,0.35)] sm:to-transparent"
+                : "absolute inset-0 bg-gradient-to-t from-[rgba(8,13,20,0.95)] via-[rgba(8,13,20,0.5)] to-transparent sm:bg-gradient-to-r sm:from-[rgba(8,13,20,0.92)] sm:via-[rgba(8,13,20,0.65)] sm:to-transparent"
+            }
+          />
         </div>
       ) : null}
       <div className="media-sponsor-banner__body">

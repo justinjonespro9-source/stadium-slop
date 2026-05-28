@@ -47,7 +47,7 @@ function PreviewFrontStrip({
         Same avatar as below
       </p>
       <div className="mt-1.5 flex items-center gap-2">
-        <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-[var(--slop-gold)] bg-[var(--slop-navy-deep)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
+        <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-[var(--slop-card-orange)] bg-[var(--slop-navy-deep)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
           {avatar ? (
             <Image
               src={avatar}

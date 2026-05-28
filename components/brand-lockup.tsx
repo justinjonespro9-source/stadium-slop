@@ -1,3 +1,4 @@
+import { StadiumSlopWordmark } from "@/components/brand/stadium-slop-wordmark";
 import Image from "next/image";
 
 type BrandLockupProps = {
@@ -23,15 +24,8 @@ export function BrandLockup({ compact = false }: BrandLockupProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <Image
-        src="/branding/stadium-slop-wordmark.png"
-        alt="Stadium Slop"
-        width={220}
-        height={48}
-        className="h-9 w-auto max-w-[min(100%,14rem)] object-contain object-left sm:h-11"
-        priority
-      />
-      <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-[var(--slop-gold-dim)]">
+      <StadiumSlopWordmark size="header" />
+      <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-[var(--slop-cream-dim)]">
         Eats in the Seats
       </p>
     </div>

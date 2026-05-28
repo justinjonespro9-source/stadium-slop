@@ -1,36 +1,50 @@
 import Image from "next/image";
 
-/** Intrinsic pixels of `/public/branding/stadium-slop-wordmark.png` */
-const WORDMARK_WIDTH = 1971;
-const WORDMARK_HEIGHT = 798;
+import {
+  STADIUM_SLOP_WORDMARK_HEIGHT,
+  STADIUM_SLOP_WORDMARK_SRC,
+  STADIUM_SLOP_WORDMARK_WIDTH
+} from "@/lib/branding";
+
+export type StadiumSlopWordmarkSize = "header" | "scorecard" | "compact";
 
 type StadiumSlopWordmarkProps = {
   className?: string;
-  /** Lighter lockup for tight mobile header */
   priority?: boolean;
+  size?: StadiumSlopWordmarkSize;
+};
+
+const SIZE_CLASS: Record<StadiumSlopWordmarkSize, string> = {
+  header:
+    "h-auto w-[220px] max-w-[58vw] shrink-0 object-contain object-center md:w-[260px] md:max-w-none md:object-left",
+  scorecard:
+    "h-auto w-[13.5rem] max-w-[calc(100%-5rem)] shrink-0 object-contain object-left",
+  compact: "h-auto w-[11rem] max-w-[calc(100%-6.5rem)] shrink-0 object-contain object-left"
+};
+
+const SIZE_HINT: Record<StadiumSlopWordmarkSize, string> = {
+  header: "(max-width: 768px) 480px, 520px",
+  scorecard: "432px",
+  compact: "352px"
 };
 
 /**
- * Single-line Stadium Slop wordmark from `/public/branding/stadium-slop-wordmark.png`.
+ * Single-line Stadium Slop wordmark image — aspect ratio preserved, never stretched.
  */
 export function StadiumSlopWordmark({
   className = "",
-  priority = true
+  priority = false,
+  size = "header"
 }: StadiumSlopWordmarkProps) {
   return (
     <Image
-      src="/branding/stadium-slop-wordmark.png"
+      src={STADIUM_SLOP_WORDMARK_SRC}
       alt="Stadium Slop"
-      width={WORDMARK_WIDTH}
-      height={WORDMARK_HEIGHT}
+      width={STADIUM_SLOP_WORDMARK_WIDTH}
+      height={STADIUM_SLOP_WORDMARK_HEIGHT}
       priority={priority}
-      sizes="(max-width: 640px) 168px, 220px"
-      className={[
-        "h-7 w-auto max-w-[min(100%,10.5rem)] object-contain object-left sm:h-8 sm:max-w-[12rem] md:h-9 md:max-w-[13.5rem]",
-        className
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      sizes={SIZE_HINT[size]}
+      className={[SIZE_CLASS[size], className].filter(Boolean).join(" ")}
     />
   );
 }

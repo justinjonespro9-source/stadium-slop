@@ -97,7 +97,7 @@ export function ScorecardShareActions({
       <button
         type="button"
         onClick={() => void copyShareLink()}
-        className="inline-flex min-h-10 flex-1 items-center justify-center rounded-xl border border-[var(--slop-gold)]/55 bg-[color:rgba(244,179,33,0.1)] px-4 py-2.5 text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-gold-bright)] transition hover:bg-[color:rgba(244,179,33,0.18)]"
+        className="inline-flex min-h-10 flex-1 items-center justify-center rounded-xl border border-[var(--slop-card-orange)]/55 bg-[color:rgba(255,107,26,0.1)] px-4 py-2.5 text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-card-orange-bright)] transition hover:bg-[color:rgba(255,107,26,0.18)]"
       >
         {copyState === "copied"
           ? "Link copied"

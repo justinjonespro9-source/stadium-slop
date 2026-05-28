@@ -18,9 +18,9 @@ export function HomeHeroVisual({ className = "" }: HomeHeroVisualProps) {
         fill
         priority
         sizes="(max-width: 1023px) 55vw, 42vw"
-        className="object-contain object-[center_55%] sm:object-[75%_50%] lg:object-[70%_45%]"
+        className="object-contain object-[72%_58%] sm:object-[78%_52%] lg:object-[74%_48%]"
       />
-      <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#060a10]/75 sm:to-[#060a10]/55 lg:to-[#060a10]/40" />
+      <div className="absolute inset-0 bg-gradient-to-l from-[#060a10]/88 via-[#060a10]/35 to-transparent sm:from-[#060a10]/75 sm:via-[#060a10]/20" />
     </div>
   );
 }

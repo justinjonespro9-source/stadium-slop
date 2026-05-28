@@ -11,7 +11,7 @@ import {
   type ReactNode
 } from "react";
 
-import { BrandBadgeIcon } from "@/components/brand-badge-icon";
+import { StadiumSlopWordmark } from "@/components/brand/stadium-slop-wordmark";
 import { ReviewerExternalLinks } from "@/components/reviewer-external-links";
 import { ScorecardReviewerLink } from "@/components/scorecard-reviewer-link";
 import { SlopScorecardFrame } from "@/components/slop-scorecard-shell";
@@ -122,12 +122,12 @@ function ReviewerProfileBlock({
           </p>
         ) : null}
         {profile.showFanScout ? (
-          <span className="mt-1 inline-flex rounded border border-[var(--slop-gold)]/40 bg-[rgba(244,179,33,0.08)] px-1 py-px text-[0.36rem] font-black uppercase tracking-[0.08em] text-[var(--slop-gold-bright)]">
+          <span className="mt-1 inline-flex rounded border border-[var(--slop-card-orange)]/45 bg-[rgba(255,107,26,0.1)] px-1 py-px text-[0.36rem] font-black uppercase tracking-[0.08em] text-[var(--slop-card-orange-bright)]">
             Fan Scout
           </span>
         ) : null}
         {venueHistoryHref ? (
-          <p className="mt-1 text-[0.48rem] font-bold text-[var(--slop-gold-dim)]">
+          <p className="mt-1 text-[0.48rem] font-bold text-[var(--slop-card-orange-dim)]">
             More at this venue →
           </p>
         ) : null}
@@ -171,14 +171,8 @@ function SlopScoreBadge({ score }: { score: number }) {
 
 function ScorecardFrontHeader({ slopScore }: { slopScore: number }) {
   return (
-    <div className="slop-scorecard-header slop-scorecard-header--front relative z-[2] grid shrink-0 grid-cols-[auto_1fr_auto] items-center gap-1.5 px-2 py-2">
-      <BrandBadgeIcon size={46} title="Stadium Slop" className="shrink-0" />
-      <div className="slop-scorecard-title-stack min-w-0 px-0.5">
-        <span className="slop-scorecard-title-line">Slop</span>
-        <span className="slop-scorecard-title-line slop-scorecard-title-line--wide">
-          Scorecard
-        </span>
-      </div>
+    <div className="slop-scorecard-header slop-scorecard-header--front relative z-[2] grid shrink-0 grid-cols-[1fr_auto] items-center gap-2 px-2 py-2">
+      <StadiumSlopWordmark size="scorecard" className="min-w-0" />
       <SlopScoreBadge score={slopScore} />
     </div>
   );
@@ -200,7 +194,7 @@ function CompactReviewerStrip({
   const strip = (
     <div className="flex min-w-0 max-w-[52%] items-center gap-2">
       <div className="relative shrink-0">
-        <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--slop-gold)] bg-[var(--slop-navy-deep)] text-[0.7rem] font-black text-[var(--slop-cream)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
+        <div className="relative flex h-11 w-11 items-center justify-center overflow-hidden rounded-full border-2 border-[var(--slop-card-orange)] bg-[var(--slop-navy-deep)] text-[0.7rem] font-black text-[var(--slop-cream)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
           {avatarUrl ? (
             <Image
               src={avatarUrl}
@@ -214,7 +208,7 @@ function CompactReviewerStrip({
           )}
         </div>
         {fanScout ? (
-          <span className="absolute -bottom-0.5 left-1/2 w-max -translate-x-1/2 rounded border border-[var(--slop-gold)]/45 bg-[var(--slop-ink)] px-1 py-px text-[0.36rem] font-black uppercase text-[var(--slop-gold-bright)]">
+          <span className="absolute -bottom-0.5 left-1/2 w-max -translate-x-1/2 rounded border border-[var(--slop-card-orange)]/45 bg-[var(--slop-ink)] px-1 py-px text-[0.36rem] font-black uppercase text-[var(--slop-card-orange-bright)]">
             Scout
           </span>
         ) : null}
@@ -320,7 +314,7 @@ export function SlopScorecardFlipCard({
                 <div className="slop-scorecard-photo-well flex min-h-0 flex-1 flex-col">
                   <button
                     type="button"
-                    className="slop-scorecard-photo-well-inner relative block h-full min-h-[10.5rem] w-full flex-1 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-gold-bright)]"
+                    className="slop-scorecard-photo-well-inner relative block h-full min-h-[10.5rem] w-full flex-1 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-card-orange-bright)]"
                     aria-label={`Flip ${itemName} scorecard to details`}
                     aria-controls={flipRegionId}
                     aria-expanded={isFlipped}
@@ -393,7 +387,7 @@ export function SlopScorecardFlipCard({
           <SlopScorecardFrame face="back" className="h-full w-full">
             <div className="flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-2.5 py-2">
               <div className="slop-scorecard-header flex shrink-0 items-center justify-between gap-2 px-0 py-1.5">
-                <BrandBadgeIcon size={26} title="Stadium Slop" />
+                <StadiumSlopWordmark size="scorecard" />
                 <ScorecardNoFlip>
                   <button
                     type="button"
@@ -419,11 +413,6 @@ export function SlopScorecardFlipCard({
               {review.isTestReview ? (
                 <p className="mt-1 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-amber-500/50 bg-amber-950/50 px-1.5 py-0.5 text-[0.42rem] font-black uppercase text-amber-100">
                   Test review · QA only
-                </p>
-              ) : reviewerProfile.verifiedGameDay ? (
-                <p className="mt-1 inline-flex w-fit shrink-0 items-center gap-1 rounded border border-emerald-400/45 bg-emerald-950/40 px-1.5 py-0.5 text-[0.42rem] font-black uppercase text-emerald-100">
-                  <span className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400" />
-                  Game-day certified
                 </p>
               ) : null}
 

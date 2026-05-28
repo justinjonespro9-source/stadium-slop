@@ -192,7 +192,7 @@ export function SlopScorecardCarousel({
         <button
           type="button"
           onClick={flipActive}
-          className="min-h-10 rounded-full border border-[var(--slop-gold)]/55 bg-[color:rgba(244,179,33,0.14)] px-5 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-gold-bright)] transition hover:border-[var(--slop-gold)]"
+          className="min-h-10 rounded-full border border-[var(--slop-card-orange)]/55 bg-[color:rgba(255,90,20,0.16)] px-5 py-2 text-[0.62rem] font-black uppercase tracking-[0.1em] text-[var(--slop-card-orange-bright)] transition hover:border-[var(--slop-card-orange)] hover:bg-[color:rgba(255,90,20,0.24)]"
         >
           Details
         </button>
@@ -202,16 +202,16 @@ export function SlopScorecardCarousel({
   return (
     <div className="slop-scorecard-carousel-wrap">
       {cardCount > 1 ? (
-        <p className="slop-scorecard-carousel-index mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[0.58rem] font-bold tabular-nums text-[var(--slop-cream-dim)]">
+        <p className="slop-scorecard-carousel-index mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[0.58rem] font-bold tabular-nums text-[var(--slop-card-gray)]">
           <span>
             {activeIndex + 1} / {cardCount}
           </span>
-          <span aria-hidden className="text-[var(--slop-cream-dim)]">
+          <span aria-hidden className="text-[var(--slop-card-gray-dim)]">
             ·
           </span>
           <button
             type="button"
-            className="font-black uppercase tracking-[0.08em] text-[var(--slop-gold-dim)] underline-offset-2 hover:text-[var(--slop-gold-bright)] hover:underline"
+            className="font-black uppercase tracking-[0.08em] text-[var(--slop-card-orange)] underline-offset-2 hover:text-[var(--slop-card-orange-bright)] hover:underline"
             onClick={showFrontActive}
           >
             Front

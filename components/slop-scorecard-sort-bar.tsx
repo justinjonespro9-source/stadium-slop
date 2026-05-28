@@ -31,8 +31,8 @@ export function SlopScorecardSortBar({
                 key={option.value}
                 className={`inline-flex min-h-8 cursor-pointer items-center rounded-full border px-2.5 py-1 text-[0.58rem] font-black uppercase tracking-[0.08em] transition ${
                   active
-                    ? "border-[var(--slop-gold)] bg-[color:rgba(244,179,33,0.18)] text-[var(--slop-gold-bright)]"
-                    : "border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.45)] text-[var(--slop-cream-muted)] hover:border-[var(--slop-gold)]/40"
+                    ? "border-[var(--slop-card-orange)] bg-[color:rgba(255,107,26,0.18)] text-[var(--slop-card-orange-bright)]"
+                    : "border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.45)] text-[var(--slop-cream-muted)] hover:border-[var(--slop-card-orange)]/40"
                 }`}
               >
                 <input

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Premium trading-card frame: gunmetal rim → gold trim → crimson accent → inner. */
+/** Premium trading-card frame: gunmetal rim → orange trim → crimson accent → inner. */
 export function SlopScorecardFrame({
   face,
   children,
