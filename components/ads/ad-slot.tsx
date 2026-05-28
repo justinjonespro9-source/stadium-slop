@@ -82,13 +82,17 @@ function MediaBannerAd({
           ) : null}
         </p>
         <div>
-          <p className="text-lg font-black leading-tight text-white sm:text-2xl">{ad.title}</p>
+          <p className="media-sponsor-banner__title">{ad.title}</p>
           {ad.body ? (
-            <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-white/80">{ad.body}</p>
+            <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-white/85 sm:text-[0.9375rem]">
+              {ad.body}
+            </p>
           ) : null}
         </div>
         {showCta ? (
-          <span className="media-cta inline-flex w-fit text-xs sm:text-sm">{ad.ctaLabel}</span>
+          <span className="media-primary-button inline-flex w-fit px-4 py-2.5 text-xs sm:text-sm">
+            {ad.ctaLabel}
+          </span>
         ) : null}
       </div>
     </article>

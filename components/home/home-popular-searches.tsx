@@ -18,10 +18,7 @@ export function HomePopularSearches() {
       <ul className="mt-2 flex flex-wrap gap-1.5 sm:gap-2">
         {POPULAR_SEARCHES.map((item) => (
           <li key={item.label}>
-            <Link
-              href={item.href}
-              className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[0.7rem] font-bold text-white/90 backdrop-blur-sm transition hover:border-[var(--media-orange)]/50 hover:bg-white/15 sm:text-xs"
-            >
+            <Link href={item.href} className="media-pill sm:text-xs">
               {item.label}
             </Link>
           </li>

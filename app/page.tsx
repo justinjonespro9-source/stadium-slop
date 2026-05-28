@@ -41,7 +41,7 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="media-home min-h-screen">
+    <main className="media-page-shell media-home min-h-screen">
       <HomeHero>
         <HomeVenueSearch venues={venues} variant="hero" />
         <HomePopularSearches />

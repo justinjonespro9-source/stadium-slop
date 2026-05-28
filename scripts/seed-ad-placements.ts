@@ -9,6 +9,8 @@ import "dotenv/config";
 import { EntityStatus, PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
+import { resolveTeamM8tesPosterUrl } from "../lib/media-assets";
+
 type SeedAd = {
   placementKey: string;
   title: string;
@@ -30,7 +32,7 @@ const TEAM_M8TES: Omit<SeedAd, "placementKey"> = {
 
 const TEAM_M8TES_BANNER: Omit<SeedAd, "placementKey"> = {
   ...TEAM_M8TES,
-  imageUrl: "/ads/team-m8tes-poster.svg"
+  imageUrl: resolveTeamM8tesPosterUrl()
 };
 
 const SNG_LABS: Omit<SeedAd, "placementKey"> = {

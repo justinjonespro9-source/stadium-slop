@@ -1,20 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" role="img" aria-label="Team-M8tes">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 420" role="img" aria-label="Team-M8tes">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0b1b2b"/>
-      <stop offset="45%" stop-color="#152a3d"/>
-      <stop offset="100%" stop-color="#1a3a52"/>
+    <linearGradient id="bg" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#0a1018"/>
+      <stop offset="40%" stop-color="#152232"/>
+      <stop offset="100%" stop-color="#1e3a55"/>
     </linearGradient>
-    <linearGradient id="glow" x1="0%" y1="50%" x2="100%" y2="50%">
-      <stop offset="0%" stop-color="#f4b321" stop-opacity="0.15"/>
-      <stop offset="50%" stop-color="#ff6b35" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="#f4b321" stop-opacity="0.1"/>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff6b1a" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#ff6b1a" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#ff6b1a" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <rect width="1200" height="400" fill="url(#bg)"/>
-  <rect width="1200" height="400" fill="url(#glow)"/>
-  <circle cx="980" cy="120" r="180" fill="#f4b321" fill-opacity="0.08"/>
-  <circle cx="200" cy="320" r="140" fill="#ff6b35" fill-opacity="0.06"/>
-  <text x="80" y="200" fill="#f5e9d0" font-family="system-ui, sans-serif" font-size="56" font-weight="800">Team-M8tes</text>
-  <text x="80" y="250" fill="#c9b896" font-family="system-ui, sans-serif" font-size="28" font-weight="600">Find fans who love your teams</text>
+  <rect width="1400" height="420" fill="url(#bg)"/>
+  <rect width="1400" height="420" fill="url(#accent)"/>
+  <circle cx="1180" cy="80" r="200" fill="#ff6b1a" fill-opacity="0.1"/>
+  <circle cx="200" cy="340" r="160" fill="#ffffff" fill-opacity="0.04"/>
+  <text x="72" y="200" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="800" letter-spacing="-1">Team-M8tes</text>
+  <text x="72" y="268" fill="#ffb380" font-family="system-ui, sans-serif" font-size="32" font-weight="600">Find fans who love your teams</text>
+  <g transform="translate(920 60)">
+    <circle cx="200" cy="150" r="130" fill="#ff6b1a" fill-opacity="0.15" stroke="#ff8533" stroke-width="3"/>
+    <text x="200" y="165" text-anchor="middle" font-size="88">🤝</text>
+  </g>
 </svg>

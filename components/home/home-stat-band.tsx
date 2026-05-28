@@ -18,7 +18,7 @@ export function HomeStatBand({ stats }: { stats: HomepageStats }) {
   return (
     <section
       aria-label="Stadium Slop at a glance"
-      className="-mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3"
+      className="-mt-2 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3"
     >
       {STAT_ITEMS.map(({ key, label }) => (
         <div key={key} className="media-stat-card">

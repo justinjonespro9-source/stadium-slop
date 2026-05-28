@@ -28,10 +28,7 @@ function FeaturedItemGrid({
     <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
         <li key={`${item.venueSlug}-${item.foodSlug}`}>
-          <Link
-            href={`/venues/${item.venueSlug}/${item.foodSlug}`}
-            className="media-rank-card"
-          >
+          <Link href={`/venues/${item.venueSlug}/${item.foodSlug}`} className="media-card">
             <p className="media-rank-card-title">{item.name}</p>
             <p className="media-rank-card-meta">{item.venueName}</p>
             <div className="mt-2 flex flex-wrap items-center gap-2 text-[0.65rem] font-bold">
@@ -71,7 +68,7 @@ function SectionShell({
 }) {
   return (
     <section>
-      <div className="flex flex-wrap items-end justify-between gap-2">
+      <div className="media-section-heading">
         <div>
           <p className="media-section-eyebrow">{eyebrow}</p>
           <h2 className="media-section-title">{title}</h2>
@@ -109,7 +106,7 @@ export function HomeFeaturedSections({
           kickoff.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link href={WORLD_CUP_GUIDE_PATH_EN} className="media-cta">
+          <Link href={WORLD_CUP_GUIDE_PATH_EN} className="media-primary-button">
             World Cup Food Guide
           </Link>
           <Link href={WORLD_CUP_GUIDE_PATH_ES} hrefLang="es" className="media-cta-outline">
