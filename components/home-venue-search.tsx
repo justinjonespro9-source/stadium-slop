@@ -148,7 +148,7 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
           placeholder="Search venues, cities, teams…"
           className={
             isHero
-              ? "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3.5 text-base font-semibold text-[var(--media-ink)] outline-none placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-[var(--media-orange)] sm:rounded-2xl sm:px-5 sm:py-4 sm:text-lg"
+              ? "w-full rounded-xl border border-neutral-200 bg-white px-3.5 py-3 text-[0.9375rem] font-semibold text-[var(--media-ink)] outline-none placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-[var(--media-orange)] sm:rounded-2xl sm:px-5 sm:py-3.5 sm:text-base"
               : "w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3.5 py-3 text-[0.95rem] font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-[1.35rem] sm:px-4 sm:py-3.5 sm:text-base"
           }
         />

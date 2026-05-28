@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -13,40 +14,128 @@ type HomeFeaturedSectionsProps = {
   fanFavorites: HomepageFeaturedItem[];
 };
 
+function FeaturedItemMeta({ item }: { item: HomepageFeaturedItem }) {
+  return (
+    <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[0.65rem] font-bold sm:mt-2">
+      {item.slopScore != null ? (
+        <span className="media-rank-score">Slop {item.slopScore.toFixed(1)}</span>
+      ) : null}
+      {item.reviewCount > 0 ? (
+        <span className="text-[var(--media-ink-dim)]">
+          {item.reviewCount} review{item.reviewCount === 1 ? "" : "s"}
+        </span>
+      ) : null}
+      {item.badge ? (
+        <span className="rounded-full border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-0.5 uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
+          {item.badge}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+function FeaturedFoodThumb({ item }: { item: HomepageFeaturedItem }) {
+  if (item.imageUrl) {
+    return (
+      <div className="media-feature-card__thumb relative min-h-[4.5rem] sm:min-h-0">
+        <Image
+          src={item.imageUrl}
+          alt=""
+          fill
+          className="object-cover"
+          sizes="(max-width: 639px) 88px, 320px"
+          unoptimized={item.imageUrl.startsWith("http")}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="media-feature-card__thumb flex min-h-[4.5rem] items-center justify-center bg-gradient-to-br from-[#fff5ec] to-[#ffe8d4] sm:min-h-0"
+      aria-hidden
+    >
+      <span className="text-2xl opacity-80">🍔</span>
+    </div>
+  );
+}
+
+function FeaturedItemCard({
+  item,
+  compactOnMobile = false
+}: {
+  item: HomepageFeaturedItem;
+  compactOnMobile?: boolean;
+}) {
+  const href = `/venues/${item.venueSlug}/${item.foodSlug}`;
+
+  if (compactOnMobile) {
+    return (
+      <Link href={href} className="media-feature-card sm:block sm:p-0">
+        <FeaturedFoodThumb item={item} />
+        <div className="media-feature-card__body">
+          <p className="media-rank-card-title line-clamp-2 text-[0.9rem]">{item.name}</p>
+          <p className="media-rank-card-meta line-clamp-1">{item.venueName}</p>
+          <FeaturedItemMeta item={item} />
+        </div>
+      </Link>
+    );
+  }
+
+  return (
+    <Link href={href} className="media-card block overflow-hidden p-0">
+      <div className="relative aspect-[16/10] w-full bg-[var(--media-surface)]">
+        {item.imageUrl ? (
+          <Image
+            src={item.imageUrl}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="(max-width: 1023px) 50vw, 320px"
+            unoptimized={item.imageUrl.startsWith("http")}
+          />
+        ) : (
+          <div
+            className="flex h-full items-center justify-center bg-gradient-to-br from-[#fff5ec] to-[#ffe8d4]"
+            aria-hidden
+          >
+            <span className="text-3xl opacity-80">🍔</span>
+          </div>
+        )}
+      </div>
+      <div className="p-3.5 sm:p-4">
+        <p className="media-rank-card-title">{item.name}</p>
+        <p className="media-rank-card-meta">{item.venueName}</p>
+        <FeaturedItemMeta item={item} />
+      </div>
+    </Link>
+  );
+}
+
 function FeaturedItemGrid({
   items,
-  emptyMessage
+  emptyMessage,
+  compactOnMobile = false
 }: {
   items: HomepageFeaturedItem[];
   emptyMessage: string;
+  compactOnMobile?: boolean;
 }) {
   if (items.length === 0) {
     return <p className="text-sm leading-relaxed text-[var(--media-ink-muted)]">{emptyMessage}</p>;
   }
 
   return (
-    <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <ul
+      className={
+        compactOnMobile
+          ? "mt-3 flex flex-col gap-2 sm:grid sm:grid-cols-2 sm:gap-3 lg:grid-cols-3"
+          : "mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
+      }
+    >
       {items.map((item) => (
         <li key={`${item.venueSlug}-${item.foodSlug}`}>
-          <Link href={`/venues/${item.venueSlug}/${item.foodSlug}`} className="media-card">
-            <p className="media-rank-card-title">{item.name}</p>
-            <p className="media-rank-card-meta">{item.venueName}</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2 text-[0.65rem] font-bold">
-              {item.slopScore != null ? (
-                <span className="media-rank-score">Slop {item.slopScore.toFixed(1)}</span>
-              ) : null}
-              {item.reviewCount > 0 ? (
-                <span className="text-[var(--media-ink-dim)]">
-                  {item.reviewCount} review{item.reviewCount === 1 ? "" : "s"}
-                </span>
-              ) : null}
-              {item.badge ? (
-                <span className="rounded-full border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-0.5 uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
-                  {item.badge}
-                </span>
-              ) : null}
-            </div>
-          </Link>
+          <FeaturedItemCard item={item} compactOnMobile={compactOnMobile} />
         </li>
       ))}
     </ul>
@@ -94,11 +183,12 @@ export function HomeFeaturedSections({
       <SectionShell eyebrow="Fan rankings" title="Top Slop" href="/venues" linkLabel="All venues">
         <FeaturedItemGrid
           items={topSlop}
+          compactOnMobile
           emptyMessage="Reviews are rolling in — check back as fans rank stadium food."
         />
       </SectionShell>
 
-      <section className="media-panel-card media-panel-card--accent p-5 sm:p-6">
+      <section className="media-panel-card border border-[var(--media-border)] p-5 sm:p-6">
         <p className="media-section-eyebrow">2026 World Cup</p>
         <h2 className="media-section-title">Know Before You Bite</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--media-ink-muted)]">

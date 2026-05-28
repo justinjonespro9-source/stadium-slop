@@ -1156,6 +1156,59 @@ body {
   padding-bottom: 3rem;
 }
 
+.media-home-hero {
+  min-height: min(28rem, 88dvh);
+  background: #060a10;
+}
+
+@media (min-width: 1024px) {
+  .media-home-hero {
+    min-height: min(34rem, 78vh);
+  }
+}
+
+.media-home-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-color: #060a10;
+  background-image: url("/media/home-hero-bg.svg");
+  background-size: cover;
+  background-position: center 35%;
+}
+
+.media-home-hero__visual-wrap {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(58%, 26rem);
+  opacity: 0.95;
+}
+
+@media (min-width: 640px) {
+  .media-home-hero__visual-wrap {
+    width: min(52%, 32rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .media-home-hero__visual-wrap {
+    width: 48%;
+    max-width: 36rem;
+  }
+}
+
+.media-home-hero__visual {
+  min-height: 12rem;
+}
+
+@media (min-width: 1024px) {
+  .media-home-hero__visual {
+    min-height: 100%;
+  }
+}
+
 .media-section-heading {
   display: flex;
   flex-wrap: wrap;
@@ -1300,12 +1353,32 @@ body {
 }
 
 .media-stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
   border: 1px solid var(--media-border);
   border-radius: 1rem;
   background: var(--media-white);
   padding: 0.875rem 0.5rem;
   text-align: center;
   box-shadow: var(--media-shadow-card);
+}
+
+.media-stat-icon {
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(255, 107, 26, 0.12);
+  color: var(--media-orange);
+}
+
+.media-stat-icon svg {
+  height: 1rem;
+  width: 1rem;
 }
 
 @media (min-width: 400px) {
@@ -1403,39 +1476,112 @@ body {
   border-radius: 1.25rem;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: var(--media-shadow-card);
+  min-height: 10.5rem;
+}
+
+.media-sponsor-banner--partner-fallback .media-sponsor-banner__image {
+  background: linear-gradient(135deg, #0d4d8c 0%, #1a3a5c 45%, #0a2540 100%);
 }
 
 .media-sponsor-banner__image {
-  position: relative;
-  width: 100%;
-  min-height: 11.5rem;
+  position: absolute;
+  inset: 0;
   background: var(--media-ink);
-}
-
-@media (min-width: 640px) {
-  .media-sponsor-banner__image {
-    position: absolute;
-    inset: 0;
-    min-height: 0;
-  }
 }
 
 .media-sponsor-banner__body {
   position: relative;
+  z-index: 1;
   display: flex;
+  min-height: 10.5rem;
   flex-direction: column;
+  justify-content: flex-end;
   gap: 0.625rem;
   padding: 1rem 1.125rem 1.125rem;
-  background: linear-gradient(to top, rgba(8, 13, 20, 0.97) 0%, rgba(8, 13, 20, 0.88) 100%);
+  background: linear-gradient(
+    to top,
+    rgba(6, 10, 16, 0.97) 0%,
+    rgba(6, 10, 16, 0.82) 45%,
+    rgba(6, 10, 16, 0.35) 100%
+  );
 }
 
 @media (min-width: 640px) {
+  .media-sponsor-banner {
+    min-height: 11.5rem;
+  }
+
   .media-sponsor-banner__body {
     min-height: 12rem;
-    max-width: 56%;
+    max-width: 58%;
     justify-content: center;
     padding: 1.5rem 2rem;
-    background: transparent;
+    background: linear-gradient(
+      to right,
+      rgba(6, 10, 16, 0.94) 0%,
+      rgba(6, 10, 16, 0.72) 55%,
+      transparent 100%
+    );
+  }
+}
+
+.media-nav-account {
+  min-height: 2.25rem;
+}
+
+.media-feature-card {
+  display: flex;
+  gap: 0.875rem;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--media-border);
+  border-radius: 1rem;
+  background: var(--media-white);
+  box-shadow: var(--media-shadow-card);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.media-feature-card:hover {
+  border-color: rgba(255, 107, 26, 0.35);
+  box-shadow: 0 4px 6px rgba(12, 18, 32, 0.04), 0 16px 36px rgba(255, 107, 26, 0.12);
+  transform: translateY(-1px);
+}
+
+.media-feature-card__thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 5.5rem;
+  background: var(--media-surface);
+}
+
+@media (min-width: 640px) {
+  .media-feature-card__thumb {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.media-feature-card__body {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0.875rem 0.875rem 0;
+}
+
+@media (min-width: 640px) {
+  .media-feature-card {
+    display: block;
+  }
+
+  .media-feature-card__thumb {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .media-feature-card__body {
+    padding: 0.875rem 1rem 1rem;
   }
 }
 

@@ -19,6 +19,7 @@ export type HomepageFeaturedItem = {
   slopScore?: number;
   reviewCount: number;
   badge?: string;
+  imageUrl?: string;
 };
 
 const EMPTY_STATS: HomepageStats = {
@@ -66,6 +67,13 @@ function averageSlopScore(scores: number[]): number | undefined {
   return Math.round((sum / scores.length) * 10) / 10;
 }
 
+const featuredPhotoInclude = {
+  where: { status: EntityStatus.ACTIVE, url: { not: null } },
+  take: 1,
+  orderBy: { createdAt: "desc" as const },
+  select: { url: true }
+};
+
 async function mapFeaturedRows(
   rows: {
     slug: string;
@@ -74,12 +82,14 @@ async function mapFeaturedRows(
     isPromoted: boolean;
     venueBadge: string | null;
     reviews: { slopScore: { toNumber(): number } }[];
+    photos?: { url: string | null }[];
     createdAt: Date;
   }[]
 ): Promise<HomepageFeaturedItem[]> {
   return rows
     .map((item) => {
       const scores = item.reviews.map((r) => r.slopScore.toNumber());
+      const photoUrl = item.photos?.[0]?.url?.trim();
       return {
         name: item.name,
         venueSlug: item.venue.slug,
@@ -87,6 +97,7 @@ async function mapFeaturedRows(
         foodSlug: item.slug,
         slopScore: averageSlopScore(scores),
         reviewCount: scores.length,
+        imageUrl: photoUrl || undefined,
         badge: item.isPromoted
           ? "Promoted"
           : item.venueBadge
@@ -116,7 +127,8 @@ export async function getHomepageTopSlopItems(
         reviews: {
           where: { status: EntityStatus.ACTIVE, isTestReview: false },
           select: { slopScore: true }
-        }
+        },
+        photos: featuredPhotoInclude
       },
       take: 80
     });
@@ -150,7 +162,8 @@ export async function getHomepageRecentlyAddedItems(
         reviews: {
           where: { status: EntityStatus.ACTIVE, isTestReview: false },
           select: { slopScore: true }
-        }
+        },
+        photos: featuredPhotoInclude
       }
     });
 
@@ -184,6 +197,7 @@ export async function getHomepageFanFavoriteItems(
           where: { status: EntityStatus.ACTIVE, isTestReview: false },
           select: { slopScore: true }
         },
+        photos: featuredPhotoInclude,
         _count: {
           select: {
             reviews: {

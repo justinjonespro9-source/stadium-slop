@@ -52,10 +52,16 @@ function MediaBannerAd({
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
   const imageSrc = ad.imageUrl?.trim() ?? "";
+  const partnerFallback =
+    imageSrc.includes("team-m8tes-poster.svg") || imageSrc.includes("team-m8tes-poster.png");
 
   const inner = (
     <article
-      className={["media-sponsor-banner relative sm:min-h-[11rem]", className]
+      className={[
+        "media-sponsor-banner relative",
+        partnerFallback ? "media-sponsor-banner--partner-fallback" : "",
+        className
+      ]
         .filter(Boolean)
         .join(" ")}
       role="complementary"

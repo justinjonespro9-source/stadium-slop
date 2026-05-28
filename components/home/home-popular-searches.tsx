@@ -15,10 +15,10 @@ export function HomePopularSearches() {
       <p className="text-[0.6rem] font-black uppercase tracking-[0.12em] text-white/55">
         Popular searches
       </p>
-      <ul className="mt-2 flex flex-wrap gap-1.5 sm:gap-2">
+      <ul className="mt-2 flex flex-wrap gap-1.5">
         {POPULAR_SEARCHES.map((item) => (
           <li key={item.label}>
-            <Link href={item.href} className="media-pill sm:text-xs">
+            <Link href={item.href} className="media-pill text-[0.65rem] sm:text-xs">
               {item.label}
             </Link>
           </li>
