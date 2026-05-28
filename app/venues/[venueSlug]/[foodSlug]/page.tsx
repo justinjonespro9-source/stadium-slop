@@ -746,22 +746,24 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
             <section
               id="fan-photo-reviews"
-              className="media-content-card media-content-section scroll-mt-24 sm:scroll-mt-20"
+              className="scroll-mt-24 sm:scroll-mt-20"
             >
-              <div className="media-section-heading">
-                <div>
-                  <p className="media-section-eyebrow">Fan photos</p>
-                  <h2 className="media-section-title">Slop Scorecards</h2>
+              <article className="media-content-card media-content-section !mt-0">
+                <div className="media-section-heading">
+                  <div>
+                    <p className="media-section-eyebrow">Fan photos</p>
+                    <h2 className="media-section-title">Slop Scorecards</h2>
+                  </div>
+                  {helpfulStatusMessage ? (
+                    <p
+                      className="text-[0.7rem] font-semibold text-[var(--media-ink-muted)]"
+                      role="status"
+                    >
+                      {helpfulStatusMessage}
+                    </p>
+                  ) : null}
                 </div>
-                {helpfulStatusMessage ? (
-                  <p
-                    className="text-[0.7rem] font-semibold text-[var(--media-ink-muted)]"
-                    role="status"
-                  >
-                    {helpfulStatusMessage}
-                  </p>
-                ) : null}
-              </div>
+              </article>
               <Suspense fallback={null}>
                 <SlopScorecardHelpfulAnchor />
               </Suspense>

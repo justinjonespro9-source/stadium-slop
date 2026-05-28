@@ -200,7 +200,7 @@ export function SlopScorecardCarousel({
     );
 
   return (
-    <div className="slop-scorecard-carousel-wrap">
+    <div className="slop-scorecard-carousel-wrap slop-scorecard-stage">
       {cardCount > 1 ? (
         <p className="slop-scorecard-carousel-index mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-[0.58rem] font-bold tabular-nums text-[var(--slop-card-gray)]">
           <span>
