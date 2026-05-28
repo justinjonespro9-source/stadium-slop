@@ -1121,8 +1121,8 @@ body {
 }
 
 .media-home-hero {
-  /* Mobile: ~520–580px */
-  min-height: clamp(32.5rem, 74dvh, 36.25rem);
+  /* Mobile: +~60px vs prior — more room for food behind search */
+  min-height: clamp(35rem, 78dvh, 40rem);
   background: #060a10;
 }
 
@@ -1141,20 +1141,13 @@ body {
 
 .media-home-hero__bg-image {
   object-fit: cover;
-  /* Mobile: slightly high center — food visible behind search */
-  object-position: center 26%;
-}
-
-@media (min-width: 640px) {
-  .media-home-hero__bg-image {
-    object-position: 62% 34%;
-  }
+  /* Mobile: lower/right — burger and drink more visible */
+  object-position: 58% 42%;
 }
 
 @media (min-width: 1024px) {
   .media-home-hero__bg-image {
-    /* Desktop: bias right — burger, drink, fries, pizza */
-    object-position: 78% 42%;
+    object-position: 70% 48%;
   }
 }
 
@@ -1166,16 +1159,17 @@ body {
     linear-gradient(
       100deg,
       rgba(6, 10, 16, 0.97) 0%,
-      rgba(6, 10, 16, 0.9) 22%,
-      rgba(6, 10, 16, 0.62) 46%,
-      rgba(6, 10, 16, 0.22) 68%,
-      rgba(6, 10, 16, 0.08) 100%
+      rgba(6, 10, 16, 0.9) 24%,
+      rgba(6, 10, 16, 0.72) 38%,
+      rgba(6, 10, 16, 0.38) 54%,
+      rgba(6, 10, 16, 0.14) 72%,
+      rgba(6, 10, 16, 0.04) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(6, 10, 16, 0.35) 0%,
-      rgba(6, 10, 16, 0.08) 38%,
-      rgba(6, 10, 16, 0.72) 100%
+      rgba(6, 10, 16, 0.32) 0%,
+      rgba(6, 10, 16, 0.06) 40%,
+      rgba(6, 10, 16, 0.65) 100%
     );
   pointer-events: none;
 }
@@ -1185,8 +1179,9 @@ body {
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(ellipse 95% 88% at 50% 45%, transparent 42%, rgba(6, 10, 16, 0.35) 100%),
-    radial-gradient(ellipse 140% 120% at 50% 100%, rgba(6, 10, 16, 0.55) 0%, transparent 55%);
+    radial-gradient(ellipse 88% 80% at 18% 42%, rgba(6, 10, 16, 0.2) 0%, transparent 72%),
+    radial-gradient(ellipse 70% 85% at 88% 48%, transparent 35%, rgba(6, 10, 16, 0.18) 100%),
+    radial-gradient(ellipse 140% 120% at 50% 100%, rgba(6, 10, 16, 0.45) 0%, transparent 55%);
   pointer-events: none;
 }
 
