@@ -36,6 +36,7 @@ import {
 } from "@/components/food-item-empty-states";
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
 import { FoodItemScorecardDeck } from "@/components/food-item-scorecard-deck";
+import { FoodItemHero } from "@/components/food-item/food-item-hero";
 import { FoodItemStatsStrip } from "@/components/food-item-stats-strip";
 import { SlopScorecardHelpfulAnchor } from "@/components/slop-scorecard-helpful-anchor";
 import {
@@ -158,11 +159,11 @@ function FanSignalBreakdown({
   const topPct = maxConsensusPercentage(stats);
 
   return (
-    <div className="rounded-lg border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.55)] p-2 sm:p-2.5">
-      <h3 className="text-xs font-black uppercase tracking-[0.08em] text-[var(--slop-cream-muted)]">
+    <div className="media-panel-card p-3 sm:p-3.5">
+      <h3 className="text-xs font-black uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
         {title}
       </h3>
-      <div className="mt-1.5 space-y-1.5">
+      <div className="mt-2 space-y-2">
         {stats.map((stat) => {
           const isTop = topPct > 0 && stat.percentage === topPct;
 
@@ -170,30 +171,32 @@ function FanSignalBreakdown({
             <div
               key={stat.label}
               className={`rounded-lg px-2 py-1.5 ${
-                isTop ? "border border-emerald-500/55 bg-emerald-950/35" : ""
+                isTop ? "border border-[rgba(255,107,26,0.28)] bg-[rgba(255,107,26,0.06)]" : ""
               }`}
             >
               <div className="flex items-center justify-between gap-2 text-[0.7rem]">
                 <span
                   className={
-                    isTop ? "font-bold text-emerald-100" : "font-bold text-[var(--slop-cream-dim)]"
+                    isTop
+                      ? "font-bold text-[var(--media-orange-deep)]"
+                      : "font-bold text-[var(--media-ink-muted)]"
                   }
                 >
                   {stat.label}
                 </span>
                 <span
                   className={
-                    isTop ? "font-black text-emerald-300" : "text-[var(--slop-cream-dim)]"
+                    isTop
+                      ? "font-black text-[var(--media-orange)]"
+                      : "text-[var(--media-ink-dim)]"
                   }
                 >
                   {stat.percentage}%
                 </span>
               </div>
-              <div className="mt-1 h-1 overflow-hidden rounded-full bg-[color:rgba(0,0,0,0.35)]">
+              <div className="media-signal-bar-track mt-1.5">
                 <div
-                  className={`h-full rounded-full ${
-                    isTop ? "bg-emerald-400" : "bg-[var(--slop-cream-dim)]"
-                  }`}
+                  className={`media-signal-bar-fill ${isTop ? "media-signal-bar-fill--top" : ""}`}
                   style={{ width: `${stat.percentage}%` }}
                 />
               </div>
@@ -586,90 +589,71 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         highlightLabels: awardLabelPool.slice(0, 2)
       };
 
+  const venueHref = `/venues/${venue.slug}`;
+  const itemMetaLine = (
+    <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+      <span>{venue.name}</span>
+      <span className="text-white/35">·</span>
+      <span>
+        {venue.city}, {venue.state}
+      </span>
+      {venue.primarySport || venue.sports[0] ? (
+        <>
+          <span className="text-white/35">·</span>
+          <span>{venue.primarySport ?? venue.sports[0]}</span>
+        </>
+      ) : null}
+      <span className="text-white/35">·</span>
+      <span>{vendor ? vendor.name : "Vendor TBD"}</span>
+      <span className="text-white/35">·</span>
+      <span>{foodItem.location}</span>
+    </span>
+  );
+  const reviewHint = isSignedIn
+    ? activeGame
+      ? "Certified reviews during this home game."
+      : "Reviews open during verified home-game windows."
+    : activeGame
+      ? "Sign in to review during this home game."
+      : "Browse anytime — reviews open on game day.";
+  const heroBadges = (
+    <>
+      {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
+        <BrandBadgeIcon size={20} title="Featured on Stadium Slop" />
+      ) : null}
+      <span className="media-item-hero-badge">
+        {foodItem.itemType} · {foodItem.category}
+      </span>
+      {foodItem.ageRestricted ? <span className="media-item-hero-badge">21+</span> : null}
+      {foodItem.isPromoted ? (
+        <span className="media-item-hero-badge media-item-hero-badge--accent">Promoted</span>
+      ) : null}
+      {foodItem.isNewThisSeason ? <span className="media-item-hero-badge">New</span> : null}
+      {editorialVenueBadge ? (
+        <span className="media-item-hero-badge media-item-hero-badge--accent">
+          {editorialVenueBadge}
+        </span>
+      ) : null}
+      <FoodItemAwardChips chips={awardChips} tone="media" />
+    </>
+  );
+
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-4 py-4 sm:px-6 sm:py-5 lg:px-10">
-        <Link
-          href={`/venues/${venue.slug}`}
-          className="inline-flex text-xs font-bold text-[var(--slop-cream-dim)] hover:text-[var(--slop-cream)] sm:text-sm"
-        >
-          ← {venue.name}
-        </Link>
-
-        <AgeGateProvider>
-          <FoodItemAgeGate alcoholRelated={alcoholRelated}>
-        <Suspense fallback={null}>
-          <SlopCardShareModule
-            itemPath={itemPath}
-            celebrationFromServer={showReviewSaved}
-            photoErrorCode={photoError ?? null}
-            shareUrl={celebrationShareUrl}
-            shareTitle={celebrationShareTitle}
-            shareDescription={celebrationShareDescription}
-            photoErrorMessage={photoErrorFollowUp}
-            photoRetryHref={
-              showPhotoRetryCta ? `${reviewPath}?photoRetry=1` : null
-            }
-            preview={shareSlopPreview}
-          />
-        </Suspense>
-
-        {showReviewSaved ? (
-          <AdSlot
-            placementKey="review.confirmation"
-            variant="card"
-            className="mt-4"
-            label="Sponsored"
-          />
-        ) : null}
-
-        <header className="space-y-2 pt-1 sm:space-y-2.5 sm:pt-2">
-          <div className="flex flex-wrap items-center gap-1.5">
-            {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
-              <BrandBadgeIcon size={20} title="Featured on Stadium Slop" />
-            ) : null}
-            <p className="inline-flex rounded-full border border-[var(--slop-line)] px-2 py-0.5 text-[0.6rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)]">
-              {foodItem.itemType} · {foodItem.category}
-            </p>
-            {foodItem.ageRestricted ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-line)] px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-cream-muted)]">
-                21+
-              </p>
-            ) : null}
-            {foodItem.isPromoted ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-gold)]/45 px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-gold-bright)]">
-                Promoted
-              </p>
-            ) : null}
-            {foodItem.isNewThisSeason ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-line)] px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-cream-muted)]">
-                New
-              </p>
-            ) : null}
-            {editorialVenueBadge ? (
-              <p className="inline-flex rounded-full border border-[var(--slop-gold)]/40 px-2 py-0.5 text-[0.6rem] font-black uppercase text-[var(--slop-gold-bright)]">
-                {editorialVenueBadge}
-              </p>
-            ) : null}
-          </div>
-
-          <h1 className="brand-headline max-w-4xl text-2xl leading-[1.08] tracking-tight text-[var(--slop-cream)] sm:text-4xl">
-            {foodItem.name}
-          </h1>
-
-          <FoodItemAwardChips chips={awardChips} />
-
-          <p className="text-[0.7rem] text-[var(--slop-cream-dim)]">
-            {venue.name} · {vendor ? vendor.name : "Vendor TBD"} · {foodItem.location}
-          </p>
-
-          {foodItem.description ? (
-            <p className="line-clamp-2 text-[0.75rem] leading-snug text-[var(--slop-cream-muted)]">
-              {foodItem.description}
-            </p>
-          ) : null}
-
+    <main className="media-page-shell min-h-screen">
+      <FoodItemHero
+        foodName={foodItem.name}
+        venueName={venue.name}
+        venueHref={venueHref}
+        metaLine={itemMetaLine}
+        reviewHref={reviewPath}
+        reviewCtaLabel={reviewCtaLabel}
+        reviewHint={reviewHint}
+        badges={heroBadges}
+        heroImageUrl={heroImageUrl}
+        heroImageAlt={heroEntry?.alt ?? `Fan photo for ${foodItem.name}`}
+        stats={
           <FoodItemStatsStrip
+            tone="media"
             slopScore={unratedSeason ? "—" : seasonStats.averageSlopScore.toFixed(1)}
             slopDetail={unratedSeason ? undefined : slopTier}
             slopUnrated={unratedSeason}
@@ -699,345 +683,362 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               foodItem.priceLastConfirmedLabel ??
               (priceIntel.reportCount ? `${priceIntel.reportCount} reports` : "Fan reports")
             }
-            replayLabel={
-              unratedSeason ? undefined : seasonStats.topReplayValue?.label
-            }
+            replayLabel={unratedSeason ? undefined : seasonStats.topReplayValue?.label}
             replayDetail={
               seasonStats.topReplayValue && seasonStats.topReplayValue.percentage > 0
                 ? `${seasonStats.topReplayValue.percentage}% fans`
                 : undefined
             }
           />
+        }
+      />
 
-          <div className="item-review-cta-row">
-            <Link
-              href={reviewPath}
-              className="brand-cta inline-flex shrink-0 items-center justify-center rounded-full px-4 py-2 text-[0.7rem] font-black uppercase tracking-[0.06em] sm:text-xs"
-            >
-              {reviewCtaLabel}
-            </Link>
-            <p className="min-w-0 flex-1 text-[0.58rem] leading-snug text-[var(--slop-cream-dim)]">
-              {isSignedIn
-                ? activeGame
-                  ? "Certified reviews during this home game."
-                  : "Reviews open during verified home-game windows."
-                : activeGame
-                  ? "Sign in to review during this home game."
-                  : "Browse anytime — reviews open on game day."}
-            </p>
-          </div>
-        </header>
+      <div className="media-venue-content">
+        <AgeGateProvider>
+          <FoodItemAgeGate alcoholRelated={alcoholRelated} tone="media">
+            <Suspense fallback={null}>
+              <SlopCardShareModule
+                itemPath={itemPath}
+                celebrationFromServer={showReviewSaved}
+                photoErrorCode={photoError ?? null}
+                shareUrl={celebrationShareUrl}
+                shareTitle={celebrationShareTitle}
+                shareDescription={celebrationShareDescription}
+                photoErrorMessage={photoErrorFollowUp}
+                photoRetryHref={
+                  showPhotoRetryCta ? `${reviewPath}?photoRetry=1` : null
+                }
+                preview={shareSlopPreview}
+              />
+            </Suspense>
 
-        <AdSlot
-          placementKey="item.detail.inline"
-          variant="inline"
-          className="mt-3 sm:mt-4"
-        />
-
-        <section
-          id="fan-photo-reviews"
-          className="scroll-mt-24 pt-2 pb-3 sm:scroll-mt-20 sm:pt-3 sm:pb-4"
-        >
-          <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
-            <h2 className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-              Slop Scorecards
-            </h2>
-            {helpfulStatusMessage ? (
-              <p
-                className="text-[0.58rem] font-semibold text-[var(--slop-cream-muted)]"
-                role="status"
-              >
-                {helpfulStatusMessage}
-              </p>
+            {showReviewSaved ? (
+              <AdSlot
+                placementKey="review.confirmation"
+                variant="card"
+                tone="media"
+                className="mt-4"
+                label="Sponsored"
+              />
             ) : null}
-          </div>
-          <Suspense fallback={null}>
-            <SlopScorecardHelpfulAnchor />
-          </Suspense>
-          {photoBackedReviews.length > 0 ? (
-            <FoodItemScorecardDeck
-              reviews={photoBackedReviews}
-              venueSlug={venue.slug}
-              foodSlug={foodItem.slug}
-              foodName={foodItem.name}
-              venueName={venue.name}
-              napkinEligible={napkinEligible}
-              slopCardLocation={slopCardLocation}
-              contributorUserId={contributorUserId}
-              likedReviewIds={[...likedReviewIds]}
-              photoPlaceholderDefault={foodPhotos[0]?.imagePlaceholder}
-              isSignedIn={isSignedIn}
-              itemPageWithReviewsAnchor={itemPageWithReviewsAnchor}
-              baseReportContext={baseReportContext}
-              markReviewHelpful={markReviewHelpful}
-            />
-          ) : (
-            <PhotoBackedReviewsEmpty
-              reviewHref={reviewPath}
-              venueSlug={venue.slug}
-              foodSlug={foodItem.slug}
-            />
-          )}
-        </section>
 
-        {!hasGameDayFreshToday ? (
-          <div className="mt-3 border-t border-[var(--slop-line)] pt-3">
-            <GameDayFreshPendingBlock />
-          </div>
-        ) : foodItem.freshSignal ? (
-          <section className="mt-3 border-t border-[var(--slop-line)] pt-3">
-            <div className="flex flex-wrap items-center gap-2">
-              <p className="text-[0.55rem] font-black uppercase tracking-[0.12em] text-emerald-200/90">
-                Fresh signal
+            <article className="media-content-card media-content-section">
+              <p className="media-section-eyebrow">Your review</p>
+              <h2 className="media-section-title">Share your take</h2>
+              <p className="mt-2 text-[0.8125rem] leading-relaxed text-[var(--media-ink-muted)]">
+                {reviewHint}
               </p>
-              {hasGameDayFreshToday ? (
-                <span className="inline-flex items-center gap-1 text-[0.5rem] font-bold text-emerald-300/90">
-                  <span
-                    className="slop-live-dot inline-block h-1 w-1 rounded-full bg-emerald-400"
-                    aria-hidden
-                  />
-                  Live · {foodItem.freshReviewCount} takes
-                </span>
-              ) : null}
-            </div>
-            <p className="mt-1 text-sm font-black text-[var(--slop-cream)]">
-              {foodItem.freshSignal}
-            </p>
-            {foodItem.freshSignalReason ? (
-              <p className="mt-0.5 line-clamp-2 text-[0.68rem] text-[var(--slop-cream-muted)]">
-                {foodItem.freshSignalReason}
-              </p>
-            ) : null}
-          </section>
-        ) : null}
-
-        <section className="mt-3 border-t border-[var(--slop-line)] pt-3 sm:mt-4">
-          <h2 className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            Fan signals
-          </h2>
-          {unratedSeason ? (
-            <div className="mt-1.5">
-              <FanSignalsPendingPanel />
-            </div>
-          ) : (
-            <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
-              <FanSignalBreakdown title="Replay value" stats={seasonStats.replayValue} />
-              <FanSignalBreakdown title="Price check" stats={seasonStats.priceCheck} />
-            </div>
-          )}
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.58rem] text-[var(--slop-cream-dim)]">
-            <FanPoweredGuideBadge />
-            <ReportContentLink context={baseReportContext} variant="section" />
-            <SuggestCorrectionLink
-              context={{
-                kind: "item",
-                venueName: venue.name,
-                venueSlug: venue.slug,
-                vendorName: vendor?.name,
-                vendorSlug: vendor?.slug,
-                itemName: foodItem.name,
-                itemSlug: foodItem.slug,
-                pagePath: `/venues/${venue.slug}/${foodItem.slug}`
-              }}
-            />
-          </div>
-        </section>
-
-        {vendor && moreFromVendor.length > 0 ? (
-          <section className="mt-4 border-t border-[var(--slop-line)] py-3 sm:py-4">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="text-sm font-black text-[var(--slop-cream)]">
-                More · {vendor.name}
-              </h2>
-              <Link
-                href={`/venues/${venue.slug}/vendors/${vendor.slug}`}
-                className="shrink-0 text-xs font-bold text-[var(--slop-gold)] hover:text-[var(--slop-gold-bright)]"
-              >
-                Vendor →
-              </Link>
-            </div>
-
-            <div className="mt-2 overflow-hidden rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-surface)]">
-              {moreFromVendor.map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/venues/${venue.slug}/${item.slug}`}
-                  className="flex items-center justify-between gap-3 border-b border-[var(--slop-line)] px-3 py-2.5 transition last:border-b-0 hover:bg-[var(--slop-ink)] sm:px-4"
-                >
-                  <div>
-                    <p className="font-bold">{item.name}</p>
-                    <p className="mt-1 text-sm text-zinc-500">
-                      {item.itemType} · {item.location}
-                    </p>
-                  </div>
-                  <span className="text-sm font-black text-[var(--slop-orange)]">
-                    {item.reviewCount === 0 ? (
-                      <span className="text-xs font-bold uppercase tracking-[0.12em] text-zinc-500">
-                        Unrated
-                      </span>
-                    ) : (
-                      item.slopScore.toFixed(1)
-                    )}
-                  </span>
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <Link href={reviewPath} className="media-primary-button w-full justify-center sm:w-auto">
+                  {reviewCtaLabel}
                 </Link>
-              ))}
-            </div>
-          </section>
-        ) : null}
-
-        <section className="mt-4 border-t border-[var(--slop-line)] py-3 sm:py-4">
-          <h2 className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            Listing · price
-          </h2>
-          <p className="mt-1.5 text-xs text-[var(--slop-cream-dim)]">
-            {venue.city}, {venue.state} ·{" "}
-            <span className="inline-flex items-center gap-1">
-              {venue.venueTypeKey ? (
-                <span className="text-sm leading-none opacity-90" aria-hidden>
-                  {venueTypeGlyph(venue.venueTypeKey) ?? ""}
-                </span>
-              ) : null}
-              {venue.venueType}
-            </span>{" "}
-            · {formatVenueTeamsInline(venue.teams)} · {foodItem.category} ·{" "}
-            {foodItem.itemType}
-            {foodItem.beverageStyle ? ` · ${foodItem.beverageStyle}` : ""}
-            {foodItem.ageRestricted ? " · 21+" : ""}
-            {foodItem.venueBadge ? ` · ${foodItem.venueBadge}` : ""}
-            {foodItem.seasonIntroduced ? ` · Since ${foodItem.seasonIntroduced}` : ""}
-            {foodItem.lastConfirmed ? ` · Confirmed ${foodItem.lastConfirmed}` : ""}
-          </p>
-          <p className="mt-1 text-xs text-[var(--slop-cream-muted)]">
-            {priceIntel.displayPrice
-              ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
-              : "—"}{" "}
-            · {priceIntel.reportCount} reports
-            {foodItem.priceLastConfirmedLabel
-              ? ` · ${foodItem.priceLastConfirmedLabel}`
-              : ""}{" "}
-            · {foodItem.availabilityStatus ?? "Availability TBD"}
-          </p>
-          {foodItem.tags.length > 0 ? (
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {foodItem.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-zinc-800 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          ) : null}
-
-          <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
-              Report price change
-            </p>
-            <p className="mt-1 text-xs text-zinc-500">
-              Functional reports only — pending admin review.
-            </p>
-            {priceStatusMessage ? (
-              <p
-                role="status"
-                className={`mt-2 text-xs leading-snug ${
-                  priceQuery === "reported"
-                    ? "text-emerald-200/95"
-                    : "text-amber-100/95"
-                }`}
-              >
-                {priceStatusMessage}
-              </p>
-            ) : null}
-            {!priceReportDbReady ? (
-              <p className="mt-2 text-xs leading-snug text-amber-100/90">
-                Price reports need a live menu record for this item. Sample-only
-                listings cannot accept reports — browse imported stadium menus to
-                submit a price.
-              </p>
-            ) : null}
-            {isSignedIn && priceReportDbReady ? (
-              <form
-                action={submitPriceReport}
-                className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end"
-              >
-                <input type="hidden" name="venueSlug" value={venue.slug} />
-                <input type="hidden" name="foodSlug" value={foodItem.slug} />
-                <input
-                  name="reportedPrice"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  required
-                  placeholder="13.99"
-                  className="min-w-[8rem] flex-1 rounded-xl border border-zinc-800 bg-black px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-600 sm:max-w-[10rem]"
-                />
-                <textarea
-                  name="priceNote"
-                  maxLength={240}
-                  placeholder="Optional note"
-                  className="min-h-[2.75rem] min-w-0 flex-[2] rounded-xl border border-zinc-800 bg-black px-3 py-2 text-sm text-white outline-none placeholder:text-zinc-600 sm:min-h-0"
-                />
-                <button
-                  type="submit"
-                  className="brand-cta shrink-0 rounded-full px-4 py-2 text-xs font-black sm:text-sm"
-                >
-                  Submit
-                </button>
-              </form>
-            ) : !priceReportDbReady ? null : (
-              <Link
-                href={`/login?next=${encodeURIComponent(
-                  `/venues/${venue.slug}/${foodItem.slug}`
-                )}`}
-                className="mt-3 inline-flex rounded-full border border-zinc-700 px-4 py-2 text-xs font-black text-zinc-400"
-              >
-                Sign in to report price
-              </Link>
-            )}
-          </div>
-
-          {foodItem.isPromoted && foodItem.sponsorDisclosure ? (
-            <article className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
-                Sponsor disclosure
-              </p>
-              <p className="mt-2 text-sm text-zinc-300">{foodItem.sponsorDisclosure}</p>
-              {foodItem.sponsorName ? (
-                <p className="mt-1 text-xs text-zinc-500">Sponsor: {foodItem.sponsorName}</p>
-              ) : null}
+                <Link href={venueHref} className="media-cta-outline w-full justify-center sm:w-auto">
+                  Back to {venue.name}
+                </Link>
+              </div>
             </article>
-          ) : null}
 
-          {foodItem.alcoholic ? (
-            <article className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-950 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-zinc-500">
-                Responsible drinking
-              </p>
-              <p className="mt-2 text-sm text-zinc-300">
-                Alcohol availability varies by venue. Must be 21+ to purchase. Please
-                drink responsibly.
-              </p>
-            </article>
-          ) : null}
+            <AdSlot
+              placementKey="item.detail.inline"
+              variant="inline"
+              className="mt-4 sm:mt-5"
+            />
 
-          <ClaimListingCta
-            className="mt-4"
-            context={{
-              kind: "item",
-              venueName: venue.name,
-              venueSlug: venue.slug,
-              vendorName: vendor?.name,
-              vendorSlug: vendor?.slug,
-              itemName: foodItem.name,
-              itemSlug: foodItem.slug,
-              pagePath: `/venues/${venue.slug}/${foodItem.slug}`
-            }}
-          />
-        </section>
+            <section
+              id="fan-photo-reviews"
+              className="media-content-card media-content-section scroll-mt-24 sm:scroll-mt-20"
+            >
+              <div className="media-section-heading">
+                <div>
+                  <p className="media-section-eyebrow">Fan photos</p>
+                  <h2 className="media-section-title">Slop Scorecards</h2>
+                </div>
+                {helpfulStatusMessage ? (
+                  <p
+                    className="text-[0.7rem] font-semibold text-[var(--media-ink-muted)]"
+                    role="status"
+                  >
+                    {helpfulStatusMessage}
+                  </p>
+                ) : null}
+              </div>
+              <Suspense fallback={null}>
+                <SlopScorecardHelpfulAnchor />
+              </Suspense>
+              <div className="mt-4">
+                {photoBackedReviews.length > 0 ? (
+                  <FoodItemScorecardDeck
+                    reviews={photoBackedReviews}
+                    venueSlug={venue.slug}
+                    foodSlug={foodItem.slug}
+                    foodName={foodItem.name}
+                    venueName={venue.name}
+                    napkinEligible={napkinEligible}
+                    slopCardLocation={slopCardLocation}
+                    contributorUserId={contributorUserId}
+                    likedReviewIds={[...likedReviewIds]}
+                    photoPlaceholderDefault={foodPhotos[0]?.imagePlaceholder}
+                    isSignedIn={isSignedIn}
+                    itemPageWithReviewsAnchor={itemPageWithReviewsAnchor}
+                    baseReportContext={baseReportContext}
+                    markReviewHelpful={markReviewHelpful}
+                  />
+                ) : (
+                  <PhotoBackedReviewsEmpty
+                    reviewHref={reviewPath}
+                    venueSlug={venue.slug}
+                    foodSlug={foodItem.slug}
+                    tone="media"
+                  />
+                )}
+              </div>
+            </section>
+
+            {!hasGameDayFreshToday ? (
+              <div className="media-content-section">
+                <GameDayFreshPendingBlock tone="media" />
+              </div>
+            ) : foodItem.freshSignal ? (
+              <section className="media-content-card media-content-section">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="media-section-eyebrow">Fresh signal</p>
+                  {hasGameDayFreshToday ? (
+                    <span className="inline-flex items-center gap-1 text-[0.65rem] font-bold text-emerald-600">
+                      <span
+                        className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500"
+                        aria-hidden
+                      />
+                      Live · {foodItem.freshReviewCount} takes
+                    </span>
+                  ) : null}
+                </div>
+                <p className="mt-2 text-sm font-black text-[var(--media-ink)]">
+                  {foodItem.freshSignal}
+                </p>
+                {foodItem.freshSignalReason ? (
+                  <p className="mt-1 line-clamp-2 text-[0.8125rem] text-[var(--media-ink-muted)]">
+                    {foodItem.freshSignalReason}
+                  </p>
+                ) : null}
+              </section>
+            ) : null}
+
+            <section className="media-content-card media-content-section">
+              <p className="media-section-eyebrow">Community</p>
+              <h2 className="media-section-title">Fan signals</h2>
+              {unratedSeason ? (
+                <div className="mt-3">
+                  <FanSignalsPendingPanel tone="media" />
+                </div>
+              ) : (
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  <FanSignalBreakdown title="Replay value" stats={seasonStats.replayValue} />
+                  <FanSignalBreakdown title="Price check" stats={seasonStats.priceCheck} />
+                </div>
+              )}
+              <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[0.7rem] text-[var(--media-ink-dim)]">
+                <FanPoweredGuideBadge className="media-guide-badge" />
+                <ReportContentLink context={baseReportContext} variant="section" />
+                <SuggestCorrectionLink
+                  className="text-[var(--media-ink-dim)]"
+                  context={{
+                    kind: "item",
+                    venueName: venue.name,
+                    venueSlug: venue.slug,
+                    vendorName: vendor?.name,
+                    vendorSlug: vendor?.slug,
+                    itemName: foodItem.name,
+                    itemSlug: foodItem.slug,
+                    pagePath: `/venues/${venue.slug}/${foodItem.slug}`
+                  }}
+                />
+              </div>
+            </section>
+
+            {vendor && moreFromVendor.length > 0 ? (
+              <section className="media-content-section">
+                <div className="media-section-heading">
+                  <h2 className="media-section-title">More · {vendor.name}</h2>
+                  <Link href={`/venues/${venue.slug}/vendors/${vendor.slug}`} className="media-section-link">
+                    Vendor →
+                  </Link>
+                </div>
+                <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+                  {moreFromVendor.map((item) => (
+                    <li key={item.slug}>
+                      <Link href={`/venues/${venue.slug}/${item.slug}`} className="media-card block">
+                        <p className="media-rank-card-title">{item.name}</p>
+                        <p className="media-rank-card-meta">
+                          {item.itemType} · {item.location}
+                        </p>
+                        <p className="media-rank-score mt-2">
+                          {item.reviewCount === 0 ? "Unrated" : item.slopScore.toFixed(1)}
+                        </p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            <section className="media-content-card media-content-section">
+              <p className="media-section-eyebrow">Listing</p>
+              <h2 className="media-section-title">Item details</h2>
+              {foodItem.description ? (
+                <p className="mt-2 text-sm leading-relaxed text-[var(--media-ink-muted)]">
+                  {foodItem.description}
+                </p>
+              ) : null}
+              <p className="mt-3 text-xs leading-relaxed text-[var(--media-ink-muted)]">
+                {venue.city}, {venue.state} ·{" "}
+                <span className="inline-flex items-center gap-1">
+                  {venue.venueTypeKey ? (
+                    <span className="text-sm leading-none" aria-hidden>
+                      {venueTypeGlyph(venue.venueTypeKey) ?? ""}
+                    </span>
+                  ) : null}
+                  {venue.venueType}
+                </span>{" "}
+                · {formatVenueTeamsInline(venue.teams)} · {foodItem.category} ·{" "}
+                {foodItem.itemType}
+                {foodItem.beverageStyle ? ` · ${foodItem.beverageStyle}` : ""}
+                {foodItem.ageRestricted ? " · 21+" : ""}
+                {foodItem.venueBadge ? ` · ${foodItem.venueBadge}` : ""}
+                {foodItem.seasonIntroduced ? ` · Since ${foodItem.seasonIntroduced}` : ""}
+                {foodItem.lastConfirmed ? ` · Confirmed ${foodItem.lastConfirmed}` : ""}
+              </p>
+              <p className="mt-2 text-xs text-[var(--media-ink-dim)]">
+                {priceIntel.displayPrice
+                  ? `$${Number(priceIntel.displayPrice).toFixed(2)}`
+                  : "—"}{" "}
+                · {priceIntel.reportCount} reports
+                {foodItem.priceLastConfirmedLabel
+                  ? ` · ${foodItem.priceLastConfirmedLabel}`
+                  : ""}{" "}
+                · {foodItem.availabilityStatus ?? "Availability TBD"}
+              </p>
+              {foodItem.tags.length > 0 ? (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {foodItem.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[var(--media-ink-dim)]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
+
+              <div className="media-panel-card mt-4 p-4">
+                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--media-ink-dim)]">
+                  Report price change
+                </p>
+                <p className="mt-1 text-xs text-[var(--media-ink-muted)]">
+                  Functional reports only — pending admin review.
+                </p>
+                {priceStatusMessage ? (
+                  <p
+                    role="status"
+                    className={`mt-2 text-xs leading-snug ${
+                      priceQuery === "reported"
+                        ? "text-emerald-700"
+                        : "text-[var(--media-orange-deep)]"
+                    }`}
+                  >
+                    {priceStatusMessage}
+                  </p>
+                ) : null}
+                {!priceReportDbReady ? (
+                  <p className="mt-2 text-xs leading-snug text-[var(--media-orange-deep)]">
+                    Price reports need a live menu record for this item. Sample-only
+                    listings cannot accept reports — browse imported stadium menus to
+                    submit a price.
+                  </p>
+                ) : null}
+                {isSignedIn && priceReportDbReady ? (
+                  <form
+                    action={submitPriceReport}
+                    className="mt-3 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end"
+                  >
+                    <input type="hidden" name="venueSlug" value={venue.slug} />
+                    <input type="hidden" name="foodSlug" value={foodItem.slug} />
+                    <input
+                      name="reportedPrice"
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      required
+                      placeholder="13.99"
+                      className="min-w-[8rem] flex-1 rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)] sm:max-w-[10rem]"
+                    />
+                    <textarea
+                      name="priceNote"
+                      maxLength={240}
+                      placeholder="Optional note"
+                      className="min-h-[2.75rem] min-w-0 flex-[2] rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)] sm:min-h-0"
+                    />
+                    <button type="submit" className="media-primary-button shrink-0 px-4 py-2 text-xs sm:text-sm">
+                      Submit
+                    </button>
+                  </form>
+                ) : !priceReportDbReady ? null : (
+                  <Link
+                    href={`/login?next=${encodeURIComponent(
+                      `/venues/${venue.slug}/${foodItem.slug}`
+                    )}`}
+                    className="media-cta-outline mt-3 inline-flex px-4 py-2 text-xs"
+                  >
+                    Sign in to report price
+                  </Link>
+                )}
+              </div>
+
+              {foodItem.isPromoted && foodItem.sponsorDisclosure ? (
+                <article className="media-panel-card mt-4 p-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--media-ink-dim)]">
+                    Sponsor disclosure
+                  </p>
+                  <p className="mt-2 text-sm text-[var(--media-ink-muted)]">
+                    {foodItem.sponsorDisclosure}
+                  </p>
+                  {foodItem.sponsorName ? (
+                    <p className="mt-1 text-xs text-[var(--media-ink-dim)]">
+                      Sponsor: {foodItem.sponsorName}
+                    </p>
+                  ) : null}
+                </article>
+              ) : null}
+
+              {foodItem.alcoholic ? (
+                <article className="media-panel-card mt-4 p-4">
+                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[var(--media-ink-dim)]">
+                    Responsible drinking
+                  </p>
+                  <p className="mt-2 text-sm text-[var(--media-ink-muted)]">
+                    Alcohol availability varies by venue. Must be 21+ to purchase. Please
+                    drink responsibly.
+                  </p>
+                </article>
+              ) : null}
+
+              <ClaimListingCta
+                className="media-panel-card mt-4 p-4 sm:p-5 [&_p]:text-[var(--media-ink-muted)] [&_p:nth-child(2)]:text-[var(--media-ink)] [&_p:first-child]:text-[var(--media-orange-deep)] [&_a]:border-[rgba(255,107,26,0.35)] [&_a]:bg-[rgba(255,107,26,0.08)] [&_a]:text-[var(--media-orange-deep)]"
+                context={{
+                  kind: "item",
+                  venueName: venue.name,
+                  venueSlug: venue.slug,
+                  vendorName: vendor?.name,
+                  vendorSlug: vendor?.slug,
+                  itemName: foodItem.name,
+                  itemSlug: foodItem.slug,
+                  pagePath: `/venues/${venue.slug}/${foodItem.slug}`
+                }}
+              />
+            </section>
           </FoodItemAgeGate>
         </AgeGateProvider>
-      </section>
+      </div>
     </main>
   );
 }

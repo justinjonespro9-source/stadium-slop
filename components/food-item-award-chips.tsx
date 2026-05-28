@@ -12,9 +12,18 @@ const toneClass: Record<FoodItemAwardChip["tone"], string> = {
 
 type FoodItemAwardChipsProps = {
   chips: FoodItemAwardChip[];
+  tone?: "brand" | "media";
 };
 
-export function FoodItemAwardChips({ chips }: FoodItemAwardChipsProps) {
+const mediaToneClass: Record<FoodItemAwardChip["tone"], string> = {
+  gold: "media-item-hero-badge media-item-hero-badge--accent",
+  orange: "media-item-hero-badge media-item-hero-badge--accent",
+  emerald:
+    "media-item-hero-badge border-emerald-400/40 text-emerald-200",
+  cream: "media-item-hero-badge"
+};
+
+export function FoodItemAwardChips({ chips, tone = "brand" }: FoodItemAwardChipsProps) {
   if (chips.length === 0) {
     return null;
   }
@@ -27,7 +36,11 @@ export function FoodItemAwardChips({ chips }: FoodItemAwardChipsProps) {
       {chips.map((chip) => (
         <li key={chip.id}>
           <span
-            className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.08em] sm:text-xs ${toneClass[chip.tone]}`}
+            className={`inline-flex items-center gap-1 ${
+              tone === "media"
+                ? mediaToneClass[chip.tone]
+                : `rounded-full border px-2 py-0.5 text-[0.65rem] font-black uppercase tracking-[0.08em] sm:text-xs ${toneClass[chip.tone]}`
+            }`}
           >
             {chip.id === "trending-tonight" ? (
               <span

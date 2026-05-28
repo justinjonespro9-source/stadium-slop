@@ -1673,3 +1673,85 @@ body {
   color: var(--media-ink-muted);
 }
 
+/* Food item page (Phase 3) */
+.media-item-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+@media (min-width: 480px) {
+  .media-item-stats-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 640px) {
+  .media-item-stats-strip {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.media-item-stats-cell {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.media-item-hero-badge {
+  display: inline-flex;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.media-item-hero-badge--accent {
+  border-color: rgba(255, 107, 26, 0.45);
+  color: var(--media-orange-bright);
+}
+
+.media-content-card {
+  border: 1px solid var(--media-border);
+  border-radius: 1.25rem;
+  background: var(--media-white);
+  box-shadow: var(--media-shadow-card);
+}
+
+.media-content-section {
+  margin-top: 1.25rem;
+  padding: 1rem 1.125rem;
+}
+
+@media (min-width: 640px) {
+  .media-content-section {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.375rem;
+  }
+}
+
+.media-signal-bar-track {
+  height: 0.25rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--media-surface);
+}
+
+.media-signal-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--media-ink-dim);
+}
+
+.media-signal-bar-fill--top {
+  background: var(--media-orange);
+}
+

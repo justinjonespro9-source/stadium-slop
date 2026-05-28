@@ -2,20 +2,35 @@ type StatCellProps = {
   label: string;
   value: string;
   detail?: string;
-  accent?: "gold" | "fresh" | "default";
+  accent?: "gold" | "fresh" | "default" | "orange";
+  tone?: "brand" | "media";
 };
 
-function StatCell({ label, value, detail, accent = "default" }: StatCellProps) {
-  const valueClass =
-    accent === "gold"
+function StatCell({ label, value, detail, accent = "default", tone = "brand" }: StatCellProps) {
+  const isMedia = tone === "media";
+  const valueClass = isMedia
+    ? accent === "orange" || accent === "gold"
+      ? "text-[var(--media-orange-bright)]"
+      : accent === "fresh"
+        ? "text-emerald-300"
+        : "text-white"
+    : accent === "gold"
       ? "text-[var(--slop-gold-bright)]"
       : accent === "fresh"
         ? "text-emerald-200"
         : "text-[var(--slop-cream)]";
 
+  const labelClass = isMedia
+    ? "text-white/55"
+    : "text-[var(--slop-cream-dim)]";
+  const detailClass = isMedia ? "text-white/50" : "text-[var(--slop-cream-dim)]";
+  const cellClass = isMedia ? "media-item-stats-cell" : "item-stats-cell";
+
   return (
-    <div className="item-stats-cell min-w-0 px-2 py-1.5 sm:px-2.5 sm:py-2">
-      <p className="truncate text-[0.48rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream-dim)] sm:text-[0.5rem]">
+    <div className={`${cellClass} min-w-0 px-2 py-1.5 sm:px-2.5 sm:py-2`}>
+      <p
+        className={`truncate text-[0.48rem] font-black uppercase tracking-[0.12em] sm:text-[0.5rem] ${labelClass}`}
+      >
         {label}
       </p>
       <p
@@ -24,9 +39,7 @@ function StatCell({ label, value, detail, accent = "default" }: StatCellProps) {
         {value}
       </p>
       {detail ? (
-        <p className="mt-0.5 truncate text-[0.5rem] font-semibold text-[var(--slop-cream-dim)]">
-          {detail}
-        </p>
+        <p className={`mt-0.5 truncate text-[0.5rem] font-semibold ${detailClass}`}>{detail}</p>
       ) : null}
     </div>
   );
@@ -45,6 +58,7 @@ export type FoodItemStatsStripProps = {
   priceDetail: string;
   replayLabel?: string;
   replayDetail?: string;
+  tone?: "brand" | "media";
 };
 
 /** Compact scoreboard strip for item page header. */
@@ -60,32 +74,39 @@ export function FoodItemStatsStrip({
   priceDisplay,
   priceDetail,
   replayLabel,
-  replayDetail
+  replayDetail,
+  tone = "brand"
 }: FoodItemStatsStripProps) {
+  const stripClass = tone === "media" ? "media-item-stats-strip" : "item-stats-strip";
+
   return (
-    <div className="item-stats-strip" role="group" aria-label="Item stats">
+    <div className={stripClass} role="group" aria-label="Item stats">
       <StatCell
         label="Slop score"
         value={slopScore}
         detail={slopUnrated ? "Awaiting votes" : slopDetail}
-        accent="gold"
+        accent={tone === "media" ? "orange" : "gold"}
+        tone={tone}
       />
       <StatCell
         label="Fresh signal"
         value={freshScore}
         detail={freshDetail}
         accent={freshLive ? "fresh" : "default"}
+        tone={tone}
       />
       <StatCell
         label="Reviews"
         value={String(reviewCount)}
         detail={reviewDetail}
+        tone={tone}
       />
-      <StatCell label="Price" value={priceDisplay} detail={priceDetail} />
+      <StatCell label="Price" value={priceDisplay} detail={priceDetail} tone={tone} />
       <StatCell
         label="Replay"
         value={replayLabel ?? "—"}
         detail={replayDetail}
+        tone={tone}
       />
     </div>
   );
