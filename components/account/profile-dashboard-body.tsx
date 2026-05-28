@@ -64,17 +64,15 @@ export function ProfileDashboardBody({
 }: ProfileDashboardBodyProps) {
   return (
     <>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="media-section-eyebrow">Dashboard</p>
-          <h2 className="media-section-title">Fan scout dashboard</h2>
-          <p className="mt-1 max-w-xl text-xs leading-snug text-[var(--media-ink-muted)]">
-            Build your Slop reputation through reviews, photos, and helpful votes.
-          </p>
-        </div>
-      </div>
+      <section className="media-content-card media-content-section">
+        <p className="media-section-eyebrow">Dashboard</p>
+        <h2 className="media-section-title">Fan scout dashboard</h2>
+        <p className="mt-1 max-w-xl text-xs leading-snug text-[var(--media-ink-muted)]">
+          Stats, badges, and your recent reviews across venues.
+        </p>
+      </section>
 
-      <div className="mt-4 grid gap-4 lg:mt-6 lg:grid-cols-12 lg:gap-6">
+      <div className="mt-4 grid gap-4 lg:mt-5 lg:grid-cols-12 lg:gap-6">
         <header className="media-content-card media-content-section !mt-0 lg:col-span-4 lg:self-start">
           <p className="media-section-eyebrow">Profile</p>
           <h3 className="media-section-title text-lg sm:text-xl">Scout profile</h3>

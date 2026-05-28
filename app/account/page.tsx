@@ -10,7 +10,7 @@ import { signOut } from "@/auth";
 import { ProfileDashboardBody } from "@/components/account/profile-dashboard-body";
 import { ProfileSocialEditor } from "@/components/account/profile-social-editor";
 import { ScorecardIdentityEditor } from "@/components/account/scorecard-identity-editor";
-import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
+import { AccountPageHero } from "@/components/account/account-page-hero";
 import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { isGoogleSignInConfigured } from "@/lib/auth/env";
@@ -74,7 +74,7 @@ function reviewRowDateLabel(
 function SignedOutAccount() {
   return (
     <main className="media-page-shell min-h-screen">
-      <DiscoveryPageHero
+      <AccountPageHero
         eyebrow="Fan account"
         title="Sign in to continue"
         description="Post reviews, upload photos, and mark helpful from one profile."
@@ -381,21 +381,12 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     { label: "Helpful likes", value: helpfulLikesReceived }
   ];
 
-  const heroSubtitle = [
-    handleDisplay,
-    joinedLabel ? `Joined ${joinedLabel}` : null,
-    `Home venue · ${homeVenueLabel}`
-  ]
-    .filter(Boolean)
-    .join(" · ");
-
   return (
     <main className="media-page-shell min-h-screen">
-      <DiscoveryPageHero
+      <AccountPageHero
         eyebrow="Fan account"
-        title={displayName}
-        subtitle={heroSubtitle}
-        description="Build your Slop reputation through reviews, photos, and helpful votes."
+        title="Your account"
+        description="Manage your Scorecard identity, reviewer profile, and fan scout activity."
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3 rounded-xl border border-white/16 bg-white/10 px-3 py-2.5 backdrop-blur-sm">
@@ -425,7 +416,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </button>
           </form>
         </div>
-      </DiscoveryPageHero>
+      </AccountPageHero>
 
       <div className="media-venue-content">
         {notAdminError ? (

@@ -2277,6 +2277,10 @@ body {
 }
 
 /* Account page */
+.media-account-hero {
+  background: #060a10;
+}
+
 .media-form-label {
   display: block;
   font-size: 0.7rem;
