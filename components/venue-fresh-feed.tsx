@@ -31,15 +31,16 @@ export function VenueFreshFeed({
   if (cards.length === 0) return null;
 
   return (
-    <section className="mt-4 sm:mt-5">
-      <div className="mb-2">
-        <h2 className="text-base font-black tracking-tight text-[var(--slop-cream)] sm:text-lg">
-          Fresh at {venueName}
-        </h2>
-        <p className="mt-0.5 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs">
-          Fresh fan scorecards from around the stadium.
-        </p>
+    <section className="mt-5 sm:mt-6">
+      <div className="media-section-heading mb-3">
+        <div>
+          <p className="media-section-eyebrow">Fresh feed</p>
+          <h2 className="media-section-title">Fresh at {venueName}</h2>
+        </div>
       </div>
+      <p className="mb-3 text-[0.75rem] leading-snug text-[var(--media-ink-muted)] sm:text-xs">
+        Fresh fan scorecards from around the stadium.
+      </p>
 
       <SlopScorecardCarousel swipeHint={cards.length > 1}>
         {cards.map((review, cardIndex) => {

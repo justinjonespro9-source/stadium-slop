@@ -44,7 +44,8 @@ export function VenueVendorSelect({
   category,
   vendorSlug,
   vendors,
-  q
+  q,
+  tone = "brand"
 }: {
   venueSlug: string;
   mode: StandingsMode;
@@ -52,14 +53,19 @@ export function VenueVendorSelect({
   vendorSlug: string;
   vendors: Vendor[];
   q: string;
+  tone?: "brand" | "media";
 }) {
   const router = useRouter();
+  const selectClass =
+    tone === "media"
+      ? "media-venue-vendor-select mt-0 w-full max-w-md"
+      : "mt-0 w-full max-w-md rounded-xl border border-[var(--slop-line)] bg-black px-3 py-2 text-sm font-bold text-[var(--slop-cream)] outline-none focus:border-[var(--slop-orange)]";
 
   return (
-    <label className="mt-2 block max-w-full">
+    <label className="block max-w-full">
       <span className="sr-only">Vendor filter</span>
       <select
-        className="mt-0 w-full max-w-md rounded-xl border border-[var(--slop-line)] bg-black px-3 py-2 text-sm font-bold text-[var(--slop-cream)] outline-none focus:border-[var(--slop-orange)]"
+        className={selectClass}
         value={vendorSlug === "all" ? "all" : vendorSlug}
         aria-label="Filter by vendor"
         onChange={(e) => {

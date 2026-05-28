@@ -22,12 +22,14 @@ type VenueStandingsAgeGateProps = {
   rows: VenueStandingAgeGateRow[];
   venueSlug: string;
   isFreshStandingsTab: boolean;
+  tone?: "brand" | "media";
 };
 
 export function VenueStandingsAgeGate({
   rows,
   venueSlug,
-  isFreshStandingsTab
+  isFreshStandingsTab,
+  tone = "brand"
 }: VenueStandingsAgeGateProps) {
   const { status, isConfirmed } = useAgeGate();
   const hasAlcohol = rows.some((row) => row.alcoholRelated);
@@ -44,28 +46,64 @@ export function VenueStandingsAgeGate({
   return (
     <>
       {hasAlcohol && (status === "declined" || (status === "unknown" && showPrompt)) ? (
-        <AgeConfirmationPrompt className="border-b border-[color:rgba(245,233,208,0.07)]" />
+        <AgeConfirmationPrompt
+          className={
+            tone === "media"
+              ? "media-age-prompt mb-3 rounded-xl border p-3 sm:p-4"
+              : "border-b border-[color:rgba(245,233,208,0.07)]"
+          }
+          tone={tone}
+        />
       ) : null}
-      {rows.map((row, index) => {
-        const rank = index + 1;
-        if (row.alcoholRelated && hideAlcohol) {
-          return (
-            <AlcoholHiddenStandingRow key={row.item.slug} rank={rank} />
-          );
-        }
-        return (
-          <VenueStandingRow
-            key={row.item.slug}
-            item={row.item}
-            rank={rank}
-            stats={row.stats}
-            vendor={row.vendor}
-            venueSlug={venueSlug}
-            isFreshStandingsTab={isFreshStandingsTab}
-            fanFavoriteBadges={row.fanFavoriteBadges}
-          />
-        );
-      })}
+      {tone === "media" ? (
+        <ul className="media-venue-standings-grid">
+          {rows.map((row, index) => {
+            const rank = index + 1;
+            if (row.alcoholRelated && hideAlcohol) {
+              return (
+                <AlcoholHiddenStandingRow key={row.item.slug} rank={rank} tone={tone} />
+              );
+            }
+            return (
+              <VenueStandingRow
+                key={row.item.slug}
+                item={row.item}
+                rank={rank}
+                stats={row.stats}
+                vendor={row.vendor}
+                venueSlug={venueSlug}
+                isFreshStandingsTab={isFreshStandingsTab}
+                fanFavoriteBadges={row.fanFavoriteBadges}
+                tone={tone}
+              />
+            );
+          })}
+        </ul>
+      ) : (
+        <>
+          {rows.map((row, index) => {
+            const rank = index + 1;
+            if (row.alcoholRelated && hideAlcohol) {
+              return (
+                <AlcoholHiddenStandingRow key={row.item.slug} rank={rank} tone={tone} />
+              );
+            }
+            return (
+              <VenueStandingRow
+                key={row.item.slug}
+                item={row.item}
+                rank={rank}
+                stats={row.stats}
+                vendor={row.vendor}
+                venueSlug={venueSlug}
+                isFreshStandingsTab={isFreshStandingsTab}
+                fanFavoriteBadges={row.fanFavoriteBadges}
+                tone={tone}
+              />
+            );
+          })}
+        </>
+      )}
     </>
   );
 }

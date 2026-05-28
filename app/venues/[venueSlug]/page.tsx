@@ -23,6 +23,7 @@ import {
   getContributorUserId,
   requireContributorUserId
 } from "@/lib/auth/contributor-id";
+import { VenueHero } from "@/components/venue/venue-hero";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
@@ -295,10 +296,8 @@ function FilterChips({
         <Link
           key={option.value}
           href={buildVenueHref(venueSlug, mode, option.value, vendorSlug, searchQuery)}
-          className={`filter-chip rounded-full border px-2.5 py-1.5 text-[0.65rem] font-black uppercase tracking-[0.08em] sm:px-3 sm:text-xs ${
-            category === option.value
-              ? "filter-chip-active"
-              : "filter-chip-inactive border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.75)] text-[var(--slop-cream-muted)]"
+          className={`media-hero-pill sm:px-3 sm:text-xs ${
+            category === option.value ? "media-hero-pill--active" : ""
           }`}
         >
           {option.label}
@@ -327,10 +326,8 @@ function ModeChips({
         <Link
           key={option.value}
           href={buildVenueHref(venueSlug, option.value, category, vendorSlug, searchQuery)}
-          className={`filter-chip rounded-full border px-3 py-2 text-xs font-black sm:px-4 sm:text-sm ${
-            mode === option.value
-              ? "filter-chip-active"
-              : "filter-chip-inactive border-[var(--slop-line)] bg-[color:rgba(21,42,61,0.85)] text-[var(--slop-cream)]"
+          className={`media-hero-pill px-3 py-2 text-xs sm:px-4 sm:text-sm ${
+            mode === option.value ? "media-hero-pill--active" : ""
           }`}
         >
           {option.label}
@@ -463,49 +460,115 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     };
   });
   const isSignedIn = Boolean(await getContributorUserId());
+  const reviewCtaHref = standingsRows[0]
+    ? `/venues/${venue.slug}/${standingsRows[0].item.slug}/review`
+    : venueFoodItems[0]
+      ? `/venues/${venue.slug}/${venueFoodItems[0].slug}/review`
+      : "/venues";
+
+  const venueMetaLine = (
+    <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+      <span>
+        {venue.city}, {venue.state}
+      </span>
+      <span className="text-white/35">·</span>
+      <span className="font-semibold text-white/92">
+        {formatVenueTeamsInline(venue.teams, venue.slug)}
+      </span>
+      {venue.primarySport || venue.sports[0] ? (
+        <>
+          <span className="text-white/35">·</span>
+          <span>{venue.primarySport ?? venue.sports[0]}</span>
+        </>
+      ) : null}
+    </span>
+  );
 
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-4 pb-6 pt-3 sm:px-6 sm:pb-8 sm:pt-4 lg:px-10">
-        <Link
-          href="/venues"
-          className="inline-flex text-xs font-bold text-[var(--slop-cream-dim)] hover:text-[var(--slop-cream)] sm:text-sm"
+    <main className="media-page-shell min-h-screen">
+      <VenueHero
+        venueName={venue.name}
+        metaLine={venueMetaLine}
+        reviewCtaHref={reviewCtaHref}
+      >
+        <ModeChips
+          venueSlug={venue.slug}
+          mode={mode}
+          category={category}
+          vendorSlug={vendorSlug}
+          searchQuery={searchQuery}
+        />
+        <FilterChips
+          venueSlug={venue.slug}
+          mode={mode}
+          category={category}
+          vendorSlug={vendorSlug}
+          searchQuery={searchQuery}
+        />
+        <form
+          method="get"
+          action={`/venues/${venue.slug}`}
+          className="flex flex-col gap-2.5 sm:flex-row sm:flex-wrap sm:items-end"
         >
-          ← Venues
-        </Link>
-
-        <header className="border-b border-[var(--slop-line-strong)] pb-3 pt-2 sm:pb-4">
-          <h1 className="text-2xl font-black leading-tight tracking-tight text-[var(--slop-cream)] sm:text-4xl">
-            {venue.name}
-          </h1>
-          <p className="mt-1.5 text-xs text-[var(--slop-cream-muted)] sm:text-sm">
-            <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
-              <span>
-                {venue.city}, {venue.state}
-              </span>
-              <span className="text-[var(--slop-line)]">·</span>
-              <span className="font-semibold text-[var(--slop-cream)]">
-                {formatVenueTeamsInline(venue.teams, venue.slug)}
-              </span>
-              {venue.primarySport || venue.sports[0] ? (
-                <>
-                  <span className="text-[var(--slop-line)]">·</span>
-                  <span>{venue.primarySport ?? venue.sports[0]}</span>
-                </>
-              ) : null}
-            </span>
-          </p>
-        </header>
-
-        {venueId && (activeGame || upcomingGame) ? (
-          <div className="pt-3 sm:pt-4">
-            <GameDayModeCard
-              homeTeamLabel={homeTeamLabel}
-              venueTimeZone={venueTimeZone}
-              activeGame={activeGame}
-              upcomingGame={upcomingGame}
+          {mode !== "season" ? <input type="hidden" name="mode" value={mode} /> : null}
+          {category !== "all" ? (
+            <input type="hidden" name="category" value={category} />
+          ) : null}
+          {vendorSlug !== "all" ? (
+            <input type="hidden" name="vendor" value={vendorSlug} />
+          ) : null}
+          <label className="block min-w-0 flex-1 sm:max-w-md">
+            <span className="sr-only">Search items in this venue</span>
+            <input
+              name="q"
+              type="search"
+              enterKeyHint="search"
+              defaultValue={searchQuery}
+              placeholder="Item, vendor, section…"
+              className="media-venue-search-input"
             />
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <button type="submit" className="media-venue-search-btn">
+              Search
+            </button>
+            {searchQuery ? (
+              <Link
+                href={buildVenueHref(venue.slug, mode, category, vendorSlug, "")}
+                className="inline-flex items-center rounded-full px-3 py-2 text-[0.7rem] font-bold text-white/65 underline-offset-2 hover:text-white hover:underline"
+              >
+                Clear
+              </Link>
+            ) : null}
           </div>
+        </form>
+        <VenueVendorSelect
+          venueSlug={venue.slug}
+          mode={mode}
+          category={category}
+          vendorSlug={vendorSlug}
+          vendors={venueVendors}
+          q={searchQuery}
+          tone="media"
+        />
+        {selectedVendor ? (
+          <Link
+            href={`/venues/${venue.slug}/vendors/${selectedVendor.slug}`}
+            className="inline-flex text-xs font-bold text-white/65 hover:text-white"
+          >
+            Vendor: {selectedVendor.name} →
+          </Link>
+        ) : null}
+      </VenueHero>
+
+      <div className="media-venue-content">
+        {venueId && (activeGame || upcomingGame) ? (
+          <GameDayModeCard
+            homeTeamLabel={homeTeamLabel}
+            venueTimeZone={venueTimeZone}
+            activeGame={activeGame}
+            upcomingGame={upcomingGame}
+          />
         ) : null}
 
         {venueFreshReviews.length > 0 ? (
@@ -516,129 +579,58 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           />
         ) : null}
 
-        <section
-          className="pt-3 sm:pt-4"
-          aria-describedby="venue-standings-hint"
-        >
+        <section className="mt-6 sm:mt-8" aria-describedby="venue-standings-hint">
           <p id="venue-standings-hint" className="sr-only">
-            Slop Scoreboard uses geofenced fan reviews within{" "}
-            {venue.reviewRadiusMeters} meters of this venue when submitted on site.
+            Slop Scoreboard uses geofenced fan reviews within {venue.reviewRadiusMeters}{" "}
+            meters of this venue when submitted on site.
           </p>
-          <div className="flex flex-wrap items-end justify-between gap-2">
+          <div className="media-section-heading">
             <div>
-              <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-                Slop Scoreboard
-              </p>
-              <h2 className="mt-1 text-base font-black leading-snug text-[var(--slop-cream)] sm:text-lg">
-                Find the best food at {venue.name}
-              </h2>
+              <p className="media-section-eyebrow">Menu rankings</p>
+              <h2 className="media-section-title">Find the best food here</h2>
             </div>
-            <FanPoweredGuideBadge />
+            <FanPoweredGuideBadge className="media-guide-badge" />
           </div>
-          <FanPoweredGuideNote preset="venue-rankings" className="mt-2" />
-          <ModeChips
-            venueSlug={venue.slug}
-            mode={mode}
-            category={category}
-            vendorSlug={vendorSlug}
-            searchQuery={searchQuery}
-          />
-          <FilterChips
-            venueSlug={venue.slug}
-            mode={mode}
-            category={category}
-            vendorSlug={vendorSlug}
-            searchQuery={searchQuery}
-          />
-          <form
-            method="get"
-            action={`/venues/${venue.slug}`}
-            className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-end"
-          >
-            {mode !== "season" ? (
-              <input type="hidden" name="mode" value={mode} />
-            ) : null}
-            {category !== "all" ? (
-              <input type="hidden" name="category" value={category} />
-            ) : null}
-            {vendorSlug !== "all" ? (
-              <input type="hidden" name="vendor" value={vendorSlug} />
-            ) : null}
-            <label className="block min-w-0 flex-1 sm:max-w-md">
-              <span className="sr-only">Search items in this venue</span>
-              <input
-                name="q"
-                type="search"
-                enterKeyHint="search"
-                defaultValue={searchQuery}
-                placeholder="Item, vendor, section…"
-                className="mt-0.5 w-full rounded-lg border border-[color:rgba(245,233,208,0.1)] bg-[color:rgba(11,27,43,0.45)] px-2.5 py-1.5 text-xs font-medium text-[var(--slop-cream)] outline-none placeholder:text-[var(--slop-cream-dim)] focus:border-[var(--slop-orange)] focus:ring-1 focus:ring-[var(--slop-gold)]/30 sm:px-3 sm:text-sm"
+          <FanPoweredGuideNote preset="venue-rankings" className="media-guide-note mt-2" />
+
+          <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:items-start lg:gap-6">
+            <div className="min-w-0">
+              <AgeGateProvider>
+                {standingsRows.length > 0 ? (
+                  <VenueStandingsAgeGate
+                    rows={standingsAgeGateRows}
+                    venueSlug={venue.slug}
+                    isFreshStandingsTab={mode === "fresh"}
+                    tone="media"
+                  />
+                ) : (
+                  <p className="media-panel-card px-4 py-5 text-sm leading-relaxed text-[var(--media-ink-muted)]">
+                    {emptyStandingsMessage}
+                  </p>
+                )}
+              </AgeGateProvider>
+
+              <AdSlot
+                placementKey="rankings.banner"
+                variant="banner"
+                tone="media"
+                className="mt-4 hidden md:block"
               />
-            </label>
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="submit"
-                className="rounded-full border border-[color:rgba(245,233,208,0.12)] bg-[color:rgba(21,42,61,0.5)] px-3 py-1.5 text-[0.65rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)]/50 hover:text-[var(--slop-cream)] active:scale-[0.98]"
-              >
-                Search
-              </button>
-              {searchQuery ? (
-                <Link
-                  href={buildVenueHref(venue.slug, mode, category, vendorSlug, "")}
-                  className="inline-flex items-center rounded-full border border-transparent px-3 py-1.5 text-[0.65rem] font-bold text-[var(--slop-cream-dim)] underline-offset-2 hover:text-[var(--slop-gold-bright)] hover:underline active:scale-[0.98]"
-                >
-                  Clear
-                </Link>
-              ) : null}
+              <AdSlot
+                placementKey="venue.mobile.inline"
+                variant="inline"
+                className="mt-4 md:hidden"
+              />
             </div>
-          </form>
-          <VenueVendorSelect
-            venueSlug={venue.slug}
-            mode={mode}
-            category={category}
-            vendorSlug={vendorSlug}
-            vendors={venueVendors}
-            q={searchQuery}
-          />
-          {selectedVendor ? (
-            <Link
-              href={`/venues/${venue.slug}/vendors/${selectedVendor.slug}`}
-              className="mt-1.5 inline-flex text-xs font-bold text-[var(--slop-cream-dim)] hover:text-[var(--slop-cream)]"
-            >
-              Vendor: {selectedVendor.name} →
-            </Link>
-          ) : null}
 
-          <div className="mt-3 overflow-hidden rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.35)] shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_8px_28px_rgba(0,0,0,0.35)] sm:rounded-2xl">
-            <AgeGateProvider>
-              {standingsRows.length > 0 ? (
-                <VenueStandingsAgeGate
-                  rows={standingsAgeGateRows}
-                  venueSlug={venue.slug}
-                  isFreshStandingsTab={mode === "fresh"}
-                />
-              ) : (
-                <p className="px-3 py-4 text-sm leading-snug text-[var(--slop-cream-muted)] sm:px-4">
-                  {emptyStandingsMessage}
-                </p>
-              )}
-            </AgeGateProvider>
+            <aside className="mt-5 hidden space-y-4 lg:mt-0 lg:block">
+              <AdSlot placementKey="venue.sidebar" variant="card" tone="media" />
+            </aside>
           </div>
 
-          <AdSlot
-            placementKey="rankings.banner"
-            variant="banner"
-            className="mt-3 hidden md:block"
-          />
-          <AdSlot
-            placementKey="venue.mobile.inline"
-            variant="inline"
-            className="mt-3 md:hidden"
-          />
-
-          <FanPoweredGuideNote preset="venue-bottom" className="mt-2.5 px-0.5" />
+          <FanPoweredGuideNote preset="venue-bottom" className="media-guide-note mt-4" />
           <SuggestCorrectionLink
-            className="mt-2 px-0.5"
+            className="mt-3 text-[var(--media-ink-dim)]"
             context={{
               kind: "venue",
               venueName: venue.name,
@@ -647,69 +639,63 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             }}
           />
 
-          <div className="mt-4 space-y-3 border-t border-[var(--slop-line-strong)] pt-4 sm:mt-5 sm:pt-5">
-            <div className="hidden lg:block">
-              <AdSlot placementKey="venue.sidebar" variant="card" />
-            </div>
-
-            <article className="brand-card rounded-2xl p-3 sm:rounded-3xl sm:p-4">
-              <h3 className="text-sm font-black text-[var(--slop-cream)]">
+          <div className="mt-6 grid gap-4 sm:mt-8 sm:grid-cols-2">
+            <article className="media-panel-card p-4 sm:p-5">
+              <h3 className="text-sm font-black text-[var(--media-ink)]">
                 Suggest a menu item
               </h3>
-              <p className="mt-1 text-xs leading-snug text-[var(--slop-cream-dim)]">
-                Missing a bite? Add it here — pick a stand from the vendor filter if
-                you know it.
+              <p className="mt-1 text-xs leading-snug text-[var(--media-ink-muted)]">
+                Missing a bite? Add it here — pick a stand from the vendor filter if you
+                know it.
               </p>
-            {isSignedIn ? (
-              <form action={suggestMissingItem} className="mt-2 grid gap-2">
-                <input type="hidden" name="venueSlug" value={venue.slug} />
-                <input
-                  name="itemName"
-                  required
-                  placeholder="Missing item name"
-                  className="rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
-                />
-                <select
-                  name="vendorSlug"
-                  className="rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none"
-                  defaultValue=""
+              {isSignedIn ? (
+                <form action={suggestMissingItem} className="mt-3 grid gap-2">
+                  <input type="hidden" name="venueSlug" value={venue.slug} />
+                  <input
+                    name="itemName"
+                    required
+                    placeholder="Missing item name"
+                    className="rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)]"
+                  />
+                  <select
+                    name="vendorSlug"
+                    className="rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none focus:border-[var(--media-orange)]"
+                    defaultValue=""
+                  >
+                    <option value="">Vendor unknown</option>
+                    {venueVendors.map((vendor) => (
+                      <option key={vendor.slug} value={vendor.slug}>
+                        {vendor.name}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    name="locationHint"
+                    placeholder="Optional section or location"
+                    className="rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)]"
+                  />
+                  <textarea
+                    name="suggestedItemNote"
+                    maxLength={240}
+                    placeholder="Optional: price, stand, or menu context"
+                    className="min-h-20 rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)]"
+                  />
+                  <button type="submit" className="media-primary-button w-fit px-5 py-2.5 text-sm">
+                    Submit suggestion
+                  </button>
+                </form>
+              ) : (
+                <Link
+                  href={`/login?next=${encodeURIComponent(`/venues/${venue.slug}`)}`}
+                  className="media-cta-outline mt-3 inline-flex px-4 py-2 text-xs"
                 >
-                  <option value="">Vendor unknown</option>
-                  {venueVendors.map((vendor) => (
-                    <option key={vendor.slug} value={vendor.slug}>
-                      {vendor.name}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  name="locationHint"
-                  placeholder="Optional section or location"
-                  className="rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
-                />
-                <textarea
-                  name="suggestedItemNote"
-                  maxLength={240}
-                  placeholder="Optional: price, stand, or menu context"
-                  className="min-h-20 rounded-2xl border border-[var(--slop-line-strong)] bg-black px-4 py-3 text-sm text-white outline-none placeholder:text-zinc-600"
-                />
-                <button
-                  type="submit"
-                  className="brand-cta rounded-full px-6 py-3 text-sm font-black"
-                >
-                  Submit suggestion
-                </button>
-              </form>
-            ) : (
-              <Link
-                href={`/login?next=${encodeURIComponent(`/venues/${venue.slug}`)}`}
-                className="mt-2 inline-flex rounded-full border border-[var(--slop-line-strong)] px-4 py-2 text-xs font-bold text-[var(--slop-cream-dim)]"
-              >
-                Sign in to suggest
-              </Link>
-            )}
+                  Sign in to suggest
+                </Link>
+              )}
             </article>
 
             <ClaimListingCta
+              className="media-panel-card !border-[var(--media-border)] !bg-[var(--media-white)] p-4 sm:p-5 [&_p]:text-[var(--media-ink-muted)] [&_p:nth-child(2)]:text-[var(--media-ink)] [&_p:first-child]:text-[var(--media-orange-deep)] [&_a]:border-[rgba(255,107,26,0.35)] [&_a]:bg-[rgba(255,107,26,0.08)] [&_a]:text-[var(--media-orange-deep)]"
               context={{
                 kind: "venue",
                 venueName: venue.name,
@@ -719,8 +705,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             />
           </div>
         </section>
-
-      </section>
+      </div>
     </main>
   );
 }

@@ -217,21 +217,27 @@ function BannerAd({
 function CardAd({
   ad,
   className,
-  label
+  label,
+  tone = "default"
 }: {
   ad: ActiveAd;
   className?: string;
   label: string;
+  tone?: "default" | "media";
 }) {
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
   const hasImage = Boolean(ad.imageUrl?.trim());
+  const isMedia = tone === "media";
 
   const shell = (
     <article
       className={[
-        "relative overflow-hidden rounded-2xl border border-[var(--slop-line-strong)]",
-        hasImage ? "min-h-[7.5rem]" : "brand-card p-4 sm:p-5",
+        "relative overflow-hidden rounded-2xl",
+        isMedia
+          ? "media-panel-card border"
+          : "border border-[var(--slop-line-strong)]",
+        hasImage ? "min-h-[7.5rem]" : isMedia ? "p-4 sm:p-5" : "brand-card p-4 sm:p-5",
         className
       ]
         .filter(Boolean)
@@ -249,19 +255,48 @@ function CardAd({
             sizes="400px"
             unoptimized={!isLocalAssetPath(ad.imageUrl)}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(6,15,24,0.95)] via-[rgba(6,15,24,0.7)] to-[rgba(6,15,24,0.4)]" />
+          <div
+            className={
+              isMedia
+                ? "absolute inset-0 bg-gradient-to-t from-[rgba(8,13,20,0.92)] via-[rgba(8,13,20,0.55)] to-transparent"
+                : "absolute inset-0 bg-gradient-to-t from-[rgba(6,15,24,0.95)] via-[rgba(6,15,24,0.7)] to-[rgba(6,15,24,0.4)]"
+            }
+          />
         </>
       ) : null}
       <div className={hasImage ? "relative flex h-full min-h-[7.5rem] flex-col justify-end p-4" : ""}>
-        <AdLabel label={label} sponsorName={ad.sponsorName} />
-        <p className="mt-1 text-base font-black leading-snug text-[var(--slop-cream)]">
+        {isMedia ? (
+          <p className="text-[0.6rem] font-black uppercase tracking-[0.14em] text-[var(--media-orange-deep)]">
+            {label}
+            {ad.sponsorName ? <span> · {ad.sponsorName}</span> : null}
+          </p>
+        ) : (
+          <AdLabel label={label} sponsorName={ad.sponsorName} />
+        )}
+        <p
+          className={`mt-1 text-base font-black leading-snug ${
+            isMedia ? "text-white" : "text-[var(--slop-cream)]"
+          }`}
+        >
           {ad.title}
         </p>
         {ad.body ? (
-          <p className="mt-1 line-clamp-2 text-sm text-[var(--slop-cream-muted)]">{ad.body}</p>
+          <p
+            className={`mt-1 line-clamp-2 text-sm ${
+              isMedia ? "text-white/85" : "text-[var(--slop-cream-muted)]"
+            }`}
+          >
+            {ad.body}
+          </p>
         ) : null}
         {showCta ? (
-          <span className="brand-cta-secondary mt-3 inline-flex w-fit rounded-full px-4 py-2 text-xs font-black">
+          <span
+            className={
+              isMedia
+                ? "media-primary-button mt-3 inline-flex w-fit px-4 py-2 text-xs"
+                : "brand-cta-secondary mt-3 inline-flex w-fit rounded-full px-4 py-2 text-xs font-black"
+            }
+          >
             {ad.ctaLabel}
           </span>
         ) : null}
@@ -358,5 +393,5 @@ export async function AdSlot({
   if (variant === "inline") {
     return <InlineAd ad={ad} className={className} label={label} />;
   }
-  return <CardAd ad={ad} className={className} label={label} />;
+  return <CardAd ad={ad} className={className} label={label} tone={tone} />;
 }

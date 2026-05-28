@@ -3,7 +3,29 @@
 export const ALCOHOL_HIDDEN_MESSAGE =
   "Alcohol-related listings are hidden until age confirmation.";
 
-export function AlcoholHiddenStandingRow({ rank }: { rank: number }) {
+export function AlcoholHiddenStandingRow({
+  rank,
+  tone = "brand"
+}: {
+  rank: number;
+  tone?: "brand" | "media";
+}) {
+  if (tone === "media") {
+    return (
+      <li>
+        <article
+          className="media-card media-venue-item-card opacity-80"
+          aria-label={`Rank ${rank}, alcohol listing hidden`}
+        >
+          <span className="media-venue-rank">#{rank}</span>
+          <p className="mt-2 text-[0.75rem] leading-snug text-[var(--media-ink-muted)] sm:text-xs">
+            {ALCOHOL_HIDDEN_MESSAGE}
+          </p>
+        </article>
+      </li>
+    );
+  }
+
   return (
     <div
       className="relative block border-b border-[color:rgba(245,233,208,0.07)] bg-[color:rgba(6,15,24,0.55)] last:border-b-0"

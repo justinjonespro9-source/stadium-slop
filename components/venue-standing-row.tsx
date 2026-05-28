@@ -34,30 +34,38 @@ function formatSections(item: FoodItem) {
   return `Sections ${item.sections.join(", ")}`;
 }
 
-/**
- * Vendor / stand context on scoreboard rows (not linked — item page has stand detail).
- * TODO: /venues/[venueSlug]/vendors/[vendorSlug] — More from this vendor, vendor claim flow.
- */
 function VendorStandMeta({
   vendor,
-  item
+  item,
+  tone = "brand"
 }: {
   vendor?: Vendor;
   item: FoodItem;
+  tone?: "brand" | "media";
 }) {
   const priceHint = formatItemPriceHint(item);
   const locationLine = formatSections(item);
+  const metaClass =
+    tone === "media"
+      ? "mt-1 line-clamp-2 text-[0.7rem] leading-snug text-[var(--media-ink-muted)] sm:text-xs"
+      : "mt-0.5 line-clamp-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs";
+  const nameClass =
+    tone === "media"
+      ? "font-semibold text-[var(--media-ink)]"
+      : "font-semibold text-[var(--slop-cream-muted)]";
+  const sepClass =
+    tone === "media" ? "text-[var(--media-ink-dim)]" : "text-[var(--slop-line)]";
 
   if (!vendor?.slug) {
     return (
-      <p className="mt-0.5 line-clamp-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs">
-        <span className="font-semibold text-[var(--slop-cream-muted)]">Vendor TBD</span>
-        <span className="text-[var(--slop-line)]"> · </span>
+      <p className={metaClass}>
+        <span className={nameClass}>Vendor TBD</span>
+        <span className={sepClass}> · </span>
         <span>{locationLine}</span>
         {priceHint ? (
           <>
-            <span className="text-[var(--slop-line)]"> · </span>
-            <span className="text-[var(--slop-cream-muted)]">{priceHint}</span>
+            <span className={sepClass}> · </span>
+            <span>{priceHint}</span>
           </>
         ) : null}
       </p>
@@ -67,35 +75,36 @@ function VendorStandMeta({
   const standDetail = [vendor.section, vendor.location].filter(Boolean).join(" · ");
 
   return (
-    <p className="mt-0.5 line-clamp-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs">
-      <span className="font-semibold text-[var(--slop-cream-muted)]">{vendor.name}</span>
+    <p className={metaClass}>
+      <span className={nameClass}>{vendor.name}</span>
       {standDetail ? (
         <>
-          <span className="text-[var(--slop-line)]"> · </span>
+          <span className={sepClass}> · </span>
           <span>{standDetail}</span>
         </>
       ) : (
         <>
-          <span className="text-[var(--slop-line)]"> · </span>
+          <span className={sepClass}> · </span>
           <span>{locationLine}</span>
         </>
       )}
       {priceHint ? (
         <>
-          <span className="text-[var(--slop-line)]"> · </span>
-          <span className="text-[var(--slop-cream-muted)]">{priceHint}</span>
+          <span className={sepClass}> · </span>
+          <span>{priceHint}</span>
         </>
       ) : null}
     </p>
   );
 }
 
-function FreshTodayChip() {
-  return (
-    <span className="inline-flex rounded border border-emerald-400/35 bg-emerald-950/25 px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.08em] text-emerald-200/95 sm:text-[0.58rem]">
-      Fresh today
-    </span>
-  );
+function FreshTodayChip({ tone = "brand" }: { tone?: "brand" | "media" }) {
+  const className =
+    tone === "media"
+      ? "inline-flex rounded-full border border-emerald-500/30 bg-emerald-50 px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.08em] text-emerald-700 sm:text-[0.58rem]"
+      : "inline-flex rounded border border-emerald-400/35 bg-emerald-950/25 px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.08em] text-emerald-200/95 sm:text-[0.58rem]";
+
+  return <span className={className}>Fresh today</span>;
 }
 
 export function VenueStandingRow({
@@ -105,7 +114,8 @@ export function VenueStandingRow({
   venueSlug,
   vendor,
   isFreshStandingsTab,
-  fanFavoriteBadges
+  fanFavoriteBadges,
+  tone = "brand"
 }: {
   item: FoodItem;
   rank: number;
@@ -114,6 +124,7 @@ export function VenueStandingRow({
   vendor?: Vendor;
   isFreshStandingsTab: boolean;
   fanFavoriteBadges: FanFavoriteBadge[];
+  tone?: "brand" | "media";
 }) {
   const unrated = isUnratedItemStats(stats.reviewCount);
   const liveFresh = stats.hasFreshToday && isFreshStandingsTab && !unrated;
@@ -126,6 +137,85 @@ export function VenueStandingRow({
         : !unrated && rank === 3
           ? "standings-podium-3"
           : "";
+
+  if (tone === "media") {
+    const cardAccent =
+      !unrated && rank === 1
+        ? "media-venue-item-card--podium-1"
+        : !unrated && rank === 2
+          ? "media-venue-item-card--podium-2"
+          : !unrated && rank === 3
+            ? "media-venue-item-card--podium-3"
+            : liveFresh
+              ? "media-venue-item-card--live"
+              : "";
+
+    const rankClass =
+      !unrated && rank === 1
+        ? "media-venue-rank--podium-1"
+        : !unrated && rank === 2
+          ? "media-venue-rank--podium-2"
+          : !unrated && rank === 3
+            ? "media-venue-rank--podium-3"
+            : "media-venue-rank";
+
+    return (
+      <li>
+        <Link
+          href={itemHref}
+          className={`media-card media-venue-item-card ${cardAccent}`}
+          aria-label={`${item.name}${unrated ? "" : ` — ${stats.averageSlopScore.toFixed(1)} Slop Score`}`}
+        >
+          <div className="flex items-start justify-between gap-2">
+            <span className={`media-venue-rank ${rankClass}`}>#{rank}</span>
+            <div className="min-w-[3rem] shrink-0 text-right">
+              {liveFresh ? (
+                <div className="mb-0.5 flex items-center justify-end gap-1">
+                  <span
+                    className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500"
+                    aria-hidden
+                  />
+                  <span className="text-[0.5rem] font-black uppercase tracking-[0.12em] text-emerald-600">
+                    Live
+                  </span>
+                </div>
+              ) : null}
+              {unrated ? (
+                <>
+                  <p className="media-venue-score text-[var(--media-ink-dim)]">—</p>
+                  <p className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
+                    {isFreshStandingsTab ? "No fresh" : "Unrated"}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="media-venue-score">{stats.averageSlopScore.toFixed(1)}</p>
+                  <p className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
+                    {isFreshStandingsTab ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="mt-2 min-w-0">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <p className="media-rank-card-title">{item.name}</p>
+              {item.ageRestricted ? (
+                <span className="rounded-full border border-[var(--media-border)] px-1.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
+                  21+
+                </span>
+              ) : null}
+            </div>
+            <VendorStandMeta vendor={vendor} item={item} tone="media" />
+            <div className="mt-1.5 flex flex-wrap items-center gap-1">
+              <FanFavoriteBadgeChips badges={fanFavoriteBadges} variant="row" />
+              {stats.hasFreshToday ? <FreshTodayChip tone="media" /> : null}
+            </div>
+          </div>
+        </Link>
+      </li>
+    );
+  }
 
   return (
     <article
@@ -163,10 +253,10 @@ export function VenueStandingRow({
               </span>
             ) : null}
           </div>
-          <VendorStandMeta vendor={vendor} item={item} />
+          <VendorStandMeta vendor={vendor} item={item} tone="brand" />
           <div className="mt-1 flex flex-wrap items-center gap-1">
             <FanFavoriteBadgeChips badges={fanFavoriteBadges} variant="row" />
-            {stats.hasFreshToday ? <FreshTodayChip /> : null}
+            {stats.hasFreshToday ? <FreshTodayChip tone="brand" /> : null}
           </div>
         </div>
         <div className="min-w-[3.25rem] shrink-0 text-right sm:min-w-[3.5rem]">
