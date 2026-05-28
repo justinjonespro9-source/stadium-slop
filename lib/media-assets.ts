@@ -5,7 +5,7 @@ import path from "node:path";
 export const TEAM_M8TES_POSTER_PNG = "/ads/team-m8tes-poster.png";
 export const TEAM_M8TES_POSTER_SVG = "/ads/team-m8tes-poster.svg";
 
-export const HOME_HERO_BACKGROUND = "/media/home-hero-bg.png";
+export const HOME_HERO_BACKGROUND = "/branding/home-hero-bg.png";
 
 export function resolveTeamM8tesPosterUrl(): string {
   const pngPath = path.join(process.cwd(), "public", "ads", "team-m8tes-poster.png");

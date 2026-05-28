@@ -1121,13 +1121,15 @@ body {
 }
 
 .media-home-hero {
-  min-height: min(28rem, 88dvh);
+  /* Mobile: ~520–580px */
+  min-height: clamp(32.5rem, 74dvh, 36.25rem);
   background: #060a10;
 }
 
 @media (min-width: 1024px) {
   .media-home-hero {
-    min-height: min(34rem, 78vh);
+    /* Desktop: ~560–620px */
+    min-height: clamp(35rem, 58vh, 38.75rem);
   }
 }
 
@@ -1139,20 +1141,20 @@ body {
 
 .media-home-hero__bg-image {
   object-fit: cover;
-  /* Mobile: crop from upper-center so food reads without crushing headline */
-  object-position: center 32%;
+  /* Mobile: slightly high center — food visible behind search */
+  object-position: center 26%;
 }
 
 @media (min-width: 640px) {
   .media-home-hero__bg-image {
-    object-position: 58% 40%;
+    object-position: 62% 34%;
   }
 }
 
 @media (min-width: 1024px) {
   .media-home-hero__bg-image {
-    /* Desktop: food on the right, copy on the left */
-    object-position: 72% center;
+    /* Desktop: bias right — burger, drink, fries, pizza */
+    object-position: 78% 42%;
   }
 }
 
@@ -1162,19 +1164,54 @@ body {
   z-index: 1;
   background:
     linear-gradient(
-      98deg,
-      rgba(6, 10, 16, 0.94) 0%,
-      rgba(6, 10, 16, 0.82) 32%,
-      rgba(6, 10, 16, 0.42) 58%,
-      rgba(6, 10, 16, 0.18) 100%
+      100deg,
+      rgba(6, 10, 16, 0.97) 0%,
+      rgba(6, 10, 16, 0.9) 22%,
+      rgba(6, 10, 16, 0.62) 46%,
+      rgba(6, 10, 16, 0.22) 68%,
+      rgba(6, 10, 16, 0.08) 100%
     ),
     linear-gradient(
       180deg,
-      rgba(6, 10, 16, 0.55) 0%,
-      rgba(6, 10, 16, 0.12) 42%,
-      rgba(6, 10, 16, 0.78) 100%
+      rgba(6, 10, 16, 0.35) 0%,
+      rgba(6, 10, 16, 0.08) 38%,
+      rgba(6, 10, 16, 0.72) 100%
     );
   pointer-events: none;
+}
+
+.media-home-hero__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse 95% 88% at 50% 45%, transparent 42%, rgba(6, 10, 16, 0.35) 100%),
+    radial-gradient(ellipse 140% 120% at 50% 100%, rgba(6, 10, 16, 0.55) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.media-home-hero__top-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 10, 16, 0.82) 0%,
+    rgba(6, 10, 16, 0.45) 12%,
+    rgba(6, 10, 16, 0.12) 28%,
+    transparent 48%
+  );
+  pointer-events: none;
+}
+
+.media-home-hero__bottom-fade {
+  height: 6.5rem;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--media-surface) 35%, transparent) 45%,
+    var(--media-surface) 100%
+  );
 }
 
 .media-section-heading {
