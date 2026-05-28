@@ -14,12 +14,12 @@ type ScorecardIdentityPreviewProps = {
 
 function PreviewFanFoodPhotoNote() {
   return (
-    <div className="rounded-lg border border-dashed border-[var(--slop-line)] bg-[rgba(6,14,24,0.35)] px-2 py-2">
-      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+    <div className="rounded-lg border border-dashed border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-2">
+      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-muted)]">
         Card front · fan food photo
       </p>
-      <div className="mt-1.5 flex min-h-[4.5rem] items-center justify-center rounded-md border border-[var(--slop-line)]/60 bg-[rgba(3,7,14,0.6)]">
-        <span className="text-center text-[0.55rem] leading-snug text-[var(--slop-cream-dim)]">
+      <div className="mt-1.5 flex min-h-[4.5rem] items-center justify-center rounded-md border border-[var(--media-border)] bg-[var(--media-white)]">
+        <span className="text-center text-[0.55rem] leading-snug text-[var(--media-ink-muted)]">
           Uploaded with each review — not set here
         </span>
       </div>
@@ -39,11 +39,11 @@ function PreviewFrontStrip({
   const avatar = normalizePublicImageUrl(avatarUrl);
 
   return (
-    <div className="rounded-lg border border-[var(--slop-line)] bg-[rgba(6,14,24,0.55)] px-2 py-2">
-      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+    <div className="rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-2">
+      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-muted)]">
         Card front · reviewer strip (round)
       </p>
-      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--slop-cream-dim)]">
+      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--media-ink-muted)]">
         Same avatar as below
       </p>
       <div className="mt-1.5 flex items-center gap-2">
@@ -87,11 +87,11 @@ function PreviewBackProfile({
   const avatar = normalizePublicImageUrl(avatarUrl);
 
   return (
-    <div className="rounded-lg border border-[var(--slop-line)] bg-[rgba(6,14,24,0.55)] px-2 py-2">
-      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+    <div className="rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-2">
+      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-muted)]">
         Card back · reviewer profile (square)
       </p>
-      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--slop-cream-dim)]">
+      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--media-ink-muted)]">
         Same avatar — square crop only
       </p>
       <div className="slop-scorecard-back-profile mt-1.5 flex items-start gap-2">

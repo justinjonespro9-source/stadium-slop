@@ -1,7 +1,5 @@
-import Link from "next/link";
+import Image from "next/image";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 import {
   updateProfileSocialSettings,
@@ -12,7 +10,7 @@ import { signOut } from "@/auth";
 import { ProfileDashboardBody } from "@/components/account/profile-dashboard-body";
 import { ProfileSocialEditor } from "@/components/account/profile-social-editor";
 import { ScorecardIdentityEditor } from "@/components/account/scorecard-identity-editor";
-import { AuthPageScaffold } from "@/components/auth-ui";
+import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
 import { AuthConfigAlert } from "@/components/auth-config-alert";
 import { GoogleSignInButton } from "@/components/google-sign-in-button";
 import { isGoogleSignInConfigured } from "@/lib/auth/env";
@@ -75,24 +73,50 @@ function reviewRowDateLabel(
 
 function SignedOutAccount() {
   return (
-    <AuthPageScaffold
-      eyebrow="Fan account"
-      title="Sign in to continue"
-      subtitle="Post reviews, upload photos, and mark helpful from one profile."
-      footer={
-        <p className="text-center text-[0.7rem] leading-relaxed text-[var(--slop-cream-dim)]">
-          Google sign-in keeps browsing public — only contributions need an account.
-        </p>
-      }
-    >
-      <AuthConfigAlert className="mt-4" />
-      <div className="mt-5">
-        <GoogleSignInButton
-          callbackUrl="/account"
-          disabled={!isGoogleSignInConfigured()}
-        />
+    <main className="media-page-shell min-h-screen">
+      <DiscoveryPageHero
+        eyebrow="Fan account"
+        title="Sign in to continue"
+        description="Post reviews, upload photos, and mark helpful from one profile."
+      />
+      <div className="media-venue-content mx-auto max-w-md">
+        <article className="media-content-card media-content-section !mt-0">
+          <AuthConfigAlert className="mb-4" />
+          <GoogleSignInButton
+            callbackUrl="/account"
+            disabled={!isGoogleSignInConfigured()}
+            className="media-cta w-full min-h-11 rounded-full px-4 py-3 text-sm font-black"
+          />
+          <p className="mt-5 border-t border-[var(--media-border)] pt-4 text-center text-[0.7rem] leading-relaxed text-[var(--media-ink-muted)]">
+            Google sign-in keeps browsing public — only contributions need an account.
+          </p>
+        </article>
       </div>
-    </AuthPageScaffold>
+    </main>
+  );
+}
+
+type AccountAlertProps = {
+  role: "alert" | "status";
+  variant: "warn" | "success";
+  title: string;
+  message: string;
+};
+
+function AccountAlert({ role, variant, title, message }: AccountAlertProps) {
+  const variantClass =
+    variant === "success"
+      ? "media-review-alert--success"
+      : "media-review-alert--warn";
+
+  return (
+    <div
+      role={role}
+      className={`media-review-alert ${variantClass} mb-4`}
+    >
+      <p className="font-bold">{title}</p>
+      <p className="mt-0.5">{message}</p>
+    </div>
   );
 }
 
@@ -357,89 +381,124 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
     { label: "Helpful likes", value: helpfulLikesReceived }
   ];
 
+  const heroSubtitle = [
+    handleDisplay,
+    joinedLabel ? `Joined ${joinedLabel}` : null,
+    `Home venue · ${homeVenueLabel}`
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
-    <main className="brand-page relative min-h-dvh overflow-x-hidden">
-      <div
-        className="pointer-events-none fixed inset-x-0 top-0 z-0 h-[min(32vh,220px)] bg-[radial-gradient(ellipse_85%_90%_at_50%_-15%,rgba(244,179,33,0.14),transparent_60%)]"
-        aria-hidden
-      />
-      <section className="relative z-10 mx-auto w-full max-w-6xl px-4 py-4 pb-10 sm:px-6 sm:py-6 lg:py-8">
-        {notAdminError ? (
-          <div
-            role="alert"
-            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
-          >
-            <p className="font-bold">Admin access</p>
-            <p className="mt-0.5 text-amber-100/95">
-              This account is signed in but is not an admin. Admin tools require{" "}
-              <code className="text-amber-50">User.role = ADMIN</code> in the database.
-            </p>
+    <main className="media-page-shell min-h-screen">
+      <DiscoveryPageHero
+        eyebrow="Fan account"
+        title={displayName}
+        subtitle={heroSubtitle}
+        description="Build your Slop reputation through reviews, photos, and helpful votes."
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-3 rounded-xl border border-white/16 bg-white/10 px-3 py-2.5 backdrop-blur-sm">
+            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border-2 border-[var(--media-orange-bright)]/55 bg-[#0a1018]">
+              {avatarUrl ? (
+                <Image
+                  src={avatarUrl}
+                  alt={`${displayName} profile photo`}
+                  fill
+                  className="object-cover"
+                  sizes="48px"
+                />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-sm font-black text-white">
+                  {initials}
+                </span>
+              )}
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-black text-white">{displayName}</p>
+              <p className="truncate text-xs font-bold text-white/65">{handleDisplay}</p>
+            </div>
           </div>
+          <form action={contributorSignOut} className="hidden sm:block">
+            <button type="submit" className="media-secondary-button !border-white/20 !bg-white/10 !text-white/90 hover:!border-[var(--media-orange)]/45 hover:!bg-white/14 hover:!text-white">
+              Sign out
+            </button>
+          </form>
+        </div>
+      </DiscoveryPageHero>
+
+      <div className="media-venue-content">
+        {notAdminError ? (
+          <AccountAlert
+            role="alert"
+            variant="warn"
+            title="Admin access"
+            message="This account is signed in but is not an admin. Admin tools require User.role = ADMIN in the database."
+          />
         ) : null}
         {profileLoadErrorMessage ? (
-          <div
+          <AccountAlert
             role="alert"
-            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
-          >
-            <p className="font-bold">Profile data</p>
-            <p className="mt-0.5 text-amber-100/95">{profileLoadErrorMessage}</p>
-          </div>
+            variant="warn"
+            title="Profile data"
+            message={profileLoadErrorMessage}
+          />
         ) : null}
         {savedNotice === "identity" ? (
-          <div
+          <AccountAlert
             role="status"
-            className="mb-4 rounded-xl border border-emerald-800/70 bg-emerald-950/40 px-3 py-2.5 text-sm text-emerald-100"
-          >
-            Scorecard identity saved. It will show on your Slop Scorecards.
-          </div>
+            variant="success"
+            title="Scorecard identity"
+            message="Saved. It will show on your Slop Scorecards."
+          />
         ) : savedNotice === "avatar" ? (
-          <div
+          <AccountAlert
             role="status"
-            className="mb-4 rounded-xl border border-emerald-800/70 bg-emerald-950/40 px-3 py-2.5 text-sm text-emerald-100"
-          >
-            Profile photo saved.
-          </div>
+            variant="success"
+            title="Profile photo"
+            message="Saved."
+          />
         ) : savedNotice === "social" ? (
-          <div
+          <AccountAlert
             role="status"
-            className="mb-4 rounded-xl border border-emerald-800/70 bg-emerald-950/40 px-3 py-2.5 text-sm text-emerald-100"
-          >
-            Reviewer profile saved.
-          </div>
+            variant="success"
+            title="Reviewer profile"
+            message="Saved."
+          />
         ) : null}
         {identityErrorMessage ? (
-          <div
+          <AccountAlert
             role="alert"
-            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
-          >
-            <p className="font-bold">Scorecard identity</p>
-            <p className="mt-0.5 text-amber-100/95">{identityErrorMessage}</p>
-          </div>
+            variant="warn"
+            title="Scorecard identity"
+            message={identityErrorMessage}
+          />
         ) : null}
         {uploadErrorMessage ? (
-          <div
+          <AccountAlert
             role="alert"
-            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
-          >
-            <p className="font-bold">Profile photo</p>
-            <p className="mt-0.5 text-amber-100/95">{uploadErrorMessage}</p>
-          </div>
+            variant="warn"
+            title="Profile photo"
+            message={uploadErrorMessage}
+          />
         ) : null}
         {socialErrorMessage ? (
-          <div
+          <AccountAlert
             role="alert"
-            className="mb-4 rounded-xl border border-amber-800/80 bg-amber-950/50 px-3 py-2.5 text-sm text-amber-100"
-          >
-            <p className="font-bold">Reviewer profile</p>
-            <p className="mt-0.5 text-amber-100/95">{socialErrorMessage}</p>
-          </div>
+            variant="warn"
+            title="Reviewer profile"
+            message={socialErrorMessage}
+          />
         ) : null}
 
-        <div className="brand-card rounded-2xl border border-[var(--slop-gold)]/35 px-4 py-4 sm:px-5 sm:py-5">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[var(--slop-gold-dim)]">
-            Scorecard identity
-          </p>
-          <p className="mt-1 max-w-2xl text-xs leading-snug text-[var(--slop-cream-dim)]">
+        <section className="media-content-card media-content-section !mt-0">
+          <div className="media-section-heading">
+            <div>
+              <p className="media-section-eyebrow">Slop Scorecards</p>
+              <h2 className="media-section-title">Scorecard identity</h2>
+            </div>
+          </div>
+          <p className="mt-2 max-w-2xl text-xs leading-snug text-[var(--media-ink-muted)]">
             What other fans see on your Slop Scorecards — name, handle, and photo.
           </p>
           <div className="mt-4">
@@ -456,16 +515,19 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               uploadProfileAvatar={uploadProfileAvatar}
             />
           </div>
-        </div>
+        </section>
 
-        <div
+        <section
           id="reviewer-profile"
-          className="brand-card mt-4 rounded-2xl border border-[var(--slop-line-strong)] px-4 py-4 sm:mt-5 sm:px-5 sm:py-5"
+          className="media-content-card media-content-section"
         >
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[var(--slop-gold-dim)]">
-            Find me elsewhere
-          </p>
-          <p className="mt-1 max-w-2xl text-xs leading-snug text-[var(--slop-cream-dim)]">
+          <div className="media-section-heading">
+            <div>
+              <p className="media-section-eyebrow">Elsewhere</p>
+              <h2 className="media-section-title">Find me elsewhere</h2>
+            </div>
+          </div>
+          <p className="mt-2 max-w-2xl text-xs leading-snug text-[var(--media-ink-muted)]">
             Optional external links and history visibility. Stadium Slop is not a follower
             platform — reviews stay on food items and venues.
           </p>
@@ -475,7 +537,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
               updateProfileSocialSettings={updateProfileSocialSettings}
             />
           </div>
-        </div>
+        </section>
 
         <ProfileDashboardBody
           displayName={displayName}
@@ -493,7 +555,7 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
           reviewDateLabel={reviewRowDateLabel}
           canEditReviewToday={isGameDayKeyTodayForVenue}
         />
-      </section>
+      </div>
     </main>
   );
 }

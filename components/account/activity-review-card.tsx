@@ -43,7 +43,7 @@ export function ActivityReviewCard({
   const scorecardUrl = `/scorecards/${encodeURIComponent(reviewId)}`;
 
   return (
-    <article className="group rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.72)] p-3 transition hover:border-[var(--slop-gold)]/35 sm:p-4">
+    <article className="media-content-card group p-3 transition hover:border-[var(--media-orange)]/35 sm:p-4">
       <ReviewCardHeader
         foodName={foodName}
         venueName={venueName}
@@ -57,7 +57,7 @@ export function ActivityReviewCard({
         <MetaChip>{dateLine}</MetaChip>
         <MetaChip>{napkinRating}/5 napkins</MetaChip>
         {verifiedGameDay ? (
-          <MetaChip variant="gold">Verified at park</MetaChip>
+          <MetaChip variant="accent">Verified at park</MetaChip>
         ) : null}
         {photoCount > 0 ? (
           <MetaChip variant="muted" title="Review includes a photo">
@@ -99,10 +99,10 @@ function ReviewCardHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0 flex-1">
-        <h3 className="truncate text-sm font-black leading-tight text-[var(--slop-cream)] sm:text-base">
+        <h3 className="truncate text-sm font-black leading-tight text-[var(--media-ink)] sm:text-base">
           {foodName}
         </h3>
-        <p className="mt-0.5 truncate text-xs font-semibold text-[var(--slop-gold-dim)]">
+        <p className="mt-0.5 truncate text-xs font-semibold text-[var(--media-orange-deep)]">
           {venueName}
         </p>
       </div>
@@ -114,13 +114,13 @@ function ReviewCardHeader({
 function SlopScoreBadge({ score }: { score: number }) {
   return (
     <div
-      className="flex min-w-[3.25rem] shrink-0 flex-col items-center justify-center rounded-lg border border-[var(--slop-orange)]/40 bg-[color:rgba(255,159,28,0.1)] px-2.5 py-1.5"
+      className="flex min-w-[3.25rem] shrink-0 flex-col items-center justify-center rounded-lg border border-[var(--media-orange)]/35 bg-[rgba(255,107,26,0.08)] px-2.5 py-1.5"
       aria-label={`Slop score ${score.toFixed(1)}`}
     >
-      <span className="text-lg font-black tabular-nums leading-none text-[var(--slop-orange)]">
+      <span className="text-lg font-black tabular-nums leading-none text-[var(--media-orange)]">
         {score.toFixed(1)}
       </span>
-      <span className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+      <span className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-muted)]">
         Slop
       </span>
     </div>
@@ -143,20 +143,20 @@ function CardActions({
       {canEditToday ? (
         <Link
           href={reviewUrl}
-          className="inline-flex min-h-9 items-center rounded-xl border border-[var(--slop-orange)] bg-[color:rgba(255,159,28,0.12)] px-3.5 py-2 text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-orange)] transition hover:bg-[color:rgba(255,159,28,0.22)]"
+          className="media-cta inline-flex min-h-9 items-center rounded-full px-3.5 py-2 text-[0.65rem] font-black uppercase tracking-[0.06em]"
         >
           Edit today&apos;s review
         </Link>
       ) : null}
       <Link
         href={scorecardUrl}
-        className="inline-flex min-h-9 items-center rounded-xl border border-[var(--slop-line-strong)] px-3.5 py-2 text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-cream)]"
+        className="media-secondary-button min-h-9 px-3.5 py-2 text-[0.65rem]"
       >
         View scorecard
       </Link>
       <Link
         href={itemUrl}
-        className="inline-flex min-h-9 items-center rounded-xl border border-[var(--slop-line-strong)] px-3.5 py-2 text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)] hover:text-[var(--slop-cream)]"
+        className="media-secondary-button min-h-9 px-3.5 py-2 text-[0.65rem]"
       >
         View item
       </Link>
@@ -170,15 +170,15 @@ function MetaChip({
   title
 }: {
   children: ReactNode;
-  variant?: "default" | "gold" | "muted";
+  variant?: "default" | "accent" | "muted";
   title?: string;
 }) {
   const styles =
-    variant === "gold"
-      ? "border-[var(--slop-gold)]/40 bg-[color:rgba(244,179,33,0.12)] text-[var(--slop-gold-bright)]"
+    variant === "accent"
+      ? "border-[var(--media-orange)]/35 bg-[rgba(255,107,26,0.1)] text-[var(--media-orange-deep)]"
       : variant === "muted"
-        ? "border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.5)] text-[var(--slop-cream-muted)]"
-        : "border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.45)] text-[var(--slop-cream-dim)]";
+        ? "border-[var(--media-border)] bg-[var(--media-surface)] text-[var(--media-ink-muted)]"
+        : "border-[var(--media-border)] bg-[var(--media-surface)] text-[var(--media-ink-dim)]";
 
   return (
     <li

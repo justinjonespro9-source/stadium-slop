@@ -66,28 +66,18 @@ export function ProfileDashboardBody({
     <>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-[var(--slop-gold-dim)]">
-            Fan scout dashboard
-          </p>
-          <p className="mt-1 max-w-xl text-[0.7rem] leading-snug text-[var(--slop-cream-dim)] sm:text-xs">
+          <p className="media-section-eyebrow">Dashboard</p>
+          <h2 className="media-section-title">Fan scout dashboard</h2>
+          <p className="mt-1 max-w-xl text-xs leading-snug text-[var(--media-ink-muted)]">
             Build your Slop reputation through reviews, photos, and helpful votes.
           </p>
         </div>
-        <form action={mockUserSignOut} className="hidden sm:block">
-          <button
-            type="submit"
-            className="brand-cta-secondary rounded-xl px-4 py-2 text-xs font-black uppercase tracking-[0.1em]"
-          >
-            Sign out
-          </button>
-        </form>
       </div>
 
       <div className="mt-4 grid gap-4 lg:mt-6 lg:grid-cols-12 lg:gap-6">
-        <header className="brand-card rounded-2xl border border-[var(--slop-line-strong)] px-4 py-4 sm:px-5 sm:py-5 lg:col-span-4 lg:self-start">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            Scout profile
-          </p>
+        <header className="media-content-card media-content-section !mt-0 lg:col-span-4 lg:self-start">
+          <p className="media-section-eyebrow">Profile</p>
+          <h3 className="media-section-title text-lg sm:text-xl">Scout profile</h3>
 
           <ProfileIdentityBlock
             avatarUrl={avatarUrl}
@@ -97,51 +87,40 @@ export function ProfileDashboardBody({
             homeVenueLabel={homeVenueLabel}
             initials={initials}
           />
-          <p className="mt-3 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+          <p className="mt-3 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
             Edit your public Scorecard name, handle, and photo in the section above.
           </p>
         </header>
 
         <div className="flex flex-col gap-4 lg:col-span-8">
-          <div className="brand-card rounded-2xl border border-[var(--slop-gold)]/35 bg-[color:rgba(244,179,33,0.06)] px-4 py-4 sm:px-5">
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-              Scout status
-            </p>
-            <p className="mt-1 text-xl font-black tracking-tight text-[var(--slop-cream)] sm:text-2xl">
+          <div className="media-account-highlight px-4 py-4 sm:px-5 sm:py-5">
+            <p className="media-section-eyebrow">Rank</p>
+            <p className="mt-1 text-xl font-black tracking-tight text-[var(--media-ink)] sm:text-2xl">
               {scoutRank.title}
             </p>
-            <p className="mt-1.5 text-xs leading-snug text-[var(--slop-cream-muted)] sm:text-sm">
+            <p className="mt-1.5 text-xs leading-snug text-[var(--media-ink-muted)] sm:text-sm">
               {scoutRank.tagline}
             </p>
-            <p className="mt-3 text-[0.7rem] font-semibold text-[var(--slop-cream-dim)]">
+            <p className="mt-3 text-[0.7rem] font-semibold text-[var(--media-ink-dim)]">
               {activitySummary}
             </p>
           </div>
 
           <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
             {statTiles.map((t) => (
-              <li
-                key={t.label}
-                className="brand-card rounded-xl border border-[var(--slop-line-strong)] px-3 py-3 text-center"
-              >
-                <p className="text-xl font-black tabular-nums text-[var(--slop-gold-bright)]">
-                  {t.value}
-                </p>
-                <p className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)] sm:text-[0.6rem]">
-                  {t.label}
-                </p>
+              <li key={t.label} className="media-stat-card">
+                <p className="media-stat-value">{t.value}</p>
+                <p className="media-stat-label">{t.label}</p>
               </li>
             ))}
           </ul>
 
-          {/* Future: awards, loyalty points, social share stats, venue badges, season rankings */}
           <div
-            className="brand-card rounded-2xl border border-[var(--slop-line-strong)] px-4 py-3.5 sm:px-5"
+            className="media-content-card px-4 py-3.5 sm:px-5 sm:py-4"
             aria-label="Scout badges"
           >
-            <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-              Badges
-            </p>
+            <p className="media-section-eyebrow">Badges</p>
+            <p className="media-section-title text-base sm:text-lg">Earned &amp; locked</p>
             <ul className="mt-2.5 flex flex-wrap gap-2">
               {profileBadges.map((badge) => (
                 <li key={badge.id}>
@@ -149,8 +128,8 @@ export function ProfileDashboardBody({
                     title={badge.earned ? badge.label : badge.hint}
                     className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[0.65rem] font-bold sm:text-xs ${
                       badge.earned
-                        ? "border-[var(--slop-gold)]/45 bg-[color:rgba(244,179,33,0.14)] text-[var(--slop-gold-bright)]"
-                        : "border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.4)] text-[var(--slop-cream-dim)] opacity-75"
+                        ? "border-[var(--media-orange)]/35 bg-[rgba(255,107,26,0.1)] text-[var(--media-orange-deep)]"
+                        : "border-[var(--media-border)] bg-[var(--media-surface)] text-[var(--media-ink-muted)] opacity-80"
                     }`}
                   >
                     {badge.label}
@@ -158,45 +137,41 @@ export function ProfileDashboardBody({
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-[0.6rem] leading-snug text-[var(--slop-cream-dim)]">
-              Locked badges light up as you review, verify at the park, and share
-              photos.
+            <p className="mt-2 text-[0.65rem] leading-snug text-[var(--media-ink-muted)]">
+              Locked badges light up as you review, verify at the park, and share photos.
             </p>
           </div>
         </div>
       </div>
 
       <section className="mt-6 lg:mt-8" aria-labelledby="activity-heading">
-        <div className="flex items-baseline justify-between gap-2">
-          <h2
-            id="activity-heading"
-            className="text-[0.7rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]"
-          >
-            Your activity
-          </h2>
-          <Link
-            href="/venues"
-            className="shrink-0 text-[0.65rem] font-bold text-[var(--slop-gold)] underline-offset-2 hover:underline"
-          >
+        <div className="media-section-heading">
+          <div>
+            <p className="media-section-eyebrow">History</p>
+            <h2 id="activity-heading" className="media-section-title">
+              Your activity
+            </h2>
+          </div>
+          <Link href="/venues" className="media-section-link shrink-0">
             Explore venues
           </Link>
         </div>
 
         {reviewHistory.length === 0 ? (
-          <div className="brand-card mt-3 rounded-2xl border border-[var(--slop-line-strong)] px-4 py-8 text-center">
-            <p className="text-sm font-black text-[var(--slop-cream)]">No reviews yet</p>
-            <p className="mt-1 text-[0.7rem] text-[var(--slop-cream-dim)]">
+          <div className="media-content-card mt-3 px-4 py-8 text-center sm:mt-4">
+            <p className="text-sm font-black text-[var(--media-ink)]">No reviews yet</p>
+            <p className="mt-1 text-[0.75rem] text-[var(--media-ink-muted)]">
               Rate something at any venue — it shows up here.
             </p>
             <Link
               href="/venues"
-              className="brand-cta mt-4 inline-flex min-h-10 items-center rounded-xl px-5 py-2.5 text-xs font-black"
+              className="media-cta mt-4 inline-flex min-h-10 items-center rounded-full px-5 py-2.5 text-xs font-black"
             >
               Explore venues
             </Link>
           </div>
         ) : (
-          <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:gap-4">
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2 sm:mt-4 lg:gap-4">
             {reviewHistory.map((review) => (
               <li key={review.id} className="min-w-0">
                 <ActivityReviewCard
@@ -237,14 +212,14 @@ export function ProfileDashboardBody({
         )}
       </section>
 
-      <footer className="mt-8 flex flex-col gap-3 border-t border-[var(--slop-line-strong)] pt-5 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-[0.65rem] text-[var(--slop-cream-dim)]">
+      <footer className="mt-8 flex flex-col gap-3 border-t border-[var(--media-border)] pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-[0.65rem] text-[var(--media-ink-muted)]">
           Signed in with Google — sign out on shared devices after game day.
         </p>
         <form action={mockUserSignOut} className="sm:hidden">
           <button
             type="submit"
-            className="brand-cta-secondary w-full min-h-10 rounded-xl px-5 py-2.5 text-xs font-black uppercase tracking-[0.12em]"
+            className="media-secondary-button w-full min-h-10 px-5 py-2.5 text-xs"
           >
             Sign out
           </button>
@@ -271,7 +246,7 @@ function ProfileIdentityBlock({
 }) {
   return (
     <div className="mt-4 flex flex-col items-center text-center sm:mt-5 lg:items-start lg:text-left">
-      <div className="relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-2xl border-2 border-[var(--slop-gold)]/80 bg-[var(--slop-cream)] shadow-[0_0_0_1px_rgba(244,179,33,0.15)] ring-2 ring-[var(--slop-navy-deep)] sm:h-20 sm:w-20">
+      <div className="relative h-[4.5rem] w-[4.5rem] shrink-0 overflow-hidden rounded-2xl border-2 border-[var(--media-orange)]/45 bg-[var(--media-surface)] shadow-[var(--media-shadow-card)] sm:h-20 sm:w-20">
         {avatarUrl ? (
           <Image
             src={avatarUrl}
@@ -281,27 +256,25 @@ function ProfileIdentityBlock({
             sizes="80px"
           />
         ) : (
-          <span className="flex h-full w-full items-center justify-center text-xl font-black text-[var(--slop-ink)] sm:text-2xl">
+          <span className="flex h-full w-full items-center justify-center text-xl font-black text-[var(--media-ink)] sm:text-2xl">
             {initials}
           </span>
         )}
       </div>
-      <h1 className="mt-3 text-xl font-black leading-tight tracking-tight text-[var(--slop-cream)] sm:text-2xl">
+      <h3 className="mt-3 text-xl font-black leading-tight tracking-tight text-[var(--media-ink)] sm:text-2xl">
         {displayName}
-      </h1>
-      <p className="mt-0.5 text-sm font-semibold text-[var(--slop-gold-dim)]">
+      </h3>
+      <p className="mt-0.5 text-sm font-semibold text-[var(--media-orange-deep)]">
         {handleDisplay}
       </p>
       {joinedLabel ? (
-        <p className="mt-2 text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
+        <p className="mt-2 text-[0.65rem] font-bold uppercase tracking-[0.1em] text-[var(--media-ink-muted)]">
           Joined {joinedLabel}
         </p>
       ) : null}
-      <p className="mt-2 text-xs text-[var(--slop-cream-dim)]">
+      <p className="mt-2 text-xs text-[var(--media-ink-muted)]">
         Home venue ·{" "}
-        <span className="font-semibold text-[var(--slop-cream-muted)]">
-          {homeVenueLabel}
-        </span>
+        <span className="font-semibold text-[var(--media-ink)]">{homeVenueLabel}</span>
       </p>
     </div>
   );

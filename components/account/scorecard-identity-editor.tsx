@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 
 import { ScorecardIdentityPreview } from "@/components/account/scorecard-identity-preview";
-import { authFieldClass, authLabelClass } from "@/components/auth-ui";
 import {
   handleDisplayFromStored,
   handleInputFromStored
@@ -60,10 +59,8 @@ export function ScorecardIdentityEditor({
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-          How your Scorecard identity appears
-        </p>
-        <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+        <p className="media-section-eyebrow">Preview</p>
+        <p className="mt-1 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
           One reviewer avatar powers your name on every Slop Scorecard (round on the front
           strip, square on the back). The large photo on each card front is the fan food
           photo from that review — uploaded when you submit a review, not here.
@@ -81,11 +78,12 @@ export function ScorecardIdentityEditor({
         </div>
       </div>
 
-      <form action={updateScorecardIdentity} className="space-y-3 border-t border-[var(--slop-line)] pt-4">
-        <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-          Name &amp; handle
-        </p>
-        <label className={`block ${authLabelClass}`}>
+      <form
+        action={updateScorecardIdentity}
+        className="space-y-3 border-t border-[var(--media-border)] pt-4"
+      >
+        <p className="media-form-label">Name &amp; handle</p>
+        <label className="media-form-label">
           Display name
           <input
             name="displayName"
@@ -95,17 +93,17 @@ export function ScorecardIdentityEditor({
             maxLength={40}
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className={`${authFieldClass} mt-1`}
+            className="media-form-field mt-1 font-normal normal-case tracking-normal"
             autoComplete="nickname"
           />
         </label>
-        <label className={`block ${authLabelClass}`}>
+        <label className="media-form-label">
           Handle
-          <span className="mt-0.5 block text-[0.6rem] font-normal normal-case tracking-normal text-[var(--slop-cream-dim)]">
+          <span className="mt-0.5 block text-[0.65rem] font-medium normal-case tracking-normal text-[var(--media-ink-muted)]">
             Letters, numbers, and underscores · 3–24 characters
           </span>
           <span className="relative mt-1 flex items-center">
-            <span className="pointer-events-none absolute left-3 text-sm font-bold text-[var(--slop-cream-dim)]">
+            <span className="pointer-events-none absolute left-3 text-sm font-bold text-[var(--media-ink-muted)]">
               @
             </span>
             <input
@@ -117,47 +115,45 @@ export function ScorecardIdentityEditor({
               pattern="[a-zA-Z0-9_]+"
               value={handleInput}
               onChange={(e) => setHandleInput(e.target.value.replace(/^@+/, ""))}
-              className={`${authFieldClass} pl-7`}
+              className="media-form-field pl-7 font-normal normal-case tracking-normal"
               autoComplete="username"
             />
           </span>
         </label>
         <button
           type="submit"
-          className="brand-cta inline-flex min-h-9 items-center rounded-lg px-4 py-2 text-xs font-black"
+          className="media-cta inline-flex min-h-9 items-center rounded-full px-4 py-2 text-xs font-black"
         >
           Save identity
         </button>
       </form>
 
-      <div className="border-t border-[var(--slop-line)] pt-4">
-        <p className="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-          Reviewer avatar
-        </p>
-        <p className="mt-1 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+      <div className="border-t border-[var(--media-border)] pt-4">
+        <p className="media-form-label">Reviewer avatar</p>
+        <p className="mt-1 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
           This is your Scorecard identity photo only — not the fan food photo on the card
           front. Same Cloudinary path as review photos (~8MB, JPEG/PNG/WebP/GIF).
         </p>
         {cloudinaryReady ? (
           <form action={uploadProfileAvatar} className="mt-3 space-y-2">
-            <label className={`block ${authLabelClass}`}>
+            <label className="media-form-label">
               <span className="sr-only">Choose profile photo</span>
               <input
                 name="avatar"
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif"
-                className={`${authFieldClass} py-2 text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-[var(--slop-orange)] file:px-2.5 file:py-1.5 file:text-[0.65rem] file:font-black file:text-[var(--slop-ink)]`}
+                className="media-form-field py-2 text-xs file:mr-2 file:rounded-full file:border-0 file:bg-[var(--media-orange)] file:px-2.5 file:py-1.5 file:text-[0.65rem] file:font-black file:text-white"
               />
             </label>
             <button
               type="submit"
-              className="inline-flex min-h-9 items-center rounded-lg border border-[var(--slop-gold)]/50 bg-[color:rgba(244,179,33,0.12)] px-4 py-2 text-xs font-black text-[var(--slop-gold-bright)] transition hover:bg-[color:rgba(244,179,33,0.2)]"
+              className="media-secondary-button min-h-9 px-4 py-2 text-xs"
             >
               Save photo
             </button>
           </form>
         ) : (
-          <p className="mt-2 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]">
+          <p className="mt-2 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
             Add Cloudinary env vars on the server to enable profile photo uploads.
           </p>
         )}
