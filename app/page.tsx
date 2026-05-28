@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 
+import { AdSlot } from "@/components/ads/ad-slot";
 import { HomeSlopNetwork } from "@/components/home-slop-network";
 import { HomeVenueSearch } from "@/components/home-venue-search";
 import { HomeWorldCupGuidePromo } from "@/components/home-world-cup-guide-promo";
@@ -46,11 +47,19 @@ export default async function Home() {
           Fan-powered food ratings with game-day signals on what&apos;s fresh.
         </p>
 
+        <div className="mx-auto mt-3 max-w-2xl">
+          <AdSlot placementKey="home.hero.secondary" variant="inline" />
+        </div>
+
         <div className="mx-auto mt-3 max-w-2xl sm:mt-4 lg:mt-1.5">
           <HomeVenueSearch venues={venues} />
         </div>
 
         <HomeWorldCupGuidePromo />
+
+        <div className="mx-auto mt-5 max-w-2xl sm:mt-6">
+          <AdSlot placementKey="home.featured.banner" variant="banner" />
+        </div>
       </section>
 
       <HomeSlopNetwork />

@@ -27,6 +27,7 @@ import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatHomeOfTeams, formatVenueTeamsInline } from "@/lib/venue-teams";
+import { AdSlot } from "@/components/ads/ad-slot";
 import { ClaimListingCta } from "@/components/claim-listing-cta";
 import { SuggestCorrectionLink } from "@/components/suggest-correction-link";
 import {
@@ -623,6 +624,18 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               )}
             </AgeGateProvider>
           </div>
+
+          <AdSlot
+            placementKey="rankings.banner"
+            variant="banner"
+            className="mt-3 hidden md:block"
+          />
+          <AdSlot
+            placementKey="venue.mobile.inline"
+            variant="inline"
+            className="mt-3 md:hidden"
+          />
+
           <FanPoweredGuideNote preset="venue-bottom" className="mt-2.5 px-0.5" />
           <SuggestCorrectionLink
             className="mt-2 px-0.5"
@@ -635,6 +648,10 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           />
 
           <div className="mt-4 space-y-3 border-t border-[var(--slop-line-strong)] pt-4 sm:mt-5 sm:pt-5">
+            <div className="hidden lg:block">
+              <AdSlot placementKey="venue.sidebar" variant="card" />
+            </div>
+
             <article className="brand-card rounded-2xl p-3 sm:rounded-3xl sm:p-4">
               <h3 className="text-sm font-black text-[var(--slop-cream)]">
                 Suggest a menu item

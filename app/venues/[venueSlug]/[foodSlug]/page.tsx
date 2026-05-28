@@ -63,6 +63,7 @@ import {
   getFanFavoriteBadgesForItem
 } from "@/lib/venue-awards";
 import { FoodItemAwardChips } from "@/components/food-item-award-chips";
+import { AdSlot } from "@/components/ads/ad-slot";
 import { ClaimListingCta } from "@/components/claim-listing-cta";
 import { SuggestCorrectionLink } from "@/components/suggest-correction-link";
 import { FanPoweredGuideBadge } from "@/components/fan-powered-guide-note";
@@ -613,6 +614,15 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
           />
         </Suspense>
 
+        {showReviewSaved ? (
+          <AdSlot
+            placementKey="review.confirmation"
+            variant="card"
+            className="mt-4"
+            label="Sponsored"
+          />
+        ) : null}
+
         <header className="space-y-2 pt-1 sm:space-y-2.5 sm:pt-2">
           <div className="flex flex-wrap items-center gap-1.5">
             {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
@@ -717,6 +727,12 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             </p>
           </div>
         </header>
+
+        <AdSlot
+          placementKey="item.detail.inline"
+          variant="inline"
+          className="mt-3 sm:mt-4"
+        />
 
         <section
           id="fan-photo-reviews"

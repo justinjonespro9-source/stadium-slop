@@ -494,6 +494,24 @@ model SuggestedItem {
   @@index([userId])
 }
 
+model AdPlacement {
+  id           String       @id @default(cuid())
+  placementKey String
+  title        String
+  body         String?
+  imageUrl     String?
+  ctaLabel     String?
+  ctaHref      String?
+  sponsorName  String?
+  status       EntityStatus @default(ACTIVE)
+  startsAt     DateTime?
+  endsAt       DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([placementKey, status])
+}
+
 model ReportFlag {
   id             String           @id @default(cuid())
   reporterUserId String

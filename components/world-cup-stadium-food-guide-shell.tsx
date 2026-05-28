@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AdSlot } from "@/components/ads/ad-slot";
 import { WorldCupStadiumFoodGuide } from "@/components/world-cup-stadium-food-guide";
 import type { WorldCupGuideContent } from "@/lib/world-cup-stadium-food-guide-content";
 import { worldCupGuideFaqJsonLd } from "@/lib/world-cup-stadium-food-guide-content";
@@ -69,6 +70,12 @@ export function WorldCupStadiumFoodGuideShell({
             {content.hero.description}
           </p>
         </header>
+
+        <AdSlot
+          placementKey="worldcup.guide.banner"
+          variant="banner"
+          className="mt-6 sm:mt-8"
+        />
 
         <div className="mt-8 sm:mt-10">
           <WorldCupStadiumFoodGuide content={content} hosts={hosts} />
