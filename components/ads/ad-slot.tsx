@@ -11,6 +11,8 @@ type AdSlotProps = {
   variant?: AdSlotVariant;
   /** Defaults to "Partner Spotlight" */
   label?: string;
+  /** Light homepage sponsor styling */
+  tone?: "default" | "media";
 };
 
 function isExternalHref(href: string): boolean {
@@ -36,6 +38,76 @@ function AdLabel({
       ) : null}
     </p>
   );
+}
+
+function MediaBannerAd({
+  ad,
+  className,
+  label
+}: {
+  ad: ActiveAd;
+  className?: string;
+  label: string;
+}) {
+  const ctaHref = ad.ctaHref?.trim();
+  const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
+  const imageSrc = ad.imageUrl?.trim() ?? "";
+
+  const inner = (
+    <article
+      className={["media-sponsor-banner relative sm:min-h-[11rem]", className]
+        .filter(Boolean)
+        .join(" ")}
+      role="complementary"
+      aria-label={`${label}: ${ad.sponsorName ?? ad.title}`}
+    >
+      {imageSrc ? (
+        <div className="media-sponsor-banner__image">
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 640px) 100vw, 1152px"
+            unoptimized={!isLocalAssetPath(imageSrc)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,13,20,0.95)] via-[rgba(8,13,20,0.5)] to-transparent sm:bg-gradient-to-r sm:from-[rgba(8,13,20,0.92)] sm:via-[rgba(8,13,20,0.65)] sm:to-transparent" />
+        </div>
+      ) : null}
+      <div className="media-sponsor-banner__body">
+        <p className="text-[0.6rem] font-black uppercase tracking-[0.14em] text-white/70">
+          {label}
+          {ad.sponsorName ? (
+            <span className="text-[var(--media-orange-bright)]"> · {ad.sponsorName}</span>
+          ) : null}
+        </p>
+        <div>
+          <p className="text-lg font-black leading-tight text-white sm:text-2xl">{ad.title}</p>
+          {ad.body ? (
+            <p className="mt-1.5 max-w-lg text-sm leading-relaxed text-white/80">{ad.body}</p>
+          ) : null}
+        </div>
+        {showCta ? (
+          <span className="media-cta inline-flex w-fit text-xs sm:text-sm">{ad.ctaLabel}</span>
+        ) : null}
+      </div>
+    </article>
+  );
+
+  if (showCta && ctaHref) {
+    const external = isExternalHref(ctaHref);
+    return (
+      <Link
+        href={ctaHref}
+        className="group block transition hover:opacity-[0.98]"
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {inner}
+      </Link>
+    );
+  }
+
+  return inner;
 }
 
 function BannerAd({
@@ -265,7 +337,8 @@ export async function AdSlot({
   placementKey,
   className,
   variant = "card",
-  label = "Partner Spotlight"
+  label = "Partner Spotlight",
+  tone = "default"
 }: AdSlotProps) {
   const ad = await getActiveAdForPlacement(placementKey);
   if (!ad) {
@@ -273,6 +346,9 @@ export async function AdSlot({
   }
 
   if (variant === "banner") {
+    if (tone === "media") {
+      return <MediaBannerAd ad={ad} className={className} label={label} />;
+    }
     return <BannerAd ad={ad} className={className} label={label} />;
   }
   if (variant === "inline") {

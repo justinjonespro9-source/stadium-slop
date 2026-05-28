@@ -21,36 +21,30 @@ function FeaturedItemGrid({
   emptyMessage: string;
 }) {
   if (items.length === 0) {
-    return (
-      <p className="text-sm leading-relaxed text-[var(--slop-cream-dim)]">{emptyMessage}</p>
-    );
+    return <p className="text-sm leading-relaxed text-[var(--media-ink-muted)]">{emptyMessage}</p>;
   }
 
   return (
-    <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
         <li key={`${item.venueSlug}-${item.foodSlug}`}>
           <Link
             href={`/venues/${item.venueSlug}/${item.foodSlug}`}
-            className="brand-card block rounded-xl border border-[var(--slop-line-strong)] p-3.5 transition hover:border-[var(--slop-gold)]/40 sm:p-4"
+            className="media-rank-card"
           >
-            <p className="text-sm font-black leading-snug text-[var(--slop-cream)]">
-              {item.name}
-            </p>
-            <p className="mt-0.5 text-xs text-[var(--slop-cream-muted)]">{item.venueName}</p>
+            <p className="media-rank-card-title">{item.name}</p>
+            <p className="media-rank-card-meta">{item.venueName}</p>
             <div className="mt-2 flex flex-wrap items-center gap-2 text-[0.65rem] font-bold">
               {item.slopScore != null ? (
-                <span className="text-[var(--slop-gold-bright)]">
-                  Slop {item.slopScore.toFixed(1)}
-                </span>
+                <span className="media-rank-score">Slop {item.slopScore.toFixed(1)}</span>
               ) : null}
               {item.reviewCount > 0 ? (
-                <span className="text-[var(--slop-cream-dim)]">
+                <span className="text-[var(--media-ink-dim)]">
                   {item.reviewCount} review{item.reviewCount === 1 ? "" : "s"}
                 </span>
               ) : null}
               {item.badge ? (
-                <span className="rounded-full border border-[var(--slop-line-strong)] px-2 py-0.5 uppercase tracking-[0.08em] text-[var(--slop-cream-dim)]">
+                <span className="rounded-full border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-0.5 uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
                   {item.badge}
                 </span>
               ) : null}
@@ -79,18 +73,11 @@ function SectionShell({
     <section>
       <div className="flex flex-wrap items-end justify-between gap-2">
         <div>
-          <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            {eyebrow}
-          </p>
-          <h2 className="mt-0.5 text-lg font-black text-[var(--slop-cream)] sm:text-xl">
-            {title}
-          </h2>
+          <p className="media-section-eyebrow">{eyebrow}</p>
+          <h2 className="media-section-title">{title}</h2>
         </div>
         {href && linkLabel ? (
-          <Link
-            href={href}
-            className="shrink-0 text-xs font-bold text-[var(--slop-gold-dim)] hover:text-[var(--slop-gold-bright)]"
-          >
+          <Link href={href} className="media-section-link">
             {linkLabel} →
           </Link>
         ) : null}
@@ -114,29 +101,18 @@ export function HomeFeaturedSections({
         />
       </SectionShell>
 
-      <section className="brand-panel rounded-2xl border border-[var(--slop-gold)]/35 bg-[color:rgba(244,179,33,0.06)] p-4 sm:p-6">
-        <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-          2026 World Cup
-        </p>
-        <h2 className="mt-1 text-lg font-black text-[var(--slop-cream)] sm:text-xl">
-          Know Before You Bite
-        </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--slop-cream-muted)]">
+      <section className="media-panel-card media-panel-card--accent p-5 sm:p-6">
+        <p className="media-section-eyebrow">2026 World Cup</p>
+        <h2 className="media-section-title">Know Before You Bite</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--media-ink-muted)]">
           Browse food at every host stadium and help fans rank what&apos;s worth trying before
           kickoff.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link
-            href={WORLD_CUP_GUIDE_PATH_EN}
-            className="brand-cta rounded-full px-5 py-2.5 text-sm font-black"
-          >
+          <Link href={WORLD_CUP_GUIDE_PATH_EN} className="media-cta">
             World Cup Food Guide
           </Link>
-          <Link
-            href={WORLD_CUP_GUIDE_PATH_ES}
-            hrefLang="es"
-            className="rounded-full border border-[var(--slop-line-strong)] px-4 py-2.5 text-xs font-bold text-[var(--slop-cream-muted)] hover:border-[var(--slop-gold)]/45"
-          >
+          <Link href={WORLD_CUP_GUIDE_PATH_ES} hrefLang="es" className="media-cta-outline">
             Ver guía en español
           </Link>
         </div>

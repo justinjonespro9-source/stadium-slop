@@ -41,21 +41,20 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="brand-page min-h-screen">
-      <div className="mx-auto w-full max-w-6xl px-4 pb-12 pt-4 sm:px-6 sm:pb-16 sm:pt-6 lg:px-10">
-        <HomeHero>
-          <HomeVenueSearch venues={venues} variant="hero" />
-          <HomePopularSearches />
-        </HomeHero>
+    <main className="media-home min-h-screen">
+      <HomeHero>
+        <HomeVenueSearch venues={venues} variant="hero" />
+        <HomePopularSearches />
+      </HomeHero>
+
+      <div className="media-home-content mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-10">
+        <HomeStatBand stats={stats} />
 
         <div className="mt-6 sm:mt-8">
-          <HomeStatBand stats={stats} />
-        </div>
-
-        <div className="mt-5 sm:mt-6">
           <AdSlot
             placementKey="home.featured.banner"
             variant="banner"
+            tone="media"
             label="Sponsored"
           />
         </div>
@@ -66,8 +65,8 @@ export default async function Home() {
           fanFavorites={fanFavorites}
         />
 
-        <div className="mt-10 border-t border-[var(--slop-line-strong)] pt-8 sm:mt-12">
-          <HomeSlopNetwork />
+        <div className="mt-10 border-t border-[var(--media-border)] pt-8 sm:mt-12">
+          <HomeSlopNetwork variant="media" />
         </div>
       </div>
     </main>

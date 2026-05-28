@@ -110,11 +110,20 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
     }
   };
 
+  const resultRowClass = (active: boolean) =>
+    isHero
+      ? active
+        ? "border-neutral-200 border-l-[var(--media-orange)] bg-orange-50 shadow-sm"
+        : "hover:border-neutral-200 hover:border-l-[var(--media-orange)]/60 hover:bg-neutral-50"
+      : active
+        ? "border-[var(--slop-line-strong)] border-l-[var(--slop-gold)] bg-[rgba(244,179,33,0.12)] shadow-[inset_0_0_0_1px_rgba(244,179,33,0.14)]"
+        : "hover:border-[var(--slop-line-strong)] hover:border-l-[rgba(244,179,33,0.5)] hover:bg-[color:rgba(255,244,223,0.048)] active:bg-[color:rgba(255,244,223,0.06)]";
+
   return (
     <div
       className={
         isHero
-          ? "p-0.5"
+          ? "overflow-hidden rounded-2xl bg-white p-1 shadow-[0_16px_48px_rgba(0,0,0,0.28)] ring-1 ring-white/20"
           : "brand-panel rounded-2xl border p-1.5 shadow-2xl sm:rounded-[1.85rem] sm:p-2"
       }
     >
@@ -139,7 +148,7 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
           placeholder="Search venues, cities, teams…"
           className={
             isHero
-              ? "w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-4 py-3.5 text-base font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-2xl sm:px-5 sm:py-4 sm:text-lg"
+              ? "w-full rounded-xl border border-neutral-200 bg-white px-4 py-3.5 text-base font-semibold text-[var(--media-ink)] outline-none placeholder:text-neutral-400 focus-visible:ring-2 focus-visible:ring-[var(--media-orange)] sm:rounded-2xl sm:px-5 sm:py-4 sm:text-lg"
               : "w-full rounded-xl border border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] px-3.5 py-3 text-[0.95rem] font-semibold text-[var(--slop-cream)] outline-none ring-[var(--slop-gold)] placeholder:text-[var(--slop-cream-dim)] focus-visible:ring-2 sm:rounded-[1.35rem] sm:px-4 sm:py-3.5 sm:text-base"
           }
         />
@@ -147,13 +156,17 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
       {!isHero ? <FanPoweredGuideNote preset="home" className="mt-1.5 px-1" /> : null}
 
       {showEmpty ? (
-        <div className="border-t border-[var(--slop-line)] px-2 py-3">
+        <div
+          className={
+            isHero ? "border-t border-neutral-200 px-2 py-3" : "border-t border-[var(--slop-line)] px-2 py-3"
+          }
+        >
           <VenueSearchEmpty />
         </div>
       ) : null}
 
       {showList ? (
-        <div className="border-t border-[var(--slop-line)]">
+        <div className={isHero ? "border-t border-neutral-200" : "border-t border-[var(--slop-line)]"}>
           <ul
             id={listboxId}
             role="listbox"
@@ -182,18 +195,26 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
                     }}
                     href={`/venues/${venue.slug}`}
                     tabIndex={-1}
-                    className={`flex gap-2.5 rounded-lg border border-transparent border-l-[3px] border-l-transparent px-2.5 py-2 transition sm:gap-3 sm:px-3 sm:py-2.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[var(--slop-gold)] ${
-                      isActive
-                        ? "border-[var(--slop-line-strong)] border-l-[var(--slop-gold)] bg-[rgba(244,179,33,0.12)] shadow-[inset_0_0_0_1px_rgba(244,179,33,0.14)]"
-                        : "hover:border-[var(--slop-line-strong)] hover:border-l-[rgba(244,179,33,0.5)] hover:bg-[color:rgba(255,244,223,0.048)] active:bg-[color:rgba(255,244,223,0.06)]"
-                    }`}
+                    className={`flex gap-2.5 rounded-lg border border-transparent border-l-[3px] border-l-transparent px-2.5 py-2 transition sm:gap-3 sm:px-3 sm:py-2.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 ${isHero ? "focus-visible:outline-[var(--media-orange)]" : "focus-visible:outline-[var(--slop-gold)]"} ${resultRowClass(isActive)}`}
                   >
                     <span className="min-w-0 flex-1 text-left">
                       <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                        <span className="text-[0.9rem] font-black leading-snug tracking-tight text-[var(--slop-cream)] sm:text-base">
+                        <span
+                          className={
+                            isHero
+                              ? "text-[0.9rem] font-black leading-snug tracking-tight text-[var(--media-ink)] sm:text-base"
+                              : "text-[0.9rem] font-black leading-snug tracking-tight text-[var(--slop-cream)] sm:text-base"
+                          }
+                        >
                           {venue.name}
                         </span>
-                        <span className="inline-flex shrink-0 items-center gap-1 rounded-md border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.09em] text-[var(--slop-gold-dim)] sm:text-[0.6rem]">
+                        <span
+                          className={
+                            isHero
+                              ? "inline-flex shrink-0 items-center gap-1 rounded-md border border-neutral-200 bg-neutral-100 px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.09em] text-[var(--media-ink-muted)] sm:text-[0.6rem]"
+                              : "inline-flex shrink-0 items-center gap-1 rounded-md border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-1.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.09em] text-[var(--slop-gold-dim)] sm:text-[0.6rem]"
+                          }
+                        >
                           {venue.venueTypeKey ? (
                             <span className="text-sm leading-none" aria-hidden>
                               {venueTypeGlyph(venue.venueTypeKey) ?? ""}
@@ -202,15 +223,27 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
                           <span>{venue.venueType}</span>
                         </span>
                       </span>
-                      <span className="mt-1 block text-[0.72rem] text-[var(--slop-cream-muted)]">
+                      <span
+                        className={
+                          isHero
+                            ? "mt-1 block text-[0.72rem] text-[var(--media-ink-muted)]"
+                            : "mt-1 block text-[0.72rem] text-[var(--slop-cream-muted)]"
+                        }
+                      >
                         {venue.city}, {venue.state}
                         {metaChips ? (
                           <>
                             {" "}
-                            <span aria-hidden className="text-[var(--slop-line)]">
+                            <span aria-hidden className={isHero ? "text-neutral-300" : "text-[var(--slop-line)]"}>
                               —
                             </span>{" "}
-                            <span className="font-semibold text-[var(--slop-cream-dim)]">
+                            <span
+                              className={
+                                isHero
+                                  ? "font-semibold text-[var(--media-ink-dim)]"
+                                  : "font-semibold text-[var(--slop-cream-dim)]"
+                              }
+                            >
                               {metaChips}
                             </span>
                           </>
@@ -223,9 +256,22 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
             })}
           </ul>
           {hasMore ? (
-            <p className="border-t border-[var(--slop-line)] px-3 py-1.5 text-center text-[0.65rem] text-[var(--slop-cream-dim)]">
+            <p
+              className={
+                isHero
+                  ? "border-t border-neutral-200 px-3 py-1.5 text-center text-[0.65rem] text-[var(--media-ink-dim)]"
+                  : "border-t border-[var(--slop-line)] px-3 py-1.5 text-center text-[0.65rem] text-[var(--slop-cream-dim)]"
+              }
+            >
               +{filtered.length - capped.length} more — refine or{" "}
-              <Link href="/venues" className="font-bold text-[var(--slop-gold)] underline-offset-2 hover:underline">
+              <Link
+                href="/venues"
+                className={
+                  isHero
+                    ? "font-bold text-[var(--media-orange)] underline-offset-2 hover:underline"
+                    : "font-bold text-[var(--slop-gold)] underline-offset-2 hover:underline"
+                }
+              >
                 browse all venues
               </Link>
             </p>

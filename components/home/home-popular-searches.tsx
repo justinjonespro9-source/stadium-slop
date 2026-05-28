@@ -11,8 +11,8 @@ const POPULAR_SEARCHES = [
 
 export function HomePopularSearches() {
   return (
-    <div className="mt-3">
-      <p className="text-[0.6rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
+    <div className="mt-4">
+      <p className="text-[0.6rem] font-black uppercase tracking-[0.12em] text-white/55">
         Popular searches
       </p>
       <ul className="mt-2 flex flex-wrap gap-1.5 sm:gap-2">
@@ -20,7 +20,7 @@ export function HomePopularSearches() {
           <li key={item.label}>
             <Link
               href={item.href}
-              className="inline-flex rounded-full border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-3 py-1.5 text-[0.7rem] font-bold text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)]/45 hover:text-[var(--slop-gold-bright)] sm:text-xs"
+              className="inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[0.7rem] font-bold text-white/90 backdrop-blur-sm transition hover:border-[var(--media-orange)]/50 hover:bg-white/15 sm:text-xs"
             >
               {item.label}
             </Link>
