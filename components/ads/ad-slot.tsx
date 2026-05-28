@@ -1,7 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { TeamM8tesFeaturedPanel } from "@/components/ads/team-m8tes-featured-panel";
 import { getActiveAdForPlacement, type ActiveAd } from "@/lib/ads";
+
+function isTeamM8tesHomeFeaturedBanner(placementKey: string, ad: ActiveAd): boolean {
+  return (
+    placementKey === "home.featured.banner" &&
+    /team-m8tes/i.test(ad.sponsorName ?? "")
+  );
+}
 
 export type AdSlotVariant = "banner" | "card" | "inline";
 
@@ -43,12 +51,17 @@ function AdLabel({
 function MediaBannerAd({
   ad,
   className,
-  label
+  label,
+  placementKey
 }: {
   ad: ActiveAd;
   className?: string;
   label: string;
+  placementKey: string;
 }) {
+  if (isTeamM8tesHomeFeaturedBanner(placementKey, ad)) {
+    return <TeamM8tesFeaturedPanel ad={ad} className={className} />;
+  }
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
   const imageSrc = ad.imageUrl?.trim() ?? "";
@@ -398,7 +411,14 @@ export async function AdSlot({
 
   if (variant === "banner") {
     if (tone === "media") {
-      return <MediaBannerAd ad={ad} className={className} label={label} />;
+      return (
+        <MediaBannerAd
+          ad={ad}
+          className={className}
+          label={label}
+          placementKey={placementKey}
+        />
+      );
     }
     return <BannerAd ad={ad} className={className} label={label} />;
   }
