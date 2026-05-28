@@ -1,24 +1,36 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 
-import { HOME_HERO_BACKGROUND } from "@/lib/media-assets";
+import {
+  HOME_HERO_BACKGROUND,
+  resolveHomeHeroMobileBackground
+} from "@/lib/media-assets";
 
 type HomeHeroProps = {
   children: ReactNode;
 };
 
 export function HomeHero({ children }: HomeHeroProps) {
+  const mobileBackground = resolveHomeHeroMobileBackground();
+
   return (
     <section className="media-home-hero relative overflow-hidden text-white shadow-[var(--media-shadow-hero)]">
       <div className="media-home-hero__bg" aria-hidden>
         <div className="media-home-hero__bg-canvas">
           <Image
-            src={HOME_HERO_BACKGROUND}
+            src={mobileBackground}
             alt=""
             fill
             priority
             sizes="100vw"
-            className="media-home-hero__bg-image"
+            className="media-home-hero__bg-image media-home-hero__bg-image--mobile"
+          />
+          <Image
+            src={HOME_HERO_BACKGROUND}
+            alt=""
+            fill
+            sizes="100vw"
+            className="media-home-hero__bg-image media-home-hero__bg-image--desktop"
           />
         </div>
       </div>
@@ -30,7 +42,7 @@ export function HomeHero({ children }: HomeHeroProps) {
         aria-hidden
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-9 pt-6 sm:px-6 sm:pb-10 sm:pt-7 lg:px-10 lg:pb-11 lg:pt-8">
+      <div className="media-home-hero__content relative z-10 mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6 sm:pt-7 lg:px-10 lg:pt-8">
         <div className="max-w-xl lg:max-w-[32rem]">
           <h1 className="text-[clamp(1.65rem,5.8vw,3.15rem)] font-black leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.55)]">
             Find the best eats at{" "}
