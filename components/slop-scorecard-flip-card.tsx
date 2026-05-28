@@ -158,11 +158,11 @@ function ReviewerProfileBlock({
 
 function SlopScoreBadge({ score }: { score: number }) {
   return (
-    <div className="slop-scorecard-score-octagon shrink-0 px-2.5 py-1.5 text-center">
-      <p className="text-[0.42rem] font-black uppercase tracking-[0.16em] text-[var(--slop-navy)]">
+    <div className="slop-scorecard-score-octagon slop-scorecard-score-octagon--compact shrink-0 text-center">
+      <p className="text-[0.38rem] font-black uppercase tracking-[0.14em] text-[var(--slop-ink)]">
         Slop
       </p>
-      <p className="text-[1.35rem] font-black tabular-nums leading-none text-[var(--slop-ink)]">
+      <p className="text-[1.05rem] font-black tabular-nums leading-none text-[var(--slop-ink)]">
         {slopScoreDisplay(score)}
       </p>
     </div>
@@ -171,7 +171,7 @@ function SlopScoreBadge({ score }: { score: number }) {
 
 function ScorecardFrontHeader({ slopScore }: { slopScore: number }) {
   return (
-    <div className="slop-scorecard-header slop-scorecard-header--front relative z-[2] grid shrink-0 grid-cols-[1fr_auto] items-center gap-2 px-2 py-2">
+    <div className="slop-scorecard-header slop-scorecard-header--front relative z-[2] grid shrink-0 grid-cols-[1fr_auto] items-center">
       <StadiumSlopWordmark size="scorecard" className="min-w-0" />
       <SlopScoreBadge score={slopScore} />
     </div>
@@ -310,11 +310,11 @@ export function SlopScorecardFlipCard({
             <div className="flex h-full min-h-0 flex-col">
               <ScorecardFrontHeader slopScore={review.slopScore} />
 
-              <div className="flex min-h-0 flex-1 flex-col px-1.5 pt-1 pb-1.5">
+              <div className="slop-scorecard-front-body">
                 <div className="slop-scorecard-photo-well flex min-h-0 flex-1 flex-col">
                   <button
                     type="button"
-                    className="slop-scorecard-photo-well-inner relative block h-full min-h-[10.5rem] w-full flex-1 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-card-orange-bright)]"
+                    className="slop-scorecard-photo-well-inner cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--slop-card-orange-bright)]"
                     aria-label={`Flip ${itemName} scorecard to details`}
                     aria-controls={flipRegionId}
                     aria-expanded={isFlipped}

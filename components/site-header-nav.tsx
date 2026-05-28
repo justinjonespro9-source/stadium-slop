@@ -70,7 +70,7 @@ export function SiteHeaderMobileAccount({ href, label }: { href: string; label: 
   return (
     <Link
       href={href}
-      className="media-nav-account-icon flex h-11 w-11 items-center justify-center rounded-full border border-white/14 bg-white/8 text-white/90 transition hover:border-white/25 hover:bg-white/12 md:hidden"
+      className="media-nav-account-icon flex h-11 w-11 max-h-11 max-w-11 items-center justify-center rounded-full border border-white/14 bg-white/8 text-white/90 transition hover:border-white/25 hover:bg-white/12 md:hidden"
     >
       <AccountIcon />
       <span className="sr-only">{label}</span>
@@ -140,7 +140,7 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
         <AccountPill href={accountHref} label={accountLabel} />
         <button
           type="button"
-          className="media-nav-menu-btn inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/14 bg-white/8 text-white md:hidden"
+          className="media-nav-menu-btn inline-flex h-11 w-11 max-h-11 max-w-11 items-center justify-center rounded-full border border-white/14 bg-white/8 text-white md:hidden"
           aria-expanded={menuOpen}
           aria-controls="site-mobile-nav"
           onClick={() => setMenuOpen((open) => !open)}

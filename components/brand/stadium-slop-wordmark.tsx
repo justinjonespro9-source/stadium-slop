@@ -15,17 +15,18 @@ type StadiumSlopWordmarkProps = {
 };
 
 const SIZE_CLASS: Record<StadiumSlopWordmarkSize, string> = {
+  /** Height-capped so the nav bar stays ~4rem; width follows aspect ratio up to max-width. */
   header:
-    "h-auto w-[220px] max-w-[58vw] shrink-0 object-contain object-center md:w-[260px] md:max-w-none md:object-left",
+    "h-auto max-h-[2.5rem] w-auto max-w-[min(12.8125rem,58vw)] shrink-0 object-contain object-center md:max-h-[2.65rem] md:max-w-[16.25rem] md:object-left",
   scorecard:
-    "h-auto w-[13.5rem] max-w-[calc(100%-5rem)] shrink-0 object-contain object-left",
-  compact: "h-auto w-[11rem] max-w-[calc(100%-6.5rem)] shrink-0 object-contain object-left"
+    "h-auto w-[9.5rem] max-w-[calc(100%-4.25rem)] shrink-0 object-contain object-left",
+  compact: "h-auto w-[8.75rem] max-w-[calc(100%-5.5rem)] shrink-0 object-contain object-left"
 };
 
 const SIZE_HINT: Record<StadiumSlopWordmarkSize, string> = {
-  header: "(max-width: 768px) 480px, 520px",
-  scorecard: "432px",
-  compact: "352px"
+  header: "(max-width: 768px) 410px, 520px",
+  scorecard: "304px",
+  compact: "280px"
 };
 
 /**
