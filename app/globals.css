@@ -339,9 +339,6 @@ body {
   --slop-scorecard-width: min(100%, 21.25rem);
   --slop-scorecard-cut: 12px;
   --slop-scorecard-cut-sm: 7px;
-  --slop-scorecard-rim-outer: 4px;
-  --slop-scorecard-rim-gold: 5px;
-  --slop-scorecard-rim-accent: 1.5px;
 }
 
 .slop-scorecard-chamfer {
@@ -370,83 +367,19 @@ body {
   );
 }
 
-/* Collectible shell — black rim → orange trim → accent → inner */
+/* Collectible shell — single chamfered face + orange rim (no outer mat) */
 .slop-scorecard-collectible {
   position: relative;
   height: 100%;
   width: 100%;
-  filter:
-    drop-shadow(0 18px 36px rgba(0, 0, 0, 0.6))
-    drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4))
-    drop-shadow(0 0 24px rgba(255, 107, 26, 0.16))
-    drop-shadow(0 0 3px rgba(255, 107, 26, 0.22));
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.5)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
 }
 
 .slop-scorecard-collectible-frame {
   position: relative;
   height: 100%;
   width: 100%;
-}
-
-/* Layer 1: dark gunmetal outer rim with brushed-metal micro-texture */
-.slop-scorecard-collectible-outer {
-  height: 100%;
   overflow: hidden;
-  padding: var(--slop-scorecard-rim-outer);
-  background:
-    repeating-linear-gradient(
-      115deg,
-      transparent,
-      transparent 1px,
-      rgba(255, 255, 255, 0.018) 1px,
-      rgba(255, 255, 255, 0.018) 2px
-    ),
-    linear-gradient(155deg, #050505 0%, #121212 30%, #0a0a0a 60%, #080808 100%);
-  box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.9),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.6);
-}
-
-/* Layer 2: brand orange primary trim */
-.slop-scorecard-collectible-gold {
-  height: 100%;
-  overflow: hidden;
-  padding: var(--slop-scorecard-rim-gold);
-  background:
-    linear-gradient(
-      145deg,
-      #ffb088 0%,
-      #ff8a45 12%,
-      var(--slop-card-orange-bright) 28%,
-      var(--slop-card-orange) 52%,
-      #e04e0a 78%,
-      #cc4508 88%,
-      #a83806 100%
-    );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 220, 190, 0.55),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
-    inset 1px 0 0 rgba(255, 200, 160, 0.22),
-    inset -1px 0 0 rgba(0, 0, 0, 0.2),
-    0 0 16px rgba(255, 107, 26, 0.32);
-}
-
-/* Layer 3: thin warm crimson/stadium-light accent */
-.slop-scorecard-collectible-accent {
-  height: 100%;
-  overflow: hidden;
-  padding: var(--slop-scorecard-rim-accent);
-  background: linear-gradient(
-    160deg,
-    #c63d2f 0%,
-    #d94a3d 30%,
-    #b83428 60%,
-    #9a2f24 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 120, 100, 0.2),
-    0 0 6px rgba(198, 61, 47, 0.25);
 }
 
 .slop-scorecard-collectible-inner {
@@ -454,9 +387,9 @@ body {
   overflow: hidden;
   background: #03070e;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 107, 26, 0.22),
-    inset 0 0 30px rgba(0, 0, 0, 0.55),
-    inset 0 0 8px rgba(198, 61, 47, 0.06);
+    inset 0 0 0 2px var(--slop-card-orange),
+    inset 0 0 0 3px rgba(0, 0, 0, 0.85),
+    inset 0 0 24px rgba(0, 0, 0, 0.45);
 }
 
 .slop-scorecard-collectible-inner > * {
@@ -511,25 +444,6 @@ body {
 }
 
 /* Embossed micro-mark at bottom center of frame */
-.slop-scorecard-collectible-mark {
-  position: absolute;
-  bottom: 3px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 7;
-  pointer-events: none;
-  font-size: 0.32rem;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 107, 26, 0.4);
-  text-shadow:
-    0 -1px 0 rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 200, 160, 0.08);
-  white-space: nowrap;
-  user-select: none;
-}
-
 /* Scorecard back — profile + compact stat rows */
 .slop-scorecard-back-pill {
   display: inline-flex;
@@ -654,19 +568,14 @@ body {
   color: var(--slop-cream);
 }
 
-/* Inset hero photo well */
+/* Photo area — no outer mat; card rim only */
 .slop-scorecard-photo-well {
   position: relative;
   margin: 0;
   min-height: 0;
   flex: 1 1 0;
-  padding: 1px;
-  background: linear-gradient(
-    160deg,
-    var(--slop-card-orange-bright) 0%,
-    var(--slop-card-orange) 55%,
-    var(--slop-card-orange-dim) 100%
-  );
+  padding: 0;
+  background: transparent;
 }
 
 .slop-scorecard-photo-well-inner {
@@ -926,22 +835,15 @@ body {
     filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 6px rgba(255, 90, 20, 0.06));
   }
 
-  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-gold {
-    background: linear-gradient(145deg, #5a3820 0%, #3d2414 55%, #2a180c 100%);
-    box-shadow: none;
-  }
-
-  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-accent {
-    background: linear-gradient(160deg, #5a2420 0%, #4a201c 100%);
-    box-shadow: none;
+  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-inner {
+    box-shadow:
+      inset 0 0 0 2px rgba(255, 90, 20, 0.35),
+      inset 0 0 0 3px rgba(0, 0, 0, 0.85),
+      inset 0 0 24px rgba(0, 0, 0, 0.45);
   }
 
   .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-corners {
     opacity: 0.25;
-  }
-
-  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-mark {
-    opacity: 0.15;
   }
 
   .slop-scorecard-shell[data-active="true"] {
@@ -1036,22 +938,15 @@ body {
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.35));
   }
 
-  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-gold {
-    background: linear-gradient(145deg, #4a4030 0%, #3d3424 100%);
-    box-shadow: none;
-  }
-
-  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-accent {
-    background: linear-gradient(160deg, #5a2420 0%, #4a201c 100%);
-    box-shadow: none;
+  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-inner {
+    box-shadow:
+      inset 0 0 0 2px rgba(255, 90, 20, 0.35),
+      inset 0 0 0 3px rgba(0, 0, 0, 0.85),
+      inset 0 0 24px rgba(0, 0, 0, 0.45);
   }
 
   .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-corners {
     opacity: 0.2;
-  }
-
-  .slop-scorecard-shell:not([data-active="true"]) .slop-scorecard-collectible-mark {
-    opacity: 0.1;
   }
 }
 

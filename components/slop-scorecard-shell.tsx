@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-/** Premium trading-card frame: gunmetal rim → orange trim → crimson accent → inner. */
+/** Trading-card shell — chamfered face with a single orange rim (no outer mat/frame). */
 export function SlopScorecardFrame({
   face,
   children,
@@ -16,17 +16,8 @@ export function SlopScorecardFrame({
       data-face={face}
     >
       <div className="slop-scorecard-collectible-frame slop-scorecard-chamfer">
-        <div className="slop-scorecard-collectible-outer">
-          <div className="slop-scorecard-collectible-gold">
-            <div className="slop-scorecard-collectible-accent">
-              <div className="slop-scorecard-collectible-inner">{children}</div>
-            </div>
-          </div>
-        </div>
+        <div className="slop-scorecard-collectible-inner">{children}</div>
         <div className="slop-scorecard-collectible-corners" aria-hidden="true" />
-        <span className="slop-scorecard-collectible-mark" aria-hidden="true">
-          Stadium Slop
-        </span>
       </div>
     </div>
   );
