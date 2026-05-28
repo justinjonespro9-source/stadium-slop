@@ -8,11 +8,11 @@ import {
 
 import {
   assertDevDemoScorecardsAllowed,
+  DEV_SCORECARD_PREFIX,
   resolveDemoScorecardTargetFromEnv
 } from "@/lib/dev-demo-scorecards";
 import { DEMO_USERS, slugifyDemoEmailLocalPart } from "@/lib/demo-density-seed";
 
-const DEV_SCORECARD_PREFIX = "dev-scorecard";
 const SEASON_LABEL = String(new Date().getFullYear());
 
 /** Stable Picsum URLs for local flip/Rolodex testing (dev seed only). */
@@ -187,6 +187,7 @@ export async function applyDemoScorecardsSeed(
         verifiedGameDay: spec.verifiedGameDay ?? false,
         seasonLabel: SEASON_LABEL,
         note: spec.note,
+        isTestReview: true,
         status: "ACTIVE",
         createdAt
       },
@@ -204,6 +205,7 @@ export async function applyDemoScorecardsSeed(
         verifiedGameDay: spec.verifiedGameDay ?? false,
         seasonLabel: SEASON_LABEL,
         note: spec.note,
+        isTestReview: true,
         status: "ACTIVE",
         createdAt
       }

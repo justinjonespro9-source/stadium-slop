@@ -5,6 +5,9 @@
 export const DEMO_SCORECARD_DEFAULT_VENUE_SLUG = "target-field";
 export const DEMO_SCORECARD_DEFAULT_FOOD_SLUG = "la-madre-street-elote";
 
+/** Stable id prefix for dev scorecard seed rows (`dev-scorecard-review-…`). */
+export const DEV_SCORECARD_PREFIX = "dev-scorecard";
+
 /** Run seed script / open dev tools when not production, or when explicitly opted in. */
 export function isDevDemoScorecardsEnabled(): boolean {
   if (process.env.NODE_ENV !== "production") {

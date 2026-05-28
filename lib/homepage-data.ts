@@ -7,8 +7,6 @@ import { prisma } from "@/lib/prisma";
 export type HomepageStats = {
   venueCount: number;
   menuItemCount: number;
-  reviewCount: number;
-  rankedItemCount: number;
 };
 
 export type HomepageFeaturedItem = {
@@ -24,34 +22,19 @@ export type HomepageFeaturedItem = {
 
 const EMPTY_STATS: HomepageStats = {
   venueCount: 0,
-  menuItemCount: 0,
-  reviewCount: 0,
-  rankedItemCount: 0
+  menuItemCount: 0
 };
 
 export async function getHomepageStats(): Promise<HomepageStats> {
   try {
-    const reviewWhere = {
-      status: EntityStatus.ACTIVE,
-      isTestReview: false
-    } as const;
-
-    const [venueCount, menuItemCount, reviewCount, rankedGroups] = await Promise.all([
+    const [venueCount, menuItemCount] = await Promise.all([
       prisma.venue.count({ where: { status: EntityStatus.ACTIVE } }),
-      prisma.foodItem.count({ where: { status: EntityStatus.ACTIVE } }),
-      prisma.review.count({ where: reviewWhere }),
-      prisma.review.groupBy({
-        by: ["foodItemId"],
-        where: reviewWhere,
-        _count: { foodItemId: true }
-      })
+      prisma.foodItem.count({ where: { status: EntityStatus.ACTIVE } })
     ]);
 
     return {
       venueCount,
-      menuItemCount,
-      reviewCount,
-      rankedItemCount: rankedGroups.length
+      menuItemCount
     };
   } catch (error) {
     console.warn("[homepage] Failed to load stats", error);
