@@ -18,10 +18,8 @@ export default async function VenuesPage() {
   ) as Record<string, FoodItem[]>;
 
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-4 pb-8 pt-3 sm:px-6 sm:pb-10 sm:pt-4 lg:px-10">
-        <VenuesBrowseClient venues={venues} itemsByVenueSlug={itemsByVenueSlug} />
-      </section>
+    <main className="media-page-shell min-h-screen">
+      <VenuesBrowseClient venues={venues} itemsByVenueSlug={itemsByVenueSlug} />
     </main>
   );
 }

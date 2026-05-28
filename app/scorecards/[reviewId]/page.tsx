@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { BrandBadgeIcon } from "@/components/brand-badge-icon";
+import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
 import { ReportContentLink } from "@/components/report-content-link";
 import { ReviewSlopCard } from "@/components/review-slop-card";
 import { ScorecardShareActions } from "@/components/scorecard-share-actions";
@@ -100,33 +101,25 @@ export default async function PublicScorecardPage({ params }: PublicScorecardPag
   );
 
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-6xl px-4 py-4 sm:px-6 sm:py-6 lg:px-10">
-        <Link
-          href={view.itemPath}
-          className="inline-flex text-xs font-bold text-[var(--slop-cream-dim)] hover:text-[var(--slop-cream)] sm:text-sm"
-        >
-          ← {view.itemName} at {view.venueName}
-        </Link>
+    <main className="media-page-shell min-h-screen">
+      <DiscoveryPageHero
+        backHref={view.itemPath}
+        backLabel={`${view.itemName} at ${view.venueName}`}
+        eyebrow="Official scorecard"
+        title={view.itemName}
+        subtitle={view.venueName}
+        description="Fan-powered scorecard on Stadium Slop — view the full item page for standings, Fresh signals, and more Slop Scorecards."
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <BrandBadgeIcon size={22} title="Stadium Slop" />
+          <span className="media-item-hero-badge media-item-hero-badge--accent">
+            Official Slop Scorecard
+          </span>
+        </div>
+      </DiscoveryPageHero>
 
-        <header className="mt-4 space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <BrandBadgeIcon size={22} title="Stadium Slop" />
-            <span className="inline-flex rounded-full border border-[var(--slop-gold)]/45 bg-[color:rgba(244,179,33,0.1)] px-2.5 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.12em] text-[var(--slop-gold-bright)]">
-              Official Stadium Slop Scorecard
-            </span>
-          </div>
-          <h1 className="brand-headline max-w-3xl text-2xl leading-tight text-[var(--slop-cream)] sm:text-3xl">
-            {view.itemName}
-          </h1>
-          <p className="text-sm text-[var(--slop-cream-muted)]">{view.venueName}</p>
-          <p className="max-w-2xl text-xs leading-snug text-[var(--slop-cream-dim)]">
-            Fan-powered scorecard on Stadium Slop — view the full item ranking for
-            standings, Fresh signals, and more Slop Scorecards.
-          </p>
-        </header>
-
-        <div className="mt-6 flex justify-center">
+      <div className="media-discovery-content">
+        <div className="media-panel-card flex justify-center p-4 sm:p-6">
           <ReviewSlopCard
             cardIndex={0}
             review={view.review}
@@ -144,20 +137,17 @@ export default async function PublicScorecardPage({ params }: PublicScorecardPag
           />
         </div>
 
-        <div className="mx-auto mt-6 max-w-md space-y-3">
+        <div className="mx-auto mt-5 max-w-md space-y-3">
           <ScorecardShareActions
             shareUrl={shareUrl}
             shareTitle={view.shareTitle}
             shareDescription={view.shareDescription}
           />
-          <Link
-            href={view.itemPath}
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-4 py-3 text-center text-xs font-black uppercase tracking-[0.06em] text-[var(--slop-cream-muted)] transition hover:border-[var(--slop-gold)]/40 hover:text-[var(--slop-cream)]"
-          >
+          <Link href={view.itemPath} className="media-primary-button w-full justify-center py-3 text-sm">
             View full item ranking
           </Link>
         </div>
-      </section>
+      </div>
     </main>
   );
 }

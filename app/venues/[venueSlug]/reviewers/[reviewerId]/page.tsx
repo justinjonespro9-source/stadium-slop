@@ -1,8 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
 import { ReviewerExternalLinks } from "@/components/reviewer-external-links";
 import { VenueReviewerHistoryList } from "@/components/venue-reviewer-history-list";
 import { getVenueReviewerHistory } from "@/lib/venue-reviewer-history";
@@ -48,71 +48,53 @@ export default async function VenueReviewerHistoryPage({
     notFound();
   }
 
-  const pageTitle = `More from ${view.displayName} at ${view.venueName}`;
+  const venueHref = `/venues/${view.venueSlug}`;
 
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-3xl px-4 py-4 sm:px-6 sm:py-6 lg:px-10">
-        <Link
-          href={`/venues/${view.venueSlug}`}
-          className="inline-flex text-xs font-bold text-[var(--slop-cream-dim)] hover:text-[var(--slop-cream)] sm:text-sm"
-        >
-          ← {view.venueName}
-        </Link>
-
-        <header className="mt-4 space-y-3">
-          <p className="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            Venue-scoped reviewer history
-          </p>
-          <h1 className="brand-headline text-2xl leading-tight text-[var(--slop-cream)] sm:text-3xl">
-            {pageTitle}
-          </h1>
-          <p className="text-sm leading-snug text-[var(--slop-cream-muted)]">
-            This is not a follow profile — just this fan&apos;s food reviews at this
-            venue.
-          </p>
-
-          <div className="flex items-start gap-3 rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-4 py-3">
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg border-2 border-[var(--slop-gold)]/45 bg-[var(--slop-navy-deep)]">
-              {view.avatarUrl ? (
-                <Image
-                  src={view.avatarUrl}
-                  alt=""
-                  fill
-                  className="object-cover object-center"
-                  sizes="56px"
-                />
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-sm font-black text-[var(--slop-cream)]">
-                  {view.initials}
-                </span>
-              )}
-            </div>
-            <div className="min-w-0">
-              <p className="truncate text-base font-black text-[var(--slop-cream)]">
-                {view.displayName}
-              </p>
-              {view.handleDisplay ? (
-                <p className="truncate text-xs font-bold text-[var(--slop-cream-dim)]">
-                  {view.handleDisplay}
-                </p>
-              ) : null}
-              <p className="mt-1 text-[0.65rem] text-[var(--slop-cream-dim)]">
-                {view.reviews.length}{" "}
-                {view.reviews.length === 1 ? "review" : "reviews"} at this venue
-              </p>
-            </div>
+    <main className="media-page-shell min-h-screen">
+      <DiscoveryPageHero
+        backHref={venueHref}
+        backLabel={view.venueName}
+        eyebrow="Reviewer history"
+        title={`More from ${view.displayName}`}
+        description="This is not a follow profile — just this fan's food reviews at this venue."
+      >
+        <div className="flex items-start gap-3 rounded-xl border border-white/16 bg-white/10 px-3 py-2.5 backdrop-blur-sm">
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border-2 border-[var(--media-orange-bright)]/50 bg-[#0a1018]">
+            {view.avatarUrl ? (
+              <Image
+                src={view.avatarUrl}
+                alt=""
+                fill
+                className="object-cover object-center"
+                sizes="48px"
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center text-sm font-black text-white">
+                {view.initials}
+              </span>
+            )}
           </div>
-
-          {view.externalLinks.length > 0 ? (
-            <ReviewerExternalLinks links={view.externalLinks} />
-          ) : null}
-        </header>
-
-        <div className="mt-6">
-          <VenueReviewerHistoryList reviews={view.reviews} />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-black text-white">{view.displayName}</p>
+            {view.handleDisplay ? (
+              <p className="truncate text-xs font-bold text-white/65">{view.handleDisplay}</p>
+            ) : null}
+            <p className="mt-0.5 text-[0.7rem] text-white/55">
+              {view.reviews.length} {view.reviews.length === 1 ? "review" : "reviews"} at this venue
+            </p>
+          </div>
         </div>
-      </section>
+        {view.externalLinks.length > 0 ? (
+          <div className="mt-2">
+            <ReviewerExternalLinks links={view.externalLinks} />
+          </div>
+        ) : null}
+      </DiscoveryPageHero>
+
+      <div className="media-discovery-content max-w-3xl">
+        <VenueReviewerHistoryList reviews={view.reviews} />
+      </div>
     </main>
   );
 }

@@ -5,9 +5,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import {
-  type FoodItem
-} from "@/lib/sample-data";
+import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
+import { type FoodItem } from "@/lib/sample-data";
 import {
   getPublicFoodItemsByVendorSlug,
   getPublicVendorBySlug,
@@ -45,6 +44,7 @@ export default async function VendorPage({ params }: VendorPageProps) {
     notFound();
   }
 
+  const venueHref = `/venues/${venue.slug}`;
   const vendorItems = await Promise.all(
     (await getPublicFoodItemsByVendorSlug(venue.slug, vendor.slug)).map(
       async (item) => ({
@@ -66,110 +66,102 @@ export default async function VendorPage({ params }: VendorPageProps) {
   });
 
   return (
-    <main className="brand-page min-h-screen">
-      <section className="mx-auto w-full max-w-4xl px-4 py-6 sm:px-8 lg:px-10">
-        <Link
-          href={`/venues/${venue.slug}`}
-          className="inline-flex text-sm font-bold text-zinc-400 hover:text-white"
-        >
-          Back to {venue.name}
-        </Link>
-
-        <header className="py-6">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Vendor
-          </p>
-          <h1 className="mt-2 text-4xl font-black leading-tight tracking-tight sm:text-6xl">
-            {vendor.name}
-          </h1>
-          <p className="mt-3 text-sm text-zinc-400">
+    <main className="media-page-shell min-h-screen">
+      <DiscoveryPageHero
+        backHref={venueHref}
+        backLabel={venue.name}
+        eyebrow="Vendor"
+        title={vendor.name}
+        subtitle={
+          <>
             {venue.name} · {vendor.section} · {vendor.location}
-          </p>
-          {vendor.lineIntel ? (
-            <p className="brand-panel mt-4 rounded-2xl border px-4 py-3 text-sm leading-6 text-zinc-400">
+          </>
+        }
+        description={
+          vendor.lineIntel ? (
+            <span className="block rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2 text-[var(--media-ink-muted)]">
               {vendor.lineIntel}
-            </p>
-          ) : null}
-        </header>
+            </span>
+          ) : undefined
+        }
+      />
 
-        <section className="border-t border-zinc-800 py-5">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500">
-            Vendor Lineup
-          </p>
-          <div className="mt-4 overflow-hidden rounded-3xl border border-[var(--slop-line)] bg-[var(--slop-surface)]">
+      <div className="media-discovery-content max-w-4xl">
+        <section>
+          <div className="media-section-heading">
+            <h2 className="media-section-title">Vendor lineup</h2>
+            <p className="text-sm font-bold tabular-nums text-[var(--media-ink-dim)]">
+              {vendorItems.length} {vendorItems.length === 1 ? "item" : "items"}
+            </p>
+          </div>
+
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
             {vendorItems.map(({ item, stats }, index) => {
               const napkinEligible = isNapkinEligibleItem(item);
               const unrated = isUnratedItemStats(stats.reviewCount);
               const showTopBadge = index === 0 && !unrated;
 
               return (
-                <Link
-                  key={item.slug}
-                  href={`/venues/${venue.slug}/${item.slug}`}
-                  className="block border-b border-[var(--slop-line)] px-4 py-4 transition last:border-b-0 hover:bg-[var(--slop-ink)]"
-                >
-                  <article className="grid grid-cols-[auto_1fr_auto] gap-3">
-                    <span className="pt-1 text-sm font-black text-zinc-500">
-                      #{index + 1}
-                    </span>
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h2 className="font-black">{item.name}</h2>
-                        {showTopBadge ? (
-                          <span className="rounded-full border border-zinc-700 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-300">
-                            Top Performer
+                <li key={item.slug}>
+                  <Link
+                    href={`/venues/${venue.slug}/${item.slug}`}
+                    className="media-card block"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="media-venue-rank text-[var(--media-ink-dim)]">
+                            #{index + 1}
                           </span>
-                        ) : null}
-                      </div>
-                      <p className="mt-1 text-sm text-zinc-400">
-                        {item.itemType} · {formatSections(item)}
-                      </p>
-                      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
-                        <span>
-                          {stats.reviewCount > 0
-                            ? `${stats.reviewCount} reviews`
-                            : "Unrated · awaiting reviews"}
-                        </span>
-                        {napkinEligible && stats.reviewCount > 0 ? (
-                          <span>{stats.roundedNapkinRating}/5 napkins</span>
-                        ) : null}
-                        {stats.topReplayValue ? (
+                          {showTopBadge ? (
+                            <span className="rounded-full border border-[rgba(255,107,26,0.35)] bg-[rgba(255,107,26,0.08)] px-2 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.1em] text-[var(--media-orange-deep)]">
+                              Top performer
+                            </span>
+                          ) : null}
+                        </div>
+                        <h3 className="media-rank-card-title mt-1">{item.name}</h3>
+                        <p className="media-rank-card-meta">
+                          {item.itemType} · {formatSections(item)}
+                        </p>
+                        <div className="mt-2 flex flex-wrap gap-x-2 gap-y-1 text-[0.7rem] text-[var(--media-ink-dim)]">
                           <span>
-                            {stats.topReplayValue.percentage}%{" "}
-                            {stats.topReplayValue.label}
+                            {stats.reviewCount > 0
+                              ? `${stats.reviewCount} reviews`
+                              : "Unrated"}
                           </span>
-                        ) : null}
-                        {item.reportedPrice ? (
-                          <span>${item.reportedPrice.toFixed(2)}</span>
-                        ) : null}
+                          {napkinEligible && stats.reviewCount > 0 ? (
+                            <span>{stats.roundedNapkinRating}/5 napkins</span>
+                          ) : null}
+                          {item.reportedPrice ? (
+                            <span>${item.reportedPrice.toFixed(2)}</span>
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        {unrated ? (
+                          <>
+                            <p className="media-venue-score text-[var(--media-ink-dim)]">—</p>
+                            <p className="mt-0.5 text-[0.55rem] font-bold uppercase text-[var(--media-ink-dim)]">
+                              Unrated
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="media-venue-score">{stats.averageSlopScore.toFixed(1)}</p>
+                            <p className="mt-0.5 text-[0.55rem] font-bold uppercase text-[var(--media-ink-dim)]">
+                              {getSlopScoreTier(stats.averageSlopScore)}
+                            </p>
+                          </>
+                        )}
                       </div>
                     </div>
-                    <div className="text-right">
-                      {unrated ? (
-                        <>
-                          <p className="text-lg font-black text-zinc-500">—</p>
-                          <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-500">
-                            Unrated
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-lg font-black text-[var(--slop-orange)]">
-                            {stats.averageSlopScore.toFixed(1)}
-                          </p>
-                          <p className="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-zinc-600">
-                            {getSlopScoreTier(stats.averageSlopScore)}
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  </article>
-                </Link>
+                  </Link>
+                </li>
               );
             })}
-          </div>
+          </ul>
         </section>
-      </section>
+      </div>
     </main>
   );
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { AdSlot } from "@/components/ads/ad-slot";
 import { WorldCupStadiumFoodGuide } from "@/components/world-cup-stadium-food-guide";
+import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
 import type { WorldCupGuideContent } from "@/lib/world-cup-stadium-food-guide-content";
 import { worldCupGuideFaqJsonLd } from "@/lib/world-cup-stadium-food-guide-content";
 import type { ResolvedWorldCupHostVenue } from "@/lib/world-cup-stadium-food-guide";
@@ -15,8 +15,10 @@ export function WorldCupStadiumFoodGuideShell({
   content,
   hosts
 }: WorldCupStadiumFoodGuideShellProps) {
+  const liveCount = hosts.filter((h) => h.slug).length;
+
   return (
-    <main className="brand-page min-h-screen" lang={content.htmlLang}>
+    <main className="media-page-shell min-h-screen" lang={content.htmlLang}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -24,68 +26,42 @@ export function WorldCupStadiumFoodGuideShell({
         }}
       />
 
-      <div className="mx-auto w-full max-w-6xl px-4 pb-12 pt-4 sm:px-6 sm:pb-16 sm:pt-6 lg:px-10">
-        <nav className="flex flex-wrap items-center gap-3 text-xs font-bold">
-          <Link
-            href="/"
-            className="text-[var(--slop-cream-dim)] transition hover:text-[var(--slop-gold-bright)]"
-          >
-            {content.nav.home}
-          </Link>
-          <span className="text-[var(--slop-line)]" aria-hidden>
-            ·
-          </span>
-          <Link
-            href="/venues"
-            className="text-[var(--slop-cream-dim)] transition hover:text-[var(--slop-gold-bright)]"
-          >
+      <DiscoveryPageHero
+        backHref="/"
+        backLabel={content.nav.home}
+        eyebrow={content.hero.eyebrow}
+        title={content.hero.title}
+        subtitle={content.hero.tagline}
+        description={content.hero.description}
+      >
+        <nav className="flex flex-wrap items-center gap-2 text-xs font-bold">
+          <Link href="/venues" className="media-pill text-[0.65rem]">
             {content.nav.findVenue}
           </Link>
-          <span className="text-[var(--slop-line)]" aria-hidden>
+          <span className="text-white/35" aria-hidden>
             ·
           </span>
-          <span className="text-[var(--slop-cream-dim)]">
+          <span className="text-[0.7rem] text-white/65">
             {content.nav.languageSwitchPrefix}{" "}
             <Link
               href={content.alternatePath}
               hrefLang={content.alternateLocale}
-              className="text-[var(--slop-gold-dim)] transition hover:text-[var(--slop-gold-bright)]"
+              className="font-bold text-[var(--media-orange-bright)] hover:underline"
             >
               {content.alternateLanguageLabel}
             </Link>
           </span>
         </nav>
+      </DiscoveryPageHero>
 
-        <header className="mt-5 border-b border-[var(--slop-line-strong)] pb-6 sm:mt-6 sm:pb-8">
-          <p className="text-[0.65rem] font-black uppercase tracking-[0.14em] text-[var(--slop-gold-dim)]">
-            {content.hero.eyebrow}
-          </p>
-          <h1 className="mt-2 text-2xl font-black leading-tight tracking-tight text-[var(--slop-cream)] sm:text-4xl">
-            {content.hero.title}
-          </h1>
-          <p className="mt-2 text-lg font-bold text-[var(--slop-gold-bright)] sm:text-xl">
-            {content.hero.tagline}
-          </p>
-          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-[var(--slop-cream-muted)] sm:text-base">
-            {content.hero.description}
-          </p>
-        </header>
+      <div className="media-discovery-content">
+        <WorldCupStadiumFoodGuide content={content} hosts={hosts} liveCount={liveCount} />
 
-        <AdSlot
-          placementKey="worldcup.guide.banner"
-          variant="banner"
-          className="mt-6 sm:mt-8"
-        />
-
-        <div className="mt-8 sm:mt-10">
-          <WorldCupStadiumFoodGuide content={content} hosts={hosts} />
-        </div>
-
-        <p className="mt-8 text-center text-xs leading-relaxed text-[var(--slop-cream-dim)] sm:text-sm">
+        <p className="mt-8 text-center text-xs leading-relaxed text-[var(--media-ink-dim)] sm:text-sm">
           {content.disclaimer}{" "}
           <Link
             href="/disclaimer"
-            className="font-bold text-[var(--slop-gold-dim)] hover:text-[var(--slop-gold-bright)]"
+            className="font-bold text-[var(--media-orange-deep)] hover:text-[var(--media-orange)]"
           >
             {content.disclaimerLink}
           </Link>

@@ -1986,3 +1986,61 @@ body {
   color: var(--media-ink-muted);
 }
 
+/* Discovery / browse pages (Phase 5) */
+.media-discovery-hero {
+  background: #060a10;
+}
+
+.media-discovery-content {
+  margin-inline: auto;
+  max-width: 72rem;
+  padding: 1rem 1rem 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .media-discovery-content {
+    padding: 1.25rem 1.5rem 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .media-discovery-content {
+    padding-inline: 2.5rem;
+  }
+}
+
+.media-discovery-search {
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #fff;
+  outline: none;
+  backdrop-filter: blur(6px);
+}
+
+.media-discovery-search::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.media-discovery-search:focus {
+  border-color: rgba(255, 107, 26, 0.65);
+  box-shadow: 0 0 0 2px rgba(255, 107, 26, 0.2);
+}
+
+.media-discovery-search-panel {
+  border-radius: 1rem;
+  border: 1px solid var(--media-border);
+  background: var(--media-white);
+  padding: 0.875rem 1rem;
+  box-shadow: var(--media-shadow-card);
+}
+
+@media (min-width: 640px) {
+  .media-discovery-search-panel {
+    padding: 1rem 1.125rem;
+  }
+}
+
