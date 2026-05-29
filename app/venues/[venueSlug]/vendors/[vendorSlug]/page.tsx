@@ -13,8 +13,13 @@ import {
   getPublicVenueBySlug
 } from "@/lib/public-data";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
-import { getDbBackedItemSlopStats, getSlopScoreTier } from "@/lib/slop-stats";
+import {
+  getVenueItemSlopStatsMap,
+  resolveVenueItemSlopStats,
+  getSlopScoreTier
+} from "@/lib/slop-stats";
 import { isUnratedItemStats } from "@/components/food-item-empty-states";
+import { withPublicRouteTiming } from "@/lib/route-timing";
 
 type VendorPageProps = {
   params: Promise<{
@@ -35,8 +40,11 @@ function formatSections(item: FoodItem) {
   return `Sections ${item.sections.join(", ")}`;
 }
 
+export const revalidate = 180;
+
 export default async function VendorPage({ params }: VendorPageProps) {
-  const { venueSlug, vendorSlug } = await params;
+  return withPublicRouteTiming("vendor-page", async () => {
+    const { venueSlug, vendorSlug } = await params;
   const venue = await getPublicVenueBySlug(venueSlug);
   const vendor = await getPublicVendorBySlug(venueSlug, vendorSlug);
 
@@ -45,14 +53,12 @@ export default async function VendorPage({ params }: VendorPageProps) {
   }
 
   const venueHref = `/venues/${venue.slug}`;
-  const vendorItems = await Promise.all(
-    (await getPublicFoodItemsByVendorSlug(venue.slug, vendor.slug)).map(
-      async (item) => ({
-        item,
-        stats: await getDbBackedItemSlopStats(venue.slug, item.slug, "season")
-      })
-    )
-  );
+  const vendorItemsRaw = await getPublicFoodItemsByVendorSlug(venue.slug, vendor.slug);
+  const venueStatsMap = await getVenueItemSlopStatsMap(venue.slug);
+  const vendorItems = vendorItemsRaw.map((item) => ({
+    item,
+    stats: resolveVenueItemSlopStats(venueStatsMap, item.slug, "season")
+  }));
   vendorItems.sort((a, b) => {
     const ar = a.stats.reviewCount > 0 ? 1 : 0;
     const br = b.stats.reviewCount > 0 ? 1 : 0;
@@ -164,4 +170,5 @@ export default async function VendorPage({ params }: VendorPageProps) {
       </div>
     </main>
   );
+  });
 }

@@ -138,7 +138,7 @@ const COUNTRY_ORDER: WorldCupHostCountry[] = ["USA", "Canada", "Mexico"];
 
 export function resolveWorldCupHostVenues(
   venues: Venue[],
-  itemsByVenueSlug: Record<string, { length: number } | unknown[]>
+  foodItemCountsByVenueSlug: Record<string, number> = {}
 ): ResolvedWorldCupHostVenue[] {
   const bySlug = new Map(venues.map((v) => [v.slug.toLowerCase(), v]));
 
@@ -148,8 +148,7 @@ export function resolveWorldCupHostVenues(
     );
     const venue = matchedSlug ? bySlug.get(matchedSlug.toLowerCase()) ?? null : null;
     const slug = venue?.slug ?? null;
-    const items = slug ? itemsByVenueSlug[slug] : undefined;
-    const foodItemCount = Array.isArray(items) ? items.length : 0;
+    const foodItemCount = slug ? (foodItemCountsByVenueSlug[slug] ?? 0) : 0;
 
     return {
       ...host,

@@ -14,8 +14,8 @@ import {
   getPublicVendorsByVenueSlug
 } from "@/lib/public-data";
 import {
-  getDbBackedItemSlopStats,
-  type ItemSlopStats,
+  getVenueItemSlopStatsMap,
+  resolveVenueItemSlopStats,
   type SlopStatsMode
 } from "@/lib/slop-stats";
 import { prisma } from "@/lib/prisma";
@@ -49,7 +49,9 @@ import {
   getVenueTimeZone,
   getVenueUpcomingGame
 } from "@/lib/game-day";
+import { enforceRateLimit } from "@/lib/rate-limit";
 import { getVenueFreshFeedReviews } from "@/lib/venue-fresh-feed";
+import { withPublicRouteTiming } from "@/lib/route-timing";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -74,6 +76,8 @@ const categoryOptions: { label: string; value: CategoryFilter }[] = [
   { label: "Vegan/GF", value: "vegan-gf" },
   { label: "Reviewed", value: "reviewed" }
 ];
+
+export const revalidate = 180;
 
 type VenuePageProps = {
   params: Promise<{
@@ -142,6 +146,10 @@ async function suggestMissingItem(formData: FormData) {
   const note = String(formData.get("suggestedItemNote") ?? "").trim();
   const venuePath = `/venues/${venueSlug}`;
   const userId = await requireContributorUserId(venuePath);
+  const rateLimit = await enforceRateLimit("suggest-item", { userId });
+  if (!rateLimit.ok) {
+    redirect(`${venuePath}?suggestion=rate-limit`);
+  }
 
   if (!name) {
     redirect(`${venuePath}?suggestion=missing-name`);
@@ -339,8 +347,9 @@ function ModeChips({
 
 
 export default async function VenuePage({ params, searchParams }: VenuePageProps) {
-  const { venueSlug } = await params;
-  const query = await searchParams;
+  return withPublicRouteTiming("venue-page", async () => {
+    const { venueSlug } = await params;
+    const query = await searchParams;
   const venue = await getPublicVenueBySlug(venueSlug);
 
   if (!venue) {
@@ -371,18 +380,18 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     country: venue.country
   });
 
-  const [venueFoodItems, venueVendors, venueFreshReviews] = await Promise.all([
-    getPublicFoodItemsByVenueSlug(venue.slug),
-    getPublicVendorsByVenueSlug(venue.slug),
-    getVenueFreshFeedReviews(venue.slug)
-  ]);
-  const fanFavoriteEntries = await Promise.all(
-    venueFoodItems.map(async (item) => ({
-      itemSlug: item.slug,
-      allTime: await getDbBackedItemSlopStats(venue.slug, item.slug, "allTime"),
-      season: await getDbBackedItemSlopStats(venue.slug, item.slug, "season")
-    }))
-  );
+  const [venueFoodItems, venueVendors, venueFreshReviews, venueStatsMap] =
+    await Promise.all([
+      getPublicFoodItemsByVenueSlug(venue.slug),
+      getPublicVendorsByVenueSlug(venue.slug),
+      getVenueFreshFeedReviews(venue.slug),
+      getVenueItemSlopStatsMap(venue.slug)
+    ]);
+  const fanFavoriteEntries = venueFoodItems.map((item) => ({
+    itemSlug: item.slug,
+    allTime: resolveVenueItemSlopStats(venueStatsMap, item.slug, "allTime"),
+    season: resolveVenueItemSlopStats(venueStatsMap, item.slug, "season")
+  }));
   const fanFavoriteByItem = computeVenueFanFavoriteBadges(fanFavoriteEntries);
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
@@ -400,12 +409,10 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       itemPassesCategory(item, category) &&
       (vendorSlug === "all" || item.vendorSlug === vendorSlug)
   );
-  const itemStats = await Promise.all(
-    filteredItems.map(async (item) => ({
-      item,
-      stats: await getDbBackedItemSlopStats(venue.slug, item.slug, statsMode)
-    }))
-  );
+  const itemStats = filteredItems.map((item) => ({
+    item,
+    stats: resolveVenueItemSlopStats(venueStatsMap, item.slug, statsMode)
+  }));
   const vendorBySlug = new Map(venueVendors.map((v) => [v.slug, v] as const));
   const sortedItemStats = itemStats.sort((a, b) => {
     const ar = a.stats.reviewCount > 0 ? 1 : 0;
@@ -708,4 +715,5 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       </div>
     </main>
   );
+  });
 }

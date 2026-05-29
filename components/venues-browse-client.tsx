@@ -4,8 +4,11 @@ import Link from "next/link";
 import { useMemo, useState, type KeyboardEvent } from "react";
 
 import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
-import type { FoodItem } from "@/lib/sample-data";
 import type { Venue } from "@/lib/sample-data";
+import {
+  EMPTY_VENUE_BROWSE_SUMMARY,
+  type VenueBrowseSummariesBySlug
+} from "@/lib/venue-browse-types";
 import { VenueSearchEmpty } from "@/components/venue-search-empty";
 import { venueTypeGlyph } from "@/lib/venue-display";
 import { FanPoweredGuideNote } from "@/components/fan-powered-guide-note";
@@ -18,21 +21,16 @@ import { formatVenueTeamsInline } from "@/lib/venue-teams";
 
 type VenuesBrowseClientProps = {
   venues: Venue[];
-  itemsByVenueSlug: Record<string, FoodItem[]>;
+  summariesByVenueSlug: VenueBrowseSummariesBySlug;
 };
 
 function buildItemTagsByVenueSlug(
-  itemsByVenueSlug: Record<string, FoodItem[]>
+  summariesByVenueSlug: VenueBrowseSummariesBySlug
 ): VenueSearchOptions["itemTagsByVenueSlug"] {
   const out: Record<string, string[]> = {};
-  for (const [slug, items] of Object.entries(itemsByVenueSlug)) {
-    const tags = [
-      ...new Set(
-        items.flatMap((item) => item.tags ?? []).filter((tag) => tag.trim().length > 0)
-      )
-    ];
-    if (tags.length > 0) {
-      out[slug] = tags;
+  for (const [slug, summary] of Object.entries(summariesByVenueSlug)) {
+    if (summary.tags.length > 0) {
+      out[slug] = summary.tags;
     }
   }
   return out;
@@ -40,12 +38,12 @@ function buildItemTagsByVenueSlug(
 
 export function VenuesBrowseClient({
   venues,
-  itemsByVenueSlug
+  summariesByVenueSlug
 }: VenuesBrowseClientProps) {
   const [query, setQuery] = useState("");
   const searchOptions = useMemo(
-    () => ({ itemTagsByVenueSlug: buildItemTagsByVenueSlug(itemsByVenueSlug) }),
-    [itemsByVenueSlug]
+    () => ({ itemTagsByVenueSlug: buildItemTagsByVenueSlug(summariesByVenueSlug) }),
+    [summariesByVenueSlug]
   );
   const filtered = useMemo(
     () => filterVenuesBySearch(venues, query, searchOptions),
@@ -118,11 +116,9 @@ export function VenuesBrowseClient({
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((venue) => {
-              const venueFoodItems = itemsByVenueSlug[venue.slug] ?? [];
-              const topItem = [...venueFoodItems].sort(
-                (a, b) => b.slopScore - a.slopScore
-              )[0];
-              const vendorCount = new Set(venueFoodItems.map((item) => item.vendorSlug)).size;
+              const summary =
+                summariesByVenueSlug[venue.slug] ?? EMPTY_VENUE_BROWSE_SUMMARY;
+              const topItem = summary.topItem;
 
               return (
                 <Link key={venue.slug} href={`/venues/${venue.slug}`} className="media-card block h-full">
@@ -154,16 +150,16 @@ export function VenuesBrowseClient({
                     <div className="mt-3 flex-1 rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-2.5 py-2">
                       <p className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
                         <span className="tabular-nums text-[var(--media-ink-muted)]">
-                          {venueFoodItems.length}
+                          {summary.itemCount}
                         </span>{" "}
-                        {venueFoodItems.length === 1 ? "item" : "items"}
-                        {venueFoodItems.length > 0 ? (
+                        {summary.itemCount === 1 ? "item" : "items"}
+                        {summary.itemCount > 0 ? (
                           <>
                             <span className="text-[var(--media-border)]"> · </span>
                             <span className="tabular-nums text-[var(--media-ink-muted)]">
-                              {vendorCount}
+                              {summary.vendorCount}
                             </span>{" "}
-                            {vendorCount === 1 ? "vendor" : "vendors"}
+                            {summary.vendorCount === 1 ? "vendor" : "vendors"}
                           </>
                         ) : null}
                       </p>

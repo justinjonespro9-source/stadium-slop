@@ -4,6 +4,7 @@ import { PhotoType } from "@prisma/client";
 
 import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
+import { cachePublicRead } from "./public-read-cache";
 import {
   foodItems,
   foodPhotos,
@@ -153,6 +154,73 @@ function mapVenueBadge(value: string | null): FoodItem["venueBadge"] | undefined
 
   return titleCaseEnum(value) as FoodItem["venueBadge"];
 }
+
+const PUBLIC_VENUE_SELECT = {
+  slug: true,
+  name: true,
+  city: true,
+  state: true,
+  country: true,
+  region: true,
+  leagues: true,
+  teams: true,
+  sports: true,
+  latitude: true,
+  longitude: true,
+  reviewRadiusMeters: true,
+  venueType: true,
+  primarySport: true,
+  recurringEvents: true,
+  surfaceType: true
+} as const;
+
+const PUBLIC_FOOD_ITEM_LIST_SELECT = {
+  id: true,
+  slug: true,
+  name: true,
+  itemType: true,
+  category: true,
+  customCategoryLabel: true,
+  alcoholic: true,
+  ageRestricted: true,
+  beverageStyle: true,
+  location: true,
+  sections: true,
+  description: true,
+  basePrice: true,
+  reportedPrice: true,
+  priceLastConfirmedLabel: true,
+  priceReportCount: true,
+  tags: true,
+  isPromoted: true,
+  sponsorName: true,
+  sponsorDisclosure: true,
+  isNewThisSeason: true,
+  seasonIntroduced: true,
+  availabilityStatus: true,
+  lastConfirmed: true,
+  venueBadge: true,
+  freshWindowLabel: true,
+  freshSignal: true,
+  freshSignalReason: true,
+  venue: { select: { slug: true } },
+  vendor: { select: { slug: true } },
+  reviews: {
+    where: { status: "ACTIVE" as const, isTestReview: false },
+    select: { slopScore: true, napkinRating: true }
+  }
+} as const;
+
+const PUBLIC_VENDOR_SELECT = {
+  slug: true,
+  name: true,
+  section: true,
+  location: true,
+  lineIntel: true,
+  venue: { select: { slug: true } }
+} as const;
+
+const MAX_PUBLIC_FOOD_PHOTOS = 48;
 
 function getAverage(values: number[]) {
   if (values.length === 0) {
@@ -309,11 +377,12 @@ async function withDbTimeout<T>(label: string, run: () => Promise<T>): Promise<T
   }
 }
 
-export async function getPublicVenues() {
+async function loadPublicVenues() {
   try {
     const dbVenues = await withDbTimeout("getPublicVenues", () =>
       prisma.venue.findMany({
         where: { status: "ACTIVE" },
+        select: PUBLIC_VENUE_SELECT,
         orderBy: [{ state: "asc" }, { name: "asc" }]
       })
     );
@@ -325,12 +394,19 @@ export async function getPublicVenues() {
   }
 }
 
+const getPublicVenuesCached = cachePublicRead(["public-venues"], loadPublicVenues);
+
+export async function getPublicVenues() {
+  return getPublicVenuesCached();
+}
+
 export async function getPublicVenueBySlug(slug: string) {
   const normalized = slug.trim();
 
   try {
     const venue = await prisma.venue.findFirst({
-      where: { slug: slugFilterInsensitive(normalized), status: "ACTIVE" }
+      where: { slug: slugFilterInsensitive(normalized), status: "ACTIVE" },
+      select: PUBLIC_VENUE_SELECT
     });
 
     return venue
@@ -351,7 +427,7 @@ export async function getPublicVendorsByVenueSlug(venueSlug: string) {
         status: "ACTIVE",
         venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
       },
-      include: { venue: { select: { slug: true } } },
+      select: PUBLIC_VENDOR_SELECT,
       orderBy: { name: "asc" }
     });
 
@@ -376,7 +452,7 @@ export async function getPublicVendorBySlug(venueSlug: string, vendorSlug: strin
   return dbVendors.find((vendor) => vendor.slug === vendorSlug);
 }
 
-export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
+async function loadPublicFoodItemsByVenueSlug(venueSlug: string) {
   const normalizedVenueSlug = venueSlug.trim();
 
   try {
@@ -385,11 +461,7 @@ export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
         status: "ACTIVE",
         venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
       },
-      include: {
-        venue: { select: { slug: true } },
-        vendor: { select: { slug: true } },
-        reviews: { where: { status: "ACTIVE" } }
-      },
+      select: PUBLIC_FOOD_ITEM_LIST_SELECT,
       orderBy: { name: "asc" }
     });
 
@@ -407,12 +479,47 @@ export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
   }
 }
 
+export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
+  const normalized = venueSlug.trim();
+  return cachePublicRead(
+    ["public-food-items", normalized],
+    () => loadPublicFoodItemsByVenueSlug(normalized)
+  )();
+}
+
 export async function getPublicFoodItemsByVendorSlug(
   venueSlug: string,
   vendorSlug: string
 ) {
-  const items = await getPublicFoodItemsByVenueSlug(venueSlug);
-  return items.filter((item) => item.vendorSlug === vendorSlug);
+  const normalizedVenueSlug = venueSlug.trim();
+  const normalizedVendorSlug = vendorSlug.trim();
+
+  try {
+    const dbItems = await prisma.foodItem.findMany({
+      where: {
+        status: "ACTIVE",
+        vendor: {
+          slug: slugFilterInsensitive(normalizedVendorSlug),
+          status: "ACTIVE",
+          venue: {
+            slug: slugFilterInsensitive(normalizedVenueSlug),
+            status: "ACTIVE"
+          }
+        }
+      },
+      select: PUBLIC_FOOD_ITEM_LIST_SELECT,
+      orderBy: { name: "asc" }
+    });
+
+    if (dbItems.length > 0) {
+      return dbItems.map(mapFoodItemFromDb);
+    }
+  } catch (error) {
+    console.warn("DB vendor items failed, trying venue filter", error);
+  }
+
+  const items = await getPublicFoodItemsByVenueSlug(normalizedVenueSlug);
+  return items.filter((item) => item.vendorSlug === normalizedVendorSlug);
 }
 
 export async function getPublicFoodItemBySlug(venueSlug: string, foodSlug: string) {
@@ -426,11 +533,7 @@ export async function getPublicFoodItemBySlug(venueSlug: string, foodSlug: strin
         status: "ACTIVE",
         venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
       },
-      include: {
-        venue: { select: { slug: true } },
-        vendor: { select: { slug: true } },
-        reviews: { where: { status: "ACTIVE" } }
-      }
+      select: PUBLIC_FOOD_ITEM_LIST_SELECT
     });
 
     if (row) {
@@ -493,12 +596,22 @@ export async function getPublicPhotosForFoodItem(venueSlug: string, foodSlug: st
           venue: { slug: slugFilterInsensitive(normalizedVenueSlug), status: "ACTIVE" }
         }
       },
-      include: {
+      select: {
+        id: true,
+        url: true,
+        placeholder: true,
+        alt: true,
+        caption: true,
+        verifiedOnSite: true,
+        createdAt: true,
+        reviewId: true,
+        uploaderUserId: true,
         foodItem: { select: { slug: true } },
         venue: { select: { slug: true } },
         uploader: { select: { displayName: true } }
       },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "desc" },
+      take: MAX_PUBLIC_FOOD_PHOTOS
     });
 
     const mappedPhotos: FoodPhoto[] = dbPhotos

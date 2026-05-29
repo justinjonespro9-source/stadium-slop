@@ -27,6 +27,7 @@ import {
   uploadImageFile,
   validateImageFile
 } from "@/lib/cloudinary";
+import { enforceRateLimit } from "@/lib/rate-limit";
 import { reviewPagePhotoErrorMessage } from "@/lib/review-photo-errors";
 import { prisma } from "@/lib/prisma";
 import { normalizePublicImageUrl } from "@/lib/image-url";
@@ -285,6 +286,18 @@ async function submitReview(formData: FormData) {
   }
 
   const userId = await requireContributorUserId(`${canonicalItemPath}/review`);
+  const submitLimit = await enforceRateLimit("review-submit", { userId });
+  if (!submitLimit.ok) {
+    redirect(`${canonicalItemPath}/review?error=rate-limit`);
+  }
+
+  if (photoFieldPre) {
+    const photoLimit = await enforceRateLimit("photo-upload", { userId });
+    if (!photoLimit.ok) {
+      redirect(`${canonicalItemPath}/review?error=rate-limit`);
+    }
+  }
+
   const user = await prisma.user.update({
     where: { id: userId },
     data: { homeVenueId: venue.id }
@@ -516,6 +529,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   const reviewFormErrorMessage = gameDayErrorCode
     ? GAME_DAY_REVIEW_ERROR_MESSAGES[gameDayErrorCode]
+    : urlError === "rate-limit"
+      ? "Too many submissions in a short window. Please wait a few minutes and try again."
     : urlError === "missing-score"
       ? "Set a Slop Score from 1.0 to 10.0 (and Napkin Rating for food)."
       : urlError === "low-score-photo"

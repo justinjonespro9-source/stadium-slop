@@ -3,6 +3,7 @@ import "server-only";
 import { EntityStatus } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
+import { cachePublicRead } from "@/lib/public-read-cache";
 
 export type HomepageStats = {
   venueCount: number;
@@ -26,6 +27,10 @@ const EMPTY_STATS: HomepageStats = {
 };
 
 export async function getHomepageStats(): Promise<HomepageStats> {
+  return cachePublicRead(["homepage-stats"], loadHomepageStats)();
+}
+
+async function loadHomepageStats(): Promise<HomepageStats> {
   try {
     const [venueCount, menuItemCount] = await Promise.all([
       prisma.venue.count({ where: { status: EntityStatus.ACTIVE } }),
@@ -94,6 +99,12 @@ async function mapFeaturedRows(
 export async function getHomepageTopSlopItems(
   limit = 6
 ): Promise<HomepageFeaturedItem[]> {
+  return cachePublicRead(["homepage-top-slop", String(limit)], () =>
+    loadHomepageTopSlopItems(limit)
+  )();
+}
+
+async function loadHomepageTopSlopItems(limit: number): Promise<HomepageFeaturedItem[]> {
   try {
     const items = await prisma.foodItem.findMany({
       where: {
@@ -105,7 +116,12 @@ export async function getHomepageTopSlopItems(
           }
         }
       },
-      include: {
+      select: {
+        slug: true,
+        name: true,
+        isPromoted: true,
+        venueBadge: true,
+        createdAt: true,
         venue: { select: { slug: true, name: true } },
         reviews: {
           where: { status: EntityStatus.ACTIVE, isTestReview: false },
@@ -113,7 +129,7 @@ export async function getHomepageTopSlopItems(
         },
         photos: featuredPhotoInclude
       },
-      take: 80
+      take: Math.max(limit * 6, 24)
     });
 
     const ranked = items
@@ -135,12 +151,25 @@ export async function getHomepageTopSlopItems(
 export async function getHomepageRecentlyAddedItems(
   limit = 6
 ): Promise<HomepageFeaturedItem[]> {
+  return cachePublicRead(["homepage-recent", String(limit)], () =>
+    loadHomepageRecentlyAddedItems(limit)
+  )();
+}
+
+async function loadHomepageRecentlyAddedItems(
+  limit: number
+): Promise<HomepageFeaturedItem[]> {
   try {
     const items = await prisma.foodItem.findMany({
       where: { status: EntityStatus.ACTIVE },
       orderBy: { createdAt: "desc" },
       take: limit,
-      include: {
+      select: {
+        slug: true,
+        name: true,
+        isPromoted: true,
+        venueBadge: true,
+        createdAt: true,
         venue: { select: { slug: true, name: true } },
         reviews: {
           where: { status: EntityStatus.ACTIVE, isTestReview: false },
@@ -160,6 +189,14 @@ export async function getHomepageRecentlyAddedItems(
 export async function getHomepageFanFavoriteItems(
   limit = 6
 ): Promise<HomepageFeaturedItem[]> {
+  return cachePublicRead(["homepage-fan-favorites", String(limit)], () =>
+    loadHomepageFanFavoriteItems(limit)
+  )();
+}
+
+async function loadHomepageFanFavoriteItems(
+  limit: number
+): Promise<HomepageFeaturedItem[]> {
   try {
     const items = await prisma.foodItem.findMany({
       where: {
@@ -174,7 +211,12 @@ export async function getHomepageFanFavoriteItems(
           }
         ]
       },
-      include: {
+      select: {
+        slug: true,
+        name: true,
+        isPromoted: true,
+        venueBadge: true,
+        createdAt: true,
         venue: { select: { slug: true, name: true } },
         reviews: {
           where: { status: EntityStatus.ACTIVE, isTestReview: false },

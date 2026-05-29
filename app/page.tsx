@@ -14,7 +14,10 @@ import {
   getHomepageTopSlopItems
 } from "@/lib/homepage-data";
 import { getPublicVenues } from "@/lib/public-data";
+import { withPublicRouteTiming } from "@/lib/route-timing";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Home",
@@ -32,7 +35,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [venues, stats, topSlop, recentlyAdded, fanFavorites] = await Promise.all([
+  return withPublicRouteTiming("homepage", async () => {
+    const [venues, stats, topSlop, recentlyAdded, fanFavorites] = await Promise.all([
     getPublicVenues(),
     getHomepageStats(),
     getHomepageTopSlopItems(6),
@@ -71,4 +75,5 @@ export default async function Home() {
       </div>
     </main>
   );
+  });
 }

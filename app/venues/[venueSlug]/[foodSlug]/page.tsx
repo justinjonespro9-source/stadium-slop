@@ -16,7 +16,15 @@ import {
 } from "@/lib/public-data";
 import type { FoodReview } from "@/lib/sample-data";
 import { prisma } from "@/lib/prisma";
-import { getDbBackedItemSlopStats, getSlopScoreTier, type ConsensusStat } from "@/lib/slop-stats";
+import {
+  getVenueItemSlopStatsMap,
+  resolveVenueItemSlopStats,
+  getDbBackedItemSlopStats,
+  getSlopScoreTier,
+  type ConsensusStat
+} from "@/lib/slop-stats";
+import { withPublicRouteTiming } from "@/lib/route-timing";
+import { enforceRateLimit } from "@/lib/rate-limit";
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
@@ -72,7 +80,7 @@ import { isAlcoholRelatedFoodItem } from "@/lib/alcohol-content";
 import { AgeGateProvider } from "@/components/age-gate/age-gate-context";
 import { FoodItemAgeGate } from "@/components/age-gate/food-item-age-gate";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 180;
 
 type FoodPageProps = {
   params: Promise<{
@@ -108,10 +116,9 @@ export async function generateMetadata({
     };
   }
 
-  const [seasonStats, freshStats] = await Promise.all([
-    getDbBackedItemSlopStats(venue.slug, foodItem.slug, "season"),
-    getDbBackedItemSlopStats(venue.slug, foodItem.slug, "gameDayFresh")
-  ]);
+  const venueStatsMap = await getVenueItemSlopStatsMap(venue.slug);
+  const seasonStats = resolveVenueItemSlopStats(venueStatsMap, foodItem.slug, "season");
+  const freshStats = resolveVenueItemSlopStats(venueStatsMap, foodItem.slug, "gameDayFresh");
 
   const unrated = isUnratedItemStats(seasonStats.reviewCount);
   const scorePart = unrated
@@ -218,6 +225,10 @@ async function markReviewHelpful(formData: FormData) {
   await requireContributorUserId(itemPath);
 
   const userId = await requireContributorUserId(itemPath);
+  const rateLimit = await enforceRateLimit("review-helpful", { userId });
+  if (!rateLimit.ok) {
+    redirect(itemPathWithHelpfulStatus(itemPath, "rate-limit"));
+  }
 
   const review = await prisma.review.findFirst({
     where: {
@@ -284,6 +295,10 @@ async function submitPriceReport(formData: FormData) {
   const canonicalPath = `/venues/${venue.slug}/${foodItem.slug}`;
 
   const userId = await requireContributorUserId(itemPath);
+  const rateLimit = await enforceRateLimit("price-report", { userId });
+  if (!rateLimit.ok) {
+    redirect(`${itemPath}?price=rate-limit`);
+  }
 
   await prisma.priceReport.create({
     data: {
@@ -387,8 +402,9 @@ async function getLikedReviewIds(userId: string, reviewIds: string[]) {
 }
 
 export default async function FoodPage({ params, searchParams }: FoodPageProps) {
-  const { venueSlug, foodSlug } = await params;
-  const query = (await searchParams) ?? {};
+  return withPublicRouteTiming("food-item-page", async () => {
+    const { venueSlug, foodSlug } = await params;
+    const query = (await searchParams) ?? {};
   const showReviewSaved = query.reviewSubmitted === "true";
   const photoError = query.photoError;
 
@@ -403,6 +419,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       ? "Price report submitted — pending admin review."
       : priceQuery === "invalid"
         ? "Enter a valid price greater than $0."
+        : priceQuery === "rate-limit"
+          ? "Too many price reports in a short window. Try again later."
         : priceQuery === "unavailable"
           ? "This menu item is not in our live database yet, so we cannot save a price report. Try an imported stadium menu item instead."
           : null;
@@ -413,6 +431,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       ? "You can't mark your own Slop Scorecard as helpful — thanks for posting though."
       : helpfulQuery === "marked"
         ? "Marked helpful. One vote per fan per scorecard."
+        : helpfulQuery === "rate-limit"
+          ? "Too many helpful votes in a short window. Try again later."
         : null;
 
   const venue = await getPublicVenueBySlug(venueSlug);
@@ -434,34 +454,28 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   const priceReportDbReady = Boolean(foodItem.id);
 
   const vendor = await getPublicVendorForFoodItem(foodItem);
-  const foodPhotos = await getPublicPhotosForFoodItem(venue.slug, foodItem.slug);
-  const priceIntel = await getPriceIntel(venue.slug, foodItem.slug, foodItem);
-  const careerStats = await getDbBackedItemSlopStats(
-    venue.slug,
-    foodItem.slug,
-    "allTime"
-  );
-  const seasonStats = await getDbBackedItemSlopStats(
-    venue.slug,
-    foodItem.slug,
-    "season"
-  );
+  const [foodPhotos, priceIntel, venueMenuItems, venueStatsMap, careerStats] =
+    await Promise.all([
+      getPublicPhotosForFoodItem(venue.slug, foodItem.slug),
+      getPriceIntel(venue.slug, foodItem.slug, foodItem),
+      getPublicFoodItemsByVenueSlug(venue.slug),
+      getVenueItemSlopStatsMap(venue.slug),
+      getDbBackedItemSlopStats(venue.slug, foodItem.slug, "allTime")
+    ]);
+  const seasonStats = resolveVenueItemSlopStats(venueStatsMap, foodItem.slug, "season");
   const slopTier = getSlopScoreTier(seasonStats.averageSlopScore);
-  const freshStats = await getDbBackedItemSlopStats(
-    venue.slug,
+  const freshStats = resolveVenueItemSlopStats(
+    venueStatsMap,
     foodItem.slug,
     "gameDayFresh"
   );
 
-  const venueMenuItems = await getPublicFoodItemsByVenueSlug(venue.slug);
   const fanFavoriteByItem = computeVenueFanFavoriteBadges(
-    await Promise.all(
-      venueMenuItems.map(async (menuItem) => ({
-        itemSlug: menuItem.slug,
-        allTime: await getDbBackedItemSlopStats(venue.slug, menuItem.slug, "allTime"),
-        season: await getDbBackedItemSlopStats(venue.slug, menuItem.slug, "season")
-      }))
-    )
+    venueMenuItems.map((menuItem) => ({
+      itemSlug: menuItem.slug,
+      allTime: resolveVenueItemSlopStats(venueStatsMap, menuItem.slug, "allTime"),
+      season: resolveVenueItemSlopStats(venueStatsMap, menuItem.slug, "season")
+    }))
   );
   const fanFavoriteBadges = getFanFavoriteBadgesForItem(
     fanFavoriteByItem,
@@ -1043,4 +1057,5 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       </div>
     </main>
   );
+  });
 }

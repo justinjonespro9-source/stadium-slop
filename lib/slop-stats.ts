@@ -2,11 +2,13 @@ import "server-only";
 
 import { PhotoType, type ReviewHistoryVisibility } from "@prisma/client";
 
+import { cachePublicRead } from "./public-read-cache";
+
 import { isGameDayKeyTodayForVenue } from "./game-day";
 import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { slugFilterInsensitive } from "./public-data";
-import { reviewerCareerStatsByUserId } from "./scorecard-reviewer-stats";
+import { reviewerCareerStatsByUserId, type ReviewerCareerStats } from "./scorecard-reviewer-stats";
 import { reviewerSocialForScorecard, buildReviewerExternalLinks } from "./profile-social-links";
 import { reviewerVenueHistoryHrefForReview } from "./slop-scorecard-reviewer";
 import {
@@ -625,4 +627,294 @@ export async function getDbBackedItemSlopStats(
       freshReviewCountToday
     );
   }
+}
+
+const DB_REVIEW_STATS_SELECT = {
+  id: true,
+  slopScore: true,
+  napkinRating: true,
+  labels: true,
+  replayValue: true,
+  priceCheck: true,
+  verifiedGameDay: true,
+  isTestReview: true,
+  seasonLabel: true,
+  gameDayKey: true,
+  note: true,
+  createdAt: true,
+  updatedAt: true,
+  user: {
+    select: {
+      id: true,
+      displayName: true,
+      handle: true,
+      avatarUrl: true,
+      instagramUrl: true,
+      tiktokUrl: true,
+      youtubeUrl: true,
+      xUrl: true,
+      websiteUrl: true,
+      socialLinksPublic: true,
+      reviewHistoryVisibility: true
+    }
+  },
+  _count: {
+    select: {
+      helpfulLikes: true
+    }
+  },
+  photos: {
+    where: {
+      status: "ACTIVE",
+      photoType: PhotoType.FOOD
+    },
+    orderBy: { createdAt: "desc" as const },
+    select: {
+      id: true,
+      url: true,
+      placeholder: true,
+      alt: true,
+      caption: true,
+      createdAt: true
+    }
+  }
+} as const;
+
+type DbReviewForStats = {
+  id: string;
+  slopScore: unknown;
+  napkinRating: number;
+  labels: string[];
+  replayValue: string | null;
+  priceCheck: string | null;
+  verifiedGameDay: boolean;
+  isTestReview: boolean;
+  seasonLabel: string;
+  gameDayKey: string;
+  note: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+    id: string;
+    displayName: string;
+    handle: string;
+    avatarUrl: string | null;
+    instagramUrl: string | null;
+    tiktokUrl: string | null;
+    youtubeUrl: string | null;
+    xUrl: string | null;
+    websiteUrl: string | null;
+    socialLinksPublic: boolean;
+    reviewHistoryVisibility: ReviewHistoryVisibility;
+  };
+  _count: { helpfulLikes: number };
+  photos: {
+    id: string;
+    url: string | null;
+    placeholder: string | null;
+    alt: string;
+    caption: string | null;
+    createdAt: Date;
+  }[];
+};
+
+function mapDbReviewsToFoodReviews(
+  reviews: DbReviewForStats[],
+  itemSlug: string,
+  venueSlug: string,
+  careerStats: Map<string, ReviewerCareerStats>
+): FoodReview[] {
+  const normalizedSlug = itemSlug.trim();
+  const normalizedVenue = venueSlug.trim();
+
+  return reviews.map((review) => {
+    const stats = careerStats.get(review.user.id);
+    const usableFanPhotos = [...review.photos]
+      .filter((p) => normalizePublicImageUrl(p.url) || Boolean(p.placeholder?.trim()))
+      .sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    const primaryPhoto = usableFanPhotos[0];
+    const photoUrl = normalizePublicImageUrl(primaryPhoto?.url);
+    const photoPlaceholder = primaryPhoto?.placeholder?.trim() || undefined;
+    const reviewerSocialLinks = reviewerSocialForScorecard(review.user);
+    const reviewerExternalLinks = reviewerSocialLinks
+      ? buildReviewerExternalLinks(reviewerSocialLinks)
+      : undefined;
+    const reviewerHistoryVisibility = review.user.reviewHistoryVisibility;
+    const reviewerVenueHistoryHref = reviewerVenueHistoryHrefForReview({
+      venueSlug: normalizedVenue,
+      reviewerId: review.user.id,
+      reviewerHistoryVisibility
+    });
+
+    return {
+      id: review.id,
+      foodSlug: normalizedSlug,
+      venueSlug: normalizedVenue,
+      reviewerId: review.user.id,
+      reviewerName: review.user.displayName,
+      reviewerHandle: review.user.handle,
+      reviewerAvatarUrl: normalizePublicImageUrl(review.user.avatarUrl) ?? undefined,
+      reviewerVenuesReviewed: stats?.venuesReviewed,
+      reviewerItemsReviewed: stats?.itemsReviewed,
+      reviewerHelpfulEarned: stats?.helpfulEarned,
+      slopScore: Number(review.slopScore),
+      napkinRating: Math.min(5, Math.max(1, review.napkinRating)) as 1 | 2 | 3 | 4 | 5,
+      labels: review.labels.map(consensusLabelFromDb),
+      replayValue: replayValueFromDb(review.replayValue),
+      priceCheck: priceCheckFromDb(review.priceCheck),
+      helpfulLikes: review._count.helpfulLikes,
+      verifiedGameDay: review.verifiedGameDay,
+      isTestReview: review.isTestReview,
+      seasonLabel: review.seasonLabel,
+      gameDayKey: review.gameDayKey,
+      dateLabel: review.createdAt.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      }),
+      hasPhoto: Boolean(photoUrl || photoPlaceholder),
+      photoUrl,
+      photoAlt: primaryPhoto?.alt,
+      photoPlaceholder,
+      reviewPhotoCreatedAt: primaryPhoto?.createdAt?.toISOString(),
+      primaryFoodPhotoId: primaryPhoto?.id,
+      note: review.note ?? undefined,
+      reviewerSocialLinks,
+      reviewerExternalLinks:
+        reviewerExternalLinks && reviewerExternalLinks.length > 0
+          ? reviewerExternalLinks
+          : undefined,
+      reviewerHistoryVisibility,
+      reviewerVenueHistoryHref
+    };
+  });
+}
+
+function buildItemSlopStatsForMode(
+  itemSlug: string,
+  venueSlug: string,
+  dbReviews: DbReviewForStats[],
+  mode: SlopStatsMode,
+  careerStats: Map<string, ReviewerCareerStats>
+): ItemSlopStats {
+  const productionDbReviews = dbReviews.filter((review) => !review.isTestReview);
+  const freshReviewCountToday = countFreshTodayFromDbReviews(productionDbReviews, venueSlug);
+  const reviewsForMode = getDbReviewsForMode(productionDbReviews, mode, venueSlug);
+  const fallbackDbReviews =
+    reviewsForMode.length > 0
+      ? reviewsForMode
+      : getDbReviewsForMode(productionDbReviews, "allTime", venueSlug);
+  const mappedReviews = mapDbReviewsToFoodReviews(
+    fallbackDbReviews,
+    itemSlug,
+    venueSlug,
+    careerStats
+  );
+  const productionReviews = mappedReviews.filter(isProductionReview);
+  const testReviews = mappedReviews.filter((review) => review.isTestReview);
+
+  return getStatsFromReviews(
+    itemSlug,
+    mode,
+    productionReviews,
+    freshReviewCountToday,
+    testReviews
+  );
+}
+
+export type VenueItemSlopStatsEntry = Record<SlopStatsMode, ItemSlopStats>;
+export type VenueItemSlopStatsMap = Map<string, VenueItemSlopStatsEntry>;
+
+async function loadVenueItemSlopStatsMap(
+  venueSlug: string
+): Promise<VenueItemSlopStatsMap> {
+  const normalizedVenue = venueSlug.trim();
+  const map: VenueItemSlopStatsMap = new Map();
+
+  let items: { slug: string; reviews: DbReviewForStats[] }[] = [];
+  try {
+    items = await prisma.foodItem.findMany({
+      where: {
+        status: "ACTIVE",
+        venue: {
+          slug: slugFilterInsensitive(normalizedVenue),
+          status: "ACTIVE"
+        }
+      },
+      select: {
+        slug: true,
+        reviews: {
+          where: { status: "ACTIVE" },
+          orderBy: { createdAt: "desc" },
+          select: DB_REVIEW_STATS_SELECT
+        }
+      }
+    });
+  } catch (error) {
+    console.warn("Venue slop stats batch load failed", error);
+    return map;
+  }
+
+  const userIds = new Set<string>();
+  for (const item of items) {
+    for (const review of item.reviews) {
+      userIds.add(review.user.id);
+    }
+  }
+  const careerStats = await reviewerCareerStatsByUserId([...userIds]);
+
+  for (const item of items) {
+    const key = item.slug.trim().toLowerCase();
+    map.set(key, {
+      allTime: buildItemSlopStatsForMode(
+        item.slug,
+        normalizedVenue,
+        item.reviews,
+        "allTime",
+        careerStats
+      ),
+      season: buildItemSlopStatsForMode(
+        item.slug,
+        normalizedVenue,
+        item.reviews,
+        "season",
+        careerStats
+      ),
+      gameDayFresh: buildItemSlopStatsForMode(
+        item.slug,
+        normalizedVenue,
+        item.reviews,
+        "gameDayFresh",
+        careerStats
+      )
+    });
+  }
+
+  return map;
+}
+
+export function resolveVenueItemSlopStats(
+  statsMap: VenueItemSlopStatsMap,
+  itemSlug: string,
+  mode: SlopStatsMode
+): ItemSlopStats {
+  const entry = statsMap.get(itemSlug.trim().toLowerCase());
+  if (entry) {
+    return entry[mode];
+  }
+  return getStatsFromReviews(itemSlug.trim(), mode, [], 0);
+}
+
+/** One venue query for all item standings / fan-favorite rollups (replaces N× per-item fetches). */
+export async function getVenueItemSlopStatsMap(
+  venueSlug: string
+): Promise<VenueItemSlopStatsMap> {
+  const normalized = venueSlug.trim();
+  return cachePublicRead(
+    ["venue-item-slop-stats", normalized],
+    () => loadVenueItemSlopStatsMap(normalized),
+    180
+  )();
 }

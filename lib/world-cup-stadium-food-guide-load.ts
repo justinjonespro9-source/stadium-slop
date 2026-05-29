@@ -1,9 +1,7 @@
-import {
-  getPublicFoodItemsByVenueSlug,
-  getPublicVenues
-} from "@/lib/public-data";
+import { getPublicVenues } from "@/lib/public-data";
 import { resolveWorldCupHostVenues } from "@/lib/world-cup-stadium-food-guide";
 import type { ResolvedWorldCupHostVenue } from "@/lib/world-cup-stadium-food-guide";
+import { getVenueFoodItemCountsForSlugs } from "@/lib/venue-browse-data";
 
 export async function loadWorldCupGuideHosts(): Promise<ResolvedWorldCupHostVenue[]> {
   const venues = await getPublicVenues();
@@ -14,16 +12,7 @@ export async function loadWorldCupGuideHosts(): Promise<ResolvedWorldCupHostVenu
     )
   ];
 
-  const itemsByVenueSlug: Record<
-    string,
-    Awaited<ReturnType<typeof getPublicFoodItemsByVenueSlug>>
-  > = {};
+  const foodItemCountsByVenueSlug = await getVenueFoodItemCountsForSlugs(liveSlugs);
 
-  await Promise.all(
-    liveSlugs.map(async (slug) => {
-      itemsByVenueSlug[slug] = await getPublicFoodItemsByVenueSlug(slug);
-    })
-  );
-
-  return resolveWorldCupHostVenues(venues, itemsByVenueSlug);
+  return resolveWorldCupHostVenues(venues, foodItemCountsByVenueSlug);
 }

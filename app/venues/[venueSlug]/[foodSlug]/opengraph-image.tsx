@@ -6,7 +6,7 @@ import {
   getPublicPhotosForFoodItem,
   getPublicVenueBySlug
 } from "@/lib/public-data";
-import { getDbBackedItemSlopStats } from "@/lib/slop-stats";
+import { getVenueItemSlopStatsMap, resolveVenueItemSlopStats } from "@/lib/slop-stats";
 import type { FoodItem, Venue } from "@/lib/sample-data";
 import { OG_CARD } from "@/lib/site-metadata";
 
@@ -31,8 +31,8 @@ export default async function Image({ params }: OgProps) {
 
   let heroUrl: string | undefined;
   let fallbackEmoji = "🍔";
-  let season: Awaited<ReturnType<typeof getDbBackedItemSlopStats>> | null = null;
-  let fresh: Awaited<ReturnType<typeof getDbBackedItemSlopStats>> | null = null;
+  let season: ReturnType<typeof resolveVenueItemSlopStats> | null = null;
+  let fresh: ReturnType<typeof resolveVenueItemSlopStats> | null = null;
 
   let displayVenue: Venue | null = null;
   let displayItem: FoodItem | null = null;
@@ -52,10 +52,9 @@ export default async function Image({ params }: OgProps) {
       photos[0]?.imagePlaceholder ??
       "🍔";
 
-    [season, fresh] = await Promise.all([
-      getDbBackedItemSlopStats(venue.slug, itemRaw.slug, "season"),
-      getDbBackedItemSlopStats(venue.slug, itemRaw.slug, "gameDayFresh")
-    ]);
+    const venueStatsMap = await getVenueItemSlopStatsMap(venue.slug);
+    season = resolveVenueItemSlopStats(venueStatsMap, itemRaw.slug, "season");
+    fresh = resolveVenueItemSlopStats(venueStatsMap, itemRaw.slug, "gameDayFresh");
   }
 
   const element = createFoodOpenGraphElement({

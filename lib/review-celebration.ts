@@ -21,7 +21,7 @@ export const FAN_PHOTO_REVIEWS_SECTION_ID = "fan-photo-reviews";
 /** Item page URL after helpful vote — keeps user on the scorecard carousel. */
 export function itemPathWithHelpfulStatus(
   itemPath: string,
-  status: "marked" | "own"
+  status: "marked" | "own" | "rate-limit"
 ): string {
   return `${itemPath}?helpful=${status}#${FAN_PHOTO_REVIEWS_SECTION_ID}`;
 }
