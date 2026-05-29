@@ -4,14 +4,17 @@ import type { ReactNode } from "react";
 type VenueHeroProps = {
   venueName: string;
   metaLine: ReactNode;
-  reviewCtaHref: string;
+  /** In-page anchor for the menu / standings (default #venue-menu). */
+  browseCtaHref?: string;
+  browseCtaLabel?: string;
   children?: ReactNode;
 };
 
 export function VenueHero({
   venueName,
   metaLine,
-  reviewCtaHref,
+  browseCtaHref = "#venue-menu",
+  browseCtaLabel = "Browse menu items",
   children
 }: VenueHeroProps) {
   return (
@@ -41,8 +44,11 @@ export function VenueHero({
           >
             ← Venues
           </Link>
-          <Link href={reviewCtaHref} className="media-primary-button shrink-0 text-[0.7rem] sm:text-sm">
-            Leave a review
+          <Link
+            href={browseCtaHref}
+            className="media-primary-button shrink-0 text-[0.7rem] sm:text-sm"
+          >
+            {browseCtaLabel}
           </Link>
         </div>
 
@@ -55,6 +61,9 @@ export function VenueHero({
           </h1>
           <p className="mt-2 max-w-2xl text-[0.8125rem] font-medium leading-relaxed text-white/78 sm:text-sm">
             {metaLine}
+          </p>
+          <p className="mt-2 max-w-2xl text-[0.7rem] leading-snug text-white/60 sm:text-xs">
+            Pick a menu item below to view Slop Scorecards or leave your own review.
           </p>
         </header>
 

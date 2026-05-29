@@ -41,7 +41,9 @@ const VENUE_SLUG_BY_NAME: Record<string, string> = {
   "estadio bbva": "estadio-bbva",
   "estadio bbva gnp": "estadio-bbva",
   "estadio akron": "estadio-akron",
-  "estadio chivas": "estadio-akron"
+  "estadio chivas": "estadio-akron",
+  "xcel energy center": "grand-casino-arena",
+  "grand casino arena": "grand-casino-arena"
 };
 
 /** Legacy / alias slugs → canonical venue slug (DB / import). */
@@ -72,7 +74,9 @@ const VENUE_SLUG_ALIASES: Record<string, string> = {
   "bbva-stadium": "estadio-bbva",
   "estadio-bbva-gnp": "estadio-bbva",
   "akron-stadium": "estadio-akron",
-  "estadio-chivas": "estadio-akron"
+  "estadio-chivas": "estadio-akron",
+  "xcel-energy-center": "grand-casino-arena",
+  "xcel-energy": "grand-casino-arena"
 };
 
 /** Venue URL segment — prefer explicit slug, else ballpark name. */

@@ -12,70 +12,7 @@ type ScorecardIdentityPreviewProps = {
   helpfulEarned: number;
 };
 
-function PreviewFanFoodPhotoNote() {
-  return (
-    <div className="rounded-lg border border-dashed border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-2">
-      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-muted)]">
-        Card front · fan food photo
-      </p>
-      <div className="mt-1.5 flex min-h-[4.5rem] items-center justify-center rounded-md border border-[var(--media-border)] bg-[var(--media-white)]">
-        <span className="text-center text-[0.55rem] leading-snug text-[var(--media-ink-muted)]">
-          Uploaded with each review — not set here
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function PreviewFrontStrip({
-  displayName,
-  handleDisplay,
-  initials,
-  avatarUrl
-}: Pick<
-  ScorecardIdentityPreviewProps,
-  "displayName" | "handleDisplay" | "initials" | "avatarUrl"
->) {
-  const avatar = normalizePublicImageUrl(avatarUrl);
-
-  return (
-    <div className="rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-2">
-      <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-muted)]">
-        Card front · reviewer strip (round)
-      </p>
-      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--media-ink-muted)]">
-        Same avatar as below
-      </p>
-      <div className="mt-1.5 flex items-center gap-2">
-        <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-[var(--slop-card-orange)] bg-[var(--slop-navy-deep)] shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
-          {avatar ? (
-            <Image
-              src={avatar}
-              alt=""
-              fill
-              className="object-cover object-center"
-              sizes="44px"
-            />
-          ) : (
-            <span className="flex h-full w-full items-center justify-center text-[0.7rem] font-black text-[var(--slop-cream)]">
-              {initials}
-            </span>
-          )}
-        </div>
-        <div className="min-w-0">
-          <p className="truncate text-[0.65rem] font-black text-[var(--slop-cream)]">
-            {displayName}
-          </p>
-          <p className="truncate text-[0.52rem] font-bold text-[var(--slop-cream-dim)]">
-            {handleDisplay}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PreviewBackProfile({
+export function ScorecardIdentityPreview({
   displayName,
   handleDisplay,
   initials,
@@ -87,65 +24,63 @@ function PreviewBackProfile({
   const avatar = normalizePublicImageUrl(avatarUrl);
 
   return (
-    <div className="rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-2 py-2">
+    <div className="rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-3 sm:px-4">
       <p className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-muted)]">
-        Card back · reviewer profile (square)
+        Your Stadium Slop profile image
       </p>
-      <p className="mt-0.5 text-[0.48rem] leading-snug text-[var(--media-ink-muted)]">
-        Same avatar — square crop only
+      <p className="mt-1 text-[0.65rem] leading-snug text-[var(--media-ink-muted)]">
+        One upload is used on your Slop Scorecards — round on the card front and square on
+        the back. Fan food photos on each card still come from that item&apos;s review.
       </p>
-      <div className="slop-scorecard-back-profile mt-1.5 flex items-start gap-2">
-        {avatar ? (
-          <div className="slop-scorecard-back-profile-photo relative">
-            <Image
-              src={avatar}
-              alt=""
-              fill
-              className="object-cover object-center"
-              sizes="96px"
-            />
+      <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start">
+        <div className="flex shrink-0 items-center gap-3">
+          <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border-2 border-[var(--slop-card-orange)] bg-[var(--slop-navy-deep)] shadow-[0_2px_10px_rgba(0,0,0,0.35)]">
+            {avatar ? (
+              <Image
+                src={avatar}
+                alt=""
+                fill
+                className="object-cover object-center"
+                sizes="56px"
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center text-sm font-black text-[var(--slop-cream)]">
+                {initials}
+              </span>
+            )}
           </div>
-        ) : (
-          <div className="slop-scorecard-back-profile-initials" aria-hidden>
-            {initials}
-          </div>
-        )}
-        <div className="min-w-0 flex-1 pt-0.5">
-          <p className="truncate text-[0.74rem] font-black leading-tight text-[var(--slop-cream)]">
-            {displayName}
-          </p>
-          <p className="truncate text-[0.54rem] font-bold text-[var(--slop-cream-dim)]">
-            {handleDisplay}
-          </p>
-          <p className="slop-scorecard-back-career-label mt-1.5">Career Stats</p>
-          <div className="slop-scorecard-back-career-stats">
-            <div className="slop-scorecard-back-meta-row">
-              <span className="slop-scorecard-back-meta-label">Venues Reviewed</span>
-              <span className="slop-scorecard-back-meta-value">{venuesReviewed}</span>
-            </div>
-            <div className="slop-scorecard-back-meta-row">
-              <span className="slop-scorecard-back-meta-label">Items Reviewed</span>
-              <span className="slop-scorecard-back-meta-value">{itemsReviewed}</span>
-            </div>
-            <div className="slop-scorecard-back-meta-row">
-              <span className="slop-scorecard-back-meta-label">Helpful Earned</span>
-              <span className="slop-scorecard-back-meta-value">{helpfulEarned}</span>
-            </div>
+          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border-2 border-[var(--slop-card-orange)] bg-[var(--slop-navy-deep)]">
+            {avatar ? (
+              <Image
+                src={avatar}
+                alt=""
+                fill
+                className="object-cover object-center"
+                sizes="64px"
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center text-sm font-black text-[var(--slop-cream)]">
+                {initials}
+              </span>
+            )}
           </div>
         </div>
+        <div className="min-w-0 flex-1 text-[0.65rem] leading-snug text-[var(--media-ink-muted)]">
+          <p>
+            <span className="font-bold text-[var(--media-ink)]">Round</span> — reviewer strip
+            on the card front
+          </p>
+          <p className="mt-1">
+            <span className="font-bold text-[var(--media-ink)]">Square</span> — profile block
+            on the card back with career stats
+          </p>
+          <p className="mt-2 font-black text-[var(--slop-cream)]">{displayName}</p>
+          <p className="font-bold text-[var(--slop-cream-dim)]">{handleDisplay}</p>
+          <p className="mt-2 text-[0.6rem]">
+            Venues {venuesReviewed} · Items {itemsReviewed} · Helpful {helpfulEarned}
+          </p>
+        </div>
       </div>
-    </div>
-  );
-}
-
-export function ScorecardIdentityPreview(props: ScorecardIdentityPreviewProps) {
-  return (
-    <div className="space-y-2">
-      <div className="grid gap-2 sm:grid-cols-2">
-        <PreviewFanFoodPhotoNote />
-        <PreviewFrontStrip {...props} />
-      </div>
-      <PreviewBackProfile {...props} />
     </div>
   );
 }

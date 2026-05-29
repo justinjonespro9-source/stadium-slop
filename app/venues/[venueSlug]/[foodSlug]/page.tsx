@@ -24,6 +24,10 @@ import {
   type ConsensusStat
 } from "@/lib/slop-stats";
 import { withPublicRouteTiming } from "@/lib/route-timing";
+import {
+  canonicalVenuePath,
+  resolveCanonicalPublicVenueSlug
+} from "@/lib/venue-public-slug";
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
@@ -99,10 +103,11 @@ export async function generateMetadata({
   params
 }: Pick<FoodPageProps, "params">): Promise<Metadata> {
   const { venueSlug, foodSlug } = await params;
-  const venue = await getPublicVenueBySlug(venueSlug);
+  const canonicalVenueSlug = resolveCanonicalPublicVenueSlug(venueSlug);
+  const venue = await getPublicVenueBySlug(canonicalVenueSlug);
   const foodItem = venue
     ? await getPublicFoodItemBySlug(venue.slug, foodSlug)
-    : await getPublicFoodItemBySlug(venueSlug, foodSlug);
+    : await getPublicFoodItemBySlug(canonicalVenueSlug, foodSlug);
 
   if (
     !venue ||
@@ -405,6 +410,18 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
   return withPublicRouteTiming("food-item-page", async () => {
     const { venueSlug, foodSlug } = await params;
     const query = (await searchParams) ?? {};
+    const canonicalVenueSlug = resolveCanonicalPublicVenueSlug(venueSlug);
+    if (canonicalVenueSlug.toLowerCase() !== venueSlug.trim().toLowerCase()) {
+      const qs = new URLSearchParams();
+      if (query.reviewSubmitted === "true") qs.set("reviewSubmitted", "true");
+      if (query.photoError) qs.set("photoError", query.photoError);
+      if (query.price) qs.set("price", query.price);
+      if (query.helpful) qs.set("helpful", query.helpful);
+      const suffix = qs.toString() ? `?${qs.toString()}` : "";
+      redirect(
+        `${canonicalVenuePath(canonicalVenueSlug)}/${encodeURIComponent(foodSlug)}${suffix}`
+      );
+    }
   const showReviewSaved = query.reviewSubmitted === "true";
   const photoError = query.photoError;
 

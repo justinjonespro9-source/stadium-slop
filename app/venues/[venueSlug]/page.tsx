@@ -52,6 +52,10 @@ import {
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { getVenueFreshFeedReviews } from "@/lib/venue-fresh-feed";
 import { withPublicRouteTiming } from "@/lib/route-timing";
+import {
+  canonicalVenuePath,
+  resolveCanonicalPublicVenueSlug
+} from "@/lib/venue-public-slug";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter =
@@ -95,7 +99,8 @@ export async function generateMetadata({
   params
 }: Pick<VenuePageProps, "params">): Promise<Metadata> {
   const { venueSlug } = await params;
-  const venue = await getPublicVenueBySlug(venueSlug);
+  const canonicalSlug = resolveCanonicalPublicVenueSlug(venueSlug);
+  const venue = await getPublicVenueBySlug(canonicalSlug);
 
   if (!venue) {
     return {
@@ -349,8 +354,19 @@ function ModeChips({
 export default async function VenuePage({ params, searchParams }: VenuePageProps) {
   return withPublicRouteTiming("venue-page", async () => {
     const { venueSlug } = await params;
+    const canonicalSlug = resolveCanonicalPublicVenueSlug(venueSlug);
+    if (canonicalSlug.toLowerCase() !== venueSlug.trim().toLowerCase()) {
+      const query = await searchParams;
+      const qs = new URLSearchParams();
+      if (query?.mode) qs.set("mode", query.mode);
+      if (query?.category) qs.set("category", query.category);
+      if (query?.vendor) qs.set("vendor", query.vendor);
+      if (query?.q) qs.set("q", query.q);
+      const suffix = qs.toString() ? `?${qs.toString()}` : "";
+      redirect(`${canonicalVenuePath(canonicalSlug)}${suffix}`);
+    }
     const query = await searchParams;
-  const venue = await getPublicVenueBySlug(venueSlug);
+  const venue = await getPublicVenueBySlug(canonicalSlug);
 
   if (!venue) {
     notFound();
@@ -467,11 +483,6 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     };
   });
   const isSignedIn = Boolean(await getContributorUserId());
-  const reviewCtaHref = standingsRows[0]
-    ? `/venues/${venue.slug}/${standingsRows[0].item.slug}/review`
-    : venueFoodItems[0]
-      ? `/venues/${venue.slug}/${venueFoodItems[0].slug}/review`
-      : "/venues";
 
   const venueMetaLine = (
     <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
@@ -493,11 +504,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
   return (
     <main className="media-page-shell min-h-screen">
-      <VenueHero
-        venueName={venue.name}
-        metaLine={venueMetaLine}
-        reviewCtaHref={reviewCtaHref}
-      >
+      <VenueHero venueName={venue.name} metaLine={venueMetaLine}>
         <ModeChips
           venueSlug={venue.slug}
           mode={mode}
@@ -586,7 +593,11 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           />
         ) : null}
 
-        <section className="mt-6 sm:mt-8" aria-describedby="venue-standings-hint">
+        <section
+          id="venue-menu"
+          className="mt-6 sm:mt-8 scroll-mt-24"
+          aria-describedby="venue-standings-hint"
+        >
           <p id="venue-standings-hint" className="sr-only">
             Slop Scoreboard uses geofenced fan reviews within {venue.reviewRadiusMeters}{" "}
             meters of this venue when submitted on site.

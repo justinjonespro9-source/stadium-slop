@@ -6,6 +6,10 @@ import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { cachePublicRead } from "./public-read-cache";
 import {
+  isDeprecatedPublicVenueSlug,
+  resolveCanonicalPublicVenueSlug
+} from "./venue-public-slug";
+import {
   foodItems,
   foodPhotos,
   getFoodItemsByVenueSlug,
@@ -387,7 +391,12 @@ async function loadPublicVenues() {
       })
     );
 
-    return fallback(dbVenues.map(mapVenueFromDb), venues);
+    return fallback(
+      dbVenues
+        .filter((venue) => !isDeprecatedPublicVenueSlug(venue.slug))
+        .map(mapVenueFromDb),
+      venues.filter((venue) => !isDeprecatedPublicVenueSlug(venue.slug))
+    );
   } catch (error) {
     console.warn("Falling back to sample venues", error);
     return venues;
@@ -402,20 +411,36 @@ export async function getPublicVenues() {
 
 export async function getPublicVenueBySlug(slug: string) {
   const normalized = slug.trim();
+  const canonical = resolveCanonicalPublicVenueSlug(normalized);
+  const slugsToTry =
+    canonical.toLowerCase() === normalized.toLowerCase()
+      ? [canonical]
+      : [canonical, normalized];
 
   try {
-    const venue = await prisma.venue.findFirst({
-      where: { slug: slugFilterInsensitive(normalized), status: "ACTIVE" },
-      select: PUBLIC_VENUE_SELECT
-    });
-
-    return venue
-      ? mapVenueFromDb(venue)
-      : venues.find((item) => item.slug.toLowerCase() === normalized.toLowerCase());
+    for (const trySlug of slugsToTry) {
+      const venue = await prisma.venue.findFirst({
+        where: { slug: slugFilterInsensitive(trySlug), status: "ACTIVE" },
+        select: PUBLIC_VENUE_SELECT
+      });
+      if (venue) {
+        return mapVenueFromDb(venue);
+      }
+    }
   } catch (error) {
     console.warn("Falling back to sample venue", error);
-    return venues.find((item) => item.slug.toLowerCase() === normalized.toLowerCase());
   }
+
+  for (const trySlug of slugsToTry) {
+    const sample = venues.find(
+      (item) => item.slug.toLowerCase() === trySlug.toLowerCase()
+    );
+    if (sample) {
+      return sample;
+    }
+  }
+
+  return undefined;
 }
 
 export async function getPublicVendorsByVenueSlug(venueSlug: string) {

@@ -86,7 +86,8 @@ export function ProfileDashboardBody({
             initials={initials}
           />
           <p className="mt-3 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
-            Edit your public Scorecard name, handle, and photo in the section above.
+            Your profile image above matches what fans see on scorecards. Edit name, handle,
+            and photo in Scorecard identity.
           </p>
         </header>
 

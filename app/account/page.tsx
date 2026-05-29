@@ -490,7 +490,8 @@ export default async function AccountPage({ searchParams }: AccountPageProps) {
             </div>
           </div>
           <p className="mt-2 max-w-2xl text-xs leading-snug text-[var(--media-ink-muted)]">
-            What other fans see on your Slop Scorecards — name, handle, and photo.
+            What other fans see on your Slop Scorecards — name, handle, and one profile image
+            used across Stadium Slop.
           </p>
           <div className="mt-4">
             <ScorecardIdentityEditor

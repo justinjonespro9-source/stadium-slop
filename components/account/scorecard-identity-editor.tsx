@@ -60,11 +60,6 @@ export function ScorecardIdentityEditor({
     <div className="space-y-4">
       <div>
         <p className="media-section-eyebrow">Preview</p>
-        <p className="mt-1 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
-          One reviewer avatar powers your name on every Slop Scorecard (round on the front
-          strip, square on the back). The large photo on each card front is the fan food
-          photo from that review — uploaded when you submit a review, not here.
-        </p>
         <div className="mt-3">
           <ScorecardIdentityPreview
             displayName={displayName.trim() || "Stadium fan"}
@@ -129,15 +124,17 @@ export function ScorecardIdentityEditor({
       </form>
 
       <div className="border-t border-[var(--media-border)] pt-4">
-        <p className="media-form-label">Reviewer avatar</p>
+        <p className="media-form-label">Profile image</p>
         <p className="mt-1 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
-          This is your Scorecard identity photo only — not the fan food photo on the card
-          front. Same Cloudinary path as review photos (~8MB, JPEG/PNG/WebP/GIF).
+          Upload one photo for your Stadium Slop reviewer identity. It appears on every Slop
+          Scorecard you post (round on the front, square on the back). This is not the fan food
+          photo on a card — those are added when you review a specific menu item. JPEG, PNG,
+          WebP, or GIF · about 8MB max.
         </p>
         {cloudinaryReady ? (
           <form action={uploadProfileAvatar} className="mt-3 space-y-2">
             <label className="media-form-label">
-              <span className="sr-only">Choose profile photo</span>
+              <span className="sr-only">Choose profile image</span>
               <input
                 name="avatar"
                 type="file"
@@ -149,12 +146,12 @@ export function ScorecardIdentityEditor({
               type="submit"
               className="media-secondary-button min-h-9 px-4 py-2 text-xs"
             >
-              Save photo
+              Save profile image
             </button>
           </form>
         ) : (
           <p className="mt-2 text-[0.7rem] leading-snug text-[var(--media-ink-muted)]">
-            Add Cloudinary env vars on the server to enable profile photo uploads.
+            Add Cloudinary env vars on the server to enable profile image uploads.
           </p>
         )}
       </div>

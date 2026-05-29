@@ -340,8 +340,8 @@ const nonMlbDemoVenues: Venue[] = [
     primarySport: "Football"
   },
   {
-    slug: "xcel-energy-center",
-    name: "Xcel Energy Center",
+    slug: "grand-casino-arena",
+    name: "Grand Casino Arena",
     city: "St. Paul",
     state: "MN",
     leagues: ["NHL", "PWHL"],
@@ -412,7 +412,7 @@ export const vendors: Vendor[] = [
   {
     slug: "north-star-fish-fry",
     name: "North Star Fish Fry",
-    venueSlug: "xcel-energy-center",
+    venueSlug: "grand-casino-arena",
     section: "Club level",
     location: "Club level market",
     averageSlopScore: 8.2,
@@ -506,7 +506,7 @@ export const foodItems: FoodItem[] = [
   {
     slug: "walleye-basket",
     name: "North Star Walleye Basket",
-    venueSlug: "xcel-energy-center",
+    venueSlug: "grand-casino-arena",
     vendorSlug: "north-star-fish-fry",
     itemType: "Food",
     category: "Seafood",
@@ -712,7 +712,7 @@ export const foodPhotos: FoodPhoto[] = [
   {
     id: "photo-walleye-basket-1",
     foodSlug: "walleye-basket",
-    venueSlug: "xcel-energy-center",
+    venueSlug: "grand-casino-arena",
     alt: "North Star Walleye Basket with fries",
     caption: "Crispy basket from the club level.",
     uploadedBy: "Hockey Night Plate Cam",
@@ -723,7 +723,7 @@ export const foodPhotos: FoodPhoto[] = [
   {
     id: "photo-walleye-basket-2",
     foodSlug: "walleye-basket",
-    venueSlug: "xcel-energy-center",
+    venueSlug: "grand-casino-arena",
     alt: "Walleye basket after the walk back to the seats",
     caption: "Fries survived the walk back to the seats.",
     uploadedBy: "Wild Intermission Eats",
@@ -860,7 +860,7 @@ export const foodReviews: FoodReview[] = [
   {
     id: "review-walleye-1",
     foodSlug: "walleye-basket",
-    venueSlug: "xcel-energy-center",
+    venueSlug: "grand-casino-arena",
     slopScore: 8.8,
     napkinRating: 2,
     labels: ["Run It Back", "Worth the Walk"],
@@ -873,7 +873,7 @@ export const foodReviews: FoodReview[] = [
   {
     id: "review-walleye-2",
     foodSlug: "walleye-basket",
-    venueSlug: "xcel-energy-center",
+    venueSlug: "grand-casino-arena",
     slopScore: 8.3,
     napkinRating: 2,
     labels: ["Worth the Walk"],
@@ -885,7 +885,7 @@ export const foodReviews: FoodReview[] = [
   {
     id: "review-walleye-3",
     foodSlug: "walleye-basket",
-    venueSlug: "xcel-energy-center",
+    venueSlug: "grand-casino-arena",
     slopScore: 7.9,
     napkinRating: 3,
     labels: ["Run It Back"],

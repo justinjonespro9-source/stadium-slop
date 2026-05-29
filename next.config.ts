@@ -26,6 +26,20 @@ const nextConfig: NextConfig = {
       /** Keep in sync with `MAX_IMAGE_UPLOAD_BYTES` in lib/cloudinary.ts (8MB fan photos). */
       bodySizeLimit: "8mb"
     }
+  },
+  async redirects() {
+    return [
+      {
+        source: "/venues/xcel-energy-center",
+        destination: "/venues/grand-casino-arena",
+        permanent: true
+      },
+      {
+        source: "/venues/xcel-energy-center/:path*",
+        destination: "/venues/grand-casino-arena/:path*",
+        permanent: true
+      }
+    ];
   }
 };
 
