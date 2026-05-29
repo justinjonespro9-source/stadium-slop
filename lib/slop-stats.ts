@@ -825,13 +825,13 @@ function buildItemSlopStatsForMode(
 }
 
 export type VenueItemSlopStatsEntry = Record<SlopStatsMode, ItemSlopStats>;
-export type VenueItemSlopStatsMap = Map<string, VenueItemSlopStatsEntry>;
+export type VenueItemSlopStatsMap = Record<string, VenueItemSlopStatsEntry>;
 
 async function loadVenueItemSlopStatsMap(
   venueSlug: string
 ): Promise<VenueItemSlopStatsMap> {
   const normalizedVenue = venueSlug.trim();
-  const map: VenueItemSlopStatsMap = new Map();
+  const map: VenueItemSlopStatsMap = {};
 
   let items: { slug: string; reviews: DbReviewForStats[] }[] = [];
   try {
@@ -867,7 +867,7 @@ async function loadVenueItemSlopStatsMap(
 
   for (const item of items) {
     const key = item.slug.trim().toLowerCase();
-    map.set(key, {
+    map[key] = {
       allTime: buildItemSlopStatsForMode(
         item.slug,
         normalizedVenue,
@@ -889,7 +889,7 @@ async function loadVenueItemSlopStatsMap(
         "gameDayFresh",
         careerStats
       )
-    });
+    };
   }
 
   return map;
@@ -900,7 +900,7 @@ export function resolveVenueItemSlopStats(
   itemSlug: string,
   mode: SlopStatsMode
 ): ItemSlopStats {
-  const entry = statsMap.get(itemSlug.trim().toLowerCase());
+  const entry = statsMap[itemSlug.trim().toLowerCase()];
   if (entry) {
     return entry[mode];
   }

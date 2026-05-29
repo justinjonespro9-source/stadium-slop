@@ -34,13 +34,15 @@ const AD_SELECT = {
   updatedAt: true
 } as const;
 
-function staticFallbackMap(): Map<string, ActiveAd> {
-  return new Map(
-    Object.entries(STATIC_AD_BY_PLACEMENT).map(([key, ad]) => [key, asActiveAd(ad)])
-  );
+function staticFallbackRecord(): Record<string, ActiveAd> {
+  const out: Record<string, ActiveAd> = {};
+  for (const [key, ad] of Object.entries(STATIC_AD_BY_PLACEMENT)) {
+    out[key] = asActiveAd(ad);
+  }
+  return out;
 }
 
-async function loadActiveAdsByPlacement(): Promise<Map<string, ActiveAd>> {
+async function loadActiveAdsByPlacement(): Promise<Record<string, ActiveAd>> {
   try {
     const now = new Date();
     const rows = await prisma.adPlacement.findMany({
@@ -55,13 +57,13 @@ async function loadActiveAdsByPlacement(): Promise<Map<string, ActiveAd>> {
       select: AD_SELECT
     });
 
-    const map = new Map<string, ActiveAd>();
+    const map: Record<string, ActiveAd> = {};
     for (const row of rows) {
       const key = row.placementKey.trim();
-      if (!key || map.has(key)) {
+      if (!key || map[key]) {
         continue;
       }
-      map.set(key, {
+      map[key] = {
         id: row.id,
         placementKey: row.placementKey,
         title: row.title,
@@ -70,19 +72,19 @@ async function loadActiveAdsByPlacement(): Promise<Map<string, ActiveAd>> {
         ctaLabel: row.ctaLabel,
         ctaHref: row.ctaHref,
         sponsorName: row.sponsorName
-      });
+      };
     }
 
     for (const [key, ad] of Object.entries(STATIC_AD_BY_PLACEMENT)) {
-      if (!map.has(key)) {
-        map.set(key, asActiveAd(ad));
+      if (!map[key]) {
+        map[key] = asActiveAd(ad);
       }
     }
 
     return map;
   } catch (error) {
     console.warn("[ads] Failed to load active placements — using static fallbacks", error);
-    return staticFallbackMap();
+    return staticFallbackRecord();
   }
 }
 
@@ -105,5 +107,5 @@ export async function getActiveAdForPlacement(
   }
 
   const map = await getActiveAdsByPlacementCached();
-  return map.get(key) ?? (STATIC_AD_BY_PLACEMENT[key] ? asActiveAd(STATIC_AD_BY_PLACEMENT[key]) : null);
+  return map[key] ?? (STATIC_AD_BY_PLACEMENT[key] ? asActiveAd(STATIC_AD_BY_PLACEMENT[key]) : null);
 }
