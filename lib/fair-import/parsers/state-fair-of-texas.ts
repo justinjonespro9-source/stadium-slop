@@ -42,40 +42,48 @@ const MENU_2025: FairRawMenuItem[] = [
   },
   {
     name: "Birria Ramen Bowl",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "Mr. Ramen Fusion",
     fare: "Meals",
-    description: "2025 new fair food item.",
-    location: "See BigTex.com/NewFoods map"
+    description:
+      "Ramen with birria, corn, cilantro, crispy onion, Monterey Jack, and consommé.",
+    location: "Midway"
   },
   {
     name: "Baja Fish Tacos",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "Tony's Taco Shop",
     fare: "Meals",
-    description: "2025 new fair food item."
+    description: "Three crispy fish tacos with creamy zesty sauce.",
+    location: "Mamacita's, Old Mill Inn patio on Grand Ave"
   },
   {
     name: "Fried Pickle Bombs",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "Stiffler Concessions",
     fare: "Snacks",
-    description: "2025 new fair food item."
+    description: "Fried pickles on Crispy Dillies with spicy ranch.",
+    location: "Front Gate, Midway, Funway, and Grand Area"
   },
   {
     name: "Churro Cheesecake Jalapeño Popper",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "Velasquez Catering & Concessions",
     fare: "Desserts",
-    description: "2025 Big Tex semi-finalist new food."
+    description:
+      "2025 Big Tex semi-finalist — jalapeño popper with cheesecake filling, churro batter, cinnamon sugar, and dulce de leche.",
+    location: "Funway and MLK Blvd"
   },
   {
     name: "Deep Fried Carbonara",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "EATALY Dallas",
     fare: "Meals",
-    description: "2025 new fair food item."
+    description: "Breaded and fried spaghetti carbonara with guanciale and Pecorino Romano.",
+    location: "Cotton Bowl Plaza"
   },
   {
     name: "Vegan Crunchwrap Supreme",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "Vegan Vibrationz",
     fare: "Meals",
-    description: "2025 new fair food item."
+    description:
+      "Plant-based crunchwrap with seasoned crumble, nacho cheese, chipotle aioli, lettuce, and tomatoes.",
+    location: "Nimitz Ave"
   },
   {
     name: "Dubai Chocolate Cheesecake",
@@ -103,16 +111,18 @@ const MENU_2025: FairRawMenuItem[] = [
   },
   {
     name: "Pop Rocks Margarita",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "Texas Holy Fried Ribs and Fusion BBQ",
     beverageCategory: "Alcoholic Drink",
     allowBeverage: true,
-    description: "2025 new beverage (21+). Verify stand on official map."
+    description: "2025 semi-finalist frozen margarita with Pop Rocks (21+).",
+    location: "Tower Building; Cotton Bowl Plaza (sopapilla stand)"
   },
   {
     name: "Texas Water",
-    vendor: "State Fair of Texas concessionaire",
+    vendor: "Vandalay Industries",
     beverageCategory: "Non-Alcoholic Drink",
-    description: "Generic beverage — skipped by import filter."
+    description: "Generic beverage — skipped by import filter.",
+    location: "Funway"
   }
 ];
 
@@ -123,8 +133,8 @@ export async function parseStateFairOfTexasMenu(): Promise<FairMenuParseResult> 
     sourceUrl: SOURCE_URL,
     items: MENU_2025,
     warnings: [
-      "Several 2025 items list concessionaire TBD — assign stand locations from BigTex.com/NewFoods before apply.",
-      "Vendor names follow Big Tex Choice Awards announcements where available."
+      "Vendor names and locations from BigTex.com 2025 new foods announcement.",
+      "Use BigTex.com/NewFoods map for exact stand pins before visiting."
     ]
   });
 }
