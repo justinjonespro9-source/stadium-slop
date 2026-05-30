@@ -38,7 +38,7 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col bg-[var(--slop-navy)]">
         <SiteHeader />
-        <div className="flex-1">{children}</div>
+        <div className="min-w-0 flex-1">{children}</div>
         <SiteFooter />
       </body>
     </html>

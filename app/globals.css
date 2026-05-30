@@ -57,10 +57,25 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Prevent horizontal scroll / pinch-to-fit on mobile Safari (shadows, transforms, 100vw) */
+html {
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 /* Page shell — stadium night + warm glow */
@@ -1114,16 +1129,29 @@ body {
 .media-home {
   background: var(--media-surface);
   color: var(--media-ink);
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .media-home-content {
   padding-bottom: 3rem;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
 }
 
 .media-home-hero {
   /* Mobile: tighter — less dead space before stats */
   min-height: clamp(30rem, 70dvh, 34.5rem);
   background: #060a10;
+  /* Desktop hero depth; mobile uses a tighter shadow to avoid horizontal bleed */
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+}
+
+@media (min-width: 640px) {
+  .media-home-hero {
+    box-shadow: var(--media-shadow-hero);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1146,6 +1174,7 @@ body {
 .media-home-hero__bg {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   background-color: #060a10;
 }
 
@@ -1412,6 +1441,8 @@ body {
   background: var(--media-nav);
   color: #fff;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .media-nav-bar {
@@ -1631,6 +1662,9 @@ body {
 
 .home-stat-band {
   margin-top: 1rem;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: clip;
 }
 
 @media (min-width: 640px) {
@@ -1641,8 +1675,10 @@ body {
 
 .home-stat-band__grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.625rem;
+  width: 100%;
+  min-width: 0;
 }
 
 @media (min-width: 640px) {
@@ -1654,29 +1690,39 @@ body {
 
 .home-stat-photo-card {
   position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow: hidden;
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Tighter shadow on mobile — large blur bleeds past viewport in Safari */
   box-shadow:
-    0 14px 40px rgba(0, 0, 0, 0.45),
+    0 6px 18px rgba(0, 0, 0, 0.38),
     0 0 0 1px rgba(0, 0, 0, 0.25) inset;
   min-height: 7.75rem;
+  isolation: isolate;
 }
 
 @media (min-width: 640px) {
   .home-stat-photo-card {
     min-height: 10.5rem;
     border-radius: 1.125rem;
+    box-shadow:
+      0 14px 40px rgba(0, 0, 0, 0.45),
+      0 0 0 1px rgba(0, 0, 0, 0.25) inset;
   }
 }
 
 .home-stat-photo-card__media {
   position: absolute;
   inset: 0;
+  overflow: hidden;
 }
 
 .home-stat-photo-card__image {
   object-fit: cover;
+  max-width: 100%;
 }
 
 .home-stat-photo-card__overlay {
@@ -1707,6 +1753,8 @@ body {
   z-index: 1;
   display: flex;
   min-height: inherit;
+  min-width: 0;
+  max-width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1724,6 +1772,7 @@ body {
 
 .home-stat-photo-card__icon-badge {
   display: flex;
+  flex-shrink: 0;
   height: 2.125rem;
   width: 2.125rem;
   align-items: center;
@@ -1732,13 +1781,14 @@ body {
   border: 1px solid rgba(255, 107, 26, 0.45);
   background: rgba(6, 10, 16, 0.55);
   color: var(--media-orange-bright);
-  box-shadow: 0 0 20px rgba(255, 107, 26, 0.2);
+  box-shadow: 0 0 10px rgba(255, 107, 26, 0.18);
 }
 
 @media (min-width: 640px) {
   .home-stat-photo-card__icon-badge {
     height: 2.375rem;
     width: 2.375rem;
+    box-shadow: 0 0 20px rgba(255, 107, 26, 0.2);
   }
 }
 
@@ -1756,29 +1806,34 @@ body {
 
 .home-stat-photo-card__value {
   margin: 0;
-  font-size: clamp(2rem, 7vw, 2.75rem);
+  max-width: 100%;
+  font-size: clamp(1.85rem, 9vw, 2.75rem);
   font-weight: 900;
   font-variant-numeric: tabular-nums;
   line-height: 1;
   letter-spacing: -0.02em;
   color: var(--media-orange-bright);
   text-shadow:
-    0 2px 16px rgba(0, 0, 0, 0.65),
-    0 0 40px rgba(255, 107, 26, 0.25);
+    0 2px 12px rgba(0, 0, 0, 0.65),
+    0 0 24px rgba(255, 107, 26, 0.22);
 }
 
 @media (min-width: 640px) {
   .home-stat-photo-card__value {
     font-size: clamp(2.25rem, 4.5vw, 3rem);
+    text-shadow:
+      0 2px 16px rgba(0, 0, 0, 0.65),
+      0 0 40px rgba(255, 107, 26, 0.25);
   }
 }
 
 .home-stat-photo-card__label {
   margin: 0;
-  max-width: 11rem;
+  max-width: 100%;
+  padding-inline: 0.25rem;
   font-size: 0.5625rem;
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   line-height: 1.35;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.82);
@@ -1787,13 +1842,14 @@ body {
 @media (min-width: 400px) {
   .home-stat-photo-card__label {
     font-size: 0.625rem;
+    letter-spacing: 0.14em;
   }
 }
 
 @media (min-width: 640px) {
   .home-stat-photo-card__label {
     font-size: 0.6875rem;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
   }
 }
 

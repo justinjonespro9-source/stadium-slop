@@ -78,7 +78,7 @@ function StatPhotoCard({ value, label, imageSrc, imagePosition = "center", icon 
           src={imageSrc}
           alt=""
           fill
-          sizes="(max-width: 639px) 100vw, 50vw"
+          sizes="(max-width: 639px) 100%, 50vw"
           className="home-stat-photo-card__image"
           style={{ objectPosition: imagePosition }}
         />

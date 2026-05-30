@@ -14,7 +14,7 @@ export function HomeHero({ children }: HomeHeroProps) {
   const mobileBackground = resolveHomeHeroMobileBackground();
 
   return (
-    <section className="media-home-hero relative overflow-hidden text-white shadow-[var(--media-shadow-hero)]">
+    <section className="media-home-hero relative overflow-hidden text-white">
       <div className="media-home-hero__bg" aria-hidden>
         <div className="media-home-hero__bg-canvas">
           <Image
@@ -22,14 +22,14 @@ export function HomeHero({ children }: HomeHeroProps) {
             alt=""
             fill
             priority
-            sizes="100vw"
+            sizes="100%"
             className="media-home-hero__bg-image media-home-hero__bg-image--mobile"
           />
           <Image
             src={HOME_HERO_BACKGROUND}
             alt=""
             fill
-            sizes="100vw"
+            sizes="100%"
             className="media-home-hero__bg-image media-home-hero__bg-image--desktop"
           />
         </div>
