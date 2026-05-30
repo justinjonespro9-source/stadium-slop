@@ -34,8 +34,8 @@ const DIRECTORY_META: Record<
     previewItemCount: 22
   },
   "iowa-state-fair": {
-    statusLabel: "Preview list ready",
-    status: "import-ready",
+    statusLabel: "Preview foods loaded",
+    status: "preview-loaded",
     previewItemCount: 22
   },
   "state-fair-of-texas": {
@@ -44,8 +44,8 @@ const DIRECTORY_META: Record<
     previewItemCount: 15
   },
   "wisconsin-state-fair": {
-    statusLabel: "Preview list ready",
-    status: "import-ready",
+    statusLabel: "Preview foods loaded",
+    status: "preview-loaded",
     previewItemCount: 12
   },
   "the-big-e": {
