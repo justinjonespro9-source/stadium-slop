@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 
 import { WORLD_CUP_GUIDE_PATH_EN } from "@/lib/world-cup-stadium-food-guide-content";
 
+const STATE_FAIR_GUIDE_PATH = "/state-fair-food-guide";
+
 type SiteHeaderNavProps = {
   accountHref: string;
   accountLabel: string;
@@ -117,22 +119,27 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
   const isHome = pathname === "/";
   const isVenues = pathname === "/venues" || pathname.startsWith("/venues/");
   const isWorldCup = pathname.startsWith("/world-cup") || pathname.includes("guia-comida");
+  const isStateFair = pathname.startsWith(STATE_FAIR_GUIDE_PATH);
   const isAccount = pathname === "/account" || pathname === "/login";
+  const isVenuesNavActive = isVenues && !isWorldCup && !isStateFair;
 
   return (
     <>
       <nav
-        className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-0.5 md:flex lg:gap-1"
+        className="media-nav-desktop absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-0.5 md:flex lg:gap-1"
         aria-label="Main"
       >
         <NavLink href="/" active={isHome}>
           Home
         </NavLink>
-        <NavLink href="/venues" active={isVenues && !isWorldCup}>
+        <NavLink href="/venues" active={isVenuesNavActive}>
           Venues
         </NavLink>
         <NavLink href={WORLD_CUP_GUIDE_PATH_EN} active={isWorldCup}>
           World Cup
+        </NavLink>
+        <NavLink href={STATE_FAIR_GUIDE_PATH} active={isStateFair}>
+          State Fair
         </NavLink>
       </nav>
 
@@ -178,13 +185,20 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
               </MobileNavLink>
               <MobileNavLink
                 href="/venues"
-                active={isVenues && !isWorldCup}
+                active={isVenuesNavActive}
                 description="Search stadiums and menus"
               >
                 Venues / Find a venue
               </MobileNavLink>
               <MobileNavLink href={WORLD_CUP_GUIDE_PATH_EN} active={isWorldCup}>
                 World Cup
+              </MobileNavLink>
+              <MobileNavLink
+                href={STATE_FAIR_GUIDE_PATH}
+                active={isStateFair}
+                description="State Fair Slop preview"
+              >
+                Fair
               </MobileNavLink>
               <MobileNavLink href={accountHref} active={isAccount}>
                 {accountLabel}

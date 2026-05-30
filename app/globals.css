@@ -1565,6 +1565,14 @@ body {
   color: #fff;
 }
 
+/* Center nav — four links without crowding mid-width desktops */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .media-nav-desktop .media-nav-link {
+    padding-inline: 0.55rem;
+    font-size: 0.75rem;
+  }
+}
+
 .media-nav .media-primary-button {
   padding: 0.4rem 0.75rem;
   font-size: 0.7rem;
@@ -2889,6 +2897,114 @@ body {
   border-color: rgba(255, 107, 26, 0.35);
   color: var(--media-ink);
   background: rgba(255, 107, 26, 0.04);
+}
+
+/* Homepage State Fair Slop teaser */
+.home-state-fair-teaser__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-width: 0;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 107, 26, 0.18);
+  background: linear-gradient(135deg, #fff 0%, #fff9f2 55%, #fff3e6 100%);
+  padding: 1rem 1.125rem;
+  box-shadow: var(--media-shadow-card);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+@media (min-width: 640px) {
+  .home-state-fair-teaser__link {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.125rem 1.25rem;
+  }
+}
+
+.home-state-fair-teaser__link:hover {
+  border-color: rgba(255, 107, 26, 0.38);
+  box-shadow: 0 4px 6px rgba(12, 18, 32, 0.04), 0 14px 32px rgba(255, 107, 26, 0.1);
+  transform: translateY(-1px);
+}
+
+.home-state-fair-teaser__copy {
+  min-width: 0;
+}
+
+.home-state-fair-teaser__eyebrow {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9a5f12;
+}
+
+.home-state-fair-teaser__title {
+  margin-top: 0.25rem;
+  font-size: 1.0625rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--media-ink);
+}
+
+@media (min-width: 640px) {
+  .home-state-fair-teaser__title {
+    font-size: 1.125rem;
+  }
+}
+
+.home-state-fair-teaser__body {
+  margin-top: 0.35rem;
+  max-width: 36rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--media-ink-muted);
+}
+
+.home-state-fair-teaser__cta {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-start;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 26, 0.28);
+  background: rgba(255, 107, 26, 0.08);
+  padding: 0.5rem 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--media-orange-deep);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+@media (min-width: 640px) {
+  .home-state-fair-teaser__cta {
+    align-self: center;
+    font-size: 0.75rem;
+    padding: 0.55rem 1rem;
+  }
+}
+
+.group:hover .home-state-fair-teaser__cta {
+  border-color: rgba(255, 107, 26, 0.45);
+  background: rgba(255, 107, 26, 0.14);
+  color: var(--media-orange);
+}
+
+.home-state-fair-teaser__cta-arrow {
+  transition: transform 0.15s ease;
+}
+
+.group:hover .home-state-fair-teaser__cta-arrow {
+  transform: translateX(2px);
 }
 
 /* State Fair Slop preview guide */
