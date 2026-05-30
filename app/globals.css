@@ -3256,6 +3256,143 @@ body[data-mobile-nav-open] .media-nav-bar {
   color: var(--media-orange-deep);
 }
 
+.state-fair-directory-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .state-fair-directory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .state-fair-directory-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.state-fair-directory-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.65rem;
+  border-radius: 1rem;
+  border: 1px solid var(--media-border);
+  background: linear-gradient(160deg, #fff 0%, #fff9f2 100%);
+  padding: 1rem 1rem 1.1rem;
+  box-shadow: var(--media-shadow-card);
+}
+
+.state-fair-directory-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.state-fair-directory-card__title {
+  font-size: 0.9375rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--media-ink);
+}
+
+.state-fair-directory-card__location {
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--media-ink-muted);
+}
+
+.state-fair-directory-card__status {
+  flex-shrink: 0;
+  max-width: 9.5rem;
+  border-radius: 9999px;
+  padding: 0.28rem 0.55rem;
+  font-size: 0.5625rem;
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.state-fair-directory-card__status--loaded {
+  border: 1px solid rgba(34, 120, 72, 0.28);
+  background: rgba(34, 120, 72, 0.1);
+  color: #1a6b42;
+}
+
+.state-fair-directory-card__status--ready {
+  border: 1px solid rgba(255, 107, 26, 0.3);
+  background: rgba(255, 107, 26, 0.1);
+  color: var(--media-orange-deep);
+}
+
+.state-fair-directory-card__status--shell {
+  border: 1px solid var(--media-border);
+  background: var(--media-surface);
+  color: var(--media-ink-muted);
+}
+
+.state-fair-directory-card__meta {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--media-ink-muted);
+}
+
+.state-fair-directory-card__meta--dim {
+  color: var(--media-ink-dim);
+}
+
+.state-fair-directory-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  background: rgba(255, 107, 26, 0.08);
+  padding: 0.45rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--media-orange-deep);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.state-fair-directory-card__cta:hover {
+  border-color: rgba(255, 107, 26, 0.55);
+  background: rgba(255, 107, 26, 0.14);
+  color: var(--media-orange);
+}
+
+.state-fair-directory-card__cta-arrow {
+  transition: transform 0.15s ease;
+}
+
+.state-fair-directory-card__cta:hover .state-fair-directory-card__cta-arrow {
+  transform: translateX(2px);
+}
+
+.state-fair-directory__disclaimer {
+  margin-top: 1rem;
+  max-width: 42rem;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--media-ink-dim);
+}
+
 .state-fair-mn-panel {
   border-radius: 1.25rem;
   border: 1px solid rgba(180, 120, 40, 0.28);
@@ -3299,6 +3436,11 @@ body[data-mobile-nav-open] .media-nav-bar {
   font-size: 0.6875rem;
   line-height: 1.45;
   color: var(--media-ink-dim);
+}
+
+.state-fair-mn-panel__cta {
+  width: fit-content;
+  max-width: 100%;
 }
 
 .state-fair-network-chip {

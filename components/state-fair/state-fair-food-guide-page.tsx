@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+import { StateFairDirectorySection } from "@/components/state-fair/state-fair-directory-section";
+import { STATE_FAIR_DIRECTORY_DISCLAIMER } from "@/lib/state-fair-directory";
+
 const FEATURE_CARDS = [
   {
     title: "Worth the Wait",
@@ -137,6 +140,8 @@ export function StateFairFoodGuidePage() {
           </ul>
         </section>
 
+        <StateFairDirectorySection />
+
         <section className="mt-8 sm:mt-10" aria-labelledby="state-fair-rankings-heading">
           <div className="state-fair-rankings-panel">
             <p className="media-section-eyebrow">Preview</p>
@@ -172,10 +177,13 @@ export function StateFairFoodGuidePage() {
             The Great Minnesota Get-Together is built for this — iconic food, new releases every
             year, huge crowds, and endless debate over what is actually worth eating.
           </p>
-          <p className="state-fair-mn-panel__disclaimer">
-            Unofficial fan-powered guide. Not affiliated with or endorsed by the Minnesota State
-            Fair.
-          </p>
+          <p className="state-fair-mn-panel__disclaimer">{STATE_FAIR_DIRECTORY_DISCLAIMER}</p>
+          <Link
+            href="/venues/minnesota-state-fair"
+            className="state-fair-mn-panel__cta media-primary-button mt-4 inline-flex px-5 py-2.5 text-sm"
+          >
+            View Minnesota guide
+          </Link>
         </section>
 
         <section
