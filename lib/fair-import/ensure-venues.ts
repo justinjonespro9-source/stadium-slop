@@ -1,5 +1,7 @@
 import { EntityStatus, type PrismaClient, VenueType } from "@prisma/client";
 
+import { fairGeoNeedsUpdate } from "@/lib/fair-venue-geo";
+
 import type { FairVenueDefinition } from "./types";
 import { FAIR_VENUE_DEFINITIONS } from "./venues";
 
@@ -46,7 +48,16 @@ export async function ensureFairVenues(
   for (const def of targets) {
     const existing = await db.venue.findFirst({
       where: { slug: { equals: def.slug, mode: "insensitive" } },
-      select: { id: true, slug: true, name: true, city: true, state: true }
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        city: true,
+        state: true,
+        latitude: true,
+        longitude: true,
+        reviewRadiusMeters: true
+      }
     });
 
     if (!existing) {
@@ -59,10 +70,7 @@ export async function ensureFairVenues(
       continue;
     }
 
-    const needsUpdate =
-      existing.name !== def.name ||
-      existing.city !== def.city ||
-      existing.state !== def.state;
+    const needsUpdate = fairGeoNeedsUpdate({ ...existing, slug: def.slug });
 
     if (options.dryRun) {
       rows.push({

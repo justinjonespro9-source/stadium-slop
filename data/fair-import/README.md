@@ -15,6 +15,17 @@ npm run import:fair-menu -- --fair=all --dry-run
 npm run import:fair-menu -- --fair=all --apply
 ```
 
+## Fairgrounds geolocation
+
+Approximate fair center coordinates and review radii live in `lib/fair-import/venues.ts` (1100–1400 m). Sync to the database after changing registry values:
+
+```bash
+npm run sync:fair-venue-geo
+npm run sync:fair-venue-geo -- --apply
+```
+
+IANA timezones: `lib/fair-venue-geo.ts` (America/Chicago except The Big E → America/New_York).
+
 ## Fair slugs
 
 - `minnesota-state-fair`

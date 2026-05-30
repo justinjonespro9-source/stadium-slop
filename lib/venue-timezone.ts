@@ -1,5 +1,7 @@
+import { FAIR_VENUE_TIMEZONE } from "@/lib/fair-venue-geo";
 import { getMlbBallparkSeedRows } from "@/lib/mlb-ballpark-seed-data";
 import { buildMlsNwslVenueTimeZoneMap } from "@/lib/mls-nwsl-venue-geo";
+import { WORLD_CUP_MEXICO_VENUE_GEO } from "@/lib/world-cup-venue-geo";
 
 /** US state / territory → IANA timezone for MLB ballparks. */
 const US_STATE_IANA: Record<string, string> = {
@@ -40,6 +42,19 @@ const US_STATE_IANA: Record<string, string> = {
   WA: "America/Los_Angeles",
   WI: "America/Chicago"
 };
+
+const MEXICO_STATE_IANA: Record<string, string> = {
+  CDMX: "America/Mexico_City",
+  "CIUDAD DE MÉXICO": "America/Mexico_City",
+  "CIUDAD DE MEXICO": "America/Mexico_City",
+  JALISCO: "America/Mexico_City",
+  "NUEVO LEÓN": "America/Monterrey",
+  "NUEVO LEON": "America/Monterrey"
+};
+
+const WORLD_CUP_MEXICO_SLUG_TIMEZONE: Record<string, string> = Object.fromEntries(
+  Object.entries(WORLD_CUP_MEXICO_VENUE_GEO).map(([slug, geo]) => [slug, geo.timeZone])
+);
 
 const CANADA_PROVINCE_IANA: Record<string, string> = {
   AB: "America/Edmonton",
@@ -106,13 +121,18 @@ export function getVenueTimeZone(venue: VenueTimeZoneInput): string {
   const fromSlug =
     MLB_SLUG_TIMEZONE[venue.slug] ??
     MLS_NWSL_SLUG_TIMEZONE[venue.slug] ??
-    VENUE_SLUG_TIMEZONE_OVERRIDES[venue.slug];
+    VENUE_SLUG_TIMEZONE_OVERRIDES[venue.slug] ??
+    FAIR_VENUE_TIMEZONE[venue.slug as keyof typeof FAIR_VENUE_TIMEZONE] ??
+    WORLD_CUP_MEXICO_SLUG_TIMEZONE[venue.slug];
   if (fromSlug) return fromSlug;
 
   const state = venue.state?.trim().toUpperCase();
   if (!state) return DEFAULT_VENUE_TIMEZONE;
 
   const country = venue.country?.trim().toUpperCase();
+  if (country === "MEXICO" || MEXICO_STATE_IANA[state]) {
+    return MEXICO_STATE_IANA[state] ?? "America/Mexico_City";
+  }
   if (country === "CANADA" || CANADA_PROVINCE_IANA[state]) {
     return CANADA_PROVINCE_IANA[state] ?? "America/Toronto";
   }

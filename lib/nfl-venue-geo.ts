@@ -25,6 +25,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     reviewRadiusMeters: 1000,
     timeZone: "America/Chicago"
   },
+  "geha-field-at-arrowhead-stadium": {
+    name: "GEHA Field at Arrowhead Stadium",
+    city: "Kansas City",
+    state: "MO",
+    country: "USA",
+    latitude: 39.0489,
+    longitude: -94.4839,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/Chicago"
+  },
   "att-stadium": {
     name: "AT&T Stadium",
     city: "Arlington",
@@ -76,6 +86,16 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     timeZone: "America/Chicago"
   },
   "levis-stadium": {
+    name: "Levi's Stadium",
+    city: "Santa Clara",
+    state: "CA",
+    country: "USA",
+    latitude: 37.403,
+    longitude: -121.9694,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/Los_Angeles"
+  },
+  "levi-s-stadium": {
     name: "Levi's Stadium",
     city: "Santa Clara",
     state: "CA",

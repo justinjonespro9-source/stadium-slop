@@ -22,8 +22,8 @@ export const FAIR_VENUE_DEFINITIONS: FairVenueDefinition[] = [
     city: "Saint Paul",
     state: "MN",
     country: "USA",
-    latitude: 44.9789,
-    longitude: -93.1808,
+    latitude: 44.9819,
+    longitude: -93.1682,
     reviewRadiusMeters: 1200,
     recurringEvents: ["Minnesota State Fair"]
   },
@@ -33,8 +33,8 @@ export const FAIR_VENUE_DEFINITIONS: FairVenueDefinition[] = [
     city: "Des Moines",
     state: "IA",
     country: "USA",
-    latitude: 41.5759,
-    longitude: -93.5708,
+    latitude: 41.5956,
+    longitude: -93.5542,
     reviewRadiusMeters: 1200,
     recurringEvents: ["Iowa State Fair"]
   },
@@ -44,8 +44,8 @@ export const FAIR_VENUE_DEFINITIONS: FairVenueDefinition[] = [
     city: "Dallas",
     state: "TX",
     country: "USA",
-    latitude: 32.7794,
-    longitude: -96.7651,
+    latitude: 32.7797,
+    longitude: -96.764,
     reviewRadiusMeters: 1400,
     recurringEvents: ["State Fair of Texas"]
   },
@@ -55,8 +55,8 @@ export const FAIR_VENUE_DEFINITIONS: FairVenueDefinition[] = [
     city: "West Allis",
     state: "WI",
     country: "USA",
-    latitude: 43.0112,
-    longitude: -88.0074,
+    latitude: 43.0207,
+    longitude: -88.0101,
     reviewRadiusMeters: 1200,
     recurringEvents: ["Wisconsin State Fair"]
   },
@@ -66,8 +66,8 @@ export const FAIR_VENUE_DEFINITIONS: FairVenueDefinition[] = [
     city: "West Springfield",
     state: "MA",
     country: "USA",
-    latitude: 42.1065,
-    longitude: -72.5856,
+    latitude: 42.092,
+    longitude: -72.6162,
     reviewRadiusMeters: 1100,
     recurringEvents: ["The Big E"]
   }
