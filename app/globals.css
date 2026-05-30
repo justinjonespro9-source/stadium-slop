@@ -2891,6 +2891,260 @@ body {
   background: rgba(255, 107, 26, 0.04);
 }
 
+/* State Fair Slop preview guide */
+.state-fair-guide-hero {
+  background: linear-gradient(165deg, #1a0f22 0%, #120a18 38%, #0a1018 100%);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);
+}
+
+@media (min-width: 640px) {
+  .state-fair-guide-hero {
+    box-shadow: var(--media-shadow-hero);
+  }
+}
+
+.state-fair-guide-hero__glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 18% 0%, rgba(255, 196, 92, 0.22), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 82% 8%, rgba(255, 107, 26, 0.18), transparent 52%),
+    radial-gradient(ellipse 120% 80% at 50% 100%, rgba(88, 28, 135, 0.2), transparent 60%);
+  pointer-events: none;
+}
+
+.state-fair-guide-hero__lights {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(circle at 12% 28%, rgba(255, 220, 120, 0.35) 0 1px, transparent 2px),
+    radial-gradient(circle at 28% 18%, rgba(255, 180, 80, 0.3) 0 1px, transparent 2px),
+    radial-gradient(circle at 44% 32%, rgba(255, 230, 150, 0.28) 0 1px, transparent 2px),
+    radial-gradient(circle at 62% 22%, rgba(255, 196, 92, 0.32) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 30%, rgba(255, 140, 60, 0.3) 0 1px, transparent 2px),
+    radial-gradient(circle at 90% 20%, rgba(255, 210, 110, 0.28) 0 1px, transparent 2px);
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.state-fair-guide-hero__eyebrow {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffd08a;
+}
+
+.state-fair-guide-hero__cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(180deg, var(--media-orange-bright) 0%, var(--media-orange) 100%);
+  padding: 0.7rem 1.35rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15), 0 8px 22px rgba(255, 107, 26, 0.28);
+}
+
+.state-fair-guide-hero__cta-primary--soon {
+  cursor: default;
+  opacity: 0.92;
+  filter: saturate(0.92);
+}
+
+.state-fair-guide-hero__cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.7rem 1.35rem;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: #fff;
+  backdrop-filter: blur(6px);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.state-fair-guide-hero__cta-secondary:hover {
+  border-color: rgba(255, 208, 138, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.state-fair-feature-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  border-radius: 1rem;
+  border: 1px solid var(--media-border);
+  background: linear-gradient(160deg, #fff 0%, #fff9f2 100%);
+  padding: 1.125rem 1rem 1.25rem;
+  box-shadow: var(--media-shadow-card);
+}
+
+.state-fair-feature-card__icon {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 107, 26, 0.25);
+  background: rgba(255, 107, 26, 0.08);
+  color: var(--media-orange-deep);
+}
+
+.state-fair-feature-card__icon-svg {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.state-fair-feature-card__title {
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--media-ink);
+}
+
+.state-fair-feature-card__body {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--media-ink-muted);
+}
+
+.state-fair-rankings-panel {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 107, 26, 0.2);
+  background: linear-gradient(145deg, #fff 0%, #fff6ec 55%, #fff0e0 100%);
+  padding: 1.25rem 1rem 1.35rem;
+  box-shadow: var(--media-shadow-card);
+}
+
+@media (min-width: 640px) {
+  .state-fair-rankings-panel {
+    padding: 1.5rem 1.35rem 1.6rem;
+  }
+}
+
+.state-fair-rankings-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem;
+}
+
+@media (min-width: 400px) {
+  .state-fair-rankings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .state-fair-rankings-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.state-fair-rank-chip {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--media-border);
+  background: var(--media-white);
+  padding: 0.65rem 0.75rem;
+  box-shadow: 0 1px 2px rgba(12, 18, 32, 0.04);
+}
+
+.state-fair-rank-chip__label {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  color: var(--media-ink);
+}
+
+.state-fair-rank-chip__badge {
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: rgba(255, 107, 26, 0.1);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.5625rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--media-orange-deep);
+}
+
+.state-fair-mn-panel {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(180, 120, 40, 0.28);
+  background: linear-gradient(135deg, #fffaf3 0%, #fff3e0 48%, #ffeccc 100%);
+  padding: 1.25rem 1rem 1.35rem;
+  box-shadow: var(--media-shadow-card);
+}
+
+@media (min-width: 640px) {
+  .state-fair-mn-panel {
+    padding: 1.5rem 1.35rem 1.5rem;
+  }
+}
+
+.state-fair-mn-panel__eyebrow {
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9a5f12;
+}
+
+.state-fair-mn-panel__title {
+  margin-top: 0.35rem;
+  font-size: clamp(1.25rem, 4vw, 1.65rem);
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--media-ink);
+}
+
+.state-fair-mn-panel__copy {
+  margin-top: 0.75rem;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--media-ink-muted);
+}
+
+.state-fair-mn-panel__disclaimer {
+  margin-top: 1rem;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--media-ink-dim);
+}
+
+.state-fair-network-chip {
+  display: inline-flex;
+  border-radius: 9999px;
+  border: 1px solid var(--media-border);
+  background: var(--media-surface);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--media-ink-muted);
+}
+
+.state-fair-network-chip--active {
+  border-color: rgba(255, 107, 26, 0.4);
+  background: rgba(255, 107, 26, 0.1);
+  color: var(--media-orange-deep);
+}
+
 .media-account-highlight {
   border: 1px solid rgba(255, 107, 26, 0.28);
   border-radius: 1.25rem;
