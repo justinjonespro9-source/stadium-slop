@@ -21,7 +21,7 @@ export async function SiteHeader() {
   const accountLabel = isSignedIn ? "Account" : "Sign in";
 
   return (
-    <header className="media-nav sticky top-0 z-50 backdrop-blur-md">
+    <header className="media-nav sticky top-0 z-50 backdrop-blur-md max-md:backdrop-blur-none">
       <div className="media-nav-bar relative mx-auto w-full max-w-6xl px-3 sm:px-6 lg:px-10">
         <SiteHeaderMobileAccount href={accountHref} label={accountLabel} />
 

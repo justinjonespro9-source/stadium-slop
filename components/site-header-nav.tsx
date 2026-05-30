@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { WORLD_CUP_GUIDE_PATH_EN } from "@/lib/world-cup-stadium-food-guide-content";
 
@@ -167,46 +168,46 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
         </button>
       </div>
 
-      {menuOpen ? (
-        <>
-          <button
-            type="button"
-            className="fixed inset-0 z-40 bg-black/55 md:hidden"
-            aria-label="Close menu"
-            onClick={() => setMenuOpen(false)}
-          />
-          <div
-            id="site-mobile-nav"
-            className="media-nav-mobile-panel fixed inset-x-0 top-[var(--media-nav-height)] z-50 max-h-[calc(100dvh-var(--media-nav-height))] overflow-y-auto border-t border-white/10 bg-[#080d14] px-3 py-3 shadow-[0_24px_48px_rgba(0,0,0,0.55)] md:hidden"
-          >
-            <nav className="flex flex-col gap-1.5" aria-label="Mobile">
-              <MobileNavLink href="/" active={isHome}>
-                Home
-              </MobileNavLink>
-              <MobileNavLink
-                href="/venues"
-                active={isVenuesNavActive}
-                description="Search stadiums and menus"
-              >
-                Venues / Find a venue
-              </MobileNavLink>
-              <MobileNavLink href={WORLD_CUP_GUIDE_PATH_EN} active={isWorldCup}>
-                World Cup
-              </MobileNavLink>
-              <MobileNavLink
-                href={STATE_FAIR_GUIDE_PATH}
-                active={isStateFair}
-                description="State Fair Slop preview"
-              >
-                Fair
-              </MobileNavLink>
-              <MobileNavLink href={accountHref} active={isAccount}>
-                {accountLabel}
-              </MobileNavLink>
-            </nav>
-          </div>
-        </>
-      ) : null}
+      {menuOpen && typeof document !== "undefined"
+        ? createPortal(
+            <>
+              <button
+                type="button"
+                className="media-nav-mobile-scrim md:hidden"
+                aria-label="Close menu"
+                onClick={() => setMenuOpen(false)}
+              />
+              <div id="site-mobile-nav" className="media-nav-mobile-panel md:hidden">
+                <nav className="media-nav-mobile-panel__nav" aria-label="Mobile">
+                  <MobileNavLink href="/" active={isHome}>
+                    Home
+                  </MobileNavLink>
+                  <MobileNavLink
+                    href="/venues"
+                    active={isVenuesNavActive}
+                    description="Search stadiums and menus"
+                  >
+                    Venues / Find a venue
+                  </MobileNavLink>
+                  <MobileNavLink href={WORLD_CUP_GUIDE_PATH_EN} active={isWorldCup}>
+                    World Cup
+                  </MobileNavLink>
+                  <MobileNavLink
+                    href={STATE_FAIR_GUIDE_PATH}
+                    active={isStateFair}
+                    description="State Fair Slop preview"
+                  >
+                    Fair
+                  </MobileNavLink>
+                  <MobileNavLink href={accountHref} active={isAccount}>
+                    {accountLabel}
+                  </MobileNavLink>
+                </nav>
+              </div>
+            </>,
+            document.body
+          )
+        : null}
     </>
   );
 }
