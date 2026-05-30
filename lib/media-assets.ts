@@ -9,6 +9,10 @@ export const TEAM_M8TES_FANDOM_FILTER = "/ads/team-m8tes-fandom-filter.png";
 export const HOME_HERO_BACKGROUND = "/branding/home-hero-bg.png";
 export const HOME_HERO_BACKGROUND_MOBILE = "/branding/home-hero-bg-mobile.png";
 
+/** Homepage stat band — photo-driven mini hero panels. */
+export const HOME_STAT_VENUES_BACKGROUND = "/branding/home-stat-venues.png";
+export const HOME_STAT_MENU_BACKGROUND = "/branding/home-stat-menu-items.png";
+
 export function resolveHomeHeroMobileBackground(): string {
   const mobilePath = path.join(
     process.cwd(),
