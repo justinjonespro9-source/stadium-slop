@@ -34,22 +34,22 @@ const DIRECTORY_META: Record<
     previewItemCount: 22
   },
   "iowa-state-fair": {
-    statusLabel: "Preview import ready",
+    statusLabel: "Preview list ready",
     status: "import-ready",
     previewItemCount: 22
   },
   "state-fair-of-texas": {
-    statusLabel: "Preview import ready",
+    statusLabel: "Preview list ready",
     status: "import-ready",
     previewItemCount: 15
   },
   "wisconsin-state-fair": {
-    statusLabel: "Preview import ready",
+    statusLabel: "Preview list ready",
     status: "import-ready",
     previewItemCount: 12
   },
   "the-big-e": {
-    statusLabel: "Venue shell ready",
+    statusLabel: "Menu pending",
     status: "venue-shell",
     previewItemCount: null
   }
