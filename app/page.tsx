@@ -4,6 +4,7 @@ import { AdSlot } from "@/components/ads/ad-slot";
 import { HomeFeaturedSections } from "@/components/home/home-featured-sections";
 import { HomeHero } from "@/components/home/home-hero";
 import { HomePopularSearches } from "@/components/home/home-popular-searches";
+import { HomeStateFairTeaser } from "@/components/home/home-state-fair-teaser";
 import { HomeStatBand } from "@/components/home/home-stat-band";
 import { HomeSlopNetwork } from "@/components/home-slop-network";
 import { HomeVenueSearch } from "@/components/home-venue-search";
@@ -61,6 +62,10 @@ export default async function Home() {
             tone="media"
             label="Sponsored"
           />
+        </div>
+
+        <div className="mt-5 sm:mt-6">
+          <HomeStateFairTeaser />
         </div>
 
         <HomeFeaturedSections

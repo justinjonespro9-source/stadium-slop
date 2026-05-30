@@ -21,6 +21,10 @@ export type VenueMenuSourceItem = {
   imageUrl?: string;
   dietaryTags: VenueMenuDietaryTag[];
   sourceUrl?: string;
+  /** Extra FoodItem.tags (e.g. state-fair preview metadata). */
+  importTags?: string[];
+  /** Overrides default seasonIntroduced on import (e.g. "2025"). */
+  seasonIntroduced?: string;
 };
 
 export type VenueMenuParseResult = {

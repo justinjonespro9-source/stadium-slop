@@ -13,7 +13,8 @@ import {
 
 const guideLinks = [
   { href: WORLD_CUP_GUIDE_PATH_EN, label: "World Cup Food Guide" },
-  { href: WORLD_CUP_GUIDE_PATH_ES, label: "Guía Mundial 2026" }
+  { href: WORLD_CUP_GUIDE_PATH_ES, label: "Guía Mundial 2026" },
+  { href: "/state-fair-food-guide", label: "State Fair Slop" }
 ] as const;
 
 const legalLinks = [

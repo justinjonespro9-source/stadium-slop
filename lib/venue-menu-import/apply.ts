@@ -88,35 +88,34 @@ function resolveVenueMenuImportSlug(venueSlug: string): string {
   return VENUE_MENU_IMPORT_SLUG_ALIASES[venueSlug.toLowerCase()] ?? venueSlug;
 }
 
-export async function applyVenueMenuImport(
+type ExistingItemRow = {
+  id: string;
+  slug: string;
+  name: string;
+  vendorId: string | null;
+  status: string;
+};
+
+type ExistingVendorRow = { id: string; slug: string; name: string };
+
+async function applyVenueMenuImportAgainstExisting(
   db: PrismaClient,
   parseResult: VenueMenuParseResult,
-  options: { dryRun: boolean }
-): Promise<VenueMenuImportSummary> {
-  const { venueSlug, venueName, sourceUrl, items } = parseResult;
-  const { dryRun } = options;
-  const dbVenueSlug = resolveVenueMenuImportSlug(venueSlug);
-
-  const venue = await db.venue.findFirst({
-    where: { slug: slugFilterInsensitive(dbVenueSlug), status: "ACTIVE" },
-    select: { id: true, name: true }
-  });
-
-  if (!venue) {
-    throw new Error(
-      `Venue "${venueSlug}"${dbVenueSlug !== venueSlug ? ` (resolved to "${dbVenueSlug}")` : ""} not found or inactive`
-    );
+  ctx: {
+    dryRun: boolean;
+    venueSlug: string;
+    venueName: string;
+    sourceUrl: string;
+    venueId: string;
+    resolvedVenueName?: string;
+    existingItems: ExistingItemRow[];
+    existingVendors: ExistingVendorRow[];
   }
-
-  const existingItems = await db.foodItem.findMany({
-    where: { venueId: venue.id },
-    select: { id: true, slug: true, name: true, vendorId: true, status: true }
-  });
-
-  const existingVendors = await db.vendor.findMany({
-    where: { venueId: venue.id },
-    select: { id: true, slug: true, name: true }
-  });
+): Promise<VenueMenuImportSummary> {
+  const { items } = parseResult;
+  const { dryRun, venueSlug, venueName, sourceUrl, venueId } = ctx;
+  const existingItems = ctx.existingItems;
+  const existingVendors = ctx.existingVendors;
 
   const activeItems = existingItems.filter((item) => item.status === "ACTIVE");
   const existingByNormName = new Map(
@@ -208,13 +207,19 @@ export async function applyVenueMenuImport(
           data: {
             slug: vSlug,
             name: sourceItem.vendorName,
-            venueId: venue.id,
+            venueId,
             section: sourceItem.vendorLocationHint ?? "",
             location: sourceItem.vendorLocationHint ?? ""
           }
         });
         vendorId = created.id;
         vendorBySlug.set(vSlug, { id: created.id, slug: vSlug, name: sourceItem.vendorName });
+      } else if (!existing) {
+        vendorBySlug.set(vSlug, {
+          id: `new-vendor-${vSlug}`,
+          slug: vSlug,
+          name: sourceItem.vendorName
+        });
       }
     }
 
@@ -226,7 +231,7 @@ export async function applyVenueMenuImport(
           data: {
             slug: generalSlug,
             name: "General Concessions",
-            venueId: venue.id,
+            venueId,
             section: "",
             location: ""
           }
@@ -238,12 +243,15 @@ export async function applyVenueMenuImport(
     }
 
     if (!dryRun && vendorId) {
-      const tags = buildFoodItemTags(sourceItem.fare, sourceItem.dietaryTags);
+      const tags = [
+        ...buildFoodItemTags(sourceItem.fare, sourceItem.dietaryTags),
+        ...(sourceItem.importTags ?? [])
+      ];
       await db.foodItem.create({
         data: {
           slug,
           name: sourceItem.name,
-          venueId: venue.id,
+          venueId,
           vendorId,
           itemType: mapItemType(sourceItem),
           category: mapItemCategory(sourceItem),
@@ -254,7 +262,9 @@ export async function applyVenueMenuImport(
             : null,
           tags,
           isNewThisSeason: true,
-          seasonIntroduced: String(new Date().getFullYear())
+          seasonIntroduced:
+            sourceItem.seasonIntroduced ?? String(new Date().getFullYear()),
+          ageRestricted: sourceItem.category === "Alcoholic Drink"
         }
       });
 
@@ -285,7 +295,7 @@ export async function applyVenueMenuImport(
 
   return {
     venueSlug,
-    venueName: venue.name ?? venueName,
+    venueName: ctx.resolvedVenueName ?? venueName,
     dryRun,
     rows,
     added,
@@ -294,4 +304,58 @@ export async function applyVenueMenuImport(
     duplicates,
     sourceUrl
   };
+}
+
+export async function applyVenueMenuImport(
+  db: PrismaClient,
+  parseResult: VenueMenuParseResult,
+  options: { dryRun: boolean; assumeNewVenue?: boolean }
+): Promise<VenueMenuImportSummary> {
+  const { venueSlug, venueName, sourceUrl } = parseResult;
+  const { dryRun, assumeNewVenue = false } = options;
+  const dbVenueSlug = resolveVenueMenuImportSlug(venueSlug);
+
+  const venue = await db.venue.findFirst({
+    where: { slug: slugFilterInsensitive(dbVenueSlug), status: "ACTIVE" },
+    select: { id: true, name: true }
+  });
+
+  if (!venue) {
+    if (dryRun && assumeNewVenue) {
+      return applyVenueMenuImportAgainstExisting(db, parseResult, {
+        dryRun: true,
+        venueSlug,
+        venueName,
+        sourceUrl,
+        venueId: "__new__",
+        existingItems: [],
+        existingVendors: []
+      });
+    }
+    throw new Error(
+      `Venue "${venueSlug}"${dbVenueSlug !== venueSlug ? ` (resolved to "${dbVenueSlug}")` : ""} not found or inactive`
+    );
+  }
+
+  const [existingItems, existingVendors] = await Promise.all([
+    db.foodItem.findMany({
+      where: { venueId: venue.id },
+      select: { id: true, slug: true, name: true, vendorId: true, status: true }
+    }),
+    db.vendor.findMany({
+      where: { venueId: venue.id },
+      select: { id: true, slug: true, name: true }
+    })
+  ]);
+
+  return applyVenueMenuImportAgainstExisting(db, parseResult, {
+    dryRun,
+    venueSlug,
+    venueName,
+    sourceUrl,
+    venueId: venue.id,
+    resolvedVenueName: venue.name,
+    existingItems,
+    existingVendors
+  });
 }

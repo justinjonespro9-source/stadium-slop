@@ -39,6 +39,8 @@
     "validate:league-import": "tsx scripts/validate-league-import.ts",
     "sync:venue-teams": "tsx scripts/sync-shared-venue-teams.ts",
     "import:venue-menu": "tsx scripts/import-venue-menu.ts",
+    "ensure:fair-venues": "tsx scripts/ensure-fair-venues.ts",
+    "import:fair-menu": "tsx scripts/import-fair-menu.ts",
     "ensure:world-cup-mexico-venues": "tsx scripts/ensure-world-cup-mexico-venues.ts",
     "seed:ad-placements": "tsx scripts/seed-ad-placements.ts",
     "verify:deploy-health": "tsx scripts/verify-deploy-health.ts",

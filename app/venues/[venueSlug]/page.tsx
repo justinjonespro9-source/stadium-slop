@@ -23,6 +23,7 @@ import {
   getContributorUserId,
   requireContributorUserId
 } from "@/lib/auth/contributor-id";
+import { FairPreviewNotice } from "@/components/venue/fair-preview-notice";
 import { VenueHero } from "@/components/venue/venue-hero";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
@@ -52,6 +53,7 @@ import {
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { getVenueFreshFeedReviews } from "@/lib/venue-fresh-feed";
 import { withPublicRouteTiming } from "@/lib/route-timing";
+import { isFairVenueSlug } from "@/lib/fair-preview";
 import {
   canonicalVenuePath,
   resolveCanonicalPublicVenueSlug
@@ -576,6 +578,9 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       </VenueHero>
 
       <div className="media-venue-content">
+        {isFairVenueSlug(venue.slug) ? (
+          <FairPreviewNotice className="mb-5 sm:mb-6" />
+        ) : null}
         {venueId && (activeGame || upcomingGame) ? (
           <GameDayModeCard
             homeTeamLabel={homeTeamLabel}
