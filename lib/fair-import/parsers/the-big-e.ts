@@ -1,6 +1,7 @@
 /**
- * The Big E — venue shell only until official 2025 item-level sources are curated.
- * TODO: Import from https://www.thebige.com/food/ when a stable public item list is available.
+ * The Big E — venue shell only.
+ * Official site (https://www.thebige.com/p/food2) lists no item-level 2026 menu yet.
+ * Do not fabricate food rows from third-party eater guides.
  */
 
 import { buildFairMenuParseResult } from "../build-parse-result";
@@ -8,7 +9,7 @@ import type { FairMenuParseResult } from "../types";
 
 const VENUE_SLUG = "the-big-e";
 const VENUE_NAME = "The Big E";
-const SOURCE_URL = "https://www.thebige.com/fair-info/food/";
+const SOURCE_URL = "https://www.thebige.com/p/food2";
 
 export async function parseTheBigEMenu(): Promise<FairMenuParseResult> {
   return buildFairMenuParseResult({
@@ -17,7 +18,9 @@ export async function parseTheBigEMenu(): Promise<FairMenuParseResult> {
     sourceUrl: SOURCE_URL,
     items: [],
     warnings: [
-      "TODO: No curated 2025 item-level import yet — venue shell only. Add official Big E new food rows when published."
+      "No official item-level food list published on thebige.com as of import research.",
+      "Recommendation: keep venue shell only until Big E posts a fair food/vendor finder or numbered new-foods release.",
+      "Do not import vendor names from news roundups without item names tied to an official Big E source."
     ]
   });
 }

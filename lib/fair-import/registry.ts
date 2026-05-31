@@ -1,6 +1,7 @@
+import type { FairImportSource } from "./sources";
 import type { FairMenuParseResult } from "./types";
 
-export type FairMenuParser = () => Promise<FairMenuParseResult>;
+export type FairMenuParser = (source?: FairImportSource) => Promise<FairMenuParseResult>;
 
 const parsers: Record<string, () => Promise<FairMenuParser>> = {
   "minnesota-state-fair": async () => {
@@ -27,6 +28,10 @@ const parsers: Record<string, () => Promise<FairMenuParser>> = {
 
 export function getRegisteredFairSlugs(): string[] {
   return Object.keys(parsers);
+}
+
+export function fairSupportsImportSource(slug: string, source: FairImportSource): boolean {
+  return source === "preview" || slug === "minnesota-state-fair";
 }
 
 export async function getFairMenuParser(slug: string): Promise<FairMenuParser | null> {

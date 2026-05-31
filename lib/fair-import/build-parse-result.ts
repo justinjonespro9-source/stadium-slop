@@ -1,13 +1,13 @@
 import type { VenueMenuSourceItem } from "@/lib/venue-menu-import/types";
+import { fairImportTagsForSource, type FairImportSource } from "./sources";
 import { shouldSkipFairRawItem } from "./filter";
 import type { FairMenuParseResult, FairRawMenuItem } from "./types";
 import { FAIR_SOURCE_YEAR } from "./types";
 
-const PREVIEW_TAGS = ["state-fair", "2025-preview", "prior-year-listing"] as const;
-
 export function fairItemToSource(
   raw: FairRawMenuItem,
-  sourceUrl: string
+  sourceUrl: string,
+  importTags: string[]
 ): VenueMenuSourceItem & { importTags: string[]; seasonIntroduced: string } {
   const category =
     raw.beverageCategory ??
@@ -23,7 +23,7 @@ export function fairItemToSource(
     vendorLocationHint: raw.location,
     dietaryTags: [],
     sourceUrl,
-    importTags: [...PREVIEW_TAGS],
+    importTags: [...importTags],
     seasonIntroduced: String(FAIR_SOURCE_YEAR)
   };
 }
@@ -34,9 +34,13 @@ export function buildFairMenuParseResult(args: {
   sourceUrl: string;
   items: FairRawMenuItem[];
   warnings?: string[];
+  importSource?: FairImportSource;
+  skippedItems?: { name: string; reason: string }[];
 }): FairMenuParseResult {
+  const importSource = args.importSource ?? "preview";
+  const importTags = fairImportTagsForSource(importSource, args.venueSlug);
   const warnings = [...(args.warnings ?? [])];
-  const skippedItems: { name: string; reason: string }[] = [];
+  const skippedItems: { name: string; reason: string }[] = [...(args.skippedItems ?? [])];
   const parsed: VenueMenuSourceItem[] = [];
   let skippedDrinks = 0;
 
@@ -49,7 +53,7 @@ export function buildFairMenuParseResult(args: {
       }
       continue;
     }
-    parsed.push(fairItemToSource(raw, args.sourceUrl));
+    parsed.push(fairItemToSource(raw, args.sourceUrl, importTags));
   }
 
   return {

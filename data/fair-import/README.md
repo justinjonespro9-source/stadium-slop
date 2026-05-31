@@ -11,9 +11,14 @@ npm run ensure:fair-venues -- --apply
 
 # Menu import (ensures venues in dry-run preview; use --apply to write)
 npm run import:fair-menu -- --fair=minnesota-state-fair --dry-run
+npm run import:fair-menu -- --fair=minnesota-state-fair --source=core-catalog --dry-run
 npm run import:fair-menu -- --fair=all --dry-run
 npm run import:fair-menu -- --fair=all --apply
 ```
+
+### Minnesota core catalog
+
+`--source=core-catalog` (Minnesota only) pulls item names from the official kickoff vendor page at [mnstatefair.org/kickoff-to-summer/vendors](https://www.mnstatefair.org/kickoff-to-summer/vendors/), dedupes the 2025 new-food preview list, and tags rows with `core-catalog` + `official-source`.
 
 ## Fairgrounds geolocation
 
