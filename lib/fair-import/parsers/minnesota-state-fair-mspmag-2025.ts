@@ -40,6 +40,18 @@ const SKIP_WHOLE_LINE_RE = [
   /^reviewing all the new minnesota/i
 ];
 
+const OPTION_LINE_NAME_RE = /^(choice of|served with|optional|with or without|all |plus )/i;
+
+const FRAGMENT_ITEM_NAME_RE =
+  /^(choice of|served with|optional|with or without|^all |^plus )/i;
+
+const EDITORIAL_DESCRIPTION_RE =
+  /\b(get it|skip it|your call|must try|worth it|disappointing|amazing|delicious|favorite|too expensive)\b/gi;
+
+const BONUS_NAME_OVERRIDES: Record<string, string[]> = {
+  "lobster and banh mi croissant": ["Lobster Croissant", "Banh Mi Croissant"]
+};
+
 type ParsedTail = {
   vendor: string;
   location: string;
@@ -75,8 +87,12 @@ function normalizeFairVendorName(vendor: string): string {
   );
 }
 
+function normalizeFairItemName(name: string): string {
+  return normalizeMenuItemName(name.replace(/[\u2018\u2019\u201B\u2032'`']/g, ""));
+}
+
 function fairCatalogDedupeKey(vendor: string, name: string): string {
-  return `${normalizeFairVendorName(vendor)}::${normalizeMenuItemName(name)}`;
+  return `${normalizeFairVendorName(vendor)}::${normalizeFairItemName(name)}`;
 }
 
 function vendorsLikelyMatch(a: string, b: string): boolean {
@@ -95,10 +111,10 @@ function isDuplicateOfCatalog(
   const key = fairCatalogDedupeKey(vendor, name);
   if (catalogKeys.has(key)) return true;
 
-  const normName = normalizeMenuItemName(name);
+  const normName = normalizeFairItemName(name);
   return catalogEntries.some(
     (entry) =>
-      normalizeMenuItemName(entry.name) === normName &&
+      normalizeFairItemName(entry.name) === normName &&
       vendorsLikelyMatch(entry.vendor, vendor)
   );
 }
@@ -146,15 +162,20 @@ function stripDietaryAnnotations(text: string): string {
 
 function parsePrice(text?: string): { price?: number; priceNote?: string } {
   if (!text) return {};
-  const cleaned = text.replace(/^\$/, "").trim();
-  if (/[-–]/.test(cleaned)) {
-    return { priceNote: `$${cleaned}` };
+  const raw = text.trim();
+  if (/price varies/i.test(raw)) {
+    const dubai = raw.match(/\$[\d.]+/);
+    return { priceNote: dubai ? `${dubai[0]}; price varies` : "Price varies" };
   }
-  const num = Number.parseFloat(cleaned.replace(/[^\d.]/g, ""));
-  if (Number.isFinite(num)) {
-    return { price: num };
+  if (/[-–]|for small|for large|varies|;\s*\$|both$/i.test(raw)) {
+    return { priceNote: raw.startsWith("$") ? raw : `$${raw}` };
   }
-  return { priceNote: `$${cleaned}` };
+  const cleaned = raw.replace(/^\$/, "").trim();
+  const single = cleaned.match(/^(\d+(?:\.\d+)?)/);
+  if (single) {
+    return { price: Number.parseFloat(single[1]) };
+  }
+  return { priceNote: raw.startsWith("$") ? raw : `$${raw}` };
 }
 
 function parseAtTail(tail: string): ParsedTail | null {
@@ -165,13 +186,31 @@ function parseAtTail(tail: string): ParsedTail | null {
   let locationPart = match[2].trim();
 
   let priceText: string | undefined;
-  const priceMatch = locationPart.match(/\.\s*(\$[\d.]+(?:\s*[-–]\s*[\d.]+)?(?:\s+for\s+[^.]+)?)\s*\.?\s*$/);
+  const dubaiPriceMatch = locationPart.match(/\s+Dubai cup is (\$[\d.]+)(?:;\s*price varies)?/i);
+  if (dubaiPriceMatch) {
+    priceText = `${dubaiPriceMatch[1]}; price varies`;
+    locationPart = locationPart.slice(0, dubaiPriceMatch.index).trim();
+  }
+
+  const priceMatch = locationPart.match(
+    /(?:\.\s*|\s+)(\$[\d.]+(?:\s*[-–]\s*[\d.]+)?(?:\s+for\s+[^.;]+)?)\s*\.?\s*$/i
+  );
   if (priceMatch) {
-    priceText = priceMatch[1];
+    priceText = priceText ?? priceMatch[1];
     locationPart = locationPart.slice(0, priceMatch.index).trim();
   }
 
-  let location = locationPart.replace(/\s*\([^)]*only[^)]*\)\s*$/i, "").trim();
+  if (priceText) {
+    priceText = priceText.split(/\.\s+/)[0].trim();
+  }
+
+  let location = locationPart
+    .replace(/\s*\([^)]*only[^)]*\)\s*$/i, "")
+    .replace(/\s*;\s*\$[\d.–\s;]+.*$/i, "")
+    .replace(/\s+\$[\d.]+(?:\s*[-–]\s*[\d.]+)?(?:\s*;\s*\$[\d.]+)?(?:\s+for\s+both)?.*$/i, "")
+    .replace(/\s+Dubai cup is \$[\d.]+.*$/i, "")
+    .replace(/\s+price varies.*$/i, "")
+    .trim();
   location = location.replace(/\s+located\s+(?:at\s+|on\s+the\s+)?/i, " · ").trim();
   const { price, priceNote } = parsePrice(priceText);
 
@@ -180,37 +219,54 @@ function parseAtTail(tail: string): ParsedTail | null {
 
 function splitBonusNames(raw: string): string[] {
   const cleaned = raw.replace(/\.$/, "").trim();
+  const override = BONUS_NAME_OVERRIDES[normalizeFairItemName(cleaned)];
+  if (override) return override;
+
   const parts = cleaned
     .split(/,(?!\s*\d)/)
     .flatMap((part) => part.split(/\s+and\s+/i))
     .map((p) => p.trim())
     .filter(Boolean);
-  return parts;
+
+  return parts.filter((name) => !isInvalidItemName(name));
+}
+
+function isInvalidItemName(name: string): boolean {
+  const trimmed = name.trim();
+  if (!trimmed || FRAGMENT_ITEM_NAME_RE.test(trimmed)) return true;
+  if (/^lobster$/i.test(trimmed)) return true;
+  return false;
 }
 
 function splitMultiItemHead(head: string): { name: string; description: string }[] {
   const segments = head.split(/(?<=\.)\s+(?=[A-Z][^:]+?:\s+)/);
-  if (segments.length <= 1) {
+  const parsed: { name: string; description: string }[] = [];
+
+  for (const segment of segments) {
+    const colon = segment.indexOf(":");
+    if (colon < 0) continue;
+    const name = segment.slice(0, colon).trim();
+    if (OPTION_LINE_NAME_RE.test(name)) continue;
+    parsed.push({
+      name,
+      description: stripDietaryAnnotations(segment.slice(colon + 1).trim())
+    });
+  }
+
+  if (parsed.length === 0) {
     const colon = head.indexOf(":");
     if (colon < 0) return [];
+    const name = head.slice(0, colon).trim();
+    if (isInvalidItemName(name)) return [];
     return [
       {
-        name: head.slice(0, colon).trim(),
+        name,
         description: stripDietaryAnnotations(head.slice(colon + 1).trim())
       }
     ];
   }
 
-  const results: { name: string; description: string }[] = [];
-  for (const segment of segments) {
-    const colon = segment.indexOf(":");
-    if (colon < 0) continue;
-    results.push({
-      name: segment.slice(0, colon).trim(),
-      description: stripDietaryAnnotations(segment.slice(colon + 1).trim())
-    });
-  }
-  return results;
+  return parsed.filter((item) => !isInvalidItemName(item.name));
 }
 
 function splitUrbanGrowlerHead(head: string): { name: string; description: string }[] {
@@ -261,12 +317,32 @@ function isAlcoholicItem(name: string, description: string): boolean {
 }
 
 function isGenericBeverageOnly(name: string, description: string): boolean {
-  if (GENERIC_BEVERAGE_NAME_RE.test(name.trim())) return true;
+  const trimmed = name.trim();
+  // Chan's Eatery iced coffee with optional foam — generic café drink, not a fair-only specialty.
+  if (/^iced coffee\b/i.test(trimmed)) return true;
+  if (GENERIC_BEVERAGE_NAME_RE.test(trimmed)) return true;
   if (SPECIALTY_BEVERAGE_RE.test(`${name} ${description}`)) return false;
-  if (/\b(coffee|tea|espresso|latte|chai)\b/i.test(name) && !/\b(pickle|ube|pandan|nitro)\b/i.test(name)) {
+  if (/\b(coffee|espresso|latte|chai)\b/i.test(name) && !/\b(pickle|nitro)\b/i.test(name)) {
     return true;
   }
   return false;
+}
+
+function sanitizeFactualDescription(text: string): string {
+  return text
+    .replace(EDITORIAL_DESCRIPTION_RE, "")
+    .replace(/\b(SM|JVH)\b/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function simplifyVariantDescription(name: string, factual: string): string {
+  if (!/chocolate strawberry cups/i.test(name)) return factual;
+  if (factual.includes(";")) {
+    return "Multiple chocolate-covered strawberry cup styles (Dubai, matcha, classic, and strawberries & cream).";
+  }
+  const firstSentence = factual.split(/\.\s+/)[0]?.trim();
+  return firstSentence || factual;
 }
 
 function buildDescription(
@@ -274,7 +350,8 @@ function buildDescription(
   location: string,
   priceNote?: string
 ): string {
-  const parts = [factual, location ? `Stand: ${location}.` : null, priceNote ? `Price: ${priceNote}.` : null].filter(
+  const clean = sanitizeFactualDescription(factual);
+  const parts = [clean, location ? `Stand: ${location}.` : null, priceNote ? `Price: ${priceNote}.` : null].filter(
     Boolean
   );
   return parts.join(" ").slice(0, 500);
@@ -326,7 +403,8 @@ function toRawMenuItem(
   sourceLine: string
 ): FairRawMenuItem {
   const dietaryTags = parseDietaryTags(sourceLine);
-  const factual = description || name;
+  let factual = sanitizeFactualDescription(description || name);
+  factual = simplifyVariantDescription(name, factual);
   const alcoholic = isAlcoholicItem(name, factual);
   const specialtyDrink =
     alcoholic || SPECIALTY_BEVERAGE_RE.test(`${name} ${factual}`);
@@ -418,7 +496,12 @@ export async function parseMinnesotaStateFairMspMag2025(): Promise<FairMenuParse
     for (const candidate of parsed) {
       stats.candidatesBeforeDedupe++;
       const name = candidate.name.replace(/\.$/, "").trim();
-      if (!name) continue;
+      if (!name || isInvalidItemName(name)) {
+        if (name) {
+          skippedItems.push({ name, reason: "Option line or fragment — not a menu item" });
+        }
+        continue;
+      }
 
       if (isGenericBeverageOnly(name, candidate.description)) {
         skippedItems.push({
