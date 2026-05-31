@@ -1622,11 +1622,16 @@ body[data-mobile-nav-open] .media-nav-bar {
   color: #fff;
 }
 
-/* Center nav — four links without crowding mid-width desktops */
+/* Center nav — Slop Network guide links fit one line on tablet desktops */
 @media (min-width: 768px) and (max-width: 1023px) {
+  .media-nav-desktop {
+    gap: 0.125rem;
+  }
+
   .media-nav-desktop .media-nav-link {
-    padding-inline: 0.55rem;
-    font-size: 0.75rem;
+    padding-inline: 0.45rem;
+    font-size: 0.6875rem;
+    letter-spacing: -0.01em;
   }
 }
 

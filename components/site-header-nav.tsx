@@ -137,10 +137,10 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
           Venues
         </NavLink>
         <NavLink href={WORLD_CUP_GUIDE_PATH_EN} active={isWorldCup}>
-          World Cup
+          World Cup Slop
         </NavLink>
         <NavLink href={STATE_FAIR_GUIDE_PATH} active={isStateFair}>
-          State Fair
+          State Fair Slop
         </NavLink>
       </nav>
 
@@ -189,15 +189,19 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
                   >
                     Venues / Find a venue
                   </MobileNavLink>
-                  <MobileNavLink href={WORLD_CUP_GUIDE_PATH_EN} active={isWorldCup}>
-                    World Cup
+                  <MobileNavLink
+                    href={WORLD_CUP_GUIDE_PATH_EN}
+                    active={isWorldCup}
+                    description="2026 host stadium food guide"
+                  >
+                    World Cup Slop
                   </MobileNavLink>
                   <MobileNavLink
                     href={STATE_FAIR_GUIDE_PATH}
                     active={isStateFair}
-                    description="State Fair Slop guide"
+                    description="State fair food guide"
                   >
-                    Fair
+                    State Fair Slop
                   </MobileNavLink>
                   <MobileNavLink href={accountHref} active={isAccount}>
                     {accountLabel}
