@@ -41,10 +41,10 @@ const DIRECTORY_META: Record<
 > = {
   "minnesota-state-fair": {
     fairDates2026: "Aug. 27 – Sept. 7, 2026",
-    statusLabel: "136 foods tracked",
+    statusLabel: "62 foods tracked",
     status: "preview-loaded",
     previewItemCount: 22,
-    trackedFoodCount: 136
+    trackedFoodCount: 62
   },
   "iowa-state-fair": {
     fairDates2026: "Aug. 13 – Aug. 23, 2026",
