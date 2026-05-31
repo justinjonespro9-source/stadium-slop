@@ -31,7 +31,7 @@ const REPLAY_VALUE_FAIR: Partial<Record<ReplayValueLabel, string>> = {
 
 const PRICE_CHECK_FAIR: Partial<Record<PriceCheckLabel, string>> = {
   "Worth the Price of Admission": "Worth the Splurge",
-  "Stadium Tax": "Fairgrounds Tax"
+  "Stadium Tax": "Not Fair"
 };
 
 const REPLAY_FORM_OPTIONS_STADIUM = [
@@ -70,7 +70,7 @@ const PRICE_FORM_STADIUM = [
   "Stadium Tax"
 ] as const;
 
-const PRICE_FORM_FAIR = ["Worth the Splurge", "Fair Deal", "Fairgrounds Tax"] as const;
+const PRICE_FORM_FAIR = ["Worth the Splurge", "Fair Deal", "Not Fair"] as const;
 
 export function getStandingsModeOptions(venueSlug: string) {
   if (isFairCopyContext(venueSlug)) {
