@@ -19,6 +19,11 @@ import type { FoodReview } from "@/lib/sample-data";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { slopScoreDisplay } from "@/lib/slop-card-display";
 import {
+  displayPriceCheckLabel,
+  displayReplayValueLabel,
+  getScorecardBackLabels
+} from "@/lib/venue-copy-context";
+import {
   getReviewerDisplayName,
   getReviewerExternalLinksForScorecard,
   getReviewerHandleLabel,
@@ -48,6 +53,8 @@ export type SlopScorecardFlipCardProps = {
   /** Full helpful / report controls on the card back. */
   backHelpfulSlot: ReactNode;
   reportSlot: ReactNode;
+  /** When set, back-face signal labels use fairgrounds copy. */
+  venueSlug?: string;
 };
 
 /** Stops back-face tap-to-flip from swallowing button/link/form clicks. */
@@ -254,8 +261,11 @@ export function SlopScorecardFlipCard({
   frontHelpfulSlot,
   backHelpfulSlot,
   shareSlot,
-  reportSlot
+  reportSlot,
+  venueSlug: venueSlugProp
 }: SlopScorecardFlipCardProps) {
+  const venueSlug = venueSlugProp ?? review.venueSlug;
+  const backLabels = getScorecardBackLabels(venueSlug);
   const rootRef = useRef<HTMLElement>(null);
   const [isFlipped, setIsFlipped] = useState(false);
   const flipRegionId = useId();
@@ -429,23 +439,31 @@ export function SlopScorecardFlipCard({
               ) : null}
 
               <div className="mt-2 shrink-0">
-                <BackSectionLabel>Slop Signals</BackSectionLabel>
+                <BackSectionLabel>{backLabels.slopSignals}</BackSectionLabel>
                 <div className="slop-scorecard-back-stat-panel mt-1">
                   <BackStatRow
                     label="Slop Score"
                     value={`${slopScoreDisplay(review.slopScore)} / 10`}
                   />
                   <BackStatRow
-                    label="Napkin Rating"
+                    label={backLabels.napkinRating}
                     value={napkinEligible ? `${review.napkinRating} / 5` : "N/A"}
                   />
                   <BackStatRow
-                    label="Replay Value"
-                    value={review.replayValue ?? "—"}
+                    label={backLabels.replayValue}
+                    value={
+                      review.replayValue
+                        ? displayReplayValueLabel(review.replayValue, venueSlug)
+                        : "—"
+                    }
                   />
                   <BackStatRow
-                    label="Price Check"
-                    value={review.priceCheck ?? "—"}
+                    label={backLabels.priceCheck}
+                    value={
+                      review.priceCheck
+                        ? displayPriceCheckLabel(review.priceCheck, venueSlug)
+                        : "—"
+                    }
                   />
                 </div>
               </div>

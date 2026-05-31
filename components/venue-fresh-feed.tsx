@@ -14,6 +14,7 @@ import {
 } from "@/lib/scorecard-share";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import type { VenueFreshReview } from "@/lib/venue-fresh-feed";
+import { getFoodPhotoAlt, getVenueFreshFeedSubcopy } from "@/lib/venue-copy-context";
 
 type VenueFreshFeedProps = {
   reviews: VenueFreshReview[];
@@ -82,7 +83,8 @@ export function VenueFreshFeed({
               venueName={venueName}
               metaLine={metaLine}
               photoUrl={photoUrlNorm}
-              photoAlt={review.photoAlt ?? `Fan photo for ${review.foodItemName}`}
+              photoAlt={review.photoAlt ?? getFoodPhotoAlt(venueSlug, review.foodItemName)}
+              venueSlug={venueSlug}
               photoPlaceholderEmoji={review.photoPlaceholder}
               napkinEligible={review.napkinRating != null}
               frontHelpfulSlot={itemLink}

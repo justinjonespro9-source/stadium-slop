@@ -58,8 +58,10 @@ import { isFairVenueSlug } from "@/lib/fair-preview";
 import {
   FAIR_VENUE_MENU_EYEBROW,
   FAIR_VENUE_MENU_HEADING,
-  FAIR_VENUE_MENU_SUBCOPY
-} from "@/lib/fair-venue-copy";
+  FAIR_VENUE_MENU_SUBCOPY,
+  getStandingsModeOptions,
+  getVenuePageDescription
+} from "@/lib/venue-copy-context";
 import {
   canonicalVenuePath,
   resolveCanonicalPublicVenueSlug
@@ -73,12 +75,6 @@ type CategoryFilter =
   | "sweets"
   | "vegan-gf"
   | "reviewed";
-
-const modeOptions: { label: string; value: StandingsMode }[] = [
-  { label: "All-Time", value: "all-time" },
-  { label: "Season", value: "season" },
-  { label: "Fresh", value: "fresh" }
-];
 
 const categoryOptions: { label: string; value: CategoryFilter }[] = [
   { label: "All", value: "all" },
@@ -120,8 +116,8 @@ export async function generateMetadata({
 
   const homeOfTeams = formatHomeOfTeams(venue.teams, venue.slug);
   const description = [
-    `${venue.name} — Game day Slop Scoreboard for concessions in ${venue.city}, ${venue.state}.`,
-    homeOfTeams ? `Home of ${homeOfTeams}.` : null,
+    getVenuePageDescription(venue.slug, venue.name, venue.city, venue.state),
+    !isFairVenueSlug(venue.slug) && homeOfTeams ? `Home of ${homeOfTeams}.` : null,
     SITE_TAGLINE_SHORT
   ]
     .filter(Boolean)
@@ -343,7 +339,7 @@ function ModeChips({
 }) {
   return (
     <div className="mt-2 flex flex-wrap gap-1.5">
-      {modeOptions.map((option) => (
+      {getStandingsModeOptions(venueSlug).map((option) => (
         <Link
           key={option.value}
           href={buildVenueHref(venueSlug, option.value, category, vendorSlug, searchQuery)}
@@ -416,7 +412,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     allTime: resolveVenueItemSlopStats(venueStatsMap, item.slug, "allTime"),
     season: resolveVenueItemSlopStats(venueStatsMap, item.slug, "season")
   }));
-  const fanFavoriteByItem = computeVenueFanFavoriteBadges(fanFavoriteEntries);
+  const fanFavoriteByItem = computeVenueFanFavoriteBadges(fanFavoriteEntries, venue.slug);
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
   const rawVendorSlug = (query?.vendor ?? "all").trim() || "all";

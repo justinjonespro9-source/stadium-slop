@@ -50,27 +50,70 @@ import {
   parseSlopScoreInput,
   requiresLowScorePhoto
 } from "@/lib/review-scorecard";
-const replayValueOptions = [
+import {
+  getMissingReplayError,
+  getNapkinFormOptions,
+  getNapkinRatingHint,
+  getPriceCheckSectionTitle,
+  getPriceFormOptionLabels,
+  getReplayFormOptionLabels,
+  getReplayValueFormHint,
+  getReplayValueSectionTitle,
+  getReviewDayBadgeLabel,
+  getReviewFormRequirementsHint,
+  getReviewPhotoSectionTitle,
+  getReviewSignInPhotoHint,
+  getReviewSubmitFootnote,
+  getSlopSignalsSectionTitle,
+  getFoodPhotoAlt,
+  getHotTakePlaceholder,
+  isFairCopyContext
+} from "@/lib/venue-copy-context";
+
+const REPLAY_VALUE_ENUMS = [
+  ReplayValue.GAME_DAY_STARTER,
+  ReplayValue.SOLID_ROTATION_PICK,
+  ReplayValue.BENCH_OPTION,
+  ReplayValue.CUT_FROM_THE_ROSTER
+] as const;
+
+const PRICE_CHECK_ENUMS = [
+  PriceCheck.WORTH_THE_PRICE_OF_ADMISSION,
+  PriceCheck.FAIR_DEAL,
+  PriceCheck.STADIUM_TAX
+] as const;
+
+const REPLAY_VALUE_OPTIONS = [
   { label: "Game Day Starter", value: ReplayValue.GAME_DAY_STARTER },
   { label: "Solid Rotation Pick", value: ReplayValue.SOLID_ROTATION_PICK },
   { label: "Bench Option", value: ReplayValue.BENCH_OPTION },
   { label: "Cut From the Roster", value: ReplayValue.CUT_FROM_THE_ROSTER }
-];
-const priceCheckOptions = [
+] as const;
+
+const PRICE_CHECK_OPTIONS = [
   {
     label: "Worth the Price of Admission",
     value: PriceCheck.WORTH_THE_PRICE_OF_ADMISSION
   },
   { label: "Fair Deal", value: PriceCheck.FAIR_DEAL },
   { label: "Stadium Tax", value: PriceCheck.STADIUM_TAX }
-];
-const napkinOptions = [
-  { value: 1, label: "Clean Win" },
-  { value: 2, label: "Safe at Your Seat" },
-  { value: 3, label: "Two-Handed Problem" },
-  { value: 4, label: "Jersey Danger" },
-  { value: 5, label: "Full Cleanup Crew" }
-];
+] as const;
+
+function replayOptionsForVenue(venueSlug: string) {
+  const labels = getReplayFormOptionLabels(venueSlug);
+  return REPLAY_VALUE_ENUMS.map((value, index) => ({
+    value,
+    label: labels[index] ?? REPLAY_VALUE_OPTIONS[index]?.label ?? value
+  }));
+}
+
+function priceOptionsForVenue(venueSlug: string) {
+  const labels = getPriceFormOptionLabels(venueSlug);
+  return PRICE_CHECK_ENUMS.map((value, index) => ({
+    value,
+    label: labels[index] ?? PRICE_CHECK_OPTIONS[index]?.label ?? value
+  }));
+}
 
 type ReviewPageProps = {
   params: Promise<{
@@ -536,7 +579,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
       : urlError === "low-score-photo"
         ? LOW_SCORE_PHOTO_MESSAGE
         : urlError === "missing-replay"
-        ? "Pick a Replay Value — would you order this again?"
+        ? getMissingReplayError(venueSlug)
         : urlError === "missing-price"
           ? "Pick a Price Check — how was the value?"
           : reviewPagePhotoErrorMessage(urlError);
@@ -598,8 +641,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           <article className="media-review-card">
             <p className="media-review-card-title">Continue with Google</p>
             <p className="media-review-card-hint">
-              Sign in to submit a Slop Scorecard — score, signals, and optional fan photo.
-              Browsing stays public; scorecards need your account.
+              {getReviewSignInPhotoHint(venue.slug)} Browsing stays public; scorecards need
+              your account.
             </p>
             <AuthConfigAlert className="mt-3" />
             <div className="mt-4">
@@ -633,6 +676,9 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const draftReplay = draft?.replayValue ?? undefined;
   const draftPrice = draft?.priceCheck ?? undefined;
   const draftNote = draft?.note ?? "";
+  const napkinOptions = getNapkinFormOptions(venue.slug);
+  const replayValueOptions = replayOptionsForVenue(venue.slug);
+  const priceCheckOptions = priceOptionsForVenue(venue.slug);
   const existingPhoto =
     draft?.photos.find((p) => normalizePublicImageUrl(p.url)) ?? undefined;
   const dbVenue = await prisma.venue.findUnique({
@@ -734,7 +780,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
         badges={
           <>
             <span className="media-item-hero-badge">
-              Game day · {foodItem.itemType}
+              {getReviewDayBadgeLabel(venue.slug, foodItem.itemType)}
             </span>
             {foodItem.ageRestricted ? (
               <span className="media-item-hero-badge">21+</span>
@@ -754,25 +800,24 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           <input type="hidden" name="foodSlug" value={foodItem.slug} />
 
           <p className="text-center text-[0.7rem] leading-relaxed text-[var(--media-ink-muted)]">
-            {napkinEligible
-              ? "Slop score, napkins, replay, and price are required. Photo required under 5.0."
-              : "Slop score, replay, and price are required — no napkin row for drinks. Photo required under 5.0."}
+            {getReviewFormRequirementsHint(venue.slug, napkinEligible)}
           </p>
 
           <ReviewScorecardFormClient
             formId="review-form"
             tone="media"
+            venueSlug={venue.slug}
             defaultSlopScore={draftSlop}
             cloudinaryReady={cloudinaryReady}
             existingPhotoUrl={existingPhoto?.url ?? null}
-            existingPhotoAlt={existingPhoto?.alt ?? `${foodItem.name} fan photo`}
+            existingPhotoAlt={existingPhoto?.alt ?? getFoodPhotoAlt(venue.slug, foodItem.name)}
           >
             {napkinEligible ? (
               <section className="media-review-card" aria-labelledby="napkin-label">
                 <h2 id="napkin-label" className="media-review-card-title">
                   Napkin rating <span className="text-[var(--media-orange)]">*</span>
                 </h2>
-                <p className="media-review-card-hint">Messiness, not quality.</p>
+                <p className="media-review-card-hint">{getNapkinRatingHint(venue.slug)}</p>
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-5">
                   {napkinOptions.map((option) => (
                     <NapkinButton
@@ -790,14 +835,15 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
             <section className="media-review-card">
               <h2 className="media-review-card-title">
-                Slop Signals <span className="text-[var(--media-orange)]">*</span>
+                {getSlopSignalsSectionTitle(venue.slug)}{" "}
+                <span className="text-[var(--media-orange)]">*</span>
               </h2>
               <div className="mt-4 space-y-4">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--media-ink-dim)]">
-                    Replay value
+                    {getReplayValueSectionTitle(venue.slug)}
                   </p>
-                  <p className="media-review-card-hint">Order again?</p>
+                  <p className="media-review-card-hint">{getReplayValueFormHint(venue.slug)}</p>
                   <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                     {replayValueOptions.map((option, idx) => (
                       <SignalOption
@@ -814,9 +860,13 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
                 </div>
                 <div className="border-t border-[var(--media-border)] pt-4">
                   <p className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--media-ink-dim)]">
-                    Price check
+                    {getPriceCheckSectionTitle(venue.slug)}
                   </p>
-                  <p className="media-review-card-hint">Worth it?</p>
+                  <p className="media-review-card-hint">
+                    {isFairCopyContext(venue.slug)
+                      ? "Did it feel worth the fairgrounds splurge?"
+                      : "Worth it?"}
+                  </p>
                   <div className="mt-2 flex flex-col gap-2 sm:flex-wrap sm:flex-row">
                     {priceCheckOptions.map((option, idx) => (
                       <SignalOption
@@ -846,7 +896,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               name="note"
               maxLength={300}
               rows={3}
-              placeholder="One-liner for fans flipping your card"
+              placeholder={getHotTakePlaceholder(venue.slug)}
               defaultValue={draftNote}
               className="media-review-textarea"
             />
@@ -854,9 +904,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
           <section className="media-review-card">
             <p className="text-center text-[0.7rem] leading-relaxed text-[var(--media-ink-muted)]">
-              {draft
-                ? "Updating today replaces your earlier Slop Scorecard for this item — one per fan per game day."
-                : "One Slop Scorecard per fan, item, and game day. You can edit later today if needed."}
+              {getReviewSubmitFootnote(venue.slug, Boolean(draft))}
             </p>
             <ReviewFormLocation
               formId="review-form"

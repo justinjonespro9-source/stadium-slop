@@ -39,15 +39,16 @@ export function highlightToneForLabel(label: string): SlopCardHighlightTone {
 export function pickSlopCardHighlights(
   labels: string[],
   extra: string[] = [],
-  max = 3
+  max = 3,
+  venueSlug?: string
 ): string[] {
   const pool = [...new Set([...extra, ...labels])];
   const picked: string[] = [];
 
   for (const priority of HIGHLIGHT_PRIORITY) {
     const match = pool.find((label) => {
-      if (isFanFavoriteHighlightLabel(priority)) {
-        return isFanFavoriteHighlightLabel(label) && label === priority;
+      if (isFanFavoriteHighlightLabel(priority, venueSlug)) {
+        return isFanFavoriteHighlightLabel(label, venueSlug) && label === priority;
       }
       return (
         label.toLowerCase() === priority.toLowerCase() || label.includes(priority)

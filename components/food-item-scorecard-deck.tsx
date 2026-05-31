@@ -24,6 +24,7 @@ import {
   getScorecardShareUrl
 } from "@/lib/scorecard-share";
 import { normalizePublicImageUrl } from "@/lib/image-url";
+import { getFoodPhotoAlt } from "@/lib/venue-copy-context";
 
 type FoodItemScorecardDeckProps = {
   reviews: FoodReview[];
@@ -205,7 +206,8 @@ export function FoodItemScorecardDeck({
               venueName={venueName}
               metaLine={metaLine}
               photoUrl={photoUrlNorm}
-              photoAlt={review.photoAlt ?? `Fan photo for ${foodName}`}
+              photoAlt={review.photoAlt ?? getFoodPhotoAlt(venueSlug, foodName)}
+              venueSlug={venueSlug}
               photoPlaceholderEmoji={
                 review.photoPlaceholder ?? photoPlaceholderDefault
               }

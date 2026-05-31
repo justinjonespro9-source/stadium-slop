@@ -1,5 +1,12 @@
 import Link from "next/link";
 
+import {
+  getEmptyReplayPriceHint,
+  getGameDayFreshPendingCopy,
+  getNoFanPhotoLabel,
+  getNoScorecardsTitle
+} from "@/lib/venue-copy-context";
+
 /** Season (or scoped) stats have no fan reviews yet. */
 export function isUnratedItemStats(reviewCount: number): boolean {
   return reviewCount === 0;
@@ -8,11 +15,13 @@ export function isUnratedItemStats(reviewCount: number): boolean {
 export function FoodItemHeroPlaceholder({
   foodName,
   emoji,
-  reviewHref
+  reviewHref,
+  venueSlug
 }: {
   foodName: string;
   emoji: string;
   reviewHref: string;
+  venueSlug?: string;
 }) {
   return (
     <div className="flex min-h-[7rem] flex-col items-center justify-center gap-2 bg-gradient-to-b from-zinc-950 via-black to-zinc-950 px-3 py-4 text-center sm:min-h-[8rem]">
@@ -23,7 +32,7 @@ export function FoodItemHeroPlaceholder({
         {emoji}
       </div>
       <p className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-[var(--slop-orange)]">
-        No fan photo
+        {venueSlug ? getNoFanPhotoLabel(venueSlug) : "No fan photo"}
       </p>
       <p className="max-w-[18rem] text-xs font-semibold text-[var(--slop-cream-muted)]">
         {foodName} — add a shot with your review.
@@ -38,7 +47,13 @@ export function FoodItemHeroPlaceholder({
   );
 }
 
-export function FanSignalsPendingPanel({ tone = "brand" }: { tone?: "brand" | "media" }) {
+export function FanSignalsPendingPanel({
+  tone = "brand",
+  venueSlug
+}: {
+  tone?: "brand" | "media";
+  venueSlug?: string;
+}) {
   const className =
     tone === "media"
       ? "rounded-xl border border-dashed border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5"
@@ -48,22 +63,33 @@ export function FanSignalsPendingPanel({ tone = "brand" }: { tone?: "brand" | "m
 
   return (
     <div className={className}>
-      <p className={textClass}>Replay / price breakdown unlocks after reviews.</p>
+      <p className={textClass}>
+        {venueSlug ? getEmptyReplayPriceHint(venueSlug) : "Replay / price breakdown unlocks after reviews."}
+      </p>
     </div>
   );
 }
 
-export function GameDayFreshPendingBlock({ tone = "brand" }: { tone?: "brand" | "media" }) {
+export function GameDayFreshPendingBlock({
+  tone = "brand",
+  venueSlug
+}: {
+  tone?: "brand" | "media";
+  venueSlug?: string;
+}) {
   const className =
     tone === "media"
       ? "rounded-xl border border-dashed border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2 text-xs text-[var(--media-ink-muted)]"
       : "rounded-lg border border-dashed border-[var(--slop-line-strong)] px-2.5 py-1.5 text-xs text-[var(--slop-cream-dim)]";
+  const copy = venueSlug ? getGameDayFreshPendingCopy(venueSlug) : "Fresh: no verified takes today yet.";
+  const [label, ...rest] = copy.split(":");
   const strongClass =
     tone === "media" ? "font-bold text-[var(--media-ink)]" : "font-bold text-[var(--slop-cream-muted)]";
 
   return (
     <div className={className}>
-      <span className={strongClass}>Fresh:</span> no verified takes today yet.
+      <span className={strongClass}>{label}:</span>
+      {rest.join(":")}
     </div>
   );
 }
@@ -101,7 +127,7 @@ export function PhotoBackedReviewsEmpty({
           tone === "media" ? "text-base text-[var(--media-ink)]" : "text-sm text-[var(--slop-cream)]"
         }`}
       >
-        No fan scorecards yet
+        {getNoScorecardsTitle(venueSlug)}
       </p>
       <p
         className={`mt-1 leading-snug ${

@@ -5,6 +5,10 @@
  */
 
 import type { ItemSlopStats } from "@/lib/slop-stats-display";
+import {
+  fanFavoriteBadgeLabelForVenue,
+  isFanFavoriteBadgeLabelForVenue
+} from "@/lib/venue-copy-context";
 
 /** Minimum eligible reviews before an item can earn a Fan Favorite rank. */
 export const FAN_FAVORITE_MIN_ELIGIBLE_REVIEWS = 3;
@@ -27,8 +31,12 @@ export type VenueFanFavoriteEntry = {
 
 export function fanFavoriteBadgeLabel(
   scope: FanFavoriteScope,
-  rank: number
+  rank: number,
+  venueSlug?: string
 ): string {
+  if (venueSlug) {
+    return fanFavoriteBadgeLabelForVenue(scope, rank, venueSlug);
+  }
   const tier = scope === "allTime" ? "All-Time" : "Season";
   return `#${rank} ${tier} Fan Favorite`;
 }
@@ -93,7 +101,8 @@ function compareFanFavoriteCandidates(a: ItemSlopStats, b: ItemSlopStats): numbe
 
 function rankTopFanFavoritesForScope(
   entries: VenueFanFavoriteEntry[],
-  scope: FanFavoriteScope
+  scope: FanFavoriteScope,
+  venueSlug?: string
 ): Map<string, FanFavoriteBadge[]> {
   const statsKey = scope === "allTime" ? "allTime" : "season";
   const eligible = entries
@@ -113,7 +122,7 @@ function rankTopFanFavoritesForScope(
     const badge: FanFavoriteBadge = {
       scope,
       rank,
-      label: fanFavoriteBadgeLabel(scope, rank)
+      label: fanFavoriteBadgeLabel(scope, rank, venueSlug)
     };
     bySlug.set(entry.itemSlug, [badge]);
   });
@@ -123,10 +132,11 @@ function rankTopFanFavoritesForScope(
 
 /** Top 3 All-Time + Top 3 Season Fan Favorites for a venue (by item slug). */
 export function computeVenueFanFavoriteBadges(
-  entries: VenueFanFavoriteEntry[]
+  entries: VenueFanFavoriteEntry[],
+  venueSlug?: string
 ): Map<string, FanFavoriteBadge[]> {
-  const allTimeRanks = rankTopFanFavoritesForScope(entries, "allTime");
-  const seasonRanks = rankTopFanFavoritesForScope(entries, "season");
+  const allTimeRanks = rankTopFanFavoritesForScope(entries, "allTime", venueSlug);
+  const seasonRanks = rankTopFanFavoritesForScope(entries, "season", venueSlug);
   const merged = new Map<string, FanFavoriteBadge[]>();
 
   for (const { itemSlug } of entries) {
@@ -160,6 +170,9 @@ export function getFanFavoriteBadgesForItem(
   return map.get(itemSlug) ?? [];
 }
 
-export function isFanFavoriteHighlightLabel(label: string): boolean {
+export function isFanFavoriteHighlightLabel(label: string, venueSlug?: string): boolean {
+  if (venueSlug) {
+    return isFanFavoriteBadgeLabelForVenue(label, venueSlug);
+  }
   return /#\d+\s+(All-Time|Season)\s+Fan Favorite/i.test(label);
 }

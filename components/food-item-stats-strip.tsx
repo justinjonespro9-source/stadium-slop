@@ -1,3 +1,9 @@
+import {
+  getFreshSignalStatLabel,
+  getPriceStatLabel,
+  getReplayStatLabel
+} from "@/lib/venue-copy-context";
+
 type StatCellProps = {
   label: string;
   value: string;
@@ -59,6 +65,7 @@ export type FoodItemStatsStripProps = {
   replayLabel?: string;
   replayDetail?: string;
   tone?: "brand" | "media";
+  venueSlug?: string;
 };
 
 /** Compact scoreboard strip for item page header. */
@@ -75,9 +82,13 @@ export function FoodItemStatsStrip({
   priceDetail,
   replayLabel,
   replayDetail,
-  tone = "brand"
+  tone = "brand",
+  venueSlug
 }: FoodItemStatsStripProps) {
   const stripClass = tone === "media" ? "media-item-stats-strip" : "item-stats-strip";
+  const freshLabel = venueSlug ? getFreshSignalStatLabel(venueSlug) : "Fresh signal";
+  const priceLabel = venueSlug ? getPriceStatLabel(venueSlug) : "Price";
+  const replayStatLabel = venueSlug ? getReplayStatLabel(venueSlug) : "Replay";
 
   return (
     <div className={stripClass} role="group" aria-label="Item stats">
@@ -89,7 +100,7 @@ export function FoodItemStatsStrip({
         tone={tone}
       />
       <StatCell
-        label="Fresh signal"
+        label={freshLabel}
         value={freshScore}
         detail={freshDetail}
         accent={freshLive ? "fresh" : "default"}
@@ -101,9 +112,9 @@ export function FoodItemStatsStrip({
         detail={reviewDetail}
         tone={tone}
       />
-      <StatCell label="Price" value={priceDisplay} detail={priceDetail} tone={tone} />
+      <StatCell label={priceLabel} value={priceDisplay} detail={priceDetail} tone={tone} />
       <StatCell
-        label="Replay"
+        label={replayStatLabel}
         value={replayLabel ?? "—"}
         detail={replayDetail}
         tone={tone}

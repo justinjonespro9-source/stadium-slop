@@ -83,6 +83,22 @@ import { FanPoweredGuideBadge } from "@/components/fan-powered-guide-note";
 import { isAlcoholRelatedFoodItem } from "@/lib/alcohol-content";
 import { AgeGateProvider } from "@/components/age-gate/age-gate-context";
 import { FoodItemAgeGate } from "@/components/age-gate/food-item-age-gate";
+import {
+  displayReplayValueLabel,
+  getAudienceNoun,
+  getCommunitySignalsTitle,
+  getFanPhotosSectionEyebrow,
+  getFoodPhotoAlt,
+  getFreshDetailWhenClosed,
+  getFreshDetailWhenLive,
+  getFreshSignalStatLabel,
+  getPriceStatLabel,
+  getReplayStatLabel,
+  getReplayValueSectionTitle,
+  getPriceCheckSectionTitle,
+  getReviewAvailabilityHint,
+  mapConsensusStatsForVenue
+} from "@/lib/venue-copy-context";
 
 export const revalidate = 180;
 
@@ -163,11 +179,16 @@ function maxConsensusPercentage(stats: ConsensusStat[]) {
 
 function FanSignalBreakdown({
   title,
-  stats
+  stats,
+  venueSlug,
+  kind
 }: {
   title: string;
   stats: ConsensusStat[];
+  venueSlug: string;
+  kind: "replay" | "price";
 }) {
+  const displayStats = mapConsensusStatsForVenue(stats, venueSlug, kind);
   const topPct = maxConsensusPercentage(stats);
 
   return (
@@ -176,7 +197,7 @@ function FanSignalBreakdown({
         {title}
       </h3>
       <div className="mt-2 space-y-2">
-        {stats.map((stat) => {
+        {displayStats.map((stat) => {
           const isTop = topPct > 0 && stat.percentage === topPct;
 
           return (
@@ -492,7 +513,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       itemSlug: menuItem.slug,
       allTime: resolveVenueItemSlopStats(venueStatsMap, menuItem.slug, "allTime"),
       season: resolveVenueItemSlopStats(venueStatsMap, menuItem.slug, "season")
-    }))
+    })),
+    venue.slug
   );
   const fanFavoriteBadges = getFanFavoriteBadgesForItem(
     fanFavoriteByItem,
@@ -610,7 +632,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         slopScore: leadReview.slopScore,
         highlightLabels: pickSlopCardHighlights(
           leadReview.labels,
-          awardLabelPool
+          awardLabelPool,
+          3,
+          venue.slug
         )
       }
     : {
@@ -640,13 +664,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       <span>{foodItem.location}</span>
     </span>
   );
-  const reviewHint = isSignedIn
-    ? activeGame
-      ? "Certified reviews during this home game."
-      : "Reviews open during verified home-game windows."
-    : activeGame
-      ? "Sign in to review during this home game."
-      : "Browse anytime — reviews open on game day.";
+  const reviewHint = getReviewAvailabilityHint(venue.slug, isSignedIn, Boolean(activeGame));
   const heroBadges = (
     <>
       {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
@@ -681,10 +699,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         reviewHint={reviewHint}
         badges={heroBadges}
         heroImageUrl={heroImageUrl}
-        heroImageAlt={heroEntry?.alt ?? `Fan photo for ${foodItem.name}`}
+        heroImageAlt={heroEntry?.alt ?? getFoodPhotoAlt(venue.slug, foodItem.name)}
         stats={
           <FoodItemStatsStrip
             tone="media"
+            venueSlug={venue.slug}
             slopScore={unratedSeason ? "—" : seasonStats.averageSlopScore.toFixed(1)}
             slopDetail={unratedSeason ? undefined : slopTier}
             slopUnrated={unratedSeason}
@@ -694,10 +713,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             freshLive={hasGameDayFreshToday}
             freshDetail={
               hasGameDayFreshToday
-                ? foodItem.freshWindowLabel
-                  ? foodItem.freshWindowLabel
-                  : "Game-day takes"
-                : "Opens on game day"
+                ? getFreshDetailWhenLive(venue.slug, foodItem.freshWindowLabel)
+                : getFreshDetailWhenClosed(venue.slug)
             }
             reviewCount={seasonStats.reviewCount}
             reviewDetail={
@@ -712,12 +729,18 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
             }
             priceDetail={
               foodItem.priceLastConfirmedLabel ??
-              (priceIntel.reportCount ? `${priceIntel.reportCount} reports` : "Fan reports")
+              (priceIntel.reportCount
+                ? `${priceIntel.reportCount} reports`
+                : `${getAudienceNoun(venue.slug)} reports`)
             }
-            replayLabel={unratedSeason ? undefined : seasonStats.topReplayValue?.label}
+            replayLabel={
+              unratedSeason || !seasonStats.topReplayValue?.label
+                ? undefined
+                : displayReplayValueLabel(seasonStats.topReplayValue.label, venue.slug)
+            }
             replayDetail={
               seasonStats.topReplayValue && seasonStats.topReplayValue.percentage > 0
-                ? `${seasonStats.topReplayValue.percentage}% fans`
+                ? `${seasonStats.topReplayValue.percentage}% ${getAudienceNoun(venue.slug)}`
                 : undefined
             }
           />
@@ -782,7 +805,9 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               <article className="media-content-card media-content-section !mt-0">
                 <div className="media-section-heading">
                   <div>
-                    <p className="media-section-eyebrow">Fan photos</p>
+                    <p className="media-section-eyebrow">
+                      {getFanPhotosSectionEyebrow(venue.slug)}
+                    </p>
                     <h2 className="media-section-title">Slop Scorecards</h2>
                   </div>
                   {helpfulStatusMessage ? (
@@ -829,7 +854,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
             {!hasGameDayFreshToday ? (
               <div className="media-content-section">
-                <GameDayFreshPendingBlock tone="media" />
+                <GameDayFreshPendingBlock tone="media" venueSlug={venue.slug} />
               </div>
             ) : foodItem.freshSignal ? (
               <section className="media-content-card media-content-section">
@@ -858,15 +883,25 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
             <section className="media-content-card media-content-section">
               <p className="media-section-eyebrow">Community</p>
-              <h2 className="media-section-title">Fan signals</h2>
+              <h2 className="media-section-title">{getCommunitySignalsTitle(venue.slug)}</h2>
               {unratedSeason ? (
                 <div className="mt-3">
-                  <FanSignalsPendingPanel tone="media" />
+                  <FanSignalsPendingPanel tone="media" venueSlug={venue.slug} />
                 </div>
               ) : (
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                  <FanSignalBreakdown title="Replay value" stats={seasonStats.replayValue} />
-                  <FanSignalBreakdown title="Price check" stats={seasonStats.priceCheck} />
+                  <FanSignalBreakdown
+                    title={getReplayValueSectionTitle(venue.slug)}
+                    stats={seasonStats.replayValue}
+                    venueSlug={venue.slug}
+                    kind="replay"
+                  />
+                  <FanSignalBreakdown
+                    title={getPriceCheckSectionTitle(venue.slug)}
+                    stats={seasonStats.priceCheck}
+                    venueSlug={venue.slug}
+                    kind="price"
+                  />
                 </div>
               )}
               <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[0.7rem] text-[var(--media-ink-dim)]">

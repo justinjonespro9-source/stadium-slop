@@ -9,6 +9,7 @@ import {
   LOW_SCORE_PHOTO_THRESHOLD,
   requiresLowScorePhoto
 } from "@/lib/review-scorecard";
+import { getReviewPhotoSectionTitle } from "@/lib/venue-copy-context";
 
 type ReviewScorecardFormClientProps = {
   formId: string;
@@ -18,6 +19,7 @@ type ReviewScorecardFormClientProps = {
   existingPhotoAlt: string;
   children: ReactNode;
   tone?: "brand" | "media";
+  venueSlug?: string;
 };
 
 export function ReviewScorecardFormClient({
@@ -27,8 +29,12 @@ export function ReviewScorecardFormClient({
   existingPhotoUrl,
   existingPhotoAlt,
   children,
-  tone = "brand"
+  tone = "brand",
+  venueSlug = ""
 }: ReviewScorecardFormClientProps) {
+  const photoSectionTitle = venueSlug
+    ? getReviewPhotoSectionTitle(venueSlug)
+    : "Fan photo";
   const [slopScore, setSlopScore] = useState(defaultSlopScore);
   const [lowScorePhotoError, setLowScorePhotoError] = useState<string | null>(null);
   const photoRequired = requiresLowScorePhoto(slopScore);
@@ -118,7 +124,7 @@ export function ReviewScorecardFormClient({
 
       <section id="review-photo-section" className={photoCardClass}>
         <h2 className={titleClass}>
-          Fan photo{" "}
+          {photoSectionTitle}{" "}
           {photoRequired ? (
             <span className="text-[var(--media-orange)]">*</span>
           ) : (
