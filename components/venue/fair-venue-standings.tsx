@@ -62,6 +62,7 @@ export function FairVenueStandings({
               venueSlug={venueSlug}
               isFreshStandingsTab={isFreshStandingsTab}
               tone={tone}
+              showFairImportBadges
             />
           ) : (
             <p className="media-panel-card px-4 py-5 text-sm leading-relaxed text-[var(--media-ink-muted)]">

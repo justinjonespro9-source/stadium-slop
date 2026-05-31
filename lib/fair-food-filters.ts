@@ -31,7 +31,7 @@ export const FAIR_FOOD_FILTER_DEFINITIONS: FairFoodFilterDefinition[] = [
   { key: "21-plus", label: "21+" }
 ];
 
-const NEW_FOOD_TAGS = ["state-fair", "2025-preview", "prior-year-listing"] as const;
+const NEW_FOOD_PREVIEW_TAG = "2025-preview";
 
 const SWEET_RE =
   /\b(sweet|dessert|desserts|candy|chocolate|cheesecake|churro|cookie|milkshake|funnel cake|ice cream|sorbet|salpicon|delight|brownie|donut|doughnut|cinnamon roll|banana split)\b/i;
@@ -69,7 +69,7 @@ function itemHaystack(item: FoodItem): string {
 
 function hasNewFoodSignals(item: FoodItem): boolean {
   const tags = (item.tags ?? []).map((t) => t.toLowerCase());
-  if (NEW_FOOD_TAGS.some((tag) => tags.includes(tag))) {
+  if (tags.includes(NEW_FOOD_PREVIEW_TAG)) {
     return true;
   }
   if (item.isNewThisSeason) {

@@ -3560,6 +3560,43 @@ body[data-mobile-nav-open] .media-nav-bar {
   overflow-x: clip;
 }
 
+.fair-venue-standings__list {
+  min-width: 0;
+}
+
+@media (max-width: 639px) {
+  .fair-venue-standings .media-venue-standings-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fair-venue-standings .media-rank-card-title {
+    overflow-wrap: anywhere;
+  }
+}
+
+.fair-import-badge {
+  display: inline-flex;
+  border-radius: 9999px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.fair-import-badge--media {
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  background: rgba(255, 107, 26, 0.08);
+  color: var(--media-orange-deep);
+}
+
+.fair-import-badge--brand {
+  border: 1px solid rgba(244, 179, 33, 0.35);
+  background: rgba(244, 179, 33, 0.1);
+  color: var(--slop-gold-bright);
+}
+
 .media-account-highlight {
   border: 1px solid rgba(255, 107, 26, 0.28);
   border-radius: 1.25rem;

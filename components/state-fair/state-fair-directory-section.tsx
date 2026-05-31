@@ -2,10 +2,23 @@ import Link from "next/link";
 
 import {
   formatPreviewItemCount,
+  formatTrackedFoodCount,
   STATE_FAIR_DIRECTORY_DISCLAIMER,
   STATE_FAIR_DIRECTORY_ENTRIES,
   type StateFairDirectoryStatus
 } from "@/lib/state-fair-directory";
+
+function fairFoodMetaLine(
+  fair: (typeof STATE_FAIR_DIRECTORY_ENTRIES)[number]
+): string | null {
+  if (fair.trackedFoodCount != null && fair.trackedFoodCount > 0) {
+    return formatTrackedFoodCount(fair.trackedFoodCount);
+  }
+  if (fair.previewItemCount != null && fair.previewItemCount > 0) {
+    return `${formatPreviewItemCount(fair.previewItemCount)} (preview sources)`;
+  }
+  return null;
+}
 
 function statusBadgeClass(status: StateFairDirectoryStatus): string {
   if (status === "preview-loaded") {
@@ -33,7 +46,9 @@ export function StateFairDirectorySection() {
       </p>
 
       <ul className="state-fair-directory-grid mt-5">
-        {STATE_FAIR_DIRECTORY_ENTRIES.map((fair) => (
+        {STATE_FAIR_DIRECTORY_ENTRIES.map((fair) => {
+          const foodMeta = fairFoodMetaLine(fair);
+          return (
           <li key={fair.slug} className="state-fair-directory-card">
             <div className="state-fair-directory-card__header">
               <div className="min-w-0">
@@ -43,10 +58,8 @@ export function StateFairDirectorySection() {
               <span className={statusBadgeClass(fair.status)}>{fair.statusLabel}</span>
             </div>
 
-            {fair.previewItemCount != null && fair.previewItemCount > 0 ? (
-              <p className="state-fair-directory-card__meta">
-                {formatPreviewItemCount(fair.previewItemCount)} (preview sources)
-              </p>
+            {foodMeta ? (
+              <p className="state-fair-directory-card__meta">{foodMeta}</p>
             ) : (
               <p className="state-fair-directory-card__meta state-fair-directory-card__meta--dim">
                 Foods listing in progress
@@ -60,7 +73,8 @@ export function StateFairDirectorySection() {
               </span>
             </Link>
           </li>
-        ))}
+          );
+        })}
       </ul>
 
       <p className="state-fair-directory__disclaimer">{STATE_FAIR_DIRECTORY_DISCLAIMER}</p>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { FanFavoriteBadgeChips } from "@/components/fan-favorite-badge-chips";
+import { FairFoodItemBadges } from "@/components/venue/fair-food-item-badges";
 import { isUnratedItemStats } from "@/components/food-item-empty-states";
 import type { FanFavoriteBadge } from "@/lib/fan-favorite-awards";
 import type { FoodItem, Vendor } from "@/lib/sample-data";
@@ -115,7 +116,8 @@ export function VenueStandingRow({
   vendor,
   isFreshStandingsTab,
   fanFavoriteBadges,
-  tone = "brand"
+  tone = "brand",
+  showFairImportBadges = false
 }: {
   item: FoodItem;
   rank: number;
@@ -125,6 +127,7 @@ export function VenueStandingRow({
   isFreshStandingsTab: boolean;
   fanFavoriteBadges: FanFavoriteBadge[];
   tone?: "brand" | "media";
+  showFairImportBadges?: boolean;
 }) {
   const unrated = isUnratedItemStats(stats.reviewCount);
   const liveFresh = stats.hasFreshToday && isFreshStandingsTab && !unrated;
@@ -205,6 +208,7 @@ export function VenueStandingRow({
                   21+
                 </span>
               ) : null}
+              {showFairImportBadges ? <FairFoodItemBadges item={item} tone="media" /> : null}
             </div>
             <VendorStandMeta vendor={vendor} item={item} tone="media" />
             <div className="mt-1.5 flex flex-wrap items-center gap-1">
@@ -252,6 +256,7 @@ export function VenueStandingRow({
                 21+
               </span>
             ) : null}
+            {showFairImportBadges ? <FairFoodItemBadges item={item} tone="brand" /> : null}
           </div>
           <VendorStandMeta vendor={vendor} item={item} tone="brand" />
           <div className="mt-1 flex flex-wrap items-center gap-1">

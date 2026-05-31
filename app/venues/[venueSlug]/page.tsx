@@ -56,6 +56,11 @@ import { getVenueFreshFeedReviews } from "@/lib/venue-fresh-feed";
 import { withPublicRouteTiming } from "@/lib/route-timing";
 import { isFairVenueSlug } from "@/lib/fair-preview";
 import {
+  FAIR_VENUE_MENU_EYEBROW,
+  FAIR_VENUE_MENU_HEADING,
+  FAIR_VENUE_MENU_SUBCOPY
+} from "@/lib/fair-venue-copy";
+import {
   canonicalVenuePath,
   resolveCanonicalPublicVenueSlug
 } from "@/lib/venue-public-slug";
@@ -609,13 +614,27 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             meters of this venue when submitted on site.
           </p>
           <div className="media-section-heading">
-            <div>
-              <p className="media-section-eyebrow">Menu rankings</p>
-              <h2 className="media-section-title">Find the best food here</h2>
+            <div className="min-w-0">
+              {isFairVenueSlug(venue.slug) ? (
+                <>
+                  <p className="media-section-eyebrow">{FAIR_VENUE_MENU_EYEBROW}</p>
+                  <h2 className="media-section-title">{FAIR_VENUE_MENU_HEADING}</h2>
+                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--media-ink-muted)] sm:text-[0.9375rem]">
+                    {FAIR_VENUE_MENU_SUBCOPY}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="media-section-eyebrow">Menu rankings</p>
+                  <h2 className="media-section-title">Find the best food here</h2>
+                </>
+              )}
             </div>
-            <FanPoweredGuideBadge className="media-guide-badge" />
+            <FanPoweredGuideBadge className="media-guide-badge shrink-0" />
           </div>
-          <FanPoweredGuideNote preset="venue-rankings" className="media-guide-note mt-2" />
+          {!isFairVenueSlug(venue.slug) ? (
+            <FanPoweredGuideNote preset="venue-rankings" className="media-guide-note mt-2" />
+          ) : null}
 
           <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:items-start lg:gap-6">
             <div className="min-w-0">

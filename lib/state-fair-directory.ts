@@ -18,40 +18,50 @@ export type StateFairDirectoryEntry = {
   location: string;
   statusLabel: string;
   status: StateFairDirectoryStatus;
-  /** Static preview menu count from import sources — not live DB totals. */
+  /** Static preview-only count (e.g. official new-food list). */
   previewItemCount: number | null;
+  /** Total foods on the venue guide when known (preview + core catalog, etc.). */
+  trackedFoodCount: number | null;
   venuePath: `/venues/${FairVenueSlug}`;
 };
 
 /** Static directory metadata — update when fair imports are applied or expanded. */
 const DIRECTORY_META: Record<
   FairVenueSlug,
-  Pick<StateFairDirectoryEntry, "statusLabel" | "status" | "previewItemCount">
+  Pick<
+    StateFairDirectoryEntry,
+    "statusLabel" | "status" | "previewItemCount" | "trackedFoodCount"
+  >
 > = {
   "minnesota-state-fair": {
-    statusLabel: "Preview foods loaded",
+    statusLabel: "136 foods tracked",
     status: "preview-loaded",
-    previewItemCount: 22
+    previewItemCount: 22,
+    trackedFoodCount: 136
   },
   "iowa-state-fair": {
-    statusLabel: "Preview foods loaded",
+    statusLabel: "Foods listed",
     status: "preview-loaded",
-    previewItemCount: 22
+    previewItemCount: 22,
+    trackedFoodCount: 22
   },
   "state-fair-of-texas": {
     statusLabel: "Preview list ready",
     status: "import-ready",
-    previewItemCount: 15
+    previewItemCount: 15,
+    trackedFoodCount: null
   },
   "wisconsin-state-fair": {
-    statusLabel: "Preview foods loaded",
+    statusLabel: "Foods listed",
     status: "preview-loaded",
-    previewItemCount: 12
+    previewItemCount: 12,
+    trackedFoodCount: 12
   },
   "the-big-e": {
-    statusLabel: "Menu pending",
+    statusLabel: "Guide shell only",
     status: "venue-shell",
-    previewItemCount: null
+    previewItemCount: null,
+    trackedFoodCount: null
   }
 };
 
@@ -69,6 +79,7 @@ export const STATE_FAIR_DIRECTORY_ENTRIES: StateFairDirectoryEntry[] = FAIR_VENU
       statusLabel: meta.statusLabel,
       status: meta.status,
       previewItemCount: meta.previewItemCount,
+      trackedFoodCount: meta.trackedFoodCount,
       venuePath: `/venues/${slug}`
     };
   }
@@ -76,4 +87,11 @@ export const STATE_FAIR_DIRECTORY_ENTRIES: StateFairDirectoryEntry[] = FAIR_VENU
 
 export function formatPreviewItemCount(count: number): string {
   return count === 1 ? "1 food listed" : `${count} foods listed`;
+}
+
+export function formatTrackedFoodCount(count: number): string {
+  if (count >= 100) {
+    return `${count} foods tracked`;
+  }
+  return count === 1 ? "1 food tracked" : `${count} foods tracked`;
 }

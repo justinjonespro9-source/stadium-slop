@@ -23,13 +23,15 @@ type VenueStandingsAgeGateProps = {
   venueSlug: string;
   isFreshStandingsTab: boolean;
   tone?: "brand" | "media";
+  showFairImportBadges?: boolean;
 };
 
 export function VenueStandingsAgeGate({
   rows,
   venueSlug,
   isFreshStandingsTab,
-  tone = "brand"
+  tone = "brand",
+  showFairImportBadges = false
 }: VenueStandingsAgeGateProps) {
   const { status, isConfirmed } = useAgeGate();
   const hasAlcohol = rows.some((row) => row.alcoholRelated);
@@ -75,6 +77,7 @@ export function VenueStandingsAgeGate({
                 isFreshStandingsTab={isFreshStandingsTab}
                 fanFavoriteBadges={row.fanFavoriteBadges}
                 tone={tone}
+                showFairImportBadges={showFairImportBadges}
               />
             );
           })}
@@ -99,6 +102,7 @@ export function VenueStandingsAgeGate({
                 isFreshStandingsTab={isFreshStandingsTab}
                 fanFavoriteBadges={row.fanFavoriteBadges}
                 tone={tone}
+                showFairImportBadges={showFairImportBadges}
               />
             );
           })}
