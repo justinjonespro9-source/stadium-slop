@@ -31,6 +31,9 @@ export function getRegisteredFairSlugs(): string[] {
 }
 
 export function fairSupportsImportSource(slug: string, source: FairImportSource): boolean {
+  if (source === "mspmag-2025") {
+    return slug === "minnesota-state-fair";
+  }
   return source === "preview" || slug === "minnesota-state-fair";
 }
 

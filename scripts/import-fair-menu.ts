@@ -4,6 +4,7 @@
  * Usage:
  *   npm run import:fair-menu -- --fair=minnesota-state-fair --dry-run
  *   npm run import:fair-menu -- --fair=minnesota-state-fair --source=core-catalog --dry-run
+ *   npm run import:fair-menu -- --fair=minnesota-state-fair --source=mspmag-2025 --dry-run
  *   npm run import:fair-menu -- --fair=all --dry-run
  *   npm run ensure:fair-venues -- --dry-run
  *   npm run import:fair-menu -- --fair=iowa-state-fair --apply
@@ -77,7 +78,12 @@ async function runFairImport(
   }
 
   const parseResult = await parser(source);
-  const label = source === "core-catalog" ? "core catalog" : `${parseResult.sourceYear} preview`;
+  const label =
+    source === "core-catalog"
+      ? "core catalog"
+      : source === "mspmag-2025"
+        ? "MSP Mag 2025 (third-party factual)"
+        : `${parseResult.sourceYear} preview`;
   console.log(`  Source (${label}): ${parseResult.sourceUrl}`);
   console.log(`  Parsed items: ${parseResult.items.length}`);
   console.log(`  Skipped in parser: ${parseResult.skippedItems.length}`);
@@ -112,10 +118,32 @@ async function runFairImport(
     }
   }
 
-  if (otherWarnings.length) {
+  const mspmagStats = parseResult.warnings.filter((w) => w.startsWith("MSPMag stats:"));
+  const otherWarningsFiltered = otherWarnings.filter((w) => !w.startsWith("MSPMag stats:"));
+
+  if (mspmagStats.length) {
+    console.log("\n  MSP Mag import stats:");
+    for (const w of mspmagStats) {
+      console.log(`    · ${w.replace(/^MSPMag stats:\s*/, "")}`);
+    }
+  }
+
+  if (otherWarningsFiltered.length) {
     console.log("\n  Warnings:");
-    for (const w of otherWarnings) {
+    for (const w of otherWarningsFiltered) {
       console.log(`    · ${w}`);
+    }
+  }
+
+  if (source === "mspmag-2025") {
+    const ageRestricted = parseResult.items.filter(
+      (item) => item.category === "Alcoholic Drink"
+    );
+    if (ageRestricted.length) {
+      console.log("\n  Age-restricted (21+) items:");
+      for (const item of ageRestricted) {
+        console.log(`    - ${item.name} @ ${item.vendorName ?? "?"}`);
+      }
     }
   }
 
@@ -188,7 +216,7 @@ async function main() {
 
   if (!slugs.length) {
     console.error(
-      "Usage: npm run import:fair-menu -- --fair=<slug|all> [--source=preview|core-catalog] [--dry-run|--apply]"
+      "Usage: npm run import:fair-menu -- --fair=<slug|all> [--source=preview|core-catalog|mspmag-2025] [--dry-run|--apply]"
     );
     console.error(`\nFair slugs: ${getRegisteredFairSlugs().join(", ")}`);
     process.exit(1);

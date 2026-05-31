@@ -8,6 +8,7 @@ import type { FairImportSource } from "../sources";
 import type { FairMenuParseResult } from "../types";
 import { MINNESOTA_2025_PREVIEW_ITEMS } from "./minnesota-state-fair-preview-data";
 import { parseMinnesotaStateFairCoreCatalog } from "./minnesota-state-fair-core-catalog";
+import { parseMinnesotaStateFairMspMag2025 } from "./minnesota-state-fair-mspmag-2025";
 
 const VENUE_SLUG = "minnesota-state-fair";
 const VENUE_NAME = "Minnesota State Fair";
@@ -20,6 +21,10 @@ export async function parseMinnesotaStateFairMenu(
 ): Promise<FairMenuParseResult> {
   if (source === "core-catalog") {
     return parseMinnesotaStateFairCoreCatalog();
+  }
+
+  if (source === "mspmag-2025") {
+    return parseMinnesotaStateFairMspMag2025();
   }
 
   return buildFairMenuParseResult({

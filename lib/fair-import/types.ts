@@ -1,4 +1,8 @@
-import type { VenueMenuParseResult, VenueMenuSourceItem } from "@/lib/venue-menu-import/types";
+import type {
+  VenueMenuDietaryTag,
+  VenueMenuParseResult,
+  VenueMenuSourceItem
+} from "@/lib/venue-menu-import/types";
 
 export const FAIR_SOURCE_YEAR = 2025;
 
@@ -24,6 +28,7 @@ export type FairRawMenuItem = {
   /** Set true for specialty cocktails / notable fair beverages only */
   allowBeverage?: boolean;
   beverageCategory?: "Alcoholic Drink" | "Non-Alcoholic Drink";
+  dietaryTags?: VenueMenuDietaryTag[];
 };
 
 export type FairMenuParseResult = VenueMenuParseResult & {

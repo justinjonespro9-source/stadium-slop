@@ -21,7 +21,7 @@ export function fairItemToSource(
     category,
     vendorName: raw.vendor,
     vendorLocationHint: raw.location,
-    dietaryTags: [],
+    dietaryTags: raw.dietaryTags ?? [],
     sourceUrl,
     importTags: [...importTags],
     seasonIntroduced: String(FAIR_SOURCE_YEAR)

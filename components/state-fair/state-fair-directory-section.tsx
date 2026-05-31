@@ -48,6 +48,7 @@ export function StateFairDirectorySection() {
               <div className="min-w-0">
                 <h3 className="state-fair-directory-card__title">{fair.name}</h3>
                 <p className="state-fair-directory-card__location">{fair.location}</p>
+                <p className="state-fair-directory-card__dates">{fair.fairDates2026}</p>
               </div>
               <span className={statusBadgeClass(fair.status)}>{fair.statusLabel}</span>
             </div>

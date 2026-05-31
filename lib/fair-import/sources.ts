@@ -1,4 +1,4 @@
-export const FAIR_IMPORT_SOURCES = ["preview", "core-catalog"] as const;
+export const FAIR_IMPORT_SOURCES = ["preview", "core-catalog", "mspmag-2025"] as const;
 
 export type FairImportSource = (typeof FAIR_IMPORT_SOURCES)[number];
 
@@ -10,7 +10,12 @@ export function parseFairImportSourceArg(argv: string[]): FairImportSource {
   if (raw === "core-catalog") {
     return "core-catalog";
   }
-  throw new Error(`Unknown --source=${raw}. Use preview or core-catalog.`);
+  if (raw === "mspmag-2025") {
+    return "mspmag-2025";
+  }
+  throw new Error(
+    `Unknown --source=${raw}. Use preview, core-catalog, or mspmag-2025.`
+  );
 }
 
 export function fairImportTagsForSource(
@@ -20,6 +25,9 @@ export function fairImportTagsForSource(
   const base = ["state-fair", venueSlug];
   if (source === "core-catalog") {
     return [...base, "core-catalog", "official-source", "prior-year-listing"];
+  }
+  if (source === "mspmag-2025") {
+    return [...base, "mspmag-2025", "third-party-source", "prior-year-listing"];
   }
   return [...base, "2025-preview", "prior-year-listing"];
 }

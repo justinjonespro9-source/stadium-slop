@@ -16,6 +16,8 @@ export type StateFairDirectoryEntry = {
   slug: FairVenueSlug;
   name: string;
   location: string;
+  /** 2026 fair run dates (static). */
+  fairDates2026: string;
   statusLabel: string;
   status: StateFairDirectoryStatus;
   /** Static preview-only count (e.g. official new-food list). */
@@ -30,34 +32,43 @@ const DIRECTORY_META: Record<
   FairVenueSlug,
   Pick<
     StateFairDirectoryEntry,
-    "statusLabel" | "status" | "previewItemCount" | "trackedFoodCount"
+    | "fairDates2026"
+    | "statusLabel"
+    | "status"
+    | "previewItemCount"
+    | "trackedFoodCount"
   >
 > = {
   "minnesota-state-fair": {
+    fairDates2026: "Aug. 27 – Sept. 7, 2026",
     statusLabel: "136 foods tracked",
     status: "preview-loaded",
     previewItemCount: 22,
     trackedFoodCount: 136
   },
   "iowa-state-fair": {
+    fairDates2026: "Aug. 13 – Aug. 23, 2026",
     statusLabel: "Foods listed",
     status: "preview-loaded",
     previewItemCount: 22,
     trackedFoodCount: 22
   },
   "state-fair-of-texas": {
+    fairDates2026: "Sept. 25 – Oct. 18, 2026",
     statusLabel: "Preview list ready",
     status: "import-ready",
     previewItemCount: 15,
     trackedFoodCount: null
   },
   "wisconsin-state-fair": {
+    fairDates2026: "Aug. 6 – Aug. 16, 2026",
     statusLabel: "Foods listed",
     status: "preview-loaded",
     previewItemCount: 12,
     trackedFoodCount: 12
   },
   "the-big-e": {
+    fairDates2026: "Sept. 18 – Oct. 4, 2026",
     statusLabel: "Guide shell only",
     status: "venue-shell",
     previewItemCount: null,
@@ -76,6 +87,7 @@ export const STATE_FAIR_DIRECTORY_ENTRIES: StateFairDirectoryEntry[] = FAIR_VENU
       slug,
       name: venue.name,
       location: `${venue.city}, ${venue.state}`,
+      fairDates2026: meta.fairDates2026,
       statusLabel: meta.statusLabel,
       status: meta.status,
       previewItemCount: meta.previewItemCount,

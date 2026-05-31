@@ -3304,6 +3304,20 @@ body[data-mobile-nav-open] .media-nav-bar {
   color: var(--media-ink-muted);
 }
 
+.state-fair-directory-card__dates {
+  margin-top: 0.2rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--media-ink-dim);
+}
+
+@media (min-width: 640px) {
+  .state-fair-directory-card__dates {
+    font-size: 0.75rem;
+  }
+}
+
 .state-fair-directory-card__status {
   flex-shrink: 0;
   max-width: 9.5rem;
@@ -3470,6 +3484,14 @@ body[data-mobile-nav-open] .media-nav-bar {
   }
 }
 
+.fair-food-filter-bar__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+}
+
 .fair-food-filter-bar__title {
   font-size: 0.9375rem;
   font-weight: 900;
@@ -3483,6 +3505,34 @@ body[data-mobile-nav-open] .media-nav-bar {
   font-size: 0.75rem;
   line-height: 1.5;
   color: var(--media-ink-muted);
+}
+
+.fair-food-filter-bar__active {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--media-ink-muted);
+}
+
+.fair-food-filter-bar__clear {
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  background: rgba(255, 107, 26, 0.08);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--media-orange-deep);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.fair-food-filter-bar__clear:hover {
+  border-color: rgba(255, 107, 26, 0.55);
+  background: rgba(255, 107, 26, 0.14);
 }
 
 .fair-food-filter-bar__chips {
@@ -3521,10 +3571,12 @@ body[data-mobile-nav-open] .media-nav-bar {
 }
 
 .fair-food-filter-chip--active {
-  border-color: rgba(255, 107, 26, 0.55);
-  background: rgba(255, 107, 26, 0.12);
+  border-color: rgba(255, 107, 26, 0.65);
+  background: rgba(255, 107, 26, 0.14);
   color: var(--media-orange-deep);
-  box-shadow: 0 1px 2px rgba(255, 107, 26, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(255, 107, 26, 0.2),
+    0 1px 2px rgba(255, 107, 26, 0.12);
 }
 
 .fair-food-filter-chip--disabled {
@@ -3548,6 +3600,19 @@ body[data-mobile-nav-open] .media-nav-bar {
 .fair-food-filter-chip--active .fair-food-filter-chip__count {
   background: rgba(255, 107, 26, 0.18);
   color: var(--media-orange-deep);
+}
+
+.fair-venue-guide-status {
+  border-left: 2px solid rgba(255, 107, 26, 0.35);
+  padding-left: 0.65rem;
+}
+
+.fair-rank-card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  overflow-wrap: anywhere;
 }
 
 .fair-venue-standings {
