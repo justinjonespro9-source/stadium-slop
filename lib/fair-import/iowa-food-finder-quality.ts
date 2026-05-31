@@ -1,3 +1,4 @@
+import { iowaVendorItemDedupeKey } from "@/lib/fair-import/iowa-food-name-normalize";
 import { normalizeMenuItemName } from "@/lib/venue-menu-import/normalize";
 import type { FairRawMenuItem } from "./types";
 
@@ -382,7 +383,7 @@ export function filterIowaFoodFinderQuality(
       continue;
     }
 
-    const vendorItemKey = `${normalizeMenuItemName(vendor)}::${normalizeMenuItemName(name)}`;
+    const vendorItemKey = iowaVendorItemDedupeKey(vendor, name);
     if (seenVendorItem.has(vendorItemKey)) {
       pushSkipped(name, "Duplicate item for same vendor");
       continue;

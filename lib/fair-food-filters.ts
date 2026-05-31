@@ -75,8 +75,8 @@ function hasNewFoodSignals(item: FoodItem): boolean {
   if (item.isNewThisSeason) {
     return true;
   }
-  const season = item.seasonIntroduced?.trim();
-  return season === "2025" || season === "2026";
+  // Imports stamp seasonIntroduced with the catalog year; that is not a "new food" signal.
+  return false;
 }
 
 function matchesSweet(item: FoodItem, haystack: string): boolean {
