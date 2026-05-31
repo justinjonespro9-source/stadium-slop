@@ -19,7 +19,7 @@ export function StateFairFoodGuidePage() {
           aria-hidden
         />
 
-        <div className="relative z-10 mx-auto max-w-6xl px-4 pb-7 pt-5 sm:px-6 sm:pb-8 sm:pt-6 lg:px-10">
+        <div className="relative z-10 mx-auto max-w-6xl px-4 pb-8 pt-5 sm:px-6 sm:pb-9 sm:pt-6 lg:px-10">
           <Link href="/" className="media-venue-back-link inline-flex text-xs font-bold sm:text-sm">
             ← Stadium Slop home
           </Link>
@@ -34,18 +34,6 @@ export function StateFairFoodGuidePage() {
               fan-powered rankings as they grow.
             </p>
           </header>
-
-          <div className="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:flex-wrap sm:items-center">
-            <a
-              href="#state-fair-directory-heading"
-              className="state-fair-guide-hero__cta-primary"
-            >
-              Browse fair foods
-            </a>
-            <Link href="/venues" className="state-fair-guide-hero__cta-secondary">
-              Explore Stadium Slop
-            </Link>
-          </div>
         </div>
       </section>
 

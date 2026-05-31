@@ -3114,48 +3114,6 @@ body[data-mobile-nav-open] .media-nav-bar {
   color: #ffd08a;
 }
 
-.state-fair-guide-hero__cta-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: linear-gradient(180deg, var(--media-orange-bright) 0%, var(--media-orange) 100%);
-  padding: 0.7rem 1.35rem;
-  font-size: 0.8125rem;
-  font-weight: 800;
-  color: #fff;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15), 0 8px 22px rgba(255, 107, 26, 0.28);
-}
-
-.state-fair-guide-hero__cta-primary--soon {
-  cursor: default;
-  opacity: 0.92;
-  filter: saturate(0.92);
-}
-
-.state-fair-guide-hero__cta-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.7rem 1.35rem;
-  font-size: 0.8125rem;
-  font-weight: 800;
-  color: #fff;
-  backdrop-filter: blur(6px);
-  transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease;
-}
-
-.state-fair-guide-hero__cta-secondary:hover {
-  border-color: rgba(255, 208, 138, 0.55);
-  background: rgba(255, 255, 255, 0.14);
-}
-
 .state-fair-guide-how-it-works {
   border-radius: 1rem;
   border: 1px solid var(--media-border);
