@@ -7,7 +7,7 @@ export const dynamic = "force-static";
 
 const TITLE = "State Fair Slop — Find fair foods worth the line";
 const DESCRIPTION =
-  "Preview State Fair Slop from Stadium Slop — fan-powered state fair food discovery and rankings, starting with the Minnesota State Fair.";
+  "State Fair Slop from Stadium Slop — an unofficial fan-powered guide to fair foods worth the line. Browse early menus and rankings for Minnesota, Iowa, Wisconsin, Texas, and more.";
 
 export const metadata: Metadata = {
   title: { absolute: `${TITLE} · Stadium Slop` },

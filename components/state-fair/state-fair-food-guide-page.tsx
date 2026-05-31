@@ -95,18 +95,19 @@ export function StateFairFoodGuidePage() {
               Find the fair foods worth standing in line for.
             </h1>
             <p className="mt-3 max-w-2xl text-[0.8125rem] leading-relaxed text-white/78 sm:text-[0.9375rem]">
-              From deep-fried classics to new fair-food drops, State Fair Slop helps fans find
-              what&apos;s worth the walk, what&apos;s worth the wait, and what&apos;s better skipped.
+              Browse early fair food guides built from public food lists, preview items, and
+              fan-powered rankings as they grow — what&apos;s worth the walk, the wait, and what to
+              skip.
             </p>
           </header>
 
           <div className="mt-5 flex flex-col gap-2.5 sm:mt-6 sm:flex-row sm:flex-wrap sm:items-center">
-            <span
-              className="state-fair-guide-hero__cta-primary state-fair-guide-hero__cta-primary--soon"
-              aria-disabled="true"
+            <a
+              href="#state-fair-directory-heading"
+              className="state-fair-guide-hero__cta-primary"
             >
-              Coming soon
-            </span>
+              Browse fair foods
+            </a>
             <Link href="/venues" className="state-fair-guide-hero__cta-secondary">
               Explore Stadium Slop
             </Link>
@@ -144,20 +145,20 @@ export function StateFairFoodGuidePage() {
 
         <section className="mt-8 sm:mt-10" aria-labelledby="state-fair-rankings-heading">
           <div className="state-fair-rankings-panel">
-            <p className="media-section-eyebrow">Preview</p>
+            <p className="media-section-eyebrow">Rankings</p>
             <h2 id="state-fair-rankings-heading" className="media-section-title">
-              Coming Soon: Fair Food Rankings
+              Fair Food Rankings Are Taking Shape
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--media-ink-muted)]">
-              Live boards for what&apos;s buzzing on the grounds — powered by fans, not marketing
-              copy.
+              Fan-powered boards for what&apos;s buzzing on the grounds are growing fair by fair —
+              not marketing copy.
             </p>
             <ul className="state-fair-rankings-grid mt-5">
               {RANKING_CATEGORIES.map((category) => (
                 <li key={category}>
                   <span className="state-fair-rank-chip">
                     <span className="state-fair-rank-chip__label">{category}</span>
-                    <span className="state-fair-rank-chip__badge">Soon</span>
+                    <span className="state-fair-rank-chip__badge">Building</span>
                   </span>
                 </li>
               ))}
@@ -169,7 +170,7 @@ export function StateFairFoodGuidePage() {
           className="state-fair-mn-panel mt-8 sm:mt-10"
           aria-labelledby="state-fair-mn-heading"
         >
-          <p className="state-fair-mn-panel__eyebrow">First wedge</p>
+          <p className="state-fair-mn-panel__eyebrow">Featured guide</p>
           <h2 id="state-fair-mn-heading" className="state-fair-mn-panel__title">
             First stop: Minnesota State Fair
           </h2>
@@ -224,7 +225,7 @@ export function StateFairFoodGuidePage() {
         </section>
 
         <p className="mt-8 text-center text-xs leading-relaxed text-[var(--media-ink-dim)] sm:text-sm">
-          State Fair Slop is a preview experience from Stadium Slop.{" "}
+          {STATE_FAIR_DIRECTORY_DISCLAIMER} Not affiliated with or endorsed by any state fair.{" "}
           <Link
             href="/disclaimer"
             className="font-bold text-[var(--media-orange-deep)] hover:text-[var(--media-orange)]"

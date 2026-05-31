@@ -195,7 +195,7 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
                   <MobileNavLink
                     href={STATE_FAIR_GUIDE_PATH}
                     active={isStateFair}
-                    description="State Fair Slop preview"
+                    description="State Fair Slop guide"
                   >
                     Fair
                   </MobileNavLink>

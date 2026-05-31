@@ -3,9 +3,9 @@ import {
   getFairVenueDefinition,
   type FairVenueSlug
 } from "@/lib/fair-import/venues";
+import { FAIR_PREVIEW_NOTICE } from "@/lib/fair-preview";
 
-export const STATE_FAIR_DIRECTORY_DISCLAIMER =
-  "Unofficial fan-powered guide. Food and vendor listings may change.";
+export const STATE_FAIR_DIRECTORY_DISCLAIMER = FAIR_PREVIEW_NOTICE;
 
 export type StateFairDirectoryStatus =
   | "preview-loaded"
@@ -75,5 +75,5 @@ export const STATE_FAIR_DIRECTORY_ENTRIES: StateFairDirectoryEntry[] = FAIR_VENU
 );
 
 export function formatPreviewItemCount(count: number): string {
-  return count === 1 ? "1 preview food" : `${count} preview foods`;
+  return count === 1 ? "1 food listed" : `${count} foods listed`;
 }

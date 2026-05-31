@@ -3064,7 +3064,7 @@ body[data-mobile-nav-open] .media-nav-bar {
   transform: translateX(2px);
 }
 
-/* State Fair Slop preview guide */
+/* State Fair Slop guide */
 .state-fair-guide-hero {
   background: linear-gradient(165deg, #1a0f22 0%, #120a18 38%, #0a1018 100%);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32);

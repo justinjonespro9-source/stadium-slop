@@ -1,8 +1,15 @@
-/** Future expansion concepts — static, no routes until product is live. */
+import Link from "next/link";
+
+/** Slop Network expansion — State Fair Slop is live; others are roadmap. */
 const SLOP_NETWORK_CONCEPTS = [
-  { label: "Airport Slop", hint: "Terminals & gate food" },
-  { label: "Theme Park Slop", hint: "Queues, lands & snack stands" },
-  { label: "State Fair Slop", hint: "Midway bites & fair classics" }
+  { label: "Airport Slop", hint: "Terminals & gate food", comingSoon: true as const },
+  { label: "Theme Park Slop", hint: "Queues, lands & snack stands", comingSoon: true as const },
+  {
+    label: "State Fair Slop",
+    hint: "Midway bites & fair classics",
+    comingSoon: false as const,
+    href: "/state-fair-food-guide"
+  }
 ] as const;
 
 type HomeSlopNetworkProps = {
@@ -39,7 +46,13 @@ export function HomeSlopNetwork({ variant = "default" }: HomeSlopNetworkProps) {
           <ul className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:max-w-3xl">
             {SLOP_NETWORK_CONCEPTS.map((concept) => (
               <li key={concept.label}>
-                <SlopNetworkChip label={concept.label} hint={concept.hint} isMedia={isMedia} />
+                <SlopNetworkChip
+                  label={concept.label}
+                  hint={concept.hint}
+                  isMedia={isMedia}
+                  comingSoon={concept.comingSoon}
+                  href={"href" in concept ? concept.href : undefined}
+                />
               </li>
             ))}
           </ul>
@@ -51,8 +64,8 @@ export function HomeSlopNetwork({ variant = "default" }: HomeSlopNetworkProps) {
                 : "mt-4 text-[0.65rem] leading-snug text-[var(--slop-cream-dim)]"
             }
           >
-            Network expansions are on the roadmap — not live yet. Today, explore MLB
-            ballparks and stadium menus above.
+            State Fair Slop is live now. Other network expansions are on the roadmap. Today,
+            explore MLB ballparks, fair guides, and stadium menus above.
           </p>
         </div>
       </div>
@@ -95,29 +108,40 @@ function SlopNetworkHeader({ isMedia }: { isMedia: boolean }) {
 function SlopNetworkChip({
   label,
   hint,
-  isMedia
+  isMedia,
+  comingSoon,
+  href
 }: {
   label: string;
   hint: string;
   isMedia: boolean;
+  comingSoon: boolean;
+  href?: string;
 }) {
-  return (
-    <div
-      className={
-        isMedia
-          ? "relative flex min-h-[4.5rem] flex-col justify-between rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5"
-          : "relative flex min-h-[4.5rem] flex-col justify-between rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-3 py-2.5"
-      }
-      aria-disabled="true"
-    >
-      <span
-        className={
-          isMedia
-            ? "absolute right-2 top-2 rounded-full border border-[var(--media-border)] bg-white px-2 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.1em] text-[var(--media-ink-dim)]"
-            : "absolute right-2 top-2 rounded-full border border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.85)] px-2 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]"
-        }
-      >
-        Coming soon
+  const shellClass = isMedia
+    ? "relative flex min-h-[4.5rem] flex-col justify-between rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5"
+    : "relative flex min-h-[4.5rem] flex-col justify-between rounded-xl border border-[var(--slop-line-strong)] bg-[color:rgba(6,15,24,0.55)] px-3 py-2.5";
+
+  const liveShellClass = isMedia
+    ? "relative flex min-h-[4.5rem] flex-col justify-between rounded-xl border border-[rgba(255,107,26,0.35)] bg-[rgba(255,107,26,0.06)] px-3 py-2.5 transition hover:border-[rgba(255,107,26,0.55)]"
+    : "relative flex min-h-[4.5rem] flex-col justify-between rounded-xl border border-[var(--slop-gold)]/35 bg-[color:rgba(244,179,33,0.08)] px-3 py-2.5 transition hover:border-[var(--slop-gold)]/55";
+
+  const badgeClass = isMedia
+    ? "absolute right-2 top-2 rounded-full border px-2 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.1em]"
+    : "absolute right-2 top-2 rounded-full border px-2 py-0.5 text-[0.55rem] font-black uppercase tracking-[0.1em]";
+
+  const badgeSoon = isMedia
+    ? `${badgeClass} border-[var(--media-border)] bg-white text-[var(--media-ink-dim)]`
+    : `${badgeClass} border-[var(--slop-line)] bg-[color:rgba(6,15,24,0.85)] text-[var(--slop-cream-dim)]`;
+
+  const badgeLive = isMedia
+    ? `${badgeClass} border-[rgba(255,107,26,0.35)] bg-white text-[var(--media-orange-deep)]`
+    : `${badgeClass} border-[var(--slop-gold)]/40 bg-[color:rgba(6,15,24,0.85)] text-[var(--slop-gold-bright)]`;
+
+  const content = (
+    <>
+      <span className={comingSoon ? badgeSoon : badgeLive}>
+        {comingSoon ? "Coming soon" : "Live"}
       </span>
       <span
         className={
@@ -137,6 +161,20 @@ function SlopNetworkChip({
       >
         {hint}
       </span>
+    </>
+  );
+
+  if (href && !comingSoon) {
+    return (
+      <Link href={href} className={liveShellClass}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className={shellClass} aria-disabled={comingSoon}>
+      {content}
     </div>
   );
 }
