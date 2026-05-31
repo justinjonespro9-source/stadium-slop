@@ -4,7 +4,9 @@
  */
 
 import { buildFairMenuParseResult } from "../build-parse-result";
+import type { FairImportSource } from "../sources";
 import type { FairMenuParseResult, FairRawMenuItem } from "../types";
+import { parseWisconsinStateFairCoreCatalog } from "./wisconsin-state-fair-core-catalog";
 
 const VENUE_SLUG = "wisconsin-state-fair";
 const VENUE_NAME = "Wisconsin State Fair";
@@ -86,12 +88,19 @@ const MENU_2025: FairRawMenuItem[] = [
   }
 ];
 
-export async function parseWisconsinStateFairMenu(): Promise<FairMenuParseResult> {
+export async function parseWisconsinStateFairMenu(
+  source: FairImportSource = "preview"
+): Promise<FairMenuParseResult> {
+  if (source === "core-catalog") {
+    return parseWisconsinStateFairCoreCatalog();
+  }
+
   return buildFairMenuParseResult({
     venueSlug: VENUE_SLUG,
     venueName: VENUE_NAME,
     sourceUrl: SOURCE_URL,
     items: MENU_2025,
+    importSource: "preview",
     warnings: [
       "Official 2026 list not published yet on WiStateFair.com — data reflects 2025 fair season.",
       "Use Food Finder on WiStateFair.com for stand-level locations before visiting."

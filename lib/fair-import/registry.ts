@@ -30,11 +30,22 @@ export function getRegisteredFairSlugs(): string[] {
   return Object.keys(parsers);
 }
 
+const CORE_CATALOG_FAIRS = new Set([
+  "minnesota-state-fair",
+  "iowa-state-fair",
+  "wisconsin-state-fair",
+  "state-fair-of-texas",
+  "the-big-e"
+]);
+
 export function fairSupportsImportSource(slug: string, source: FairImportSource): boolean {
   if (source === "mspmag-2025") {
     return slug === "minnesota-state-fair";
   }
-  return source === "preview" || slug === "minnesota-state-fair";
+  if (source === "core-catalog") {
+    return CORE_CATALOG_FAIRS.has(slug);
+  }
+  return source === "preview";
 }
 
 export async function getFairMenuParser(slug: string): Promise<FairMenuParser | null> {
