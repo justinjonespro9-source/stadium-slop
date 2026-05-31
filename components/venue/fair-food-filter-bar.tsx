@@ -16,13 +16,34 @@ export function FairFoodFilterBar({
   counts,
   onFilterChange
 }: FairFoodFilterBarProps) {
+  const activeLabel = activeFilter
+    ? FAIR_FOOD_FILTER_DEFINITIONS.find((def) => def.key === activeFilter)?.label
+    : null;
+
   return (
     <div className="fair-food-filter-bar">
-      <div className="fair-food-filter-bar__copy">
-        <h3 className="fair-food-filter-bar__title">Fair food filters</h3>
-        <p className="fair-food-filter-bar__body">
-          Find the sweets, deep-fried drops, spicy bites, and new foods worth the walk.
-        </p>
+      <div className="fair-food-filter-bar__header">
+        <div className="fair-food-filter-bar__copy min-w-0">
+          <h3 className="fair-food-filter-bar__title">Fair food filters</h3>
+          {activeFilter ? (
+            <p className="fair-food-filter-bar__active" aria-live="polite">
+              Showing <span className="font-bold text-[var(--media-orange-deep)]">{activeLabel}</span>
+            </p>
+          ) : (
+            <p className="fair-food-filter-bar__body">
+              Find sweets, deep-fried drops, spicy bites, and new foods worth the walk.
+            </p>
+          )}
+        </div>
+        {activeFilter ? (
+          <button
+            type="button"
+            className="fair-food-filter-bar__clear"
+            onClick={() => onFilterChange(null)}
+          >
+            Clear filter
+          </button>
+        ) : null}
       </div>
       <div
         className="fair-food-filter-bar__chips"

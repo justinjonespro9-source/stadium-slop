@@ -10,6 +10,7 @@ import {
 import { FairFoodFilterBar } from "@/components/venue/fair-food-filter-bar";
 import {
   buildFairFoodFilterCounts,
+  FAIR_FOOD_FILTER_DEFINITIONS,
   itemMatchesFairFoodFilter,
   type FairFoodFilterKey
 } from "@/lib/fair-food-filters";
@@ -41,9 +42,13 @@ export function FairVenueStandings({
     return rows.filter((row) => itemMatchesFairFoodFilter(row.item, activeFilter));
   }, [rows, activeFilter]);
 
+  const activeFilterLabel = activeFilter
+    ? FAIR_FOOD_FILTER_DEFINITIONS.find((def) => def.key === activeFilter)?.label
+    : null;
+
   const filterEmptyMessage =
     activeFilter && filteredRows.length === 0
-      ? "No items match this fair filter. Try another chip or clear the filter."
+      ? `No ${activeFilterLabel?.toLowerCase() ?? "fair"} foods match this filter. Clear the filter or try another chip.`
       : emptyMessage;
 
   return (

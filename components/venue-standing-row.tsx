@@ -7,6 +7,7 @@ import { FairFoodItemBadges } from "@/components/venue/fair-food-item-badges";
 import { isUnratedItemStats } from "@/components/food-item-empty-states";
 import type { FanFavoriteBadge } from "@/lib/fan-favorite-awards";
 import type { FoodItem, Vendor } from "@/lib/sample-data";
+import { formatFairVendorDisplayName } from "@/lib/fair-venue-copy";
 import { getSlopScoreTier, type ItemSlopStats } from "@/lib/slop-stats-display";
 
 function formatItemPriceHint(item: FoodItem): string | null {
@@ -38,11 +39,13 @@ function formatSections(item: FoodItem) {
 function VendorStandMeta({
   vendor,
   item,
-  tone = "brand"
+  tone = "brand",
+  compactVendorName = false
 }: {
   vendor?: Vendor;
   item: FoodItem;
   tone?: "brand" | "media";
+  compactVendorName?: boolean;
 }) {
   const priceHint = formatItemPriceHint(item);
   const locationLine = formatSections(item);
@@ -74,10 +77,17 @@ function VendorStandMeta({
   }
 
   const standDetail = [vendor.section, vendor.location].filter(Boolean).join(" · ");
+  const vendorLabel = compactVendorName
+    ? formatFairVendorDisplayName(vendor.name)
+    : vendor.name;
+  const vendorTitle =
+    compactVendorName && vendorLabel !== vendor.name ? vendor.name : undefined;
 
   return (
     <p className={metaClass}>
-      <span className={nameClass}>{vendor.name}</span>
+      <span className={nameClass} title={vendorTitle}>
+        {vendorLabel}
+      </span>
       {standDetail ? (
         <>
           <span className={sepClass}> · </span>
@@ -202,7 +212,11 @@ export function VenueStandingRow({
           </div>
           <div className="mt-2 min-w-0">
             <div className="flex flex-wrap items-center gap-1.5">
-              <p className="media-rank-card-title">{item.name}</p>
+              <p
+                className={`media-rank-card-title${showFairImportBadges ? " fair-rank-card-title" : ""}`}
+              >
+                {item.name}
+              </p>
               {item.ageRestricted ? (
                 <span className="rounded-full border border-[var(--media-border)] px-1.5 py-0.5 text-[0.55rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
                   21+
@@ -210,7 +224,12 @@ export function VenueStandingRow({
               ) : null}
               {showFairImportBadges ? <FairFoodItemBadges item={item} tone="media" /> : null}
             </div>
-            <VendorStandMeta vendor={vendor} item={item} tone="media" />
+            <VendorStandMeta
+              vendor={vendor}
+              item={item}
+              tone="media"
+              compactVendorName={showFairImportBadges}
+            />
             <div className="mt-1.5 flex flex-wrap items-center gap-1">
               <FanFavoriteBadgeChips badges={fanFavoriteBadges} variant="row" />
               {stats.hasFreshToday ? <FreshTodayChip tone="media" /> : null}
