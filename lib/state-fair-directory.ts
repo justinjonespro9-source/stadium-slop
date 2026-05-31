@@ -55,10 +55,10 @@ const DIRECTORY_META: Record<
   },
   "state-fair-of-texas": {
     fairDates2026: "Sept. 25 – Oct. 18, 2026",
-    statusLabel: "Preview list ready",
-    status: "import-ready",
+    statusLabel: "52 foods tracked",
+    status: "preview-loaded",
     previewItemCount: 15,
-    trackedFoodCount: null
+    trackedFoodCount: 52
   },
   "wisconsin-state-fair": {
     fairDates2026: "Aug. 6 – Aug. 16, 2026",
