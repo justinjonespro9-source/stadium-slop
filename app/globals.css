@@ -3664,3 +3664,245 @@ body[data-mobile-nav-open] .media-nav-bar {
   box-shadow: var(--media-shadow-card);
 }
 
+/* Venue page — suggest menu item + claim listing */
+.venue-operator-lane {
+  min-width: 0;
+}
+
+.venue-suggest-menu__details {
+  min-width: 0;
+  border-radius: 1rem;
+  border: 1px solid var(--media-border);
+  background: var(--media-white);
+  box-shadow: var(--media-shadow-card);
+}
+
+.venue-suggest-menu__summary {
+  display: flex;
+  cursor: pointer;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.875rem;
+}
+
+.venue-suggest-menu__summary::-webkit-details-marker {
+  display: none;
+}
+
+.venue-suggest-menu__summary-text {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.venue-suggest-menu__summary-eyebrow {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--media-ink-dim);
+}
+
+.venue-suggest-menu__summary-title {
+  font-size: 0.875rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--media-ink);
+}
+
+.venue-suggest-menu__chevron {
+  flex-shrink: 0;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 2px solid var(--media-ink-dim);
+  border-bottom: 2px solid var(--media-ink-dim);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+
+.venue-suggest-menu__details[open] .venue-suggest-menu__chevron {
+  transform: rotate(-135deg);
+  margin-top: 0.2rem;
+}
+
+.venue-suggest-menu__panel {
+  border-top: 1px solid var(--media-border);
+  padding: 0.75rem 0.875rem 0.875rem;
+}
+
+.venue-suggest-menu__desktop {
+  padding: 1rem 1.125rem;
+}
+
+@media (min-width: 640px) {
+  .venue-suggest-menu__desktop {
+    padding: 1.125rem 1.25rem;
+  }
+}
+
+.venue-suggest-menu__heading {
+  font-size: 0.875rem;
+  font-weight: 900;
+  color: var(--media-ink);
+}
+
+.venue-suggest-menu__intro {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--media-ink-muted);
+}
+
+.venue-suggest-menu__form {
+  margin-top: 0.75rem;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  gap: 0.5rem;
+}
+
+.venue-suggest-menu__field {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--media-border);
+  background: var(--media-surface);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--media-ink);
+  outline: none;
+}
+
+.venue-suggest-menu__field::placeholder {
+  color: var(--media-ink-dim);
+}
+
+.venue-suggest-menu__field:focus {
+  border-color: var(--media-orange);
+}
+
+.venue-suggest-menu__select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--media-ink-dim) 50%),
+    linear-gradient(135deg, var(--media-ink-dim) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) calc(50% + 2px),
+    calc(100% - 9px) calc(50% + 2px);
+  background-size:
+    5px 5px,
+    5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 2rem;
+}
+
+.venue-suggest-menu__textarea {
+  min-height: 4.5rem;
+  resize: vertical;
+}
+
+.venue-suggest-menu__submit {
+  justify-self: start;
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+}
+
+.venue-suggest-menu__sign-in {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.75rem;
+}
+
+.claim-listing-cta__mobile {
+  display: flex;
+  align-items: center;
+  border-radius: 0.75rem;
+  border: 1px solid var(--media-border);
+  background: var(--media-surface);
+  padding: 0.65rem 0.85rem;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.claim-listing-cta__mobile:hover {
+  border-color: rgba(255, 107, 26, 0.35);
+  background: rgba(255, 107, 26, 0.06);
+}
+
+.claim-listing-cta__mobile-text {
+  min-width: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--media-ink-muted);
+}
+
+.claim-listing-cta__desktop {
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--slop-gold-dim) 28%, transparent);
+  background: color-mix(in srgb, var(--slop-surface) 72%, transparent);
+  padding: 0.75rem 1rem;
+}
+
+.claim-listing-cta__eyebrow {
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slop-gold-dim);
+}
+
+.claim-listing-cta__headline {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--slop-cream);
+}
+
+.claim-listing-cta__subline {
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  line-height: 1.45;
+  color: var(--slop-cream-dim);
+}
+
+@media (min-width: 640px) {
+  .claim-listing-cta__subline {
+    font-size: 0.75rem;
+  }
+}
+
+.claim-listing-cta__link {
+  margin-top: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--slop-gold-bright) 35%, transparent);
+  background: color-mix(in srgb, var(--slop-gold-bright) 8%, transparent);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--slop-gold-bright);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.claim-listing-cta__link:hover {
+  border-color: var(--slop-gold);
+  background: color-mix(in srgb, var(--slop-gold-bright) 14%, transparent);
+}
+

@@ -1091,7 +1091,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               ) : null}
 
               <ClaimListingCta
-                className="media-panel-card mt-4 p-4 sm:p-5 [&_p]:text-[var(--media-ink-muted)] [&_p:nth-child(2)]:text-[var(--media-ink)] [&_p:first-child]:text-[var(--media-orange-deep)] [&_a]:border-[rgba(255,107,26,0.35)] [&_a]:bg-[rgba(255,107,26,0.08)] [&_a]:text-[var(--media-orange-deep)]"
+                className="mt-4"
+                desktopClassName="media-panel-card p-4 sm:p-5 [&_.claim-listing-cta__eyebrow]:text-[var(--media-orange-deep)] [&_.claim-listing-cta__headline]:text-[var(--media-ink)] [&_.claim-listing-cta__subline]:text-[var(--media-ink-muted)] [&_.claim-listing-cta__link]:border-[rgba(255,107,26,0.35)] [&_.claim-listing-cta__link]:bg-[rgba(255,107,26,0.08)] [&_.claim-listing-cta__link]:text-[var(--media-orange-deep)]"
                 context={{
                   kind: "item",
                   venueName: venue.name,

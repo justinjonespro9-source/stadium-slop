@@ -327,3 +327,33 @@ export function mapConsensusStatsForVenue<
     label: mapLabel(row.label, venueSlug)
   }));
 }
+
+export function getSuggestMenuItemTitle(venueSlug: string): string {
+  return isFairCopyContext(venueSlug) ? "Suggest a fair food" : "Suggest a menu item";
+}
+
+export function getSuggestMenuItemSummaryEyebrow(venueSlug: string): string {
+  return "Missing something?";
+}
+
+export function getSuggestMenuItemIntro(venueSlug: string): string {
+  return isFairCopyContext(venueSlug)
+    ? "Add a fair food listing — pick a stand if you know it."
+    : "Missing a bite? Add it here — pick a stand from the vendor filter if you know it.";
+}
+
+export function getSuggestMenuItemVendorUnknownLabel(venueSlug: string): string {
+  return isFairCopyContext(venueSlug) ? "Stand unknown" : "Vendor unknown";
+}
+
+export function getSuggestMenuItemLocationPlaceholder(venueSlug: string): string {
+  return isFairCopyContext(venueSlug)
+    ? "Optional stand location"
+    : "Optional section or location";
+}
+
+export function getSuggestMenuItemNotePlaceholder(venueSlug: string): string {
+  return isFairCopyContext(venueSlug)
+    ? "Optional: price, stand, or menu context"
+    : "Optional: price, section, or menu context";
+}

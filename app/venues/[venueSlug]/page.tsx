@@ -24,6 +24,7 @@ import {
   requireContributorUserId
 } from "@/lib/auth/contributor-id";
 import { FairPreviewNotice } from "@/components/venue/fair-preview-notice";
+import { FairVenueGuideStatus } from "@/components/venue/fair-venue-guide-status";
 import { FairVenueStandings } from "@/components/venue/fair-venue-standings";
 import { VenueHero } from "@/components/venue/venue-hero";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
@@ -32,6 +33,7 @@ import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatHomeOfTeams, formatVenueTeamsInline } from "@/lib/venue-teams";
 import { AdSlot } from "@/components/ads/ad-slot";
 import { ClaimListingCta } from "@/components/claim-listing-cta";
+import { VenueSuggestMenuItem } from "@/components/venue/venue-suggest-menu-item";
 import { SuggestCorrectionLink } from "@/components/suggest-correction-link";
 import {
   FanPoweredGuideBadge,
@@ -54,6 +56,7 @@ import {
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { getVenueFreshFeedReviews } from "@/lib/venue-fresh-feed";
 import { withPublicRouteTiming } from "@/lib/route-timing";
+import { getFairVenueGuideStatusLine } from "@/lib/fair-venue-guide-status";
 import { isFairVenueSlug } from "@/lib/fair-preview";
 import {
   FAIR_VENUE_MENU_EYEBROW,
@@ -413,6 +416,9 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     season: resolveVenueItemSlopStats(venueStatsMap, item.slug, "season")
   }));
   const fanFavoriteByItem = computeVenueFanFavoriteBadges(fanFavoriteEntries, venue.slug);
+  const fairGuideStatusLine = isFairVenueSlug(venue.slug)
+    ? getFairVenueGuideStatusLine(venue.slug, venueFoodItems)
+    : null;
   const mode = getMode(query?.mode);
   const category = getCategory(query?.category);
   const rawVendorSlug = (query?.vendor ?? "all").trim() || "all";
@@ -618,6 +624,12 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                   <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--media-ink-muted)] sm:text-[0.9375rem]">
                     {FAIR_VENUE_MENU_SUBCOPY}
                   </p>
+                  {fairGuideStatusLine ? (
+                    <FairVenueGuideStatus
+                      statusLine={fairGuideStatusLine}
+                      className="mt-2.5 max-w-2xl"
+                    />
+                  ) : null}
                 </>
               ) : (
                 <>
@@ -688,63 +700,20 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             }}
           />
 
-          <div className="mt-6 grid gap-4 sm:mt-8 sm:grid-cols-2">
-            <article className="media-panel-card p-4 sm:p-5">
-              <h3 className="text-sm font-black text-[var(--media-ink)]">
-                Suggest a menu item
-              </h3>
-              <p className="mt-1 text-xs leading-snug text-[var(--media-ink-muted)]">
-                Missing a bite? Add it here — pick a stand from the vendor filter if you
-                know it.
-              </p>
-              {isSignedIn ? (
-                <form action={suggestMissingItem} className="mt-3 grid gap-2">
-                  <input type="hidden" name="venueSlug" value={venue.slug} />
-                  <input
-                    name="itemName"
-                    required
-                    placeholder="Missing item name"
-                    className="rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)]"
-                  />
-                  <select
-                    name="vendorSlug"
-                    className="rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none focus:border-[var(--media-orange)]"
-                    defaultValue=""
-                  >
-                    <option value="">Vendor unknown</option>
-                    {venueVendors.map((vendor) => (
-                      <option key={vendor.slug} value={vendor.slug}>
-                        {vendor.name}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    name="locationHint"
-                    placeholder="Optional section or location"
-                    className="rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)]"
-                  />
-                  <textarea
-                    name="suggestedItemNote"
-                    maxLength={240}
-                    placeholder="Optional: price, stand, or menu context"
-                    className="min-h-20 rounded-xl border border-[var(--media-border)] bg-[var(--media-surface)] px-3 py-2.5 text-sm text-[var(--media-ink)] outline-none placeholder:text-[var(--media-ink-dim)] focus:border-[var(--media-orange)]"
-                  />
-                  <button type="submit" className="media-primary-button w-fit px-5 py-2.5 text-sm">
-                    Submit suggestion
-                  </button>
-                </form>
-              ) : (
-                <Link
-                  href={`/login?next=${encodeURIComponent(`/venues/${venue.slug}`)}`}
-                  className="media-cta-outline mt-3 inline-flex px-4 py-2 text-xs"
-                >
-                  Sign in to suggest
-                </Link>
-              )}
-            </article>
+          <div className="venue-operator-lane mt-6 flex flex-col gap-3 sm:mt-8 md:grid md:grid-cols-2 md:gap-4">
+            <VenueSuggestMenuItem
+              venueSlug={venue.slug}
+              vendors={venueVendors.map((vendor) => ({
+                slug: vendor.slug,
+                name: vendor.name
+              }))}
+              isSignedIn={isSignedIn}
+              loginHref={`/login?next=${encodeURIComponent(`/venues/${venue.slug}`)}`}
+              suggestAction={suggestMissingItem}
+            />
 
             <ClaimListingCta
-              className="media-panel-card !border-[var(--media-border)] !bg-[var(--media-white)] p-4 sm:p-5 [&_p]:text-[var(--media-ink-muted)] [&_p:nth-child(2)]:text-[var(--media-ink)] [&_p:first-child]:text-[var(--media-orange-deep)] [&_a]:border-[rgba(255,107,26,0.35)] [&_a]:bg-[rgba(255,107,26,0.08)] [&_a]:text-[var(--media-orange-deep)]"
+              desktopClassName="media-panel-card !border-[var(--media-border)] !bg-[var(--media-white)] p-4 sm:p-5 [&_.claim-listing-cta__eyebrow]:text-[var(--media-orange-deep)] [&_.claim-listing-cta__headline]:text-[var(--media-ink)] [&_.claim-listing-cta__subline]:text-[var(--media-ink-muted)] [&_.claim-listing-cta__link]:border-[rgba(255,107,26,0.35)] [&_.claim-listing-cta__link]:bg-[rgba(255,107,26,0.08)] [&_.claim-listing-cta__link]:text-[var(--media-orange-deep)]"
               context={{
                 kind: "venue",
                 venueName: venue.name,

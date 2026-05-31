@@ -1,3 +1,4 @@
+import { isFairVenueSlug } from "@/lib/fair-preview";
 import { SITE_CONTACT_EMAIL } from "@/lib/site-contact";
 import { getAbsoluteUrl } from "@/lib/site-metadata";
 
@@ -45,21 +46,49 @@ export function getPartnerFeatureTeasers(): readonly string[] {
   return PARTNER_FEATURE_TEASERS;
 }
 
-export function claimCtaHeadline(kind: ClaimListingKind): string {
-  if (kind === "item") {
-    return "Own or serve this item?";
-  }
-  if (kind === "vendor") {
-    return "Represent this vendor?";
-  }
-  return "Represent this venue or vendor?";
+function isFairClaimContext(venueSlug?: string): boolean {
+  return Boolean(venueSlug && isFairVenueSlug(venueSlug));
 }
 
-export function claimCtaSubline(kind: ClaimListingKind): string {
+export function claimCtaHeadline(kind: ClaimListingKind, venueSlug?: string): string {
+  const fair = isFairClaimContext(venueSlug);
   if (kind === "item") {
-    return "Claim this listing or update menu details and partnership info.";
+    return fair ? "Own or serve this fair food?" : "Own or serve this item?";
   }
-  return "Claim this listing, correct stand info, or explore early operator access.";
+  if (kind === "vendor") {
+    return fair ? "Represent this stand?" : "Represent this vendor?";
+  }
+  return fair ? "Represent this fair or stand?" : "Represent this venue or vendor?";
+}
+
+export function claimCtaSubline(kind: ClaimListingKind, venueSlug?: string): string {
+  const fair = isFairClaimContext(venueSlug);
+  if (kind === "item") {
+    return fair
+      ? "Claim this listing or update fair food and stand details."
+      : "Claim this listing or update menu details and partnership info.";
+  }
+  return fair
+    ? "Claim this listing, correct stand info, or explore early operator access."
+    : "Claim this listing, correct vendor info, or explore early operator access.";
+}
+
+/** Single-line mobile CTA (includes arrow). */
+export function claimCtaCompactLine(kind: ClaimListingKind, venueSlug?: string): string {
+  const fair = isFairClaimContext(venueSlug);
+  if (kind === "item") {
+    return fair
+      ? "Represent this fair food? Claim this listing →"
+      : "Represent this menu item? Claim this listing →";
+  }
+  if (kind === "vendor") {
+    return fair
+      ? "Represent this stand? Claim this listing →"
+      : "Represent this vendor? Claim this listing →";
+  }
+  return fair
+    ? "Represent this fair or stand? Claim this listing →"
+    : "Represent this venue or vendor? Claim this listing →";
 }
 
 export function claimPageTitle(context: ClaimListingContext | null): string {
