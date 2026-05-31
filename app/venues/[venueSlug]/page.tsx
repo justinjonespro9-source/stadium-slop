@@ -24,6 +24,7 @@ import {
   requireContributorUserId
 } from "@/lib/auth/contributor-id";
 import { FairPreviewNotice } from "@/components/venue/fair-preview-notice";
+import { FairVenueStandings } from "@/components/venue/fair-venue-standings";
 import { VenueHero } from "@/components/venue/venue-hero";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
@@ -618,20 +619,30 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
           <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:items-start lg:gap-6">
             <div className="min-w-0">
-              <AgeGateProvider>
-                {standingsRows.length > 0 ? (
-                  <VenueStandingsAgeGate
-                    rows={standingsAgeGateRows}
-                    venueSlug={venue.slug}
-                    isFreshStandingsTab={mode === "fresh"}
-                    tone="media"
-                  />
-                ) : (
-                  <p className="media-panel-card px-4 py-5 text-sm leading-relaxed text-[var(--media-ink-muted)]">
-                    {emptyStandingsMessage}
-                  </p>
-                )}
-              </AgeGateProvider>
+              {isFairVenueSlug(venue.slug) ? (
+                <FairVenueStandings
+                  rows={standingsAgeGateRows}
+                  venueSlug={venue.slug}
+                  isFreshStandingsTab={mode === "fresh"}
+                  emptyMessage={emptyStandingsMessage}
+                  tone="media"
+                />
+              ) : (
+                <AgeGateProvider>
+                  {standingsRows.length > 0 ? (
+                    <VenueStandingsAgeGate
+                      rows={standingsAgeGateRows}
+                      venueSlug={venue.slug}
+                      isFreshStandingsTab={mode === "fresh"}
+                      tone="media"
+                    />
+                  ) : (
+                    <p className="media-panel-card px-4 py-5 text-sm leading-relaxed text-[var(--media-ink-muted)]">
+                      {emptyStandingsMessage}
+                    </p>
+                  )}
+                </AgeGateProvider>
+              )}
 
               <AdSlot
                 placementKey="rankings.banner"

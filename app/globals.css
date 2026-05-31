@@ -3460,6 +3460,106 @@ body[data-mobile-nav-open] .media-nav-bar {
   color: var(--media-orange-deep);
 }
 
+.fair-food-filter-bar {
+  min-width: 0;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 107, 26, 0.22);
+  background: linear-gradient(160deg, #fff 0%, #fff8f0 100%);
+  padding: 1rem 1rem 1.1rem;
+  box-shadow: var(--media-shadow-card);
+}
+
+@media (min-width: 640px) {
+  .fair-food-filter-bar {
+    padding: 1.125rem 1.15rem 1.2rem;
+  }
+}
+
+.fair-food-filter-bar__title {
+  font-size: 0.9375rem;
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--media-ink);
+}
+
+.fair-food-filter-bar__body {
+  margin-top: 0.35rem;
+  max-width: 40rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--media-ink-muted);
+}
+
+.fair-food-filter-bar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.fair-food-filter-chip {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid var(--media-border);
+  background: var(--media-white);
+  padding: 0.38rem 0.7rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--media-ink-muted);
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.fair-food-filter-chip:hover:not(:disabled) {
+  border-color: rgba(255, 107, 26, 0.4);
+  color: var(--media-orange-deep);
+}
+
+.fair-food-filter-chip--active {
+  border-color: rgba(255, 107, 26, 0.55);
+  background: rgba(255, 107, 26, 0.12);
+  color: var(--media-orange-deep);
+  box-shadow: 0 1px 2px rgba(255, 107, 26, 0.12);
+}
+
+.fair-food-filter-chip--disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.fair-food-filter-chip__count {
+  display: inline-flex;
+  min-width: 1.125rem;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(12, 18, 32, 0.06);
+  padding: 0.1rem 0.35rem;
+  font-size: 0.5625rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  color: var(--media-ink-dim);
+}
+
+.fair-food-filter-chip--active .fair-food-filter-chip__count {
+  background: rgba(255, 107, 26, 0.18);
+  color: var(--media-orange-deep);
+}
+
+.fair-venue-standings {
+  min-width: 0;
+  overflow-x: clip;
+}
+
 .media-account-highlight {
   border: 1px solid rgba(255, 107, 26, 0.28);
   border-radius: 1.25rem;
