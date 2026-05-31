@@ -48,10 +48,10 @@ const DIRECTORY_META: Record<
   },
   "iowa-state-fair": {
     fairDates2026: "Aug. 13 – Aug. 23, 2026",
-    statusLabel: "Foods listed",
+    statusLabel: "385 foods tracked",
     status: "preview-loaded",
     previewItemCount: 22,
-    trackedFoodCount: 22
+    trackedFoodCount: 385
   },
   "state-fair-of-texas": {
     fairDates2026: "Sept. 25 – Oct. 18, 2026",

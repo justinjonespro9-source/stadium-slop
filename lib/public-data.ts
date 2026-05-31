@@ -5,6 +5,7 @@ import { PhotoType } from "@prisma/client";
 import { normalizePublicImageUrl } from "./image-url";
 import { prisma } from "./prisma";
 import { cachePublicRead } from "./public-read-cache";
+import { isFairVenueSlug } from "@/lib/fair-preview";
 import {
   isDeprecatedPublicVenueSlug,
   resolveCanonicalPublicVenueSlug
@@ -506,10 +507,11 @@ async function loadPublicFoodItemsByVenueSlug(venueSlug: string) {
 
 export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
   const normalized = venueSlug.trim();
-  return cachePublicRead(
-    ["public-food-items", normalized],
-    () => loadPublicFoodItemsByVenueSlug(normalized)
-  )();
+  // Fair catalog imports can jump in size; include a cache generation so new rows show without waiting for TTL.
+  const cacheKey = isFairVenueSlug(normalized)
+    ? ["public-food-items", normalized, "fair-catalog-v2"]
+    : ["public-food-items", normalized];
+  return cachePublicRead(cacheKey, () => loadPublicFoodItemsByVenueSlug(normalized))();
 }
 
 export async function getPublicFoodItemsByVendorSlug(
