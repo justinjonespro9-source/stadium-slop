@@ -1,6 +1,12 @@
+import Image from "next/image";
+
 import { StadiumSlopWordmark } from "@/components/brand/stadium-slop-wordmark";
 import { SlopScorecardFrame } from "@/components/slop-scorecard-shell";
-import { HOME_SCORECARD_EXAMPLE } from "@/lib/home-scorecard-example";
+import {
+  HOME_SCORECARD_EXAMPLE,
+  HOME_SCORECARD_FEATURE_NOTES,
+  HOME_SCORECARD_TRUST_TAGLINE
+} from "@/lib/home-scorecard-example";
 import { slopScoreDisplay } from "@/lib/slop-card-display";
 
 function ExampleSlopScoreBadge({ score }: { score: number }) {
@@ -25,8 +31,74 @@ function ExampleBackStatRow({ label, value }: { label: string; value: string }) 
   );
 }
 
+function ExampleFoodPhoto({
+  src,
+  alt,
+  emoji
+}: {
+  src?: string;
+  alt: string;
+  emoji: string;
+}) {
+  return (
+    <div className="slop-scorecard-photo-well-inner home-scorecard-example__photo relative min-h-[10.5rem] flex-1 overflow-hidden bg-gradient-to-br from-[#2a1810] via-[#1a120e] to-[#0f0c0a]">
+      {src ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 639px) 90vw, 340px"
+        />
+      ) : (
+        <div
+          className="flex h-full min-h-[10.5rem] w-full items-center justify-center"
+          aria-hidden={!alt}
+        >
+          <span className="text-5xl opacity-90">{emoji}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ExampleReviewerAvatar({
+  src,
+  alt,
+  initials
+}: {
+  src?: string;
+  alt: string;
+  initials: string;
+}) {
+  return (
+    <div className="home-scorecard-example__avatar relative h-11 w-11 shrink-0 overflow-hidden rounded-full border-2 border-[var(--slop-card-orange)] bg-[var(--slop-navy-deep)]">
+      {src ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover object-center"
+          sizes="44px"
+        />
+      ) : (
+        <span
+          className="flex h-full w-full items-center justify-center text-[0.7rem] font-black text-[var(--slop-cream)]"
+          aria-hidden
+        >
+          {initials}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function ExampleScorecardFront() {
   const sample = HOME_SCORECARD_EXAMPLE;
+  const foodAlt =
+    sample.foodImageAlt ?? `Illustrative food photo for ${sample.itemName}`;
+  const reviewerAlt =
+    sample.reviewerImageAlt ?? `Illustrative reviewer photo for ${sample.reviewerName}`;
 
   return (
     <article className="home-scorecard-example__card" aria-label="Example scorecard front">
@@ -40,12 +112,11 @@ function ExampleScorecardFront() {
             </div>
             <div className="slop-scorecard-front-body flex min-h-0 flex-1 flex-col">
               <div className="slop-scorecard-photo-well flex min-h-0 flex-1 flex-col px-2">
-                <div
-                  className="slop-scorecard-photo-well-inner relative flex min-h-[10.5rem] flex-1 items-center justify-center bg-gradient-to-br from-[#2a1810] via-[#1a120e] to-[#0f0c0a]"
-                  aria-hidden
-                >
-                  <span className="text-5xl opacity-90">{sample.photoEmoji}</span>
-                </div>
+                <ExampleFoodPhoto
+                  src={sample.foodImage}
+                  alt={foodAlt}
+                  emoji={sample.photoEmoji}
+                />
               </div>
               <div className="slop-scorecard-info-block shrink-0 px-2 pb-2">
                 <p className="line-clamp-2 text-[1rem] font-black leading-tight tracking-tight text-[var(--slop-cream)]">
@@ -62,9 +133,11 @@ function ExampleScorecardFront() {
                 </p>
               </div>
               <div className="slop-scorecard-footer flex shrink-0 items-center gap-2 px-2 pb-2">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-[var(--slop-card-orange)] bg-[var(--slop-navy-deep)] text-[0.7rem] font-black text-[var(--slop-cream)]">
-                  {sample.reviewerInitials}
-                </div>
+                <ExampleReviewerAvatar
+                  src={sample.reviewerImage}
+                  alt={reviewerAlt}
+                  initials={sample.reviewerInitials}
+                />
                 <p className="min-w-0 truncate text-[0.65rem] font-black text-[var(--slop-cream)]">
                   {sample.reviewerName}
                 </p>
@@ -139,10 +212,26 @@ export function HomeScorecardExample() {
         </span>
       </div>
 
-      <div className="home-scorecard-example__grid mt-4">
+      <p className="home-scorecard-example__trust-line mt-3 max-w-2xl text-center text-xs font-bold leading-snug text-[var(--media-orange-deep)] sm:text-left sm:text-[0.8125rem]">
+        {HOME_SCORECARD_TRUST_TAGLINE}
+      </p>
+
+      <div className="home-scorecard-example__grid mt-3 sm:mt-4">
         <ExampleScorecardFront />
         <ExampleScorecardBack />
       </div>
+
+      <ul
+        className="home-scorecard-example__features mt-4"
+        aria-label="How Stadium Slop reviews work"
+      >
+        {HOME_SCORECARD_FEATURE_NOTES.map((note) => (
+          <li key={note.title} className="home-scorecard-example__feature">
+            <p className="home-scorecard-example__feature-title">{note.title}</p>
+            <p className="home-scorecard-example__feature-body">{note.body}</p>
+          </li>
+        ))}
+      </ul>
 
       <p className="home-scorecard-example__disclaimer mt-4 max-w-2xl text-xs leading-relaxed text-[var(--media-ink-dim)] sm:text-sm">
         Example only. Real scorecards come from reviews submitted at the venue. Rankings and
