@@ -3730,41 +3730,169 @@ body[data-mobile-nav-open] .media-nav-bar {
   font-size: 0.6875rem;
 }
 
-.home-scorecard-example__grid {
-  display: grid;
+.home-scorecard-example__showcase {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   gap: 1rem;
   min-width: 0;
-  grid-template-columns: minmax(0, 1fr);
 }
 
-@media (min-width: 640px) {
-  .home-scorecard-example__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
-    align-items: start;
+@media (min-width: 768px) {
+  .home-scorecard-example__showcase {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .home-scorecard-example__showcase-aside {
+    flex: 0 1 16rem;
+  }
+
+  .home-scorecard-example__flip-wrap {
+    flex: 0 0 auto;
   }
 }
 
-.home-scorecard-example__card {
+.home-scorecard-example__flip-wrap {
   min-width: 0;
-  max-width: 21.25rem;
   width: 100%;
+  max-width: 21.25rem;
   margin-inline: auto;
 }
 
-.home-scorecard-example__face-tag {
-  margin: 0 0 0.35rem 0.15rem;
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--media-ink-dim);
+@media (min-width: 768px) {
+  .home-scorecard-example__flip-wrap {
+    margin-inline: 0;
+  }
 }
 
-.home-scorecard-example__frame {
+.home-scorecard-example__flip-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .home-scorecard-example__flip-controls {
+    justify-content: flex-start;
+  }
+}
+
+.home-scorecard-example__flip-hint {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--media-ink-muted);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .home-scorecard-example__flip-hint {
+    text-align: left;
+  }
+}
+
+.home-scorecard-example__flip-btn {
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  background: rgba(255, 107, 26, 0.08);
+  padding: 0.45rem 0.9rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--media-orange-deep);
+  cursor: pointer;
+}
+
+.home-scorecard-example__flip-btn:hover {
+  background: rgba(255, 107, 26, 0.14);
+}
+
+.home-scorecard-example__flip-btn:focus-visible {
+  outline: 2px solid var(--media-orange-bright);
+  outline-offset: 2px;
+}
+
+.home-scorecard-example__flip-shell {
+  position: relative;
   aspect-ratio: 5 / 7;
   width: 100%;
-  max-width: 21.25rem;
+  perspective: 1200px;
+}
+
+.home-scorecard-example__flip-trigger {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0;
+  text-align: inherit;
+}
+
+.home-scorecard-example__flip-trigger:focus-visible {
+  outline: 2px solid var(--media-orange-bright);
+  outline-offset: 4px;
+}
+
+.home-scorecard-example__flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.home-scorecard-example__flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.home-scorecard-example__face {
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.home-scorecard-example__face--back {
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-scorecard-example__flip-inner {
+    transform: none !important;
+    transition: opacity 0.15s ease;
+  }
+
+  .home-scorecard-example__face--front {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .home-scorecard-example__face--back {
+    transform: none;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .home-scorecard-example__flip-inner.is-flipped .home-scorecard-example__face--front {
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .home-scorecard-example__flip-inner.is-flipped .home-scorecard-example__face--back {
+    opacity: 1;
+    z-index: 2;
+  }
 }
 
 .home-scorecard-example__photo {
