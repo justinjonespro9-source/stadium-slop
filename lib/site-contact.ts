@@ -52,7 +52,7 @@ export const SITE_SOCIAL_LINKS: readonly SiteSocialLink[] = [
   }
 ] as const;
 
-export const FOOTER_KICKER = "WHAT'S THE SCORE?";
+export const FOOTER_KICKER = "KNOW THE SCORE BEFORE YOU ORDER";
 
 export const FOOTER_DESCRIPTION =
   "Crowd-powered food rankings for stadiums, fairs, and live-event venues. Find the bites worth the walk, the wait, and the price.";

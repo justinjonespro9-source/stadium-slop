@@ -45,14 +45,15 @@ export function HomeHero({ children }: HomeHeroProps) {
       <div className="media-home-hero__content relative z-10 mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6 sm:pt-7 lg:px-10 lg:pt-8">
         <div className="max-w-xl lg:max-w-[32rem]">
           <h1 className="text-[clamp(1.65rem,5.8vw,3.15rem)] font-black leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.55)]">
-            What&apos;s the{" "}
+            Know the{" "}
             <span className="text-[var(--media-orange-bright)] drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)]">
-              score?
-            </span>
+              score
+            </span>{" "}
+            before you order.
           </h1>
           <p className="mt-2.5 max-w-xl text-[0.9rem] font-medium leading-relaxed text-white/88 drop-shadow-[0_1px_12px_rgba(0,0,0,0.5)] sm:mt-3 sm:text-[1.05rem]">
-            Find the bites worth the walk, the wait, and the price. Crowd-powered food rankings
-            for stadiums, fairs, and live-event venues.
+            Crowd-powered food rankings for stadiums, fairs, and live-event venues. Find the bites
+            worth the walk, the wait, and the price.
           </p>
 
           <div className="mt-4 sm:mt-5 lg:mt-5">{children}</div>
