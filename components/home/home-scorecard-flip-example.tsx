@@ -21,11 +21,94 @@ function ExampleSlopScoreBadge({ score }: { score: number }) {
   );
 }
 
+function ExampleBackSectionLabel({ children }: { children: string }) {
+  return <p className="slop-scorecard-back-pill">{children}</p>;
+}
+
+function ExampleBackMetaRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="slop-scorecard-back-meta-row">
+      <span className="slop-scorecard-back-meta-label">{label}</span>
+      <span className="slop-scorecard-back-meta-value">{value}</span>
+    </div>
+  );
+}
+
 function ExampleBackStatRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="slop-scorecard-back-stat-row">
       <span className="slop-scorecard-back-stat-label">{label}</span>
       <span className="slop-scorecard-back-stat-value">{value}</span>
+    </div>
+  );
+}
+
+function ExampleBackProfilePhoto({
+  src,
+  alt,
+  initials
+}: {
+  src?: string;
+  alt: string;
+  initials: string;
+}) {
+  if (src) {
+    return (
+      <div className="slop-scorecard-back-profile-photo">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover object-center"
+          sizes="96px"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="slop-scorecard-back-profile-initials" aria-hidden>
+      {initials}
+    </div>
+  );
+}
+
+function ExampleReviewerProfileBlock() {
+  const sample = HOME_SCORECARD_EXAMPLE;
+  const reviewerAlt =
+    sample.reviewerImageAlt ?? `Illustrative reviewer photo for ${sample.reviewerName}`;
+
+  return (
+    <div className="slop-scorecard-back-profile flex items-start gap-2.5">
+      <ExampleBackProfilePhoto
+        src={sample.reviewerImage}
+        alt={reviewerAlt}
+        initials={sample.reviewerInitials}
+      />
+      <div className="min-w-0 flex-1 pt-0.5">
+        <p className="truncate text-[0.74rem] font-black leading-tight text-[var(--slop-cream)]">
+          {sample.reviewerName}
+        </p>
+        <p className="truncate text-[0.54rem] font-bold leading-snug text-[var(--slop-cream-dim)]">
+          {sample.reviewerHandle}
+        </p>
+        {sample.showFanScout ? (
+          <span className="mt-1 inline-flex rounded border border-[var(--slop-card-orange)]/45 bg-[rgba(255,107,26,0.1)] px-1 py-px text-[0.36rem] font-black uppercase tracking-[0.08em] text-[var(--slop-card-orange-bright)]">
+            Fan Scout
+          </span>
+        ) : null}
+        {sample.showMoreAtVenue ? (
+          <p className="mt-1 text-[0.48rem] font-bold text-[var(--slop-card-orange-dim)]">
+            More at this venue →
+          </p>
+        ) : null}
+        <p className="slop-scorecard-back-career-label mt-1.5">Career Stats</p>
+        <div className="slop-scorecard-back-career-stats">
+          <ExampleBackMetaRow label="Venues Reviewed" value={sample.venuesReviewed} />
+          <ExampleBackMetaRow label="Items Reviewed" value={sample.itemsReviewed} />
+          <ExampleBackMetaRow label="Helpful Earned" value={sample.helpfulEarned} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -152,26 +235,47 @@ function ExampleScorecardBackFace() {
   return (
     <div className="home-scorecard-example__face home-scorecard-example__face--back slop-scorecard-face slop-scorecard-face-back absolute inset-0">
       <SlopScorecardFrame face="back" className="h-full w-full">
-        <div className="flex h-full min-h-0 flex-col overflow-hidden px-2.5 py-2.5">
-          <div className="slop-scorecard-header flex shrink-0 items-center justify-between gap-2 py-1">
-            <p className="text-[0.55rem] font-black uppercase tracking-[0.12em] text-[var(--slop-cream-dim)]">
-              Slop Signals
-            </p>
-            <StadiumSlopWordmark size="scorecard" className="max-w-[5.5rem]" />
+        <div className="flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-2.5 py-2">
+          <div className="slop-scorecard-header flex shrink-0 items-center justify-between gap-2 px-0 py-1.5">
+            <StadiumSlopWordmark size="scorecard" />
           </div>
-          <div className="slop-scorecard-back-stat-panel mt-2 min-h-0 flex-1 space-y-0">
-            <ExampleBackStatRow label="Napkin Rating" value={sample.napkinRating} />
-            <ExampleBackStatRow label="Replay Value" value={sample.replayValue} />
-            <ExampleBackStatRow label="Price Check" value={sample.priceCheck} />
-            <ExampleBackStatRow label="Mess signal" value={sample.messSignal} />
+
+          <div className="mt-1 shrink-0">
+            <ExampleReviewerProfileBlock />
           </div>
-          <div className="mt-2 shrink-0 rounded-lg border border-[var(--slop-line-strong)] bg-[rgba(6,15,24,0.55)] px-2 py-2">
-            <p className="text-[0.48rem] font-black uppercase tracking-[0.1em] text-[var(--slop-cream-dim)]">
-              Hot Take
-            </p>
-            <p className="mt-1 text-[0.62rem] font-semibold leading-snug text-[var(--slop-cream-muted)]">
+
+          <div className="mt-2 shrink-0">
+            <ExampleBackSectionLabel>Slop Signals</ExampleBackSectionLabel>
+            <div className="slop-scorecard-back-stat-panel mt-1">
+              <ExampleBackStatRow
+                label="Slop Score"
+                value={`${slopScoreDisplay(sample.backSlopScore)} / 10`}
+              />
+              <ExampleBackStatRow label="Napkin Rating" value={sample.napkinRating} />
+              <ExampleBackStatRow label="Replay Value" value={sample.replayValue} />
+              <ExampleBackStatRow label="Price Check" value={sample.priceCheck} />
+            </div>
+          </div>
+
+          <div className="mt-2 shrink-0">
+            <ExampleBackSectionLabel>Hot Take</ExampleBackSectionLabel>
+            <p className="mt-1 text-[0.62rem] leading-relaxed text-[var(--slop-cream-muted)]">
               &ldquo;{sample.hotTake}&rdquo;
             </p>
+          </div>
+
+          <div className="mt-2 shrink-0 rounded border border-[var(--slop-line)] bg-[rgba(6,14,24,0.45)] px-2 py-1.5">
+            <ExampleBackSectionLabel>This card</ExampleBackSectionLabel>
+            <p className="mt-1 text-[0.68rem] font-black leading-tight text-[var(--slop-cream)]">
+              {sample.cardItemName}
+            </p>
+            <p className="text-[0.52rem] font-bold text-[var(--slop-cream-muted)]">
+              {sample.cardVenueName}
+            </p>
+            <p className="mt-0.5 text-[0.5rem] leading-snug text-[var(--slop-cream-dim)]">
+              {sample.cardMetaLine}
+            </p>
+            <ExampleBackMetaRow label="Date posted" value={sample.datePosted} />
           </div>
         </div>
       </SlopScorecardFrame>

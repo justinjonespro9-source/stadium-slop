@@ -9,11 +9,24 @@ export type HomeScorecardExampleData = {
   photoEmoji: string;
   reviewerName: string;
   reviewerInitials: string;
+  reviewerHandle: string;
+  showFanScout: boolean;
+  /** Static “More at this venue →” line on the card back (no link). */
+  showMoreAtVenue: boolean;
+  venuesReviewed: string;
+  itemsReviewed: string;
+  helpfulEarned: string;
+  /** Slop Signals on the card back (may differ from front badge score). */
+  backSlopScore: number;
   napkinRating: string;
   replayValue: string;
   priceCheck: string;
-  messSignal: string;
   hotTake: string;
+  /** “This card” block on the back face. */
+  cardItemName: string;
+  cardVenueName: string;
+  cardMetaLine: string;
+  datePosted: string;
   /**
    * Public path to a static food photo, e.g.
    * `/branding/example-scorecards/sample-food.jpg`
@@ -37,11 +50,21 @@ export const HOME_SCORECARD_EXAMPLE: HomeScorecardExampleData = {
   photoEmoji: "🧀",
   reviewerName: "Sample Fan",
   reviewerInitials: "SF",
-  napkinRating: "3 · Two-Handed Problem",
-  replayValue: "Solid Rotation Pick",
-  priceCheck: "Worth the Price of Admission",
-  messSignal: "Jersey Danger",
-  hotTake: "Cheese pull for days. Worth the walk if you split it.",
+  reviewerHandle: "@samplefan",
+  showFanScout: true,
+  showMoreAtVenue: true,
+  venuesReviewed: "3",
+  itemsReviewed: "12",
+  helpfulEarned: "8",
+  backSlopScore: 8.8,
+  napkinRating: "4 / 5",
+  replayValue: "Game Day Starter",
+  priceCheck: "Fair Deal",
+  hotTake: "Loaded, cheesy, and worth the walk.",
+  cardItemName: "Ultimate Stadium Nachos",
+  cardVenueName: "Sample stadium concession",
+  cardMetaLine: "Example only · not a verified live review",
+  datePosted: "Example",
   // foodImage: "/branding/example-scorecards/sample-food.jpg",
   // reviewerImage: "/branding/example-scorecards/sample-reviewer.jpg",
   foodImageAlt: "Sample food photo for the example scorecard",
