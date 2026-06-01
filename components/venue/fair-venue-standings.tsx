@@ -15,6 +15,8 @@ import {
   type FairFoodFilterKey
 } from "@/lib/fair-food-filters";
 
+const FAIR_STANDINGS_PAGE_SIZE = 60;
+
 type FairVenueStandingsProps = {
   rows: VenueStandingAgeGateRow[];
   venueSlug: string;
@@ -31,6 +33,12 @@ export function FairVenueStandings({
   tone = "media"
 }: FairVenueStandingsProps) {
   const [activeFilter, setActiveFilter] = useState<FairFoodFilterKey | null>(null);
+  const [visibleCount, setVisibleCount] = useState(FAIR_STANDINGS_PAGE_SIZE);
+
+  const handleFilterChange = (filter: FairFoodFilterKey | null) => {
+    setActiveFilter(filter);
+    setVisibleCount(FAIR_STANDINGS_PAGE_SIZE);
+  };
 
   const items = useMemo(() => rows.map((row) => row.item), [rows]);
   const filterCounts = useMemo(() => buildFairFoodFilterCounts(items), [items]);
@@ -41,6 +49,14 @@ export function FairVenueStandings({
     }
     return rows.filter((row) => itemMatchesFairFoodFilter(row.item, activeFilter));
   }, [rows, activeFilter]);
+
+  const paginateList = filteredRows.length > FAIR_STANDINGS_PAGE_SIZE;
+  const visibleRows = paginateList
+    ? filteredRows.slice(0, Math.min(visibleCount, filteredRows.length))
+    : filteredRows;
+  const showCountLine = paginateList;
+  const showMoreButton =
+    paginateList && visibleRows.length < filteredRows.length;
 
   const activeFilterLabel = activeFilter
     ? FAIR_FOOD_FILTER_DEFINITIONS.find((def) => def.key === activeFilter)?.label
@@ -56,19 +72,41 @@ export function FairVenueStandings({
       <FairFoodFilterBar
         activeFilter={activeFilter}
         counts={filterCounts}
-        onFilterChange={setActiveFilter}
+        onFilterChange={handleFilterChange}
       />
 
       <div className="fair-venue-standings__list mt-4 min-w-0">
+        {showCountLine ? (
+          <p className="fair-venue-standings__count" aria-live="polite">
+            Showing {visibleRows.length} of {filteredRows.length} foods
+          </p>
+        ) : null}
         <AgeGateProvider>
           {filteredRows.length > 0 ? (
-            <VenueStandingsAgeGate
-              rows={filteredRows}
-              venueSlug={venueSlug}
-              isFreshStandingsTab={isFreshStandingsTab}
-              tone={tone}
-              showFairImportBadges
-            />
+            <>
+              <VenueStandingsAgeGate
+                rows={visibleRows}
+                venueSlug={venueSlug}
+                isFreshStandingsTab={isFreshStandingsTab}
+                tone={tone}
+                showFairImportBadges
+              />
+              {showMoreButton ? (
+                <div className="fair-venue-standings__more">
+                  <button
+                    type="button"
+                    className="fair-venue-standings__more-btn"
+                    onClick={() =>
+                      setVisibleCount((count) =>
+                        Math.min(count + FAIR_STANDINGS_PAGE_SIZE, filteredRows.length)
+                      )
+                    }
+                  >
+                    Show more fair foods
+                  </button>
+                </div>
+              ) : null}
+            </>
           ) : (
             <p className="media-panel-card px-4 py-5 text-sm leading-relaxed text-[var(--media-ink-muted)]">
               {filterEmptyMessage}

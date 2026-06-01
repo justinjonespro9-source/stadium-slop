@@ -3624,6 +3624,41 @@ body[data-mobile-nav-open] .media-nav-bar {
   min-width: 0;
 }
 
+.fair-venue-standings__count {
+  margin: 0 0 0.75rem;
+  max-width: 100%;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--media-ink-muted);
+}
+
+.fair-venue-standings__more {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.fair-venue-standings__more-btn {
+  width: 100%;
+  max-width: 100%;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  background: rgba(255, 107, 26, 0.08);
+  padding: 0.65rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--media-orange-deep);
+  cursor: pointer;
+}
+
+.fair-venue-standings__more-btn:hover {
+  background: rgba(255, 107, 26, 0.14);
+  border-color: rgba(255, 107, 26, 0.5);
+}
+
 @media (max-width: 639px) {
   .fair-venue-standings .media-venue-standings-grid {
     grid-template-columns: minmax(0, 1fr);
