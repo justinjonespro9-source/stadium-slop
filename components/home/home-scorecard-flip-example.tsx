@@ -47,7 +47,7 @@ function ExampleFoodPhoto({
           alt={alt}
           fill
           className="object-cover object-center"
-          sizes="(max-width: 639px) 90vw, 340px"
+          sizes="(max-width: 767px) 90vw, 304px"
         />
       ) : (
         <div
@@ -194,27 +194,11 @@ export function HomeScorecardFlipExample() {
 
   return (
     <div className="home-scorecard-example__flip-wrap min-w-0">
-      <div className="home-scorecard-example__flip-controls">
-        <p className="home-scorecard-example__flip-hint" id={`${statusId}-hint`}>
-          Tap or click the card to flip.
-        </p>
-        <button
-          type="button"
-          className="home-scorecard-example__flip-btn"
-          onClick={toggleFlip}
-          aria-pressed={showBack}
-          aria-label={flipLabel}
-          aria-describedby={`${statusId}-hint ${statusId}-status`}
-        >
-          Flip card
-        </button>
-      </div>
-
       <p id={`${statusId}-status`} className="sr-only" aria-live="polite">
         {showFront ? "Example scorecard showing front." : "Example scorecard showing back."}
       </p>
 
-      <div className="home-scorecard-example__flip-shell mx-auto mt-3 w-full max-w-[21.25rem]">
+      <div className="home-scorecard-example__flip-shell w-full">
         <button
           type="button"
           className="home-scorecard-example__flip-trigger"
@@ -231,8 +215,24 @@ export function HomeScorecardFlipExample() {
         </button>
       </div>
 
+      <div className="home-scorecard-example__flip-controls">
+        <p className="home-scorecard-example__flip-hint" id={`${statusId}-hint`}>
+          Tap or click the card to flip.
+        </p>
+        <button
+          type="button"
+          className="home-scorecard-example__flip-btn"
+          onClick={toggleFlip}
+          aria-pressed={showBack}
+          aria-label={flipLabel}
+          aria-describedby={`${statusId}-hint ${statusId}-status`}
+        >
+          Flip card
+        </button>
+      </div>
+
       <p
-        className="home-scorecard-example__face-indicator mt-2 text-center text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-dim)]"
+        className="home-scorecard-example__face-indicator text-center text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[var(--media-ink-dim)]"
         aria-hidden
       >
         {showFront ? "Front" : "Back"}
