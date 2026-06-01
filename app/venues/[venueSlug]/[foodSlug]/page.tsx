@@ -31,6 +31,7 @@ import {
 import { enforceRateLimit } from "@/lib/rate-limit";
 import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 import { isNapkinEligibleItem } from "@/lib/item-eligibility";
+import { isFairVenueSlug } from "@/lib/fair-preview";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import { getVenueActiveGame } from "@/lib/game-day";
 import { buildItemFanPhotoLayout } from "@/lib/fan-photo-layout";
@@ -665,6 +666,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     </span>
   );
   const reviewHint = getReviewAvailabilityHint(venue.slug, isSignedIn, Boolean(activeGame));
+  const hideSecondaryReviewCard =
+    !isFairVenueSlug(venue.slug) && !activeGame;
   const heroBadges = (
     <>
       {foodItem.isPromoted || foodItem.venueBadge || foodItem.isNewThisSeason ? (
@@ -776,6 +779,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
               />
             ) : null}
 
+            {hideSecondaryReviewCard ? null : (
             <article className="media-content-card media-content-section">
               <p className="media-section-eyebrow">Your review</p>
               <h2 className="media-section-title">Share your take</h2>
@@ -791,6 +795,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                 </Link>
               </div>
             </article>
+            )}
 
             <AdSlot
               placementKey="item.detail.inline"

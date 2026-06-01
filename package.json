@@ -48,6 +48,7 @@
     "seed:ad-placements": "tsx scripts/seed-ad-placements.ts",
     "verify:deploy-health": "tsx scripts/verify-deploy-health.ts",
     "verify:review-signals": "tsx scripts/verify-review-signal-fields.ts",
+    "audit:misclassified-drinks": "tsx scripts/audit-misclassified-drink-items.ts --dry-run",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {

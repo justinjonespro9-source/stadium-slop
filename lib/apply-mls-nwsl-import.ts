@@ -16,6 +16,7 @@ import {
   vendorDisplayNameFromImport,
   vendorSlugFromImport
 } from "./import-slugs";
+import { inferItemTypeFromImport } from "./item-type-classification";
 import type { MlsNwslDocxParseResult, MlsNwslDocxParseRow } from "./mls-nwsl-docx-parser";
 import { MLS_NWSL_VENUE_SLUG_ALIASES } from "./mls-nwsl-venue-registry";
 import { getMlsNwslVenueGeo } from "./mls-nwsl-venue-geo";
@@ -89,17 +90,6 @@ function itemCategoryFromString(raw?: string): ItemCategory {
     return ItemCategory.ALCOHOLIC_BEVERAGE;
   }
   return ItemCategory.OTHER;
-}
-
-function itemTypeFromCategory(category?: string): ItemType {
-  const key = (category ?? "").toLowerCase();
-  if (key.includes("alcohol") || key.includes("beer") || key.includes("cocktail")) {
-    return ItemType.ALCOHOLIC_DRINK;
-  }
-  if (key.includes("beverage") || key.includes("drink") || key.includes("sip")) {
-    return ItemType.NON_ALCOHOLIC_DRINK;
-  }
-  return ItemType.FOOD;
 }
 
 function canonicalImportVenueSlug(slug: string): string {
@@ -288,7 +278,7 @@ export async function applyMlsNwslImport(
     if (existingVendor) stats.vendorsUpdated += 1;
     else stats.vendorsCreated += 1;
 
-    const itemType = itemTypeFromCategory(row.category);
+    const itemType = inferItemTypeFromImport(row.category, row.item_name);
     const category =
       itemType === ItemType.ALCOHOLIC_DRINK
         ? ItemCategory.ALCOHOLIC_BEVERAGE
