@@ -52,8 +52,13 @@ export const SITE_SOCIAL_LINKS: readonly SiteSocialLink[] = [
   }
 ] as const;
 
+export const FOOTER_KICKER = "WHAT'S THE SCORE?";
+
+export const FOOTER_DESCRIPTION =
+  "Crowd-powered food rankings for stadiums, fairs, and live-event venues. Find the bites worth the walk, the wait, and the price.";
+
 export const PUBLIC_TRUST_STATEMENT =
-  "Stadium Slop is an independent, fan-powered guide. Reviews reflect crowd opinions, not venue or team endorsements. Menus, sections, and availability can change by event.";
+  "Stadium Slop is an independent, fan-powered guide. Reviews reflect crowd opinions, not venue, team, league, fair, or event endorsements. Menus, sections, locations, prices, and availability can change by event.";
 
 export const PROMOTED_PLACEMENT_NOTE =
   "Any promoted placements will be clearly labeled.";

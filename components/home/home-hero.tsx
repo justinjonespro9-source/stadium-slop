@@ -50,9 +50,9 @@ export function HomeHero({ children }: HomeHeroProps) {
               score?
             </span>
           </h1>
-          <p className="mt-2.5 text-[0.9rem] font-medium leading-relaxed text-white/88 drop-shadow-[0_1px_12px_rgba(0,0,0,0.5)] sm:mt-3 sm:text-[1.05rem]">
-            Find the bites worth the walk, the wait, and the price — with crowd-powered food
-            rankings for stadiums, fairs, and live-event venues.
+          <p className="mt-2.5 max-w-xl text-[0.9rem] font-medium leading-relaxed text-white/88 drop-shadow-[0_1px_12px_rgba(0,0,0,0.5)] sm:mt-3 sm:text-[1.05rem]">
+            Find the bites worth the walk, the wait, and the price. Crowd-powered food rankings
+            for stadiums, fairs, and live-event venues.
           </p>
 
           <div className="mt-4 sm:mt-5 lg:mt-5">{children}</div>

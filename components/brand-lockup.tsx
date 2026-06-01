@@ -4,9 +4,11 @@ import Image from "next/image";
 type BrandLockupProps = {
   /** Icon only — header mobile, tight spaces */
   compact?: boolean;
+  /** Optional line under wordmark (default: Eats in the Seats). */
+  kicker?: string;
 };
 
-export function BrandLockup({ compact = false }: BrandLockupProps) {
+export function BrandLockup({ compact = false, kicker = "Eats in the Seats" }: BrandLockupProps) {
   if (compact) {
     return (
       <span className="inline-flex items-center">
@@ -26,7 +28,7 @@ export function BrandLockup({ compact = false }: BrandLockupProps) {
     <div className="flex flex-col gap-2">
       <StadiumSlopWordmark size="header" />
       <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-[var(--slop-cream-dim)]">
-        Eats in the Seats
+        {kicker}
       </p>
     </div>
   );

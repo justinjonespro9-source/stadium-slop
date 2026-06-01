@@ -2,6 +2,8 @@ import Link from "next/link";
 
 import { BrandLockup } from "./brand-lockup";
 import {
+  FOOTER_DESCRIPTION,
+  FOOTER_KICKER,
   PROMOTED_PLACEMENT_NOTE,
   PUBLIC_TRUST_STATEMENT,
   SITE_SOCIAL_LINKS
@@ -30,12 +32,11 @@ export function SiteFooter() {
     <footer className="border-t border-[var(--slop-line-strong)] bg-[var(--slop-navy-deep)] text-[var(--slop-cream)]">
       <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-6 sm:gap-8 sm:px-8 sm:py-8 md:grid-cols-[1.15fr_0.85fr] lg:px-10">
         <div>
-          <BrandLockup />
-          <p className="mt-4 max-w-xl text-sm leading-6 text-[var(--slop-cream-muted)]">
-            Eats in the Seats. Fan-powered concession intel for finding what is
-            worth eating before you hit the line.
+          <BrandLockup kicker={FOOTER_KICKER} />
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-[var(--slop-cream-muted)]">
+            {FOOTER_DESCRIPTION}
           </p>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--slop-cream-muted)]">
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--slop-cream-dim)]">
             {PUBLIC_TRUST_STATEMENT}
           </p>
           <p className="mt-2 max-w-2xl text-xs leading-relaxed text-[var(--slop-cream-dim)]">
