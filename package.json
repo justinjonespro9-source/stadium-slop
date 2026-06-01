@@ -50,6 +50,7 @@
     "verify:review-signals": "tsx scripts/verify-review-signal-fields.ts",
     "audit:misclassified-drinks": "tsx scripts/audit-misclassified-drink-items.ts --dry-run",
     "audit:target-field-menu": "tsx scripts/audit-target-field-menu-cleanup.ts",
+    "audit:active-menu-quality": "tsx scripts/audit-active-venue-menu-quality.ts --scope=target-field",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {

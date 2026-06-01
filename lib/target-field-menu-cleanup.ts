@@ -3,6 +3,22 @@
  */
 
 import { normalizeMenuItemName } from "./venue-menu-import/normalize";
+import {
+  isGenericNonReviewableItem,
+  punctuationFoldKey,
+  recommendMenuQualityAction,
+  scoreCanonicalCandidate as baseScoreCanonicalCandidate,
+  vendorStripKey
+} from "./venue-menu-quality-audit";
+
+export {
+  isGenericNonReviewableItem,
+  punctuationFoldKey,
+  vendorStripKey
+};
+
+export type CleanupAction = import("./venue-menu-quality-audit").MenuQualityAction;
+export const recommendActionForMember = recommendMenuQualityAction;
 
 export const TARGET_FIELD_VENUE_SLUG = "target-field";
 
@@ -26,14 +42,6 @@ export const TARGET_FIELD_IMPORT_CANONICAL_NAMES = new Set(
     "No Gluten Way Stacked Burger"
   ].map((n) => normalizeMenuItemName(n))
 );
-
-export type CleanupAction =
-  | "keep-canonical"
-  | "hide-duplicate"
-  | "rename-canonical"
-  | "keep-both"
-  | "hide-generic"
-  | "manual-review";
 
 export type CuratedGroupSpec = {
   id: string;
@@ -169,45 +177,6 @@ export const CURATED_CLEANUP_GROUPS: CuratedGroupSpec[] = [
   }
 ];
 
-const GENERIC_NON_REVIEWABLE_RE =
-  /^(cotton candy|cracker jacks?|grab[- ]and[- ]go(?: counter pick)?|popcorn|peanuts)$/i;
-
-const VAGUE_VENDOR_AS_ITEM_RE =
-  /^(justin'?s candied popcorn bar|herbivorous butcher|section \d+)$/i;
-
-export function punctuationFoldKey(name: string): string {
-  return normalizeMenuItemName(name).replace(/[^a-z0-9]+/g, "");
-}
-
-export function vendorStripKey(itemName: string, vendorName: string): string {
-  let name = itemName.trim();
-  const vendor = vendorName.trim();
-  if (!vendor) return normalizeMenuItemName(name);
-
-  const patterns = [
-    new RegExp(`^${escapeRegExp(vendor)}\\s*[-–—:|]\\s*`, "i"),
-    new RegExp(`^${escapeRegExp(vendor)}\\s+`, "i")
-  ];
-  for (const re of patterns) {
-    name = name.replace(re, "");
-  }
-  return normalizeMenuItemName(name);
-}
-
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-export function isGenericNonReviewableItem(name: string, vendorName: string): boolean {
-  const trimmed = name.trim();
-  if (GENERIC_NON_REVIEWABLE_RE.test(trimmed)) return true;
-  if (VAGUE_VENDOR_AS_ITEM_RE.test(trimmed)) return true;
-  if (normalizeMenuItemName(trimmed) === normalizeMenuItemName(vendorName)) {
-    return true;
-  }
-  return false;
-}
-
 export function scoreCanonicalCandidate(item: {
   name: string;
   reviewCount: number;
@@ -215,23 +184,10 @@ export function scoreCanonicalCandidate(item: {
   isNewThisSeason: boolean;
   preferredCanonical?: string;
 }): number {
-  let score = 0;
-  score += item.reviewCount * 10_000;
-  score += item.photoCount * 5_000;
-  if (item.isNewThisSeason) score += 40;
+  let score = baseScoreCanonicalCandidate(item);
   if (TARGET_FIELD_IMPORT_CANONICAL_NAMES.has(normalizeMenuItemName(item.name))) {
     score += 120;
   }
-  if (
-    item.preferredCanonical &&
-    normalizeMenuItemName(item.name) === normalizeMenuItemName(item.preferredCanonical)
-  ) {
-    score += 200;
-  }
-  const len = item.name.trim().length;
-  if (len >= 12 && len <= 56) score += 10;
-  if (/^[A-Z]/.test(item.name)) score += 4;
-  if (/\(|\)/.test(item.name)) score -= 8;
   return score;
 }
 
@@ -243,36 +199,4 @@ export function pickCanonicalMember<
       scoreCanonicalCandidate({ ...b, preferredCanonical }) -
       scoreCanonicalCandidate({ ...a, preferredCanonical })
   )[0];
-}
-
-export function recommendActionForMember(
-  member: { name: string; reviewCount: number; photoCount: number },
-  keep: { name: string },
-  opts: {
-    treatAsDuplicate: boolean;
-    preferredCanonical?: string;
-    isGeneric?: boolean;
-  }
-): CleanupAction {
-  if (!opts.treatAsDuplicate) {
-    return "keep-both";
-  }
-  if (member.name === keep.name) {
-    if (
-      opts.preferredCanonical &&
-      normalizeMenuItemName(member.name) !== normalizeMenuItemName(opts.preferredCanonical)
-    ) {
-      return member.reviewCount > 0 || member.photoCount > 0
-        ? "manual-review"
-        : "rename-canonical";
-    }
-    return "keep-canonical";
-  }
-  if (member.reviewCount > 0 || member.photoCount > 0) {
-    return "manual-review";
-  }
-  if (opts.isGeneric && member.reviewCount === 0 && member.photoCount === 0) {
-    return "hide-generic";
-  }
-  return "hide-duplicate";
 }
