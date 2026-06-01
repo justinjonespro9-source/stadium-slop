@@ -96,58 +96,6 @@ async function mapFeaturedRows(
     .filter((item) => item.reviewCount > 0 || item.badge);
 }
 
-export async function getHomepageTopSlopItems(
-  limit = 6
-): Promise<HomepageFeaturedItem[]> {
-  return cachePublicRead(["homepage-top-slop", String(limit)], () =>
-    loadHomepageTopSlopItems(limit)
-  )();
-}
-
-async function loadHomepageTopSlopItems(limit: number): Promise<HomepageFeaturedItem[]> {
-  try {
-    const items = await prisma.foodItem.findMany({
-      where: {
-        status: EntityStatus.ACTIVE,
-        reviews: {
-          some: {
-            status: EntityStatus.ACTIVE,
-            isTestReview: false
-          }
-        }
-      },
-      select: {
-        slug: true,
-        name: true,
-        isPromoted: true,
-        venueBadge: true,
-        createdAt: true,
-        venue: { select: { slug: true, name: true } },
-        reviews: {
-          where: { status: EntityStatus.ACTIVE, isTestReview: false },
-          select: { slopScore: true }
-        },
-        photos: featuredPhotoInclude
-      },
-      take: Math.max(limit * 6, 24)
-    });
-
-    const ranked = items
-      .map((item) => ({
-        item,
-        avg: averageSlopScore(item.reviews.map((r) => r.slopScore.toNumber())) ?? 0
-      }))
-      .sort((a, b) => b.avg - a.avg || b.item.reviews.length - a.item.reviews.length)
-      .slice(0, limit)
-      .map(({ item }) => item);
-
-    return mapFeaturedRows(ranked);
-  } catch (error) {
-    console.warn("[homepage] Failed to load top slop items", error);
-    return [];
-  }
-}
-
 export async function getHomepageRecentlyAddedItems(
   limit = 6
 ): Promise<HomepageFeaturedItem[]> {

@@ -2,17 +2,14 @@ import type { Metadata } from "next";
 
 import { AdSlot } from "@/components/ads/ad-slot";
 import { HomeFeaturedSections } from "@/components/home/home-featured-sections";
+import { HomeScorecardExample } from "@/components/home/home-scorecard-example";
 import { HomeHero } from "@/components/home/home-hero";
 import { HomePopularSearches } from "@/components/home/home-popular-searches";
 import { HomeStateFairTeaser } from "@/components/home/home-state-fair-teaser";
 import { HomeStatBand } from "@/components/home/home-stat-band";
 import { HomeSlopNetwork } from "@/components/home-slop-network";
 import { HomeVenueSearch } from "@/components/home-venue-search";
-import {
-  getHomepageRecentlyAddedItems,
-  getHomepageStats,
-  getHomepageTopSlopItems
-} from "@/lib/homepage-data";
+import { getHomepageRecentlyAddedItems, getHomepageStats } from "@/lib/homepage-data";
 import { getPublicVenues } from "@/lib/public-data";
 import { withPublicRouteTiming } from "@/lib/route-timing";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
@@ -36,10 +33,9 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   return withPublicRouteTiming("homepage", async () => {
-    const [venues, stats, topSlop, recentlyAdded] = await Promise.all([
+    const [venues, stats, recentlyAdded] = await Promise.all([
     getPublicVenues(),
     getHomepageStats(),
-    getHomepageTopSlopItems(6),
     getHomepageRecentlyAddedItems(6)
   ]);
 
@@ -66,7 +62,9 @@ export default async function Home() {
           <HomeStateFairTeaser />
         </div>
 
-        <HomeFeaturedSections topSlop={topSlop} recentlyAdded={recentlyAdded} />
+        <HomeScorecardExample />
+
+        <HomeFeaturedSections recentlyAdded={recentlyAdded} />
 
         <div className="mt-10 border-t border-[var(--media-border)] pt-8 sm:mt-12">
           <HomeSlopNetwork variant="media" />

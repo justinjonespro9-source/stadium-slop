@@ -9,7 +9,6 @@ import {
 } from "@/lib/world-cup-stadium-food-guide-content";
 
 type HomeFeaturedSectionsProps = {
-  topSlop: HomepageFeaturedItem[];
   recentlyAdded: HomepageFeaturedItem[];
 };
 
@@ -172,33 +171,9 @@ function SectionShell({
   );
 }
 
-export function HomeFeaturedSections({
-  topSlop,
-  recentlyAdded
-}: HomeFeaturedSectionsProps) {
+export function HomeFeaturedSections({ recentlyAdded }: HomeFeaturedSectionsProps) {
   return (
-    <div className="mt-10 space-y-10 sm:mt-12 sm:space-y-12">
-      <section>
-        <div className="media-section-heading">
-          <div className="min-w-0">
-            <p className="media-section-eyebrow">Top Slop</p>
-            <h2 className="media-section-title">What fans are ranking highest</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--media-ink-muted)] sm:text-[0.9375rem]">
-              Slop Score leaders and crowd favorites from verified fan reviews — the bites
-              worth the walk before you hit the concession line.
-            </p>
-          </div>
-          <Link href="/venues" className="media-section-link shrink-0">
-            All venues →
-          </Link>
-        </div>
-        <FeaturedItemGrid
-          items={topSlop}
-          compactOnMobile
-          emptyMessage="Reviews are rolling in — check back as fans rank stadium food."
-        />
-      </section>
-
+    <div className="space-y-10 sm:space-y-12">
       <section className="media-panel-card border border-[var(--media-border)] p-5 sm:p-6">
         <p className="media-section-eyebrow">2026 World Cup</p>
         <h2 className="media-section-title">Know Before You Bite</h2>

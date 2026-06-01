@@ -3702,6 +3702,75 @@ body[data-mobile-nav-open] .media-nav-bar {
   outline-offset: 2px;
 }
 
+.home-scorecard-example {
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.home-scorecard-example__badge {
+  display: inline-flex;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 26, 0.35);
+  background: rgba(255, 107, 26, 0.1);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--media-orange-deep);
+}
+
+.home-scorecard-example__badge--muted {
+  border-color: var(--media-border);
+  background: var(--media-white);
+  color: var(--media-ink-muted);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+  font-size: 0.6875rem;
+}
+
+.home-scorecard-example__grid {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .home-scorecard-example__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    align-items: start;
+  }
+}
+
+.home-scorecard-example__card {
+  min-width: 0;
+  max-width: 21.25rem;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.home-scorecard-example__face-tag {
+  margin: 0 0 0.35rem 0.15rem;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--media-ink-dim);
+}
+
+.home-scorecard-example__frame {
+  aspect-ratio: 5 / 7;
+  width: 100%;
+  max-width: 21.25rem;
+}
+
+.home-scorecard-example__disclaimer {
+  min-width: 0;
+}
+
 .about-page__section {
   min-width: 0;
 }
