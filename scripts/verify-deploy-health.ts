@@ -10,6 +10,25 @@
 const DEFAULT_BASE = "http://127.0.0.1:3000";
 const TIMEOUT_MS = 15_000;
 
+/** Browser-like UA so Vercel firewall/bot checks allow the smoke fetch. */
+const DEPLOY_CHECK_HEADERS = {
+  accept: "text/plain, application/json, */*",
+  "user-agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 StadiumSlopDeployHealth/1.0"
+} as const;
+
+function formatFetchFailure(path: string, status: number, body: string): string {
+  const preview = body.slice(0, 200);
+  if (status === 429) {
+    return (
+      `FAIL ${path} status=429\n` +
+      "Received 429 before app route; likely Vercel firewall/bot/rate-limit protection.\n" +
+      `body=${preview}`
+    );
+  }
+  return `FAIL ${path} status=${status} body=${preview}`;
+}
+
 function resolveBaseUrl(): string {
   const raw =
     process.env.DEPLOY_URL?.trim() ||
@@ -24,7 +43,7 @@ async function fetchText(path: string, base: string): Promise<{ status: number; 
   try {
     const response = await fetch(`${base}${path}`, {
       signal: controller.signal,
-      headers: { accept: "text/plain, application/json, */*" }
+      headers: DEPLOY_CHECK_HEADERS
     });
     return { status: response.status, body: await response.text() };
   } finally {
@@ -38,14 +57,14 @@ async function main() {
 
   const health = await fetchText("/health", base);
   if (health.status !== 200 || !health.body.includes('"ok":true')) {
-    console.error(`FAIL /health status=${health.status} body=${health.body.slice(0, 200)}`);
+    console.error(formatFetchFailure("/health", health.status, health.body));
     process.exit(1);
   }
   console.log("OK /health");
 
   const robots = await fetchText("/robots.txt", base);
   if (robots.status !== 200) {
-    console.error(`FAIL /robots.txt status=${robots.status}`);
+    console.error(formatFetchFailure("/robots.txt", robots.status, robots.body));
     process.exit(1);
   }
 
