@@ -3707,6 +3707,17 @@ body[data-mobile-nav-open] .media-nav-bar {
   overflow-x: clip;
 }
 
+.home-scorecard-example__shell {
+  width: 100%;
+  max-width: 68rem;
+  margin-inline: auto;
+  min-width: 0;
+}
+
+.home-scorecard-example__foot {
+  min-width: 0;
+}
+
 .home-scorecard-example__badge {
   display: inline-flex;
   border-radius: 9999px;
@@ -3758,25 +3769,42 @@ body[data-mobile-nav-open] .media-nav-bar {
 
 @media (min-width: 768px) {
   .home-scorecard-example__layout {
-    grid-template-columns: minmax(0, 1fr) minmax(17rem, 20.5rem);
+    grid-template-columns: minmax(0, 30rem) minmax(0, 24rem);
     grid-template-areas:
       "copy preview"
       "features preview";
-    column-gap: 2.5rem;
+    column-gap: 3.5rem;
     row-gap: 1.5rem;
     align-items: start;
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  .home-scorecard-example__lede {
+    max-width: none;
   }
 
   .home-scorecard-example__preview {
     align-self: center;
-    justify-self: center;
+    justify-self: stretch;
     width: 100%;
+    max-width: 24rem;
+  }
+
+  .home-scorecard-example__features {
+    max-width: none;
+  }
+
+  .home-scorecard-example__foot {
+    max-width: 30rem;
   }
 }
 
 .home-scorecard-example__preview-panel {
   width: 100%;
-  max-width: 20.5rem;
+  max-width: 24rem;
   margin-inline: auto;
   padding: 1.25rem 1.35rem 1.1rem;
   border-radius: 1.25rem;
@@ -3794,7 +3822,7 @@ body[data-mobile-nav-open] .media-nav-bar {
 
 @media (min-width: 768px) {
   .home-scorecard-example__preview-panel {
-    max-width: none;
+    max-width: 24rem;
     padding: 1.5rem 1.65rem 1.25rem;
   }
 }
@@ -3966,7 +3994,6 @@ body[data-mobile-nav-open] .media-nav-bar {
   .home-scorecard-example__features {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.5rem;
-    max-width: 28rem;
   }
 }
 

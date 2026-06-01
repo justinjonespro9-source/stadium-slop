@@ -11,6 +11,7 @@ export function HomeScorecardExample() {
       className="home-scorecard-example mt-10 sm:mt-12"
       aria-labelledby="home-scorecard-example-heading"
     >
+      <div className="home-scorecard-example__shell">
       <div className="home-scorecard-example__layout">
         <div className="home-scorecard-example__copy min-w-0">
           <p className="media-section-eyebrow">Slop Scorecard</p>
@@ -57,14 +58,17 @@ export function HomeScorecardExample() {
         </ul>
       </div>
 
-      <p className="home-scorecard-example__disclaimer mt-6 max-w-2xl text-xs leading-relaxed text-[var(--media-ink-dim)] sm:text-sm">
-        Example only. Real scorecards come from reviews submitted at the venue. Rankings and
-        Top Slop lists stay on each venue&apos;s page.
-      </p>
-      <p className="mt-2 max-w-2xl text-xs leading-relaxed text-[var(--media-ink-dim)]">
-        Other bites fans review include fair classics like Fairground Cheese Curds or stadium
-        staples like Spicy Chicken Sandwich.
-      </p>
+      <div className="home-scorecard-example__foot">
+        <p className="home-scorecard-example__disclaimer mt-6 text-xs leading-relaxed text-[var(--media-ink-dim)] sm:text-sm">
+          Example only. Real scorecards come from reviews submitted at the venue. Rankings and
+          Top Slop lists stay on each venue&apos;s page.
+        </p>
+        <p className="mt-2 text-xs leading-relaxed text-[var(--media-ink-dim)]">
+          Other bites fans review include fair classics like Fairground Cheese Curds or stadium
+          staples like Spicy Chicken Sandwich.
+        </p>
+      </div>
+      </div>
     </section>
   );
 }
