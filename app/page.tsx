@@ -9,7 +9,6 @@ import { HomeStatBand } from "@/components/home/home-stat-band";
 import { HomeSlopNetwork } from "@/components/home-slop-network";
 import { HomeVenueSearch } from "@/components/home-venue-search";
 import {
-  getHomepageFanFavoriteItems,
   getHomepageRecentlyAddedItems,
   getHomepageStats,
   getHomepageTopSlopItems
@@ -37,12 +36,11 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   return withPublicRouteTiming("homepage", async () => {
-    const [venues, stats, topSlop, recentlyAdded, fanFavorites] = await Promise.all([
+    const [venues, stats, topSlop, recentlyAdded] = await Promise.all([
     getPublicVenues(),
     getHomepageStats(),
     getHomepageTopSlopItems(6),
-    getHomepageRecentlyAddedItems(6),
-    getHomepageFanFavoriteItems(6)
+    getHomepageRecentlyAddedItems(6)
   ]);
 
   return (
@@ -68,11 +66,7 @@ export default async function Home() {
           <HomeStateFairTeaser />
         </div>
 
-        <HomeFeaturedSections
-          topSlop={topSlop}
-          recentlyAdded={recentlyAdded}
-          fanFavorites={fanFavorites}
-        />
+        <HomeFeaturedSections topSlop={topSlop} recentlyAdded={recentlyAdded} />
 
         <div className="mt-10 border-t border-[var(--media-border)] pt-8 sm:mt-12">
           <HomeSlopNetwork variant="media" />
