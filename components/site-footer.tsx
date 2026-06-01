@@ -18,6 +18,7 @@ const guideLinks = [
 ] as const;
 
 const legalLinks = [
+  { href: "/about", label: "About" },
   { href: "/terms", label: "Terms" },
   { href: "/privacy", label: "Privacy" },
   { href: "/disclaimer", label: "Disclaimer" },

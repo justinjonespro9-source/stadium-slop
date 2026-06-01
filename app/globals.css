@@ -3615,6 +3615,41 @@ body[data-mobile-nav-open] .media-nav-bar {
   overflow-wrap: anywhere;
 }
 
+.about-page__section {
+  min-width: 0;
+}
+
+.about-page__card {
+  height: 100%;
+}
+
+.about-page__card-grid {
+  min-width: 0;
+}
+
+.about-page__network-links {
+  min-width: 0;
+}
+
+.about-page__cta-btn {
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 26, 0.4);
+  background: var(--media-orange-deep);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.about-page__cta-btn:hover {
+  background: var(--media-orange);
+  border-color: rgba(255, 107, 26, 0.55);
+}
+
 .fair-venue-standings {
   min-width: 0;
   overflow-x: clip;
