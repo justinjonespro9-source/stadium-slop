@@ -43,10 +43,10 @@ export type HomeScorecardExampleData = {
 
 /** Drop images into `public/branding/example-scorecards/` and set paths here. */
 export const HOME_SCORECARD_EXAMPLE: HomeScorecardExampleData = {
-  itemName: "Loaded Stadium Nachos",
+  itemName: "Ultimate Stadium Nachos",
   venueContext: "Sample stadium concession",
   locationHint: "Section 112 · Concourse level",
-  slopScore: 8.4,
+  slopScore: 8.8,
   photoEmoji: "🧀",
   reviewerName: "Sample Fan",
   reviewerInitials: "SF",
@@ -65,10 +65,11 @@ export const HOME_SCORECARD_EXAMPLE: HomeScorecardExampleData = {
   cardVenueName: "Sample stadium concession",
   cardMetaLine: "Example only · not a verified live review",
   datePosted: "Example",
-  // foodImage: "/branding/example-scorecards/sample-food.jpg",
-  // reviewerImage: "/branding/example-scorecards/sample-reviewer.jpg",
-  foodImageAlt: "Sample food photo for the example scorecard",
-  reviewerImageAlt: "Sample reviewer photo for the example scorecard"
+  foodImage: "/branding/example-scorecards/ultimate-stadium-nachos.png",
+  reviewerImage: "/branding/example-scorecards/sample-reviewer.png",
+  foodImageAlt:
+    "Ultimate stadium nachos served in a baseball helmet at a ballpark",
+  reviewerImageAlt: "Sample fan profile photo at a baseball game"
 };
 
 export const HOME_SCORECARD_TRUST_TAGLINE =
