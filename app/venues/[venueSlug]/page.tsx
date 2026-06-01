@@ -70,23 +70,16 @@ import {
   resolveCanonicalPublicVenueSlug
 } from "@/lib/venue-public-slug";
 
-type StandingsMode = "all-time" | "season" | "fresh";
-type CategoryFilter =
-  | "all"
-  | "food"
-  | "drinks"
-  | "sweets"
-  | "vegan-gf"
-  | "reviewed";
+import {
+  itemPassesVenueCategoryFilter,
+  parseVenueItemCategoryFilter,
+  VENUE_ITEM_CATEGORY_OPTIONS,
+  type VenueItemCategoryFilter
+} from "@/lib/venue-item-filters";
 
-const categoryOptions: { label: string; value: CategoryFilter }[] = [
-  { label: "All", value: "all" },
-  { label: "Food", value: "food" },
-  { label: "Drinks", value: "drinks" },
-  { label: "Sweets", value: "sweets" },
-  { label: "Vegan/GF", value: "vegan-gf" },
-  { label: "Reviewed", value: "reviewed" }
-];
+type StandingsMode = "all-time" | "season" | "fresh";
+type CategoryFilter = VenueItemCategoryFilter;
+const categoryOptions = VENUE_ITEM_CATEGORY_OPTIONS;
 
 export const revalidate = 180;
 
@@ -207,64 +200,11 @@ function getMode(value?: string): StandingsMode {
 }
 
 function getCategory(value?: string): CategoryFilter {
-  const allowed: CategoryFilter[] = [
-    "all",
-    "food",
-    "drinks",
-    "sweets",
-    "vegan-gf",
-    "reviewed"
-  ];
-  if (value && allowed.includes(value as CategoryFilter)) {
-    return value as CategoryFilter;
-  }
-  if (value === "sweet") {
-    return "sweets";
-  }
-  if (value === "alcoholic" || value === "non-alcoholic") {
-    return "drinks";
-  }
-
-  return "all";
+  return parseVenueItemCategoryFilter(value);
 }
 
 function itemPassesCategory(item: FoodItem, category: CategoryFilter) {
-  if (category === "all" || category === "reviewed") {
-    return true;
-  }
-
-  if (category === "food") {
-    return item.itemType === "Food";
-  }
-
-  if (category === "drinks") {
-    return (
-      item.itemType === "Alcoholic Drink" || item.itemType === "Non-Alcoholic Drink"
-    );
-  }
-
-  if (category === "sweets") {
-    const blob = `${item.category} ${item.tags.join(" ")} ${item.name}`.toLowerCase();
-    return ["sweet", "dessert", "treat", "shake", "sundae", "cannoli", "donut", "gelato", "ice cream", "frost", "candy", "churro", "brownie", "cookie"].some(
-      (keyword) => blob.includes(keyword)
-    );
-  }
-
-  if (category === "vegan-gf") {
-    const upper = `${item.category} ${item.tags.join(" ")}`.toUpperCase();
-    const lower = `${item.name} ${item.description} ${item.tags.join(" ")}`.toLowerCase();
-    return (
-      upper.includes("VEGAN") ||
-      upper.includes("GLUTEN") ||
-      upper.includes("GLUTEN_FREE") ||
-      lower.includes("vegan") ||
-      lower.includes("gluten-free") ||
-      lower.includes("gluten free") ||
-      lower.includes("plant-based")
-    );
-  }
-
-  return true;
+  return itemPassesVenueCategoryFilter(item, category);
 }
 
 function buildVenueHref(

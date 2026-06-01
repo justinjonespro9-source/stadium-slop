@@ -1,4 +1,8 @@
 import type { FoodItem } from "@/lib/sample-data";
+import {
+  isDessertFunDrinkItem,
+  itemMatches21PlusFilter
+} from "@/lib/venue-item-filters";
 
 export const FAIR_FOOD_FILTER_KEYS = [
   "new-foods",
@@ -34,7 +38,7 @@ export const FAIR_FOOD_FILTER_DEFINITIONS: FairFoodFilterDefinition[] = [
 const NEW_FOOD_PREVIEW_TAG = "2025-preview";
 
 const SWEET_RE =
-  /\b(sweet|dessert|desserts|candy|chocolate|cheesecake|churro|cookie|milkshake|funnel cake|ice cream|sorbet|salpicon|delight|brownie|donut|doughnut|cinnamon roll|banana split)\b/i;
+  /\b(sweet|dessert|desserts|candy|chocolate|cheesecake|churro|cookie|milkshake|malt\b|float\b|funnel cake|ice cream|sorbet|salpicon|delight|brownie|donut|doughnut|cinnamon roll|banana split|slushie|slushy|smoothie|shake\b|frozen custard|hot chocolate)\b/i;
 
 const SAVORY_RE =
   /\b(taco|ramen|burger|hot dog|corn dog|sandwich|slider|arancini|carbonara|pickle|birria|brisket|bbq|nachos|crunchwrap|deviled|wagyu|crab|fish|pork|chicken|eggroll|pretzel|elote|popcorn|wings|rib|sausage|mac and cheese|loaded)\b/i;
@@ -52,7 +56,7 @@ const SPICY_RE =
   /\b(jalape[nñ]o|chili|chile|habanero|cayenne|spicy|hot honey|flamin|pepper|baja|chipotle|sriracha|buffalo)\b/i;
 
 const DESSERT_RE =
-  /\b(dessert|cheesecake|cookie|churro|chocolate|milkshake|funnel cake|delight|ice cream|sorbet|banana split|cinnamon roll|brownie|donut|doughnut)\b/i;
+  /\b(dessert|cheesecake|cookie|churro|chocolate|milkshake|malt\b|float\b|funnel cake|delight|ice cream|sorbet|banana split|cinnamon roll|brownie|donut|doughnut|slushie|slushy|smoothie|shake\b)\b/i;
 
 function itemHaystack(item: FoodItem): string {
   return [
@@ -80,6 +84,9 @@ function hasNewFoodSignals(item: FoodItem): boolean {
 }
 
 function matchesSweet(item: FoodItem, haystack: string): boolean {
+  if (isDessertFunDrinkItem(item)) {
+    return true;
+  }
   if (DESSERT_RE.test(haystack) || SWEET_RE.test(haystack)) {
     return true;
   }
@@ -129,7 +136,7 @@ export function itemMatchesFairFoodFilter(
     case "dessert":
       return matchesDessert(haystack) || item.category.toLowerCase().includes("dessert");
     case "21-plus":
-      return Boolean(item.ageRestricted) || item.itemType === "Alcoholic Drink";
+      return itemMatches21PlusFilter(item);
     default:
       return false;
   }

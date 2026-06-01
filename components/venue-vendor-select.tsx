@@ -3,15 +3,11 @@
 import { useRouter } from "next/navigation";
 import type { Vendor } from "@/lib/sample-data";
 
+import type { VenueItemCategoryFilter } from "@/lib/venue-item-filters";
+
 type StandingsMode = "all-time" | "season" | "fresh";
 
-type CategoryFilter =
-  | "all"
-  | "food"
-  | "drinks"
-  | "sweets"
-  | "vegan-gf"
-  | "reviewed";
+type CategoryFilter = VenueItemCategoryFilter;
 
 function buildQuery(
   venueSlug: string,
