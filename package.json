@@ -52,6 +52,7 @@
     "audit:target-field-menu": "tsx scripts/audit-target-field-menu-cleanup.ts",
     "audit:active-menu-quality": "tsx scripts/audit-active-venue-menu-quality.ts --scope=target-field",
     "audit:nationals-park-menu": "tsx scripts/audit-nationals-park-menu-cleanup.ts",
+    "audit:t-mobile-park-menu": "tsx scripts/audit-t-mobile-park-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {
