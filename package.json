@@ -59,6 +59,7 @@
     "audit:tropicana-field-menu": "tsx scripts/audit-tropicana-field-menu-cleanup.ts",
     "audit:daikin-park-menu": "tsx scripts/audit-daikin-park-menu-cleanup.ts",
     "audit:coors-field-menu": "tsx scripts/audit-coors-field-menu-cleanup.ts",
+    "audit:fenway-park-menu": "tsx scripts/audit-fenway-park-menu-cleanup.ts",
     "audit:mlb-generic-menu-cleanup": "tsx scripts/audit-mlb-generic-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
