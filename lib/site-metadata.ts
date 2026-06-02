@@ -55,6 +55,9 @@ export function buildRootMetadata(): Metadata {
       card: "summary_large_image",
       title: `Stadium Slop — ${SITE_TAGLINE_SHORT}`,
       description: SITE_TAGLINE_SHORT
+    },
+    verification: {
+      google: "lrFFew4cyp2mBnmmrCnk6YIACFkCjEVp2Dhvd82x_DQ"
     }
   };
 }
