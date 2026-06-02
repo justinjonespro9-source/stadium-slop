@@ -72,6 +72,7 @@
     "audit:geha-field-menu": "tsx scripts/audit-geha-field-at-arrowhead-stadium-menu-cleanup.ts",
     "audit:levi-s-stadium-menu": "tsx scripts/audit-levi-s-stadium-menu-cleanup.ts",
     "audit:lincoln-financial-field-menu": "tsx scripts/audit-lincoln-financial-field-menu-cleanup.ts",
+    "audit:sofi-stadium-menu": "tsx scripts/audit-sofi-stadium-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {
