@@ -80,7 +80,7 @@ export async function getPublicScorecardByReviewId(
   let row;
   try {
     row = await prisma.review.findFirst({
-      where: { id, status: "ACTIVE" },
+      where: { id, status: "ACTIVE", isTestReview: false },
       include: {
         foodItem: {
           include: {

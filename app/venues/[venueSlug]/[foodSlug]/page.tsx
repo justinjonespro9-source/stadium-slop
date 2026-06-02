@@ -522,10 +522,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     foodItem.slug
   );
 
-  const scorecardReviews = [
-    ...careerStats.reviews,
-    ...(careerStats.testReviews ?? [])
-  ];
+  const scorecardReviews = careerStats.reviews;
   const { heroEntry, photoBackedReviews } = buildItemFanPhotoLayout(
     scorecardReviews,
     foodPhotos,

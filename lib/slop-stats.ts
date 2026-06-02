@@ -466,7 +466,8 @@ export async function getDbBackedItemSlopStats(
       include: {
         reviews: {
           where: {
-            status: "ACTIVE"
+            status: "ACTIVE",
+            isTestReview: false
           },
           orderBy: { createdAt: "desc" },
           include: {
@@ -846,7 +847,7 @@ async function loadVenueItemSlopStatsMap(
       select: {
         slug: true,
         reviews: {
-          where: { status: "ACTIVE" },
+          where: { status: "ACTIVE", isTestReview: false },
           orderBy: { createdAt: "desc" },
           select: DB_REVIEW_STATS_SELECT
         }

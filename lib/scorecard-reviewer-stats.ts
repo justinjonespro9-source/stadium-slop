@@ -26,14 +26,14 @@ export async function reviewerCareerStatsByUserId(
         helpfulLikesReceived: true,
         _count: {
           select: {
-            reviews: { where: { status: "ACTIVE" } }
+            reviews: { where: { status: "ACTIVE", isTestReview: false } }
           }
         }
       }
     }),
     prisma.review.groupBy({
       by: ["userId", "venueId"],
-      where: { userId: { in: unique }, status: "ACTIVE" }
+      where: { userId: { in: unique }, status: "ACTIVE", isTestReview: false }
     })
   ]);
 
