@@ -349,16 +349,24 @@ export type VenueMenuQualityReport = {
   severityScore: number;
 };
 
+export type AnalyzeVenueMenuQualityOptions = {
+  /** Venue cleanup canonical headline slugs — exclude from generic issue counts. */
+  excludeGenericSlugs?: Set<string>;
+};
+
 export function analyzeVenueMenuQuality<T extends MenuQualityItem>(
   venueSlug: string,
   venueName: string,
   groups: string[],
   activeItems: T[],
-  curatedGroups: MenuDuplicateGroup<T>[] = []
+  curatedGroups: MenuDuplicateGroup<T>[] = [],
+  options: AnalyzeVenueMenuQualityOptions = {}
 ): VenueMenuQualityReport {
   const duplicateGroups = buildMenuDuplicateGroups(activeItems, { curated: curatedGroups });
-  const genericRows = activeItems.filter((item) =>
-    isGenericNonReviewableItem(item.name, item.vendor.name)
+  const genericRows = activeItems.filter(
+    (item) =>
+      isGenericNonReviewableItem(item.name, item.vendor.name) &&
+      !options.excludeGenericSlugs?.has(item.slug)
   );
 
   let safeHideCount = 0;

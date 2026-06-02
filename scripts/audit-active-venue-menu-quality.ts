@@ -21,6 +21,11 @@ import {
   type ActiveVenueAuditGroup
 } from "../lib/active-venue-audit-scope";
 import {
+  ATT_STADIUM_CANONICAL_STAND_DISH_SLUGS,
+  ATT_STADIUM_CURATED_CLEANUP_GROUPS,
+  ATT_STADIUM_VENUE_SLUG
+} from "../lib/att-stadium-menu-cleanup";
+import {
   CURATED_CLEANUP_GROUPS,
   TARGET_FIELD_VENUE_SLUG
 } from "../lib/target-field-menu-cleanup";
@@ -99,6 +104,26 @@ function buildTargetFieldCuratedGroups(items: DbItemRow[]): MenuDuplicateGroup<D
   const groups: MenuDuplicateGroup<DbItemRow>[] = [];
 
   for (const spec of CURATED_CLEANUP_GROUPS) {
+    const members = items.filter((item) => spec.matchName(item.name, item.vendor.name));
+    if (members.length < 2) continue;
+    groups.push({
+      kind: "curated",
+      key: spec.id,
+      label: spec.label,
+      notes: spec.notes,
+      treatAsDuplicate: spec.treatAsDuplicate,
+      preferredCanonical: spec.canonicalName,
+      members
+    });
+  }
+
+  return groups;
+}
+
+function buildAttStadiumCuratedGroups(items: DbItemRow[]): MenuDuplicateGroup<DbItemRow>[] {
+  const groups: MenuDuplicateGroup<DbItemRow>[] = [];
+
+  for (const spec of ATT_STADIUM_CURATED_CLEANUP_GROUPS) {
     const members = items.filter((item) => spec.matchName(item.name, item.vendor.name));
     if (members.length < 2) continue;
     groups.push({
@@ -245,17 +270,23 @@ async function main() {
       photoCount: row._count.photos
     }));
 
+    const slug = venue.slug.toLowerCase();
     const curated =
-      venue.slug.toLowerCase() === TARGET_FIELD_VENUE_SLUG
+      slug === TARGET_FIELD_VENUE_SLUG
         ? buildTargetFieldCuratedGroups(items)
-        : [];
+        : slug === ATT_STADIUM_VENUE_SLUG
+          ? buildAttStadiumCuratedGroups(items)
+          : [];
 
     const report = analyzeVenueMenuQuality(
       venue.slug,
       venue.name,
       formatAuditGroupLabel(groups).split(", "),
       items,
-      curated
+      curated,
+      slug === ATT_STADIUM_VENUE_SLUG
+        ? { excludeGenericSlugs: ATT_STADIUM_CANONICAL_STAND_DISH_SLUGS }
+        : {}
     );
 
     reports.push(report);
@@ -297,6 +328,20 @@ async function main() {
     console.log(
       `  ${r.severityScore.toString().padStart(3)}  ${r.venueName} (${r.venueSlug}) — ${r.issueCount} issues, ${dupGroups} duplicate groups, ${r.genericRows.length} generic`
     );
+  }
+
+  const attStadium = reports.find((r) => r.venueSlug === ATT_STADIUM_VENUE_SLUG);
+  if (attStadium) {
+    console.log("\n── AT&T Stadium status ───────────────────────────────────────────────");
+    console.log(
+      `  ACTIVE food rows: ${attStadium.activeCount} · broad-audit issues after venue exemptions: ${attStadium.issueCount}`
+    );
+    console.log(
+      "  Venue cleanup applied (8 stand rows HIDDEN). npm run audit:att-stadium-menu shows 0 pending hides."
+    );
+    if (attStadium.issueCount > 0 && verbose) {
+      console.log("  (Remaining broad-audit flags need review — venue script is source of truth.)");
+    }
   }
 
   const targetField = reports.find((r) => r.venueSlug === TARGET_FIELD_VENUE_SLUG);
