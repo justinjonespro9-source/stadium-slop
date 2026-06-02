@@ -18,6 +18,17 @@ export function getAbsoluteUrl(pathWithLeadingSlash: string): string {
 
 export const SITE_TAGLINE_SHORT = "Fan-powered stadium food rankings.";
 
+/** Homepage + root-path social previews (launch positioning). */
+export const SITE_HOME_TITLE = "Stadium Slop | Fan-Powered Stadium Food Reviews";
+export const SITE_HOME_DESCRIPTION =
+  "Discover, review, and rank stadium food with verified fans attending the game. Know the score before you order.";
+
+/** Homepage OG image copy hierarchy. */
+export const SITE_HOME_OG_HEADLINE = "Know the Score Before You Order";
+export const SITE_HOME_OG_SUBLINE = "Fan-Powered Stadium Food Reviews";
+export const SITE_HOME_OG_DOMAIN = "StadiumSlop.com";
+export const SITE_HOME_OG_ALT = `${SITE_HOME_TITLE} — ${SITE_HOME_OG_HEADLINE}`;
+
 /** Shared OG/Twitter sizing (recommended social preview) */
 export const OG_CARD = { width: 1200 as const, height: 630 as const };
 

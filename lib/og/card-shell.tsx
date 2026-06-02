@@ -8,10 +8,13 @@ export type OgSize = typeof OG_CARD;
 
 export function OgScoreboardShell({
   children,
-  size = OG_CARD
+  size = OG_CARD,
+  footerBadge = "FAN SCOREBOARD"
 }: {
   children: ReactNode;
   size?: OgSize;
+  /** Right footer label (e.g. StadiumSlop.com on homepage share card). */
+  footerBadge?: string;
 }): ReactElement {
   const rimOuter = 5;
   const rimGold = 6;
@@ -120,7 +123,7 @@ export function OgScoreboardShell({
                   color: OG.gold
                 }}
               >
-                FAN SCOREBOARD
+                {footerBadge}
               </div>
             </div>
           </div>

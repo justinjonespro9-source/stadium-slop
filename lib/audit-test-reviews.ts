@@ -14,6 +14,8 @@ export type TestReviewFlagReason =
   | "dev_scorecard_game_day_key"
   | "demo_seed_user"
   | "mock_reviewer_user"
+  | "sample_seed_review_id"
+  | "example_com_reviewer_email"
   | "picsum_placeholder_photo"
   | "note_test_keyword"
   | "note_lorem_ipsum"
@@ -27,10 +29,16 @@ export const AUTO_APPLY_FLAG_REASONS: ReadonlySet<TestReviewFlagReason> = new Se
   "dev_scorecard_game_day_key",
   "demo_seed_user",
   "mock_reviewer_user",
+  "sample_seed_review_id",
+  "example_com_reviewer_email",
   "picsum_placeholder_photo",
   "note_test_keyword",
   "note_lorem_ipsum"
 ]);
+
+/** Legacy prisma/sample-data review ids (e.g. review-brisket-1). */
+const SAMPLE_SEED_REVIEW_ID_PATTERN = /^review-[a-z0-9]+-\d+$/i;
+const EXAMPLE_COM_EMAIL_PATTERN = /@example\.com$/i;
 
 const NOTE_TEST_PATTERN =
   /\b(test|asdf|qwerty|delete\s*me|placeholder|fake\s*review|sample\s*review)\b/i;
@@ -104,6 +112,12 @@ function flagReview(row: {
   }
   if (row.userId === MOCK_REVIEWER_USER_ID || row.user.email === MOCK_REVIEWER_EMAIL) {
     flags.add("mock_reviewer_user");
+  }
+  if (SAMPLE_SEED_REVIEW_ID_PATTERN.test(row.id)) {
+    flags.add("sample_seed_review_id");
+  }
+  if (EXAMPLE_COM_EMAIL_PATTERN.test(row.user.email)) {
+    flags.add("example_com_reviewer_email");
   }
 
   const note = row.note?.trim() ?? "";

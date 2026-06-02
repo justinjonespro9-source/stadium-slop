@@ -12,22 +12,36 @@ import { HomeVenueSearch } from "@/components/home-venue-search";
 import { getHomepageRecentlyAddedItems, getHomepageStats } from "@/lib/homepage-data";
 import { getPublicVenues } from "@/lib/public-data";
 import { withPublicRouteTiming } from "@/lib/route-timing";
-import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import {
+  getAbsoluteUrl,
+  OG_CARD,
+  SITE_HOME_DESCRIPTION,
+  SITE_HOME_OG_ALT,
+  SITE_HOME_TITLE
+} from "@/lib/site-metadata";
 
 export const revalidate = 300;
 
+const homeOgImage = {
+  url: "/opengraph-image",
+  width: OG_CARD.width,
+  height: OG_CARD.height,
+  alt: SITE_HOME_OG_ALT
+} as const;
+
 export const metadata: Metadata = {
-  title: "Home",
-  description:
-    "Find the best eats at every stadium. Real fans, real reviews, and fan-powered Slop Score rankings on Stadium Slop.",
+  title: SITE_HOME_TITLE,
+  description: SITE_HOME_DESCRIPTION,
   openGraph: {
-    title: `Stadium Slop — Find the best eats at every stadium`,
-    description: SITE_TAGLINE_SHORT,
-    url: getAbsoluteUrl("/")
+    title: SITE_HOME_TITLE,
+    description: SITE_HOME_DESCRIPTION,
+    url: getAbsoluteUrl("/"),
+    images: [homeOgImage]
   },
   twitter: {
-    title: `Stadium Slop — Find the best eats at every stadium`,
-    description: SITE_TAGLINE_SHORT
+    title: SITE_HOME_TITLE,
+    description: SITE_HOME_DESCRIPTION,
+    images: [homeOgImage.url]
   }
 };
 
