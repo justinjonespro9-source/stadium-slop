@@ -75,6 +75,7 @@
     "audit:sofi-stadium-menu": "tsx scripts/audit-sofi-stadium-menu-cleanup.ts",
     "audit:nrg-stadium-menu": "tsx scripts/audit-nrg-stadium-menu-cleanup.ts",
     "audit:metlife-stadium-menu": "tsx scripts/audit-metlife-stadium-menu-cleanup.ts",
+    "audit:gillette-stadium-menu": "tsx scripts/audit-gillette-stadium-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {
