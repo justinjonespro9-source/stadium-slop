@@ -66,6 +66,7 @@
     "audit:mlb-generic-menu-cleanup": "tsx scripts/audit-mlb-generic-menu-cleanup.ts",
     "audit:world-cup-generic-menu-cleanup": "tsx scripts/audit-world-cup-generic-menu-cleanup.ts",
     "audit:mercedes-benz-stadium-menu": "tsx scripts/audit-mercedes-benz-stadium-menu-cleanup.ts",
+    "audit:lumen-field-menu": "tsx scripts/audit-lumen-field-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {
