@@ -68,6 +68,7 @@
     "audit:mercedes-benz-stadium-menu": "tsx scripts/audit-mercedes-benz-stadium-menu-cleanup.ts",
     "audit:lumen-field-menu": "tsx scripts/audit-lumen-field-menu-cleanup.ts",
     "audit:att-stadium-menu": "tsx scripts/audit-att-stadium-menu-cleanup.ts",
+    "audit:hard-rock-stadium-menu": "tsx scripts/audit-hard-rock-stadium-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {
