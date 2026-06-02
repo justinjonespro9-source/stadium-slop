@@ -1,7 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useId, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type RefObject
+} from "react";
 
 import { StadiumSlopWordmark } from "@/components/brand/stadium-slop-wordmark";
 import { SlopScorecardFrame } from "@/components/slop-scorecard-shell";
@@ -229,13 +236,20 @@ function ExampleScorecardFrontFace() {
   );
 }
 
-function ExampleScorecardBackFace() {
+function ExampleScorecardBackFace({
+  scrollRef
+}: {
+  scrollRef: RefObject<HTMLDivElement | null>;
+}) {
   const sample = HOME_SCORECARD_EXAMPLE;
 
   return (
     <div className="home-scorecard-example__face home-scorecard-example__face--back slop-scorecard-face slop-scorecard-face-back absolute inset-0">
       <SlopScorecardFrame face="back" className="h-full w-full">
-        <div className="flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-2.5 py-2">
+        <div
+          ref={scrollRef}
+          className="home-scorecard-example__back-scroll flex h-full min-h-0 flex-col overflow-y-auto overscroll-contain px-2.5 py-2"
+        >
           <div className="slop-scorecard-header flex shrink-0 items-center justify-between gap-2 px-0 py-1.5">
             <StadiumSlopWordmark size="scorecard" />
           </div>
@@ -283,13 +297,35 @@ function ExampleScorecardBackFace() {
   );
 }
 
+function resetScrollContainer(el: HTMLDivElement | null) {
+  if (!el) {
+    return;
+  }
+  el.scrollTop = 0;
+  el.scrollLeft = 0;
+}
+
 export function HomeScorecardFlipExample() {
   const [showBack, setShowBack] = useState(false);
   const statusId = useId();
+  const backScrollRef = useRef<HTMLDivElement>(null);
 
   const toggleFlip = useCallback(() => {
     setShowBack((prev) => !prev);
   }, []);
+
+  useEffect(() => {
+    resetScrollContainer(backScrollRef.current);
+    if (!showBack) {
+      return;
+    }
+    // Re-apply after layout/flip so the back face always opens at the top.
+    const frame = requestAnimationFrame(() => {
+      resetScrollContainer(backScrollRef.current);
+      requestAnimationFrame(() => resetScrollContainer(backScrollRef.current));
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [showBack]);
 
   const showFront = !showBack;
   const flipLabel = showFront
@@ -314,7 +350,7 @@ export function HomeScorecardFlipExample() {
             className={`home-scorecard-example__flip-inner${showBack ? " is-flipped" : ""}`}
           >
             <ExampleScorecardFrontFace />
-            <ExampleScorecardBackFace />
+            <ExampleScorecardBackFace scrollRef={backScrollRef} />
           </div>
         </button>
       </div>
