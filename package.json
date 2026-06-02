@@ -55,6 +55,7 @@
     "audit:t-mobile-park-menu": "tsx scripts/audit-t-mobile-park-menu-cleanup.ts",
     "audit:kauffman-stadium-menu": "tsx scripts/audit-kauffman-stadium-menu-cleanup.ts",
     "audit:globe-life-field-menu": "tsx scripts/audit-globe-life-field-menu-cleanup.ts",
+    "audit:petco-park-menu": "tsx scripts/audit-petco-park-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
   "dependencies": {
