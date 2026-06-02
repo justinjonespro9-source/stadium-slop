@@ -62,6 +62,7 @@
     "audit:fenway-park-menu": "tsx scripts/audit-fenway-park-menu-cleanup.ts",
     "audit:angel-stadium-menu": "tsx scripts/audit-angel-stadium-menu-cleanup.ts",
     "audit:rogers-centre-menu": "tsx scripts/audit-rogers-centre-menu-cleanup.ts",
+    "audit:oriole-park-menu": "tsx scripts/audit-oriole-park-menu-cleanup.ts",
     "audit:mlb-generic-menu-cleanup": "tsx scripts/audit-mlb-generic-menu-cleanup.ts",
     "dev:clean": "rm -rf .next node_modules/.cache && next dev --webpack -H 127.0.0.1"
   },
