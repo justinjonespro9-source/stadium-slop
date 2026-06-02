@@ -2,10 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { ActiveAd } from "@/lib/ads";
-import { TEAM_M8TES_FANDOM_FILTER } from "@/lib/media-assets";
+import {
+  resolveTeamM8tesCtaHref,
+  TEAM_M8TES_PROMO,
+  type TeamM8tesPromoVariant
+} from "@/lib/team-m8tes-promo";
 
-type TeamM8tesFeaturedPanelProps = {
-  ad: ActiveAd;
+type TeamM8tesPromoProps = {
+  ad?: Pick<ActiveAd, "ctaHref"> | null;
+  variant?: TeamM8tesPromoVariant;
   className?: string;
 };
 
@@ -13,24 +18,38 @@ function isExternalHref(href: string): boolean {
   return /^https?:\/\//i.test(href);
 }
 
-export function TeamM8tesFeaturedPanel({ ad, className }: TeamM8tesFeaturedPanelProps) {
-  const ctaHref = ad.ctaHref?.trim() ?? "https://team-m8tes.com";
-  const ctaLabel = "Join Team-M8tes";
+export function TeamM8tesPromo({
+  ad,
+  variant = "banner",
+  className
+}: TeamM8tesPromoProps) {
+  const ctaHref = resolveTeamM8tesCtaHref(ad);
   const external = isExternalHref(ctaHref);
+  const isInline = variant === "inline";
 
   const inner = (
     <article
-      className={["media-m8tes-featured", className].filter(Boolean).join(" ")}
+      className={[
+        "media-m8tes-featured",
+        isInline ? "media-m8tes-featured--inline" : "",
+        className
+      ]
+        .filter(Boolean)
+        .join(" ")}
       role="complementary"
-      aria-label="Sponsored: Team-M8tes — Fandom is the filter."
+      aria-label={TEAM_M8TES_PROMO.ariaLabel}
     >
       <div className="media-m8tes-featured__bg" aria-hidden>
         <Image
-          src={TEAM_M8TES_FANDOM_FILTER}
+          src={TEAM_M8TES_PROMO.imageSrc}
           alt=""
           fill
           className="media-m8tes-featured__bg-image"
-          sizes="(max-width: 640px) 100vw, 1152px"
+          sizes={
+            isInline
+              ? "(max-width: 640px) 100vw, 640px"
+              : "(max-width: 640px) 100vw, 1152px"
+          }
           priority={false}
         />
         <div className="media-m8tes-featured__overlay" />
@@ -39,18 +58,18 @@ export function TeamM8tesFeaturedPanel({ ad, className }: TeamM8tesFeaturedPanel
 
       <div className="media-m8tes-featured__body">
         <p className="media-m8tes-featured__eyebrow">
-          <span>Sponsored</span>
+          <span>{TEAM_M8TES_PROMO.eyebrowLabel}</span>
           <span className="media-m8tes-featured__eyebrow-dot" aria-hidden>
             {" "}
             ·{" "}
           </span>
-          <span className="media-m8tes-featured__eyebrow-brand">Team-M8tes</span>
+          <span className="media-m8tes-featured__eyebrow-brand">
+            {TEAM_M8TES_PROMO.sponsorName}
+          </span>
         </p>
-        <h2 className="media-m8tes-featured__title">Fandom is the filter.</h2>
-        <p className="media-m8tes-featured__copy">
-          Meet sports fans who already speak your language.
-        </p>
-        <span className="media-m8tes-featured__cta">{ctaLabel}</span>
+        <h2 className="media-m8tes-featured__title">{TEAM_M8TES_PROMO.headline}</h2>
+        <p className="media-m8tes-featured__copy">{TEAM_M8TES_PROMO.subcopy}</p>
+        <span className="media-m8tes-featured__cta">{TEAM_M8TES_PROMO.ctaLabel}</span>
       </div>
     </article>
   );

@@ -1,15 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { TeamM8tesFeaturedPanel } from "@/components/ads/team-m8tes-featured-panel";
+import { TeamM8tesPromo } from "@/components/promos/team-m8tes-promo";
 import { getActiveAdForPlacement, type ActiveAd } from "@/lib/ads";
-
-function isTeamM8tesHomeFeaturedBanner(placementKey: string, ad: ActiveAd): boolean {
-  return (
-    placementKey === "home.featured.banner" &&
-    /team-m8tes/i.test(ad.sponsorName ?? "")
-  );
-}
+import { isTeamM8tesAd } from "@/lib/team-m8tes-promo";
 
 export type AdSlotVariant = "banner" | "card" | "inline";
 
@@ -51,32 +45,22 @@ function AdLabel({
 function MediaBannerAd({
   ad,
   className,
-  label,
-  placementKey
+  label
 }: {
   ad: ActiveAd;
   className?: string;
   label: string;
-  placementKey: string;
 }) {
-  if (isTeamM8tesHomeFeaturedBanner(placementKey, ad)) {
-    return <TeamM8tesFeaturedPanel ad={ad} className={className} />;
+  if (isTeamM8tesAd(ad)) {
+    return <TeamM8tesPromo ad={ad} variant="banner" className={className} />;
   }
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
   const imageSrc = ad.imageUrl?.trim() ?? "";
-  const partnerFallback =
-    imageSrc.includes("team-m8tes-poster.svg") || imageSrc.includes("team-m8tes-poster.png");
 
   const inner = (
     <article
-      className={[
-        "media-sponsor-banner relative",
-        partnerFallback ? "media-sponsor-banner--partner-fallback" : "",
-        className
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      className={["media-sponsor-banner relative", className].filter(Boolean).join(" ")}
       role="complementary"
       aria-label={`${label}: ${ad.sponsorName ?? ad.title}`}
     >
@@ -90,13 +74,7 @@ function MediaBannerAd({
             sizes="(max-width: 640px) 100vw, 1152px"
             unoptimized={!isLocalAssetPath(imageSrc)}
           />
-          <div
-            className={
-              partnerFallback
-                ? "absolute inset-0 bg-gradient-to-t from-[rgba(6,10,16,0.88)] via-[rgba(6,10,16,0.35)] to-transparent sm:bg-gradient-to-r sm:from-[rgba(6,10,16,0.72)] sm:via-[rgba(6,10,16,0.35)] sm:to-transparent"
-                : "absolute inset-0 bg-gradient-to-t from-[rgba(8,13,20,0.95)] via-[rgba(8,13,20,0.5)] to-transparent sm:bg-gradient-to-r sm:from-[rgba(8,13,20,0.92)] sm:via-[rgba(8,13,20,0.65)] sm:to-transparent"
-            }
-          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,13,20,0.95)] via-[rgba(8,13,20,0.5)] to-transparent sm:bg-gradient-to-r sm:from-[rgba(8,13,20,0.92)] sm:via-[rgba(8,13,20,0.65)] sm:to-transparent" />
         </div>
       ) : null}
       <div className="media-sponsor-banner__body">
@@ -148,6 +126,9 @@ function BannerAd({
   className?: string;
   label: string;
 }) {
+  if (isTeamM8tesAd(ad)) {
+    return <TeamM8tesPromo ad={ad} variant="banner" className={className} />;
+  }
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
   const hasImage = Boolean(ad.imageUrl?.trim());
@@ -250,6 +231,9 @@ function CardAd({
   label: string;
   tone?: "default" | "media";
 }) {
+  if (isTeamM8tesAd(ad)) {
+    return <TeamM8tesPromo ad={ad} variant="banner" className={className} />;
+  }
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
   const hasImage = Boolean(ad.imageUrl?.trim());
@@ -354,6 +338,9 @@ function InlineAd({
   className?: string;
   label: string;
 }) {
+  if (isTeamM8tesAd(ad)) {
+    return <TeamM8tesPromo ad={ad} variant="inline" className={className} />;
+  }
   const ctaHref = ad.ctaHref?.trim();
   const showCta = Boolean(ctaHref && ad.ctaLabel?.trim());
 
@@ -412,12 +399,7 @@ export async function AdSlot({
   if (variant === "banner") {
     if (tone === "media") {
       return (
-        <MediaBannerAd
-          ad={ad}
-          className={className}
-          label={label}
-          placementKey={placementKey}
-        />
+        <MediaBannerAd ad={ad} className={className} label={label} />
       );
     }
     return <BannerAd ad={ad} className={className} label={label} />;

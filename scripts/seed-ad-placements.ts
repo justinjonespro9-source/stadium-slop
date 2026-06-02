@@ -9,7 +9,7 @@ import "dotenv/config";
 import { EntityStatus, PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-import { resolveTeamM8tesPosterUrl } from "../lib/media-assets";
+import { teamM8tesSeedFields } from "../lib/team-m8tes-promo";
 
 type SeedAd = {
   placementKey: string;
@@ -22,18 +22,8 @@ type SeedAd = {
   status?: EntityStatus;
 };
 
-const TEAM_M8TES: Omit<SeedAd, "placementKey"> = {
-  title: "Single sports fan? Find your Team-M8.",
-  body: "Connect with fans who love your teams as much as you do.",
-  ctaLabel: "Find your M8",
-  ctaHref: "https://team-m8tes.com",
-  sponsorName: "Team-M8tes"
-};
-
-const TEAM_M8TES_BANNER: Omit<SeedAd, "placementKey"> = {
-  ...TEAM_M8TES,
-  imageUrl: resolveTeamM8tesPosterUrl()
-};
+const TEAM_M8TES = teamM8tesSeedFields();
+const TEAM_M8TES_BANNER = teamM8tesSeedFields(true);
 
 const SNG_LABS: Omit<SeedAd, "placementKey"> = {
   title: "Built by SNG LABS",
@@ -54,7 +44,7 @@ const PLACEMENTS: SeedAd[] = [
   { placementKey: "venue.mobile.inline", ...TEAM_M8TES },
   { placementKey: "item.detail.inline", ...TEAM_M8TES },
   { placementKey: "rankings.banner", ...SNG_LABS },
-  { placementKey: "worldcup.guide.banner", ...TEAM_M8TES },
+  { placementKey: "worldcup.guide.banner", ...TEAM_M8TES_BANNER },
   { placementKey: "review.confirmation", ...SNG_LABS }
 ];
 

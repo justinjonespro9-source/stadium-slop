@@ -1,6 +1,6 @@
 import "server-only";
 
-import { resolveTeamM8tesPosterUrl } from "@/lib/media-assets";
+import { teamM8tesAdFields } from "@/lib/team-m8tes-promo";
 
 export type StaticAd = {
   id: string;
@@ -13,17 +13,15 @@ export type StaticAd = {
   sponsorName: string | null;
 };
 
+const TEAM_M8TES_BANNER = teamM8tesAdFields({ includeImage: true });
+const TEAM_M8TES_INLINE = teamM8tesAdFields();
+
 /** House ads from seed script — used when DB is unavailable or cache is cold. */
 export const STATIC_AD_BY_PLACEMENT: Record<string, StaticAd> = {
   "home.featured.banner": {
     id: "static-home-featured",
     placementKey: "home.featured.banner",
-    title: "Single sports fan? Find your Team-M8.",
-    body: "Connect with fans who love your teams as much as you do.",
-    ctaLabel: "Find your M8",
-    ctaHref: "https://team-m8tes.com",
-    sponsorName: "Team-M8tes",
-    imageUrl: resolveTeamM8tesPosterUrl()
+    ...TEAM_M8TES_BANNER
   },
   "venue.sidebar": {
     id: "static-venue-sidebar",
@@ -38,22 +36,12 @@ export const STATIC_AD_BY_PLACEMENT: Record<string, StaticAd> = {
   "venue.mobile.inline": {
     id: "static-venue-mobile",
     placementKey: "venue.mobile.inline",
-    title: "Single sports fan? Find your Team-M8.",
-    body: "Connect with fans who love your teams as much as you do.",
-    ctaLabel: "Find your M8",
-    ctaHref: "https://team-m8tes.com",
-    sponsorName: "Team-M8tes",
-    imageUrl: null
+    ...TEAM_M8TES_INLINE
   },
   "item.detail.inline": {
     id: "static-item-inline",
     placementKey: "item.detail.inline",
-    title: "Single sports fan? Find your Team-M8.",
-    body: "Connect with fans who love your teams as much as you do.",
-    ctaLabel: "Find your M8",
-    ctaHref: "https://team-m8tes.com",
-    sponsorName: "Team-M8tes",
-    imageUrl: null
+    ...TEAM_M8TES_INLINE
   },
   "rankings.banner": {
     id: "static-rankings-banner",
@@ -68,12 +56,7 @@ export const STATIC_AD_BY_PLACEMENT: Record<string, StaticAd> = {
   "worldcup.guide.banner": {
     id: "static-worldcup-banner",
     placementKey: "worldcup.guide.banner",
-    title: "Single sports fan? Find your Team-M8.",
-    body: "Connect with fans who love your teams as much as you do.",
-    ctaLabel: "Find your M8",
-    ctaHref: "https://team-m8tes.com",
-    sponsorName: "Team-M8tes",
-    imageUrl: null
+    ...TEAM_M8TES_BANNER
   },
   "review.confirmation": {
     id: "static-review-confirmation",

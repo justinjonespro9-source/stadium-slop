@@ -1,15 +1,17 @@
 # Sponsor ad assets
 
-## Team-M8tes homepage banner
+## Team-M8tes featured promo
 
-Place the wide poster at:
+Place the hero image at:
 
-`public/ads/team-m8tes-poster.png`
+`public/ads/team-m8tes-fandom-filter.png`
 
-Then run:
+All Team-M8tes placements use this image plus the shared copy in `lib/team-m8tes-promo.ts`.
+
+To sync DB placement metadata (title, body, CTA, image URL):
 
 ```bash
 npm run seed:ad-placements
 ```
 
-The seed script prefers the PNG when the file exists; otherwise it uses `team-m8tes-poster.svg`.
+Legacy poster assets (`team-m8tes-poster.png` / `.svg`) are no longer used by the promo component.
