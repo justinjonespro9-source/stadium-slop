@@ -647,6 +647,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
                 venueName={venue.name}
                 venueSlug={venue.slug}
                 partner={venuePartner}
+                sticky
               />
               <AdSlot placementKey="venue.sidebar" variant="card" tone="media" />
             </aside>

@@ -1971,6 +1971,32 @@ body[data-mobile-nav-open] .media-nav-bar {
   background: linear-gradient(135deg, #fff 0%, #fff8f3 100%);
 }
 
+.venue-partner-card {
+  box-shadow: var(--media-shadow-card);
+}
+
+.venue-partner-card--demo {
+  border-style: dashed;
+  border-color: rgba(255, 107, 26, 0.28);
+}
+
+.venue-partner-card--configured {
+  border-color: rgba(255, 107, 26, 0.3);
+}
+
+.venue-partner-card__cta--secondary {
+  min-height: 2.5rem;
+  padding-inline: 0.875rem;
+}
+
+.venue-partner-card__cta--primary {
+  min-height: 2.625rem;
+}
+
+.venue-partner-card__social a {
+  transition: color 0.15s ease;
+}
+
 .media-cta-outline {
   display: inline-flex;
   align-items: center;

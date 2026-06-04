@@ -27,5 +27,5 @@ export function getScorecardShareDescription(
       ? ` Slop Score ${slopScore.toFixed(1)}.`
       : "";
   const socialSuffix = formatVenueShareSocialSuffix(shareContext);
-  return `Official fan scorecard for ${itemName} at ${venueName}.${scoreLine} View the full item ranking on Stadium Slop. ${socialSuffix}`;
+  return `Official fan scorecard for ${itemName} at ${venueName}.${scoreLine} View the full item ranking on Stadium Slop — ${socialSuffix}`;
 }
