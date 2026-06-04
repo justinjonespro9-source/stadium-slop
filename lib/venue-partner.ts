@@ -20,6 +20,10 @@ export function hasVenuePartnerConfigured(config: VenuePartnerConfig): boolean {
   return Boolean(config.partnerName?.trim());
 }
 
+export function hasVenueShareSocialConfigured(config: VenuePartnerConfig): boolean {
+  return Boolean(config.xHandle?.trim() && config.primaryHashtag?.trim());
+}
+
 export function venuePartnerFromVenue(venue: Venue): VenuePartnerConfig {
   return {
     partnerName: venue.partnerName,

@@ -26,9 +26,9 @@ export const STATIC_AD_BY_PLACEMENT: Record<string, StaticAd> = {
   "venue.sidebar": {
     id: "static-venue-sidebar",
     placementKey: "venue.sidebar",
-    title: "Built by SNG LABS",
-    body: "Fan-first products for sports, food, games, and live experiences.",
-    ctaLabel: "Learn more",
+    title: "Venue partner inventory",
+    body: "Drive fans to tickets, merch, offers, and official social channels from every venue page.",
+    ctaLabel: "Claim a placement",
     ctaHref: "/claim",
     sponsorName: "SNG LABS",
     imageUrl: null

@@ -7,8 +7,14 @@ import {
   formatInstagramProfileUrl,
   formatXProfileUrl,
   hasVenuePartnerConfigured,
+  hasVenueShareSocialConfigured,
   type VenuePartnerConfig
 } from "@/lib/venue-partner";
+
+const PARTNER_VALUE_COPY =
+  "Drive fans to tickets, merch, offers, and official social channels.";
+
+const SHARE_NOTE_COPY = "Scorecard shares include team handle and hashtag.";
 
 type VenuePartnerCardProps = {
   venueName: string;
@@ -34,6 +40,26 @@ function PartnerBadge({ tone = "card" }: { tone?: "card" | "hero" }) {
       <span aria-hidden className="size-1.5 rounded-full bg-[var(--media-orange-deep)]" />
       Founding venue partner
     </span>
+  );
+}
+
+function PartnerValueProp({ className = "" }: { className?: string }) {
+  return (
+    <p
+      className={`venue-partner-card__value text-sm leading-relaxed text-[var(--media-ink-muted)] ${className}`.trim()}
+    >
+      {PARTNER_VALUE_COPY}
+    </p>
+  );
+}
+
+function PartnerShareNote({ className = "" }: { className?: string }) {
+  return (
+    <p
+      className={`venue-partner-card__share-note text-[0.65rem] leading-snug text-[var(--media-ink-dim)] ${className}`.trim()}
+    >
+      {SHARE_NOTE_COPY}
+    </p>
   );
 }
 
@@ -91,13 +117,15 @@ export function VenuePartnerCard({
 }: VenuePartnerCardProps) {
   const configured = hasVenuePartnerConfigured(partner);
   const showBadge = Boolean(partner.foundingVenuePartner);
+  const showShareNote = hasVenueShareSocialConfigured(partner);
   const cardClassName = [
     "venue-partner-card",
     "media-panel-card",
     configured && showBadge ? "media-panel-card--accent venue-partner-card--configured" : "",
     !configured ? "media-panel-card--accent venue-partner-card--demo" : "",
+    configured ? "venue-partner-card--live" : "",
     "border p-4 sm:p-5",
-    sticky ? "lg:sticky lg:top-24" : "",
+    sticky ? "venue-partner-card--sidebar lg:sticky lg:top-24" : "",
     className
   ]
     .filter(Boolean)
@@ -111,22 +139,41 @@ export function VenuePartnerCard({
         </p>
         <div className="mt-3 flex items-start gap-3">
           <div
-            className="venue-partner-card__logo venue-partner-card__logo--demo flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-dashed border-[rgba(255,107,26,0.35)] bg-[rgba(255,107,26,0.06)] text-xs font-black uppercase tracking-[0.08em] text-[var(--media-orange-deep)]"
+            className="venue-partner-card__logo venue-partner-card__logo--demo flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-dashed border-[rgba(255,107,26,0.35)] bg-[rgba(255,107,26,0.06)] text-xs font-black uppercase tracking-[0.08em] text-[var(--media-orange-deep)] lg:h-16 lg:w-16 lg:text-sm"
             aria-hidden
           >
             SNG
           </div>
           <div className="min-w-0 pt-0.5">
-            <h2 className="text-base font-black leading-snug text-[var(--media-ink)] sm:text-[1.05rem]">
+            <h2 className="venue-partner-card__headline text-base font-black leading-snug text-[var(--media-ink)] sm:text-[1.05rem]">
               Your team belongs here
             </h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-[var(--media-ink-muted)]">
-              Logo, tickets, team shop, and social handles — surfaced on every fan scorecard and
-              venue page for {venueName}.
+            <PartnerValueProp className="mt-1.5" />
+            <p className="mt-2 text-xs leading-relaxed text-[var(--media-ink-muted)] lg:text-sm">
+              Premium sidebar placement on {venueName} — logo, links, and social handles fans see
+              while browsing menus and scorecards.
             </p>
           </div>
         </div>
-        <p className="venue-partner-card__demo-label mt-3 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-[var(--media-ink-dim)]">
+        <ul className="venue-partner-card__demo-features mt-3 grid gap-1.5 text-[0.6875rem] font-bold text-[var(--media-ink-muted)] lg:mt-4 lg:grid-cols-2 lg:gap-x-3 lg:gap-y-1.5 lg:text-xs">
+          <li className="flex items-center gap-1.5">
+            <span aria-hidden className="size-1 rounded-full bg-[var(--media-orange-deep)]" />
+            Ticket CTAs
+          </li>
+          <li className="flex items-center gap-1.5">
+            <span aria-hidden className="size-1 rounded-full bg-[var(--media-orange-deep)]" />
+            Team shop links
+          </li>
+          <li className="flex items-center gap-1.5">
+            <span aria-hidden className="size-1 rounded-full bg-[var(--media-orange-deep)]" />
+            Partner offers
+          </li>
+          <li className="flex items-center gap-1.5">
+            <span aria-hidden className="size-1 rounded-full bg-[var(--media-orange-deep)]" />
+            Share handle + hashtag
+          </li>
+        </ul>
+        <p className="venue-partner-card__demo-label mt-3 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-[var(--media-ink-dim)] lg:mt-4">
           Preview · SNG Labs
         </p>
         <Link
@@ -172,7 +219,7 @@ export function VenuePartnerCard({
     secondaryLinks.push({ href: teamShopUrl, label: "Team shop" });
   }
 
-  const eyebrow = showBadge ? "Founding venue partner" : "Official partner";
+  const eyebrow = showBadge ? "Founding venue partner" : "Venue partner";
 
   return (
     <aside className={cardClassName} aria-label={`${partnerName} partner card`}>
@@ -180,19 +227,19 @@ export function VenuePartnerCard({
 
       <div className={`flex items-center gap-3 ${showBadge ? "mt-3" : ""}`}>
         {logoUrl ? (
-          <div className="venue-partner-card__logo relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-[var(--media-border)] bg-white shadow-sm">
+          <div className="venue-partner-card__logo relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-[var(--media-border)] bg-white shadow-sm lg:h-16 lg:w-16">
             <Image
               src={logoUrl}
               alt=""
               fill
               className="object-contain p-2"
-              sizes="56px"
+              sizes="(max-width: 1023px) 56px, 64px"
               unoptimized
             />
           </div>
         ) : (
           <div
-            className="venue-partner-card__logo venue-partner-card__logo--initials flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[var(--media-border)] bg-white text-sm font-black text-[var(--media-orange-deep)] shadow-sm"
+            className="venue-partner-card__logo venue-partner-card__logo--initials flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[var(--media-border)] bg-white text-sm font-black text-[var(--media-orange-deep)] shadow-sm lg:h-16 lg:w-16 lg:text-base"
             aria-hidden
           >
             {partnerInitials(partnerName)}
@@ -202,14 +249,17 @@ export function VenuePartnerCard({
           <p className="venue-partner-card__eyebrow text-[0.6rem] font-black uppercase tracking-[0.16em] text-[var(--media-ink-dim)]">
             {eyebrow}
           </p>
-          <h2 className="mt-1 text-base font-black leading-snug text-[var(--media-ink)] sm:text-[1.05rem]">
+          <h2 className="venue-partner-card__headline mt-1 text-base font-black leading-snug text-[var(--media-ink)] sm:text-[1.05rem]">
             {partnerName}
           </h2>
         </div>
       </div>
 
+      <PartnerValueProp className="mt-3 lg:mt-4" />
+      {showShareNote ? <PartnerShareNote className="mt-2" /> : null}
+
       {primaryLink || secondaryLinks.length > 0 ? (
-        <div className="mt-4 space-y-2.5">
+        <div className="mt-4 space-y-2.5 lg:mt-5">
           {primaryLink ? (
             <PartnerLink href={primaryLink.href} variant={primaryLink.variant}>
               {primaryLink.label}
@@ -239,7 +289,7 @@ export function VenuePartnerCard({
       ) : null}
 
       {xUrl || instagramUrl ? (
-        <div className="venue-partner-card__social mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-[var(--media-border)] pt-3 text-[0.7rem] font-bold text-[var(--media-ink-muted)]">
+        <div className="venue-partner-card__social mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-[var(--media-border)] pt-3 text-[0.7rem] font-bold text-[var(--media-ink-muted)] lg:mt-4 lg:pt-4">
           {xUrl && xLabel ? (
             <Link
               href={xUrl}

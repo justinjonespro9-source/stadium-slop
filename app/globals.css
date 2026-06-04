@@ -1975,6 +1975,37 @@ body[data-mobile-nav-open] .media-nav-bar {
   box-shadow: var(--media-shadow-card);
 }
 
+@media (min-width: 1024px) {
+  .venue-partner-card--sidebar {
+    padding: 1.375rem 1.5rem 1.5rem;
+    border-radius: 1.375rem;
+    box-shadow:
+      0 4px 6px rgba(12, 18, 32, 0.04),
+      0 16px 36px rgba(255, 107, 26, 0.1);
+  }
+
+  .venue-partner-card--sidebar.venue-partner-card--configured,
+  .venue-partner-card--sidebar.venue-partner-card--live {
+    border-color: rgba(255, 107, 26, 0.34);
+    background: linear-gradient(160deg, #fff 0%, #fff9f4 52%, #fff4eb 100%);
+  }
+
+  .venue-partner-card--sidebar .venue-partner-card__headline {
+    font-size: 1.125rem;
+    line-height: 1.25;
+  }
+
+  .venue-partner-card--sidebar .venue-partner-card__value {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .venue-partner-card--sidebar .venue-partner-card__eyebrow {
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+  }
+}
+
 .venue-partner-card--demo {
   border-style: dashed;
   border-color: rgba(255, 107, 26, 0.28);

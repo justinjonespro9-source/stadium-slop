@@ -284,7 +284,11 @@ function CardAd({
         )}
         <p
           className={`mt-1 text-base font-black leading-snug ${
-            isMedia ? "text-white" : "text-[var(--slop-cream)]"
+            hasImage
+              ? "text-white"
+              : isMedia
+                ? "text-[var(--media-ink)]"
+                : "text-[var(--slop-cream)]"
           }`}
         >
           {ad.title}
@@ -292,7 +296,11 @@ function CardAd({
         {ad.body ? (
           <p
             className={`mt-1 line-clamp-2 text-sm ${
-              isMedia ? "text-white/85" : "text-[var(--slop-cream-muted)]"
+              hasImage
+                ? "text-white/85"
+                : isMedia
+                  ? "text-[var(--media-ink-muted)]"
+                  : "text-[var(--slop-cream-muted)]"
             }`}
           >
             {ad.body}

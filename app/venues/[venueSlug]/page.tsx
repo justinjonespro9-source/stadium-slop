@@ -602,7 +602,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             <FanPoweredGuideNote preset="venue-rankings" className="media-guide-note mt-2" />
           ) : null}
 
-          <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:items-start lg:gap-6">
+          <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start lg:gap-6">
             <div className="min-w-0">
               {isFairVenueSlug(venue.slug) ? (
                 <FairVenueStandings
@@ -642,14 +642,13 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               />
             </div>
 
-            <aside className="mt-5 hidden space-y-4 lg:mt-0 lg:block">
+            <aside className="mt-5 hidden lg:mt-0 lg:block">
               <VenuePartnerCard
                 venueName={venue.name}
                 venueSlug={venue.slug}
                 partner={venuePartner}
                 sticky
               />
-              <AdSlot placementKey="venue.sidebar" variant="card" tone="media" />
             </aside>
           </div>
 
