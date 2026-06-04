@@ -23,6 +23,7 @@ import {
   getScorecardShareTitle,
   getScorecardShareUrl
 } from "@/lib/scorecard-share";
+import type { VenueShareContext } from "@/lib/venue-partner";
 import { normalizePublicImageUrl } from "@/lib/image-url";
 import { getFoodPhotoAlt } from "@/lib/venue-copy-context";
 
@@ -41,6 +42,7 @@ type FoodItemScorecardDeckProps = {
   itemPageWithReviewsAnchor: string;
   baseReportContext: Omit<ReportContentContext, "reviewId" | "photoUrl">;
   markReviewHelpful: (formData: FormData) => Promise<void>;
+  shareContext?: VenueShareContext;
 };
 
 export function FoodItemScorecardDeck({
@@ -57,7 +59,8 @@ export function FoodItemScorecardDeck({
   isSignedIn,
   itemPageWithReviewsAnchor,
   baseReportContext,
-  markReviewHelpful
+  markReviewHelpful,
+  shareContext
 }: FoodItemScorecardDeckProps) {
   const sortOptions = useMemo(() => getScorecardSortOptions(reviews), [reviews]);
   const [sort, setSort] = useState<ScorecardSortMode>(DEFAULT_SCORECARD_SORT);
@@ -191,7 +194,8 @@ export function FoodItemScorecardDeck({
               shareDescription={getScorecardShareDescription(
                 foodName,
                 venueName,
-                review.slopScore
+                review.slopScore,
+                shareContext
               )}
               variant="compact"
             />

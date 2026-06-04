@@ -4,6 +4,8 @@ import type { ReactNode } from "react";
 type VenueHeroProps = {
   venueName: string;
   metaLine: ReactNode;
+  /** Optional badge or label below the venue title (e.g. Founding Venue Partner). */
+  titleBelow?: ReactNode;
   /** In-page anchor for the menu / standings (default #venue-menu). */
   browseCtaHref?: string;
   browseCtaLabel?: string;
@@ -13,6 +15,7 @@ type VenueHeroProps = {
 export function VenueHero({
   venueName,
   metaLine,
+  titleBelow,
   browseCtaHref = "#venue-menu",
   browseCtaLabel = "Browse menu items",
   children
@@ -59,6 +62,7 @@ export function VenueHero({
           <h1 className="mt-2 max-w-3xl text-[clamp(1.65rem,5.5vw,2.75rem)] font-black leading-[1.08] tracking-tight text-white">
             {venueName}
           </h1>
+          {titleBelow}
           <p className="mt-2 max-w-2xl text-[0.8125rem] font-medium leading-relaxed text-white/78 sm:text-sm">
             {metaLine}
           </p>

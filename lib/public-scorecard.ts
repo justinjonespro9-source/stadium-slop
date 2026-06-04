@@ -20,6 +20,7 @@ import type {
   ReviewConsensusLabel
 } from "@/lib/sample-data";
 import { getScorecardShareDescription, getScorecardShareTitle } from "@/lib/scorecard-share";
+import { venueShareContextFromPartner, venuePartnerFromVenue } from "@/lib/venue-partner";
 import type { ReviewHistoryVisibility } from "@/lib/reviewer-visibility";
 
 export type PublicScorecardView = {
@@ -84,7 +85,15 @@ export async function getPublicScorecardByReviewId(
       include: {
         foodItem: {
           include: {
-            venue: { select: { slug: true, name: true, status: true } },
+            venue: {
+              select: {
+                slug: true,
+                name: true,
+                status: true,
+                xHandle: true,
+                primaryHashtag: true
+              }
+            },
             vendor: { select: { name: true, section: true, location: true } }
           }
         },
@@ -234,7 +243,8 @@ export async function getPublicScorecardByReviewId(
     shareDescription: getScorecardShareDescription(
       foodItem.name,
       venue.name,
-      review.slopScore
+      review.slopScore,
+      venueShareContextFromPartner(venue)
     ),
     reviewerHistoryVisibility: row.user.reviewHistoryVisibility
   };

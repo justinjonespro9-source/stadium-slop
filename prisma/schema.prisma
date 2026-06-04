@@ -263,6 +263,17 @@ model Venue {
   reviewRadiusMeters Int
   venueType          VenueType
   status             EntityStatus    @default(ACTIVE)
+  /** Optional Founding Venue Partner placement (Phase 1). */
+  partnerName          String?
+  partnerLogoUrl       String?
+  partnerUrl           String?
+  partnerCtaText       String?
+  ticketsUrl           String?
+  teamShopUrl          String?
+  xHandle              String?
+  instagramHandle      String?
+  primaryHashtag       String?
+  foundingVenuePartner Boolean         @default(false)
   createdAt          DateTime        @default(now())
   updatedAt          DateTime        @updatedAt
 

@@ -53,6 +53,17 @@ export type Venue = {
   surfaceType?: string;
   /** From MLB seed JSON `reviewNotes`; optional admin/import QA */
   importNotes?: string;
+  /** Founding Venue Partner placement (optional). */
+  partnerName?: string | null;
+  partnerLogoUrl?: string | null;
+  partnerUrl?: string | null;
+  partnerCtaText?: string | null;
+  ticketsUrl?: string | null;
+  teamShopUrl?: string | null;
+  xHandle?: string | null;
+  instagramHandle?: string | null;
+  primaryHashtag?: string | null;
+  foundingVenuePartner?: boolean;
 };
 
 export type Vendor = {

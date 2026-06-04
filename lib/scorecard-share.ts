@@ -1,3 +1,4 @@
+import { formatVenueShareSocialSuffix, type VenueShareContext } from "@/lib/venue-partner";
 import { getAbsoluteUrl } from "@/lib/site-metadata";
 
 export const SCORECARD_PATH_PREFIX = "/scorecards";
@@ -18,11 +19,13 @@ export function getScorecardShareTitle(itemName: string, venueName: string): str
 export function getScorecardShareDescription(
   itemName: string,
   venueName: string,
-  slopScore?: number
+  slopScore?: number,
+  shareContext?: VenueShareContext | null
 ): string {
   const scoreLine =
     slopScore != null && !Number.isNaN(slopScore)
       ? ` Slop Score ${slopScore.toFixed(1)}.`
       : "";
-  return `Official fan scorecard for ${itemName} at ${venueName}.${scoreLine} View the full item ranking on Stadium Slop.`;
+  const socialSuffix = formatVenueShareSocialSuffix(shareContext);
+  return `Official fan scorecard for ${itemName} at ${venueName}.${scoreLine} View the full item ranking on Stadium Slop. ${socialSuffix}`;
 }

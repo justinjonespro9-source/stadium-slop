@@ -72,6 +72,10 @@ import { resolveFoodItemForPriceReport } from "@/lib/price-report";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
 import { formatVenueTeamsInline } from "@/lib/venue-teams";
 import {
+  venuePartnerFromVenue,
+  venueShareContextFromPartner
+} from "@/lib/venue-partner";
+import {
   computeVenueFanFavoriteBadges,
   deriveFoodItemAwardChips,
   getFanFavoriteBadgesForItem
@@ -586,6 +590,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       pagePath: itemPageWithReviewsAnchor
     };
   const itemShareUrl = getAbsoluteUrl(itemPath);
+  const venueShareContext = venueShareContextFromPartner(venuePartnerFromVenue(venue));
   const unratedSeason = isUnratedItemStats(seasonStats.reviewCount);
   const hasGameDayFreshToday = freshStats.hasFreshToday;
   const awardChips = deriveFoodItemAwardChips(fanFavoriteBadges, freshStats);
@@ -615,7 +620,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
     ? getScorecardShareDescription(
         foodItem.name,
         venue.name,
-        submittedReview.slopScore
+        submittedReview.slopScore,
+        venueShareContext
       )
     : `Slop Score and fan signals for ${foodItem.name} at ${venue.name} on Stadium Slop.`;
   const shareSlopPreview: SlopCardSharePreview | null = leadReview
@@ -842,6 +848,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     itemPageWithReviewsAnchor={itemPageWithReviewsAnchor}
                     baseReportContext={baseReportContext}
                     markReviewHelpful={markReviewHelpful}
+                    shareContext={venueShareContext}
                   />
                 ) : (
                   <PhotoBackedReviewsEmpty

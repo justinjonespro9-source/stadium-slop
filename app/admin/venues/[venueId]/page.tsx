@@ -24,6 +24,11 @@ function parseList(value: FormDataEntryValue | null) {
     .filter(Boolean);
 }
 
+function parseOptionalString(value: FormDataEntryValue | null) {
+  const trimmed = String(value ?? "").trim();
+  return trimmed || null;
+}
+
 async function updateVenue(formData: FormData) {
   "use server";
 
@@ -54,7 +59,17 @@ async function updateVenue(formData: FormData) {
       venueType,
       reviewRadiusMeters: Number.isFinite(reviewRadiusMeters)
         ? reviewRadiusMeters
-        : 800
+        : 800,
+      partnerName: parseOptionalString(formData.get("partnerName")),
+      partnerLogoUrl: parseOptionalString(formData.get("partnerLogoUrl")),
+      partnerUrl: parseOptionalString(formData.get("partnerUrl")),
+      partnerCtaText: parseOptionalString(formData.get("partnerCtaText")),
+      ticketsUrl: parseOptionalString(formData.get("ticketsUrl")),
+      teamShopUrl: parseOptionalString(formData.get("teamShopUrl")),
+      xHandle: parseOptionalString(formData.get("xHandle")),
+      instagramHandle: parseOptionalString(formData.get("instagramHandle")),
+      primaryHashtag: parseOptionalString(formData.get("primaryHashtag")),
+      foundingVenuePartner: formData.get("foundingVenuePartner") === "on"
     }
   });
 
@@ -262,6 +277,54 @@ export default async function AdminVenueDetailPage({
                 </select>
               </label>
             </div>
+
+            <div className="mt-8 border-t border-zinc-800 pt-6">
+              <h2 className="text-lg font-black text-white">Founding Venue Partner</h2>
+              <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                Optional team or partner card on the public venue page. Leave partner name empty
+                to show the SNG Labs demo placement.
+              </p>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                {[
+                  ["partnerName", "Partner name", venue.partnerName ?? ""],
+                  ["partnerLogoUrl", "Partner logo URL", venue.partnerLogoUrl ?? ""],
+                  ["partnerUrl", "Partner URL", venue.partnerUrl ?? ""],
+                  ["partnerCtaText", "Partner CTA text", venue.partnerCtaText ?? ""],
+                  ["ticketsUrl", "Tickets URL", venue.ticketsUrl ?? ""],
+                  ["teamShopUrl", "Team shop URL", venue.teamShopUrl ?? ""],
+                  ["xHandle", "X handle (share text)", venue.xHandle ?? ""],
+                  [
+                    "instagramHandle",
+                    "Instagram handle",
+                    venue.instagramHandle ?? ""
+                  ],
+                  [
+                    "primaryHashtag",
+                    "Primary hashtag (share text)",
+                    venue.primaryHashtag ?? ""
+                  ]
+                ].map(([name, label, value]) => (
+                  <label key={name} className="grid gap-2 text-sm font-bold text-zinc-300">
+                    {label}
+                    <input
+                      name={name}
+                      defaultValue={value}
+                      className="rounded-2xl border border-zinc-800 bg-black px-4 py-3 text-sm text-white outline-none"
+                    />
+                  </label>
+                ))}
+                <label className="flex items-center gap-3 self-end text-sm font-bold text-zinc-300 sm:col-span-2">
+                  <input
+                    type="checkbox"
+                    name="foundingVenuePartner"
+                    defaultChecked={venue.foundingVenuePartner}
+                    className="size-4 rounded border-zinc-700 bg-black"
+                  />
+                  Show Founding Venue Partner badge
+                </label>
+              </div>
+            </div>
+
             <button
               type="submit"
               className="brand-cta mt-5 rounded-full px-6 py-3 text-sm font-black"

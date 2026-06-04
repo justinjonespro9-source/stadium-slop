@@ -41,6 +41,16 @@ type DbVenue = {
   primarySport?: string | null;
   recurringEvents?: string[];
   surfaceType?: string | null;
+  partnerName?: string | null;
+  partnerLogoUrl?: string | null;
+  partnerUrl?: string | null;
+  partnerCtaText?: string | null;
+  ticketsUrl?: string | null;
+  teamShopUrl?: string | null;
+  xHandle?: string | null;
+  instagramHandle?: string | null;
+  primaryHashtag?: string | null;
+  foundingVenuePartner?: boolean;
 };
 
 type DbVendor = {
@@ -176,7 +186,17 @@ const PUBLIC_VENUE_SELECT = {
   venueType: true,
   primarySport: true,
   recurringEvents: true,
-  surfaceType: true
+  surfaceType: true,
+  partnerName: true,
+  partnerLogoUrl: true,
+  partnerUrl: true,
+  partnerCtaText: true,
+  ticketsUrl: true,
+  teamShopUrl: true,
+  xHandle: true,
+  instagramHandle: true,
+  primaryHashtag: true,
+  foundingVenuePartner: true
 } as const;
 
 const PUBLIC_FOOD_ITEM_LIST_SELECT = {
@@ -275,7 +295,17 @@ export function mapVenueFromDb(venue: DbVenue): Venue {
     recurringEvents: venue.recurringEvents?.length
       ? [...venue.recurringEvents]
       : undefined,
-    surfaceType: venue.surfaceType ?? undefined
+    surfaceType: venue.surfaceType ?? undefined,
+    partnerName: venue.partnerName,
+    partnerLogoUrl: venue.partnerLogoUrl,
+    partnerUrl: venue.partnerUrl,
+    partnerCtaText: venue.partnerCtaText,
+    ticketsUrl: venue.ticketsUrl,
+    teamShopUrl: venue.teamShopUrl,
+    xHandle: venue.xHandle,
+    instagramHandle: venue.instagramHandle,
+    primaryHashtag: venue.primaryHashtag,
+    foundingVenuePartner: venue.foundingVenuePartner ?? false
   };
 }
 

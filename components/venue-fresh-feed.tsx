@@ -13,6 +13,7 @@ import {
   getScorecardShareUrl
 } from "@/lib/scorecard-share";
 import { normalizePublicImageUrl } from "@/lib/image-url";
+import type { VenueShareContext } from "@/lib/venue-partner";
 import type { VenueFreshReview } from "@/lib/venue-fresh-feed";
 import { getFoodPhotoAlt, getVenueFreshFeedSubcopy } from "@/lib/venue-copy-context";
 
@@ -20,12 +21,14 @@ type VenueFreshFeedProps = {
   reviews: VenueFreshReview[];
   venueSlug: string;
   venueName: string;
+  shareContext?: VenueShareContext;
 };
 
 export function VenueFreshFeed({
   reviews,
   venueSlug,
-  venueName
+  venueName,
+  shareContext
 }: VenueFreshFeedProps) {
   const cards = useMemo(() => reviews, [reviews]);
 
@@ -68,7 +71,8 @@ export function VenueFreshFeed({
               shareDescription={getScorecardShareDescription(
                 review.foodItemName,
                 venueName,
-                review.slopScore
+                review.slopScore,
+                shareContext
               )}
               variant="compact"
             />

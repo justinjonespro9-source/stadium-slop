@@ -27,6 +27,10 @@ import { FairPreviewNotice } from "@/components/venue/fair-preview-notice";
 import { FairVenueGuideStatus } from "@/components/venue/fair-venue-guide-status";
 import { FairVenueStandings } from "@/components/venue/fair-venue-standings";
 import { VenueHero } from "@/components/venue/venue-hero";
+import {
+  VenuePartnerCard,
+  VenuePartnerHeroBadge
+} from "@/components/venue/venue-partner-card";
 import { VenueVendorSelect } from "@/components/venue-vendor-select";
 import { itemMatchesVenueSearch } from "@/lib/venue-standings-search";
 import { getAbsoluteUrl, SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
@@ -76,6 +80,7 @@ import {
   VENUE_ITEM_CATEGORY_OPTIONS,
   type VenueItemCategoryFilter
 } from "@/lib/venue-item-filters";
+import { venuePartnerFromVenue, venueShareContextFromPartner } from "@/lib/venue-partner";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter = VenueItemCategoryFilter;
@@ -451,10 +456,15 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       ) : null}
     </span>
   );
+  const venuePartner = venuePartnerFromVenue(venue);
 
   return (
     <main className="media-page-shell min-h-screen">
-      <VenueHero venueName={venue.name} metaLine={venueMetaLine}>
+      <VenueHero
+        venueName={venue.name}
+        metaLine={venueMetaLine}
+        titleBelow={<VenuePartnerHeroBadge partner={venuePartner} />}
+      >
         <ModeChips
           venueSlug={venue.slug}
           mode={mode}
@@ -538,11 +548,19 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           />
         ) : null}
 
+        <VenuePartnerCard
+          venueName={venue.name}
+          venueSlug={venue.slug}
+          partner={venuePartner}
+          className="mt-5 lg:hidden"
+        />
+
         {venueFreshReviews.length > 0 ? (
           <VenueFreshFeed
             reviews={venueFreshReviews}
             venueSlug={venue.slug}
             venueName={venue.name}
+            shareContext={venueShareContextFromPartner(venuePartner)}
           />
         ) : null}
 
@@ -625,6 +643,11 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             </div>
 
             <aside className="mt-5 hidden space-y-4 lg:mt-0 lg:block">
+              <VenuePartnerCard
+                venueName={venue.name}
+                venueSlug={venue.slug}
+                partner={venuePartner}
+              />
               <AdSlot placementKey="venue.sidebar" variant="card" tone="media" />
             </aside>
           </div>
