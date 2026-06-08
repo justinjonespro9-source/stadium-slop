@@ -81,6 +81,7 @@ import {
   type VenueItemCategoryFilter
 } from "@/lib/venue-item-filters";
 import { venuePartnerFromVenue, venueShareContextFromPartner } from "@/lib/venue-partner";
+import { isVenuePartnerPlacementEnabled } from "@/lib/feature-flags";
 
 type StandingsMode = "all-time" | "season" | "fresh";
 type CategoryFilter = VenueItemCategoryFilter;
@@ -457,13 +458,18 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     </span>
   );
   const venuePartner = venuePartnerFromVenue(venue);
+  const showVenuePartnerPlacement = isVenuePartnerPlacementEnabled();
 
   return (
     <main className="media-page-shell min-h-screen">
       <VenueHero
         venueName={venue.name}
         metaLine={venueMetaLine}
-        titleBelow={<VenuePartnerHeroBadge partner={venuePartner} />}
+        titleBelow={
+          showVenuePartnerPlacement ? (
+            <VenuePartnerHeroBadge partner={venuePartner} />
+          ) : undefined
+        }
       >
         <ModeChips
           venueSlug={venue.slug}
@@ -548,12 +554,14 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           />
         ) : null}
 
-        <VenuePartnerCard
-          venueName={venue.name}
-          venueSlug={venue.slug}
-          partner={venuePartner}
-          className="mt-5 lg:hidden"
-        />
+        {showVenuePartnerPlacement ? (
+          <VenuePartnerCard
+            venueName={venue.name}
+            venueSlug={venue.slug}
+            partner={venuePartner}
+            className="mt-5 lg:hidden"
+          />
+        ) : null}
 
         {venueFreshReviews.length > 0 ? (
           <VenueFreshFeed
@@ -602,7 +610,13 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             <FanPoweredGuideNote preset="venue-rankings" className="media-guide-note mt-2" />
           ) : null}
 
-          <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start lg:gap-6">
+          <div
+            className={
+              showVenuePartnerPlacement
+                ? "mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start lg:gap-6"
+                : "mt-5"
+            }
+          >
             <div className="min-w-0">
               {isFairVenueSlug(venue.slug) ? (
                 <FairVenueStandings
@@ -642,14 +656,16 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
               />
             </div>
 
-            <aside className="mt-5 hidden lg:mt-0 lg:block">
-              <VenuePartnerCard
-                venueName={venue.name}
-                venueSlug={venue.slug}
-                partner={venuePartner}
-                sticky
-              />
-            </aside>
+            {showVenuePartnerPlacement ? (
+              <aside className="mt-5 hidden lg:mt-0 lg:block">
+                <VenuePartnerCard
+                  venueName={venue.name}
+                  venueSlug={venue.slug}
+                  partner={venuePartner}
+                  sticky
+                />
+              </aside>
+            ) : null}
           </div>
 
           <FanPoweredGuideNote preset="venue-bottom" className="media-guide-note mt-4" />
