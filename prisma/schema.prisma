@@ -262,6 +262,10 @@ model Venue {
   longitude          Float
   reviewRadiusMeters Int
   venueType          VenueType
+  /** Primary institution for campus venues (e.g. University of Michigan). */
+  school             String?
+  /** IANA time zone for game-day scheduling (e.g. America/Detroit). */
+  timeZone           String?
   status             EntityStatus    @default(ACTIVE)
   /** Optional Founding Venue Partner placement (Phase 1). */
   partnerName          String?

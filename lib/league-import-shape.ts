@@ -82,6 +82,14 @@ export type LeagueImportRow = {
   venue_slug?: string;
   latitude?: number;
   longitude?: number;
+  /** NCAA / college metadata (optional) */
+  school?: string;
+  conference?: string;
+  /** Overrides league-derived sport, e.g. Football or Basketball */
+  sport?: string;
+  subdivision?: string;
+  timezone?: string;
+  review_radius_meters?: number;
 };
 
 export type LeagueImportPayload = {
@@ -140,7 +148,15 @@ export function leagueImportRowFromRecord(
     season: pickString(record, "season", "Season"),
     venue_slug: pickString(record, "venue_slug", "venueSlug"),
     latitude: parseOptionalNumber(pickString(record, "latitude", "lat", "Latitude")),
-    longitude: parseOptionalNumber(pickString(record, "longitude", "lng", "lon", "Longitude"))
+    longitude: parseOptionalNumber(pickString(record, "longitude", "lng", "lon", "Longitude")),
+    school: pickString(record, "school", "School"),
+    conference: pickString(record, "conference", "Conference"),
+    sport: pickString(record, "sport", "Sport"),
+    subdivision: pickString(record, "subdivision", "Subdivision"),
+    timezone: pickString(record, "timezone", "timeZone", "time_zone", "Time Zone"),
+    review_radius_meters: parseOptionalNumber(
+      pickString(record, "review_radius_meters", "reviewRadiusMeters", "review_radius")
+    )
   };
 }
 

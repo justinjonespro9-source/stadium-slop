@@ -59,16 +59,28 @@ function mergeUniqueStrings(existing: string[], incoming: string[]): string[] {
   return out;
 }
 
-function leagueToVenueType(league: string): VenueType {
+function leagueToVenueType(league: string, sport?: string): VenueType {
   const key = league.trim().toLowerCase();
+  const sportKey = (sport ?? "").trim().toLowerCase();
+  if (
+    key.includes("ncaa") ||
+    key.includes("fbs") ||
+    key.includes("fcs") ||
+    key.includes("college")
+  ) {
+    return VenueType.COLLEGE_STADIUM;
+  }
   if (key.includes("nba") || key.includes("nhl") || key.includes("mls")) {
     return VenueType.ARENA;
   }
-  if (key.includes("nfl") || key.includes("ncaa")) {
+  if (key.includes("nfl")) {
     return VenueType.STADIUM;
   }
   if (key.includes("mlb") || key.includes("baseball")) {
     return VenueType.BALLPARK;
+  }
+  if (sportKey.includes("basketball") && key.includes("college")) {
+    return VenueType.COLLEGE_STADIUM;
   }
   return VenueType.STADIUM;
 }
@@ -124,7 +136,10 @@ function buildItemTags(row: LeagueImportRow, league: string): string[] {
   return tags;
 }
 
-function primarySportForLeague(league: string): string {
+function primarySportForLeague(league: string, sport?: string): string {
+  if (sport?.trim()) {
+    return sport.trim();
+  }
   const key = league.trim().toLowerCase();
   if (key.includes("mlb")) {
     return "Baseball";
@@ -141,7 +156,27 @@ function primarySportForLeague(league: string): string {
   if (key.includes("mls")) {
     return "Soccer";
   }
+  if (key.includes("ncaa")) {
+    if (key.includes("basketball")) {
+      return "Basketball";
+    }
+    if (key.includes("football")) {
+      return "Football";
+    }
+    return "Football";
+  }
   return league.trim();
+}
+
+function leaguesForRow(row: LeagueImportRow): string[] {
+  const leagues = mergeUniqueStrings([], [row.league.trim()]);
+  if (row.conference?.trim()) {
+    leagues.push(row.conference.trim());
+  }
+  if (row.subdivision?.trim()) {
+    leagues.push(row.subdivision.trim());
+  }
+  return leagues;
 }
 
 /**
@@ -177,6 +212,12 @@ export async function applyLeagueImportRows(
     const lng =
       row.longitude ??
       (existingVenue && existingVenue.longitude !== 0 ? existingVenue.longitude : DEFAULT_LNG);
+    const reviewRadius =
+      row.review_radius_meters ??
+      existingVenue?.reviewRadiusMeters ??
+      DEFAULT_REVIEW_RADIUS;
+    const sport = primarySportForLeague(row.league, row.sport);
+    const rowLeagues = leaguesForRow(row);
 
     const venue = await prisma.venue.upsert({
       where: { slug: venueSlug },
@@ -187,34 +228,39 @@ export async function applyLeagueImportRows(
         state: row.state.trim(),
         country: "USA",
         region: "North America",
-        leagues: [row.league.trim()],
+        leagues: rowLeagues,
         teams: resolveVenueTeams(venueSlug, [row.team.trim()]),
-        sports: [primarySportForLeague(row.league)],
-        primarySport: primarySportForLeague(row.league),
+        sports: [sport],
+        primarySport: sport,
+        school: row.school?.trim() || null,
+        timeZone: row.timezone?.trim() || null,
         recurringEvents: [],
         surfaceType: null,
         latitude: lat,
         longitude: lng,
-        reviewRadiusMeters: DEFAULT_REVIEW_RADIUS,
-        venueType: leagueToVenueType(row.league),
+        reviewRadiusMeters: reviewRadius,
+        venueType: leagueToVenueType(row.league, row.sport),
         status: EntityStatus.ACTIVE
       },
       update: {
         name: row.venue.trim(),
         city: row.city.trim(),
         state: row.state.trim(),
-        leagues: mergeUniqueStrings(existingVenue?.leagues ?? [], [row.league.trim()]),
+        leagues: mergeUniqueStrings(existingVenue?.leagues ?? [], rowLeagues),
         teams: resolveVenueTeams(
           venueSlug,
           mergeUniqueBySlug(existingVenue?.teams ?? [], [row.team.trim()])
         ),
-        sports: mergeUniqueStrings(existingVenue?.sports ?? [], [
-          primarySportForLeague(row.league)
-        ]),
-        primarySport: primarySportForLeague(row.league),
+        sports: mergeUniqueStrings(existingVenue?.sports ?? [], [sport]),
+        primarySport: sport,
+        ...(row.school?.trim() ? { school: row.school.trim() } : {}),
+        ...(row.timezone?.trim() ? { timeZone: row.timezone.trim() } : {}),
         ...(row.latitude != null ? { latitude: row.latitude } : {}),
         ...(row.longitude != null ? { longitude: row.longitude } : {}),
-        venueType: leagueToVenueType(row.league),
+        ...(row.review_radius_meters != null
+          ? { reviewRadiusMeters: row.review_radius_meters }
+          : {}),
+        venueType: leagueToVenueType(row.league, row.sport),
         status: EntityStatus.ACTIVE
       }
     });

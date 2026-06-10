@@ -41,7 +41,7 @@ const SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
   "bmo-stadium": ["LAFC", "Angel City FC"],
   "providence-park": ["Portland Timbers", "Portland Thorns FC"],
   "paypal-park": ["San Jose Earthquakes", "Bay FC"],
-  "snapdragon-stadium": ["San Diego FC", "San Diego Wave FC"],
+  "snapdragon-stadium": ["San Diego FC", "San Diego Wave FC", "San Diego State Aztecs"],
   "inter-co-stadium": ["Orlando City SC", "Orlando Pride"],
   "sports-illustrated-stadium": ["New York Red Bulls", "NJ/NY Gotham FC"]
 };
@@ -72,7 +72,12 @@ const SHARED_VENUE_TEAM_ORDER: Record<string, readonly string[]> = {
   "arrowhead-stadium": ["Kansas City Chiefs"],
   "geha-field-at-arrowhead-stadium": ["Kansas City Chiefs"],
   "yankee-stadium": ["New York Yankees", "New York City FC"],
-  "citi-field": ["New York Mets", "New York City FC"]
+  "citi-field": ["New York Mets", "New York City FC"],
+  "snapdragon-stadium": [
+    "San Diego FC",
+    "San Diego Wave FC",
+    "San Diego State Aztecs"
+  ]
 };
 
 function dedupeTeams(teams: string[]): string[] {

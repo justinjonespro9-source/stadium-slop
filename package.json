@@ -30,6 +30,7 @@
     "make-admin": "tsx scripts/make-admin.ts",
     "import:mlb": "tsx scripts/apply-mlb-import.ts",
     "import:mls-nwsl": "tsx scripts/import-mls-nwsl.ts",
+    "import:ncaa": "tsx scripts/import-ncaa.ts",
     "cleanup:venues": "tsx scripts/cleanup-venues.ts",
     "cleanup:mls-nwsl-orphans": "tsx scripts/cleanup-mls-nwsl-orphan-venues.ts",
     "cleanup:generic-items": "tsx scripts/cleanup-generic-items.ts",

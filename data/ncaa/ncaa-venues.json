@@ -1,0 +1,503 @@
+{
+  "version": 1,
+  "venues": [
+    {
+      "slug": "michigan-stadium",
+      "name": "Michigan Stadium",
+      "school": "University of Michigan",
+      "team": "Michigan Wolverines",
+      "sport": "Football",
+      "conference": "Big Ten",
+      "subdivision": "FBS",
+      "city": "Ann Arbor",
+      "state": "MI",
+      "latitude": 42.2659,
+      "longitude": -83.7487,
+      "reviewRadiusMeters": 1200,
+      "timeZone": "America/Detroit",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://mgoblue.com/sports/football"
+    },
+    {
+      "slug": "ohio-stadium",
+      "name": "Ohio Stadium",
+      "school": "The Ohio State University",
+      "team": "Ohio State Buckeyes",
+      "sport": "Football",
+      "conference": "Big Ten",
+      "subdivision": "FBS",
+      "city": "Columbus",
+      "state": "OH",
+      "latitude": 40.0016,
+      "longitude": -83.0199,
+      "reviewRadiusMeters": 1100,
+      "timeZone": "America/New_York",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://ohiostatebuckeyes.com/sports/football"
+    },
+    {
+      "slug": "bryant-denny-stadium",
+      "name": "Bryant-Denny Stadium",
+      "school": "University of Alabama",
+      "team": "Alabama Crimson Tide",
+      "sport": "Football",
+      "conference": "SEC",
+      "subdivision": "FBS",
+      "city": "Tuscaloosa",
+      "state": "AL",
+      "latitude": 33.208,
+      "longitude": -87.5504,
+      "reviewRadiusMeters": 1100,
+      "timeZone": "America/Chicago",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://rolltide.com/sports/football"
+    },
+    {
+      "slug": "neyland-stadium",
+      "name": "Neyland Stadium",
+      "school": "University of Tennessee",
+      "team": "Tennessee Volunteers",
+      "sport": "Football",
+      "conference": "SEC",
+      "subdivision": "FBS",
+      "city": "Knoxville",
+      "state": "TN",
+      "latitude": 35.955,
+      "longitude": -83.925,
+      "reviewRadiusMeters": 1200,
+      "timeZone": "America/New_York",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://utsports.com/sports/football"
+    },
+    {
+      "slug": "notre-dame-stadium",
+      "name": "Notre Dame Stadium",
+      "school": "University of Notre Dame",
+      "team": "Notre Dame Fighting Irish",
+      "sport": "Football",
+      "conference": "Independent",
+      "subdivision": "FBS",
+      "city": "Notre Dame",
+      "state": "IN",
+      "latitude": 41.698,
+      "longitude": -86.234,
+      "reviewRadiusMeters": 1000,
+      "timeZone": "America/Indiana/Indianapolis",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://fightingirish.com/sports/football"
+    },
+    {
+      "slug": "cameron-indoor-stadium",
+      "name": "Cameron Indoor Stadium",
+      "school": "Duke University",
+      "team": "Duke Blue Devils",
+      "sport": "Basketball",
+      "conference": "ACC",
+      "subdivision": "Division I",
+      "city": "Durham",
+      "state": "NC",
+      "latitude": 35.9045,
+      "longitude": -78.9419,
+      "reviewRadiusMeters": 450,
+      "timeZone": "America/New_York",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://goduke.com/sports/mens-basketball"
+    },
+    {
+      "slug": "allen-fieldhouse",
+      "name": "Allen Fieldhouse",
+      "school": "University of Kansas",
+      "team": "Kansas Jayhawks",
+      "sport": "Basketball",
+      "conference": "Big 12",
+      "subdivision": "Division I",
+      "city": "Lawrence",
+      "state": "KS",
+      "latitude": 38.9543,
+      "longitude": -95.252,
+      "reviewRadiusMeters": 450,
+      "timeZone": "America/Chicago",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://kuathletics.com/sports/mens-basketball"
+    },
+    {
+      "slug": "rupp-arena",
+      "name": "Rupp Arena",
+      "school": "University of Kentucky",
+      "team": "Kentucky Wildcats",
+      "sport": "Basketball",
+      "conference": "SEC",
+      "subdivision": "Division I",
+      "city": "Lexington",
+      "state": "KY",
+      "latitude": 38.0494,
+      "longitude": -84.5028,
+      "reviewRadiusMeters": 600,
+      "timeZone": "America/New_York",
+      "venueType": "COLLEGE_STADIUM",
+      "sourceUrl": "https://ukathletics.com/sports/mens-basketball"
+    },
+    {
+      "slug": "snapdragon-stadium",
+      "name": "Snapdragon Stadium",
+      "school": "San Diego State University",
+      "team": "San Diego State Aztecs",
+      "sport": "Football",
+      "conference": "Mountain West",
+      "subdivision": "FBS",
+      "city": "San Diego",
+      "state": "CA",
+      "latitude": 32.7841,
+      "longitude": -117.1224,
+      "reviewRadiusMeters": 900,
+      "timeZone": "America/Los_Angeles",
+      "venueType": "COLLEGE_STADIUM",
+      "mergeIntoVenueSlug": "snapdragon-stadium",
+      "sourceUrl": "https://goaztecs.com/sports/football"
+    }
+  ],
+  "items": [
+    {
+      "venueSlug": "michigan-stadium",
+      "vendor": "Tony's BBQ",
+      "section": "North End Zone",
+      "item_name": "Tony's BBQ Pulled Pork Sandwich",
+      "description": "Slow-smoked pulled pork sandwich — a Michigan Stadium gameday staple",
+      "category": "bbq",
+      "source_url": "https://mgoblue.com/sports/football",
+      "tags": ["college-football", "local-vendor", "signature"]
+    },
+    {
+      "venueSlug": "michigan-stadium",
+      "vendor": "Victors Grill",
+      "item_name": "Victors Grill Burger",
+      "description": "All-beef char-grilled burger from Victors Grill stands",
+      "category": "burger",
+      "source_url": "https://mgoblue.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "michigan-stadium",
+      "vendor": "Michigan Bakery",
+      "item_name": "Michigan Stadium Cookie",
+      "description": "Large decorated sugar cookie from Michigan Bakery concessions",
+      "category": "dessert",
+      "source_url": "https://mgoblue.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "michigan-stadium",
+      "vendor": "Buffalo Wild Wings",
+      "item_name": "Boneless Chicken Wings",
+      "category": "chicken",
+      "source_url": "https://mgoblue.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "michigan-stadium",
+      "vendor": "Concessions",
+      "item_name": "Loaded Nachos",
+      "description": "Stadium nachos with cheese and toppings",
+      "category": "savory",
+      "source_url": "https://mgoblue.com/sports/football",
+      "tags": ["college-football"]
+    },
+
+    {
+      "venueSlug": "ohio-stadium",
+      "vendor": "Brutus Buckeye Grill",
+      "item_name": "Brutus Buckeye Burger",
+      "description": "Signature Ohio State burger from Brutus Buckeye Grill",
+      "category": "burger",
+      "source_url": "https://ohiostatebuckeyes.com/sports/football",
+      "tags": ["college-football", "signature"]
+    },
+    {
+      "venueSlug": "ohio-stadium",
+      "vendor": "Skyline Chili",
+      "item_name": "Skyline Chili Cheese Coney",
+      "description": "Cincinnati-style cheese coney from Skyline Chili stand",
+      "category": "savory",
+      "source_url": "https://ohiostatebuckeyes.com/sports/football",
+      "tags": ["college-football", "local-vendor"]
+    },
+    {
+      "venueSlug": "ohio-stadium",
+      "vendor": "Ohio State Grille",
+      "item_name": "Grilled Cheese Sandwich",
+      "category": "sandwich",
+      "source_url": "https://ohiostatebuckeyes.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "ohio-stadium",
+      "vendor": "Ohio State Grille",
+      "item_name": "Chicken Tenders & Fries",
+      "category": "chicken",
+      "source_url": "https://ohiostatebuckeyes.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "ohio-stadium",
+      "vendor": "Pizza Stand",
+      "item_name": "Pepperoni Pizza Slice",
+      "category": "pizza",
+      "source_url": "https://ohiostatebuckeyes.com/sports/football",
+      "tags": ["college-football"]
+    },
+
+    {
+      "venueSlug": "bryant-denny-stadium",
+      "vendor": "Walk-On's",
+      "item_name": "Walk-On's Chicken Sandwich",
+      "description": "Fried chicken sandwich from Walk-On's Sports Bistreaux",
+      "category": "chicken",
+      "source_url": "https://rolltide.com/sports/football",
+      "tags": ["college-football", "local-vendor"]
+    },
+    {
+      "venueSlug": "bryant-denny-stadium",
+      "vendor": "Dreamland BBQ",
+      "item_name": "Dreamland BBQ Pulled Pork Sandwich",
+      "description": "Alabama BBQ pulled pork from Dreamland BBQ",
+      "category": "bbq",
+      "source_url": "https://rolltide.com/sports/football",
+      "tags": ["college-football", "local-vendor", "signature"]
+    },
+    {
+      "venueSlug": "bryant-denny-stadium",
+      "vendor": "Concessions",
+      "item_name": "Loaded BBQ Nachos",
+      "category": "savory",
+      "source_url": "https://rolltide.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "bryant-denny-stadium",
+      "vendor": "Concessions",
+      "item_name": "Brisket Sandwich",
+      "category": "bbq",
+      "source_url": "https://rolltide.com/sports/football",
+      "tags": ["college-football"]
+    },
+
+    {
+      "venueSlug": "neyland-stadium",
+      "vendor": "Smoky Mountain BBQ",
+      "item_name": "Smoky Mountain BBQ Sandwich",
+      "description": "Tennessee-style BBQ sandwich from Smoky Mountain BBQ stand",
+      "category": "bbq",
+      "source_url": "https://utsports.com/sports/football",
+      "tags": ["college-football", "signature"]
+    },
+    {
+      "venueSlug": "neyland-stadium",
+      "vendor": "Vol Grill",
+      "item_name": "Vol Burger",
+      "category": "burger",
+      "source_url": "https://utsports.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "neyland-stadium",
+      "vendor": "Concessions",
+      "item_name": "Vol Loaded Nachos",
+      "category": "savory",
+      "source_url": "https://utsports.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "neyland-stadium",
+      "vendor": "Concessions",
+      "item_name": "Hot Chicken Tenders",
+      "category": "chicken",
+      "source_url": "https://utsports.com/sports/football",
+      "tags": ["college-football"]
+    },
+
+    {
+      "venueSlug": "notre-dame-stadium",
+      "vendor": "Bruno's",
+      "item_name": "Bruno's Primetime Burger",
+      "description": "Signature burger from Bruno's concessions at Notre Dame Stadium",
+      "category": "burger",
+      "source_url": "https://fightingirish.com/sports/football",
+      "tags": ["college-football", "signature"]
+    },
+    {
+      "venueSlug": "notre-dame-stadium",
+      "vendor": "Legends",
+      "item_name": "Notre Dame Lobster Roll",
+      "description": "Notable stadium lobster roll served on gameday",
+      "category": "savory",
+      "source_url": "https://fightingirish.com/sports/football",
+      "tags": ["college-football", "signature"]
+    },
+    {
+      "venueSlug": "notre-dame-stadium",
+      "vendor": "Concessions",
+      "item_name": "Irish Pulled Pork Sandwich",
+      "category": "bbq",
+      "source_url": "https://fightingirish.com/sports/football",
+      "tags": ["college-football"]
+    },
+    {
+      "venueSlug": "notre-dame-stadium",
+      "vendor": "Concessions",
+      "item_name": "Personal Pizza",
+      "category": "pizza",
+      "source_url": "https://fightingirish.com/sports/football",
+      "tags": ["college-football"]
+    },
+
+    {
+      "venueSlug": "cameron-indoor-stadium",
+      "vendor": "Cameron Concessions",
+      "item_name": "Chicken Tenders & Fries",
+      "category": "chicken",
+      "source_url": "https://goduke.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+    {
+      "venueSlug": "cameron-indoor-stadium",
+      "vendor": "Cameron Concessions",
+      "item_name": "BBQ Pulled Pork Sandwich",
+      "category": "bbq",
+      "source_url": "https://goduke.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+    {
+      "venueSlug": "cameron-indoor-stadium",
+      "vendor": "Cameron Concessions",
+      "item_name": "Loaded Nachos",
+      "category": "savory",
+      "source_url": "https://goduke.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+    {
+      "venueSlug": "cameron-indoor-stadium",
+      "vendor": "Duke Bakery",
+      "item_name": "Chocolate Chip Cookie",
+      "category": "dessert",
+      "source_url": "https://goduke.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+
+    {
+      "venueSlug": "allen-fieldhouse",
+      "vendor": "Allen Fieldhouse Concessions",
+      "item_name": "BBQ Brisket Sandwich",
+      "description": "Smoked brisket sandwich at Allen Fieldhouse",
+      "category": "bbq",
+      "source_url": "https://kuathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball", "signature"]
+    },
+    {
+      "venueSlug": "allen-fieldhouse",
+      "vendor": "Allen Fieldhouse Concessions",
+      "item_name": "Jayhawk Loaded Nachos",
+      "category": "savory",
+      "source_url": "https://kuathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+    {
+      "venueSlug": "allen-fieldhouse",
+      "vendor": "Allen Fieldhouse Concessions",
+      "item_name": "Chicken Sandwich",
+      "category": "chicken",
+      "source_url": "https://kuathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+    {
+      "venueSlug": "allen-fieldhouse",
+      "vendor": "Allen Fieldhouse Concessions",
+      "item_name": "Hot Dog",
+      "category": "savory",
+      "source_url": "https://kuathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+
+    {
+      "venueSlug": "rupp-arena",
+      "vendor": "Rupp Arena Concessions",
+      "item_name": "Kentucky Hot Brown",
+      "description": "Open-faced turkey and bacon sandwich — a Kentucky classic",
+      "category": "sandwich",
+      "source_url": "https://ukathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball", "signature", "local-vendor"]
+    },
+    {
+      "venueSlug": "rupp-arena",
+      "vendor": "Rupp Arena Concessions",
+      "item_name": "BBQ Pulled Pork Sandwich",
+      "category": "bbq",
+      "source_url": "https://ukathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+    {
+      "venueSlug": "rupp-arena",
+      "vendor": "Rupp Arena Concessions",
+      "item_name": "Personal Pizza",
+      "category": "pizza",
+      "source_url": "https://ukathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+    {
+      "venueSlug": "rupp-arena",
+      "vendor": "Rupp Arena Concessions",
+      "item_name": "Loaded Fries",
+      "category": "savory",
+      "source_url": "https://ukathletics.com/sports/mens-basketball",
+      "tags": ["college-basketball"]
+    },
+
+    {
+      "venueSlug": "snapdragon-stadium",
+      "vendor": "SDSU Concessions",
+      "item_name": "Aztec Burger",
+      "description": "Signature burger for San Diego State football at Snapdragon Stadium",
+      "category": "burger",
+      "source_url": "https://goaztecs.com/sports/football",
+      "tags": ["college-football", "shared-venue"]
+    },
+    {
+      "venueSlug": "snapdragon-stadium",
+      "vendor": "SDSU Concessions",
+      "item_name": "Carne Asada Fries",
+      "description": "San Diego-style carne asada fries",
+      "category": "savory",
+      "source_url": "https://goaztecs.com/sports/football",
+      "tags": ["college-football", "shared-venue", "local-vendor"]
+    },
+    {
+      "venueSlug": "snapdragon-stadium",
+      "vendor": "SDSU Concessions",
+      "item_name": "Fish Tacos",
+      "category": "tacos",
+      "source_url": "https://goaztecs.com/sports/football",
+      "tags": ["college-football", "shared-venue", "local-vendor"]
+    },
+
+    {
+      "venueSlug": "michigan-stadium",
+      "vendor": "Beer Garden",
+      "item_name": "Craft Beer",
+      "category": "alcohol",
+      "source_url": "https://mgoblue.com/sports/football"
+    },
+    {
+      "venueSlug": "ohio-stadium",
+      "vendor": "Concessions",
+      "item_name": "Bottled Water",
+      "category": "beverage",
+      "source_url": "https://ohiostatebuckeyes.com/sports/football"
+    },
+    {
+      "venueSlug": "ohio-stadium",
+      "vendor": "Concessions",
+      "item_name": "Popcorn",
+      "category": "snack",
+      "source_url": "https://ohiostatebuckeyes.com/sports/football"
+    }
+  ]
+}

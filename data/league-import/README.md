@@ -21,7 +21,9 @@ Stadium Slop can ingest **one spreadsheet row per menu item** without editing Ty
 | `source_url` | no | `FoodItem.tags` (`import-source:…`) until a DB column exists |
 | `season` | no | `FoodItem.seasonIntroduced` |
 
-Optional columns: `venue_slug`, `latitude`, `longitude` (override auto venue slug / coords).
+Optional columns: `venue_slug`, `latitude`, `longitude`, `school`, `conference`, `sport`, `subdivision`, `timezone`, `review_radius_meters`.
+
+For NCAA college venues, prefer the structured JSON importer: `npm run import:ncaa -- --dry-run` (see `data/ncaa/README.md`).
 
 Lines starting with `#` are ignored.
 
