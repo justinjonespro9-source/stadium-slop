@@ -444,6 +444,14 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
       "./gainbridge-fieldhouse"
     );
     return parseGainbridgeFieldhouseMenu;
+  },
+  "lynn-family-stadium": async () => {
+    const { parseLynnFamilyStadiumMenu } = await import("./lynn-family-stadium");
+    return parseLynnFamilyStadiumMenu;
+  },
+  "wakemed-soccer-park": async () => {
+    const { parseWakemedSoccerParkMenu } = await import("./wakemed-soccer-park");
+    return parseWakemedSoccerParkMenu;
   }
 };
 

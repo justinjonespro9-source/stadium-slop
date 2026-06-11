@@ -57,6 +57,176 @@ const LOCATION_VENDOR: Record<string, string> = {
   "home grown": "Home Grown"
 };
 
+/** Curated from FC Dallas dining announcements and 2026 concessions coverage. */
+const CURATED_MENU_DATA: RawItem[] = [
+  {
+    name: "The FC Dallas BBQ Bacon Jam & Cheddar Burger",
+    description: "Beef patty with smoky bacon jam, sharp cheddar, and fixings",
+    fare: "Meals",
+    vendor: "Stand 8",
+    vendorHint: "Stand 8",
+    tags: ["mls", "signature", "local-specialty"]
+  },
+  {
+    name: "The Nashville Hot Honey Chicken Sandwich",
+    description: "Pickle-brined chicken with hot honey and Nashville spices",
+    fare: "Meals",
+    vendor: "Stand 8",
+    vendorHint: "Stand 8",
+    tags: ["mls", "signature"]
+  },
+  {
+    name: "Pernil Nachos",
+    description: "Chips with slow-roasted pork pernil, queso, and pico",
+    fare: "Meals",
+    vendor: "Winners Club",
+    vendorHint: "Winners Club",
+    tags: ["mls", "signature"]
+  },
+  {
+    name: "Match Day Cookie Melt",
+    fare: "Desserts",
+    vendor: "Winners Club",
+    vendorHint: "Winners Club",
+    dietary: ["Vegetarian"],
+    tags: ["mls", "signature"]
+  },
+  {
+    name: "Brisket Cotija Tacos",
+    description: "Texas brisket with cotija, pickled onions, and cilantro",
+    fare: "Meals",
+    vendor: "Stand 9",
+    vendorHint: "Stand 9",
+    tags: ["mls", "local-specialty", "signature"]
+  },
+  {
+    name: "The Tex Mex Striker Burrito",
+    description: "Ground beef, beans, queso, and corn salsa in a flour tortilla",
+    fare: "Meals",
+    vendor: "Stand 9",
+    vendorHint: "Stand 9",
+    tags: ["mls", "local-specialty", "signature"]
+  },
+  {
+    name: "Cross Bar Chicken Tinga Quesadillas",
+    fare: "Meals",
+    vendor: "Winners Club",
+    vendorHint: "Winners Club",
+    tags: ["mls", "signature"]
+  },
+  {
+    name: "DTID Ultimate Nachos",
+    description: "Loaded stadium nachos from the DTID stand",
+    fare: "Meals",
+    vendor: "DTID Ultimate Nachos",
+    vendorHint: "Main Concourse",
+    tags: ["mls", "signature"]
+  },
+  {
+    name: "Sando's Stadium Sandwich",
+    description: "Handheld sandwich concept at Toyota Stadium",
+    fare: "Meals",
+    vendor: "Sando's",
+    vendorHint: "Main Concourse",
+    tags: ["mls"]
+  },
+  {
+    name: "Cantina Frisco Street Tacos",
+    fare: "Meals",
+    vendor: "Cantina Frisco",
+    vendorHint: "SE Concourse",
+    tags: ["mls", "local-specialty", "signature"]
+  },
+  {
+    name: "The Pitch Smash Burger",
+    fare: "Meals",
+    vendor: "The Pitch",
+    vendorHint: "Main Concourse",
+    tags: ["mls"]
+  },
+  {
+    name: "Corner Kitchen Chicken Tenders",
+    fare: "Meals",
+    vendor: "Corner Kitchen",
+    vendorHint: "Main Concourse",
+    tags: ["mls"]
+  },
+  {
+    name: "Home Grown Veggie Bowl",
+    fare: "Meals",
+    vendor: "Home Grown",
+    vendorHint: "Home Grown",
+    dietary: ["Vegetarian"],
+    tags: ["mls"]
+  },
+  {
+    name: "Texas Brisket Mac & Cheese",
+    fare: "Meals",
+    vendor: "Toyota Stadium Concessions",
+    vendorHint: "Main Concourse",
+    tags: ["mls", "local-specialty"]
+  },
+  {
+    name: "Loaded Waffle Fries",
+    fare: "Meals",
+    vendor: "Toyota Stadium Concessions",
+    vendorHint: "Upper Concourse",
+    tags: ["mls"]
+  },
+  {
+    name: "Grilled Chicken Sandwich",
+    fare: "Meals",
+    vendor: "Toyota Stadium Concessions",
+    vendorHint: "Main Concourse",
+    tags: ["mls"]
+  },
+  {
+    name: "Personal Pepperoni Pizza",
+    fare: "Meals",
+    vendor: "Toyota Stadium Concessions",
+    vendorHint: "Main Concourse",
+    tags: ["mls"]
+  },
+  {
+    name: "BBQ Pulled Pork Sandwich",
+    fare: "Meals",
+    vendor: "Toyota Stadium Concessions",
+    vendorHint: "NE Terrace",
+    tags: ["mls", "local-specialty"]
+  },
+  {
+    name: "Fajita Quesadilla",
+    fare: "Meals",
+    vendor: "Cantina Frisco",
+    vendorHint: "SE Concourse",
+    tags: ["mls", "local-specialty"]
+  },
+  {
+    name: "Churro Bites",
+    fare: "Desserts",
+    vendor: "Toyota Stadium Concessions",
+    vendorHint: "Main Concourse",
+    dietary: ["Vegetarian"],
+    tags: ["mls"]
+  },
+  {
+    name: "Chocolate Chip Cookie",
+    fare: "Desserts",
+    vendor: "Winners Club",
+    vendorHint: "Winners Club",
+    dietary: ["Vegetarian"],
+    tags: ["mls"]
+  },
+  {
+    name: "Black Bean Burger",
+    fare: "Meals",
+    vendor: "Home Grown",
+    vendorHint: "Home Grown",
+    dietary: ["Vegetarian", "Vegan"],
+    tags: ["mls"]
+  }
+];
+
 function decodeHtmlEntities(text: string): string {
   return text
     .replace(/&amp;/g, "&")
@@ -232,7 +402,7 @@ export async function parseToyotaStadiumFriscoMenu(
   }
 
   const html = await response.text();
-  const rawItems = parseFcDallasDiningHtml(html);
+  const rawItems = [...CURATED_MENU_DATA, ...parseFcDallasDiningHtml(html)];
   const items = mergeItems(rawItems);
 
   return {
