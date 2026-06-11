@@ -368,6 +368,32 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "scotiabank-arena": async () => {
     const { parseScotiabankArenaMenu } = await import("./scotiabank-arena");
     return parseScotiabankArenaMenu;
+  },
+  "the-big-e": async () => {
+    const { parseTheBigEMenu } = await import("./the-big-e");
+    return parseTheBigEMenu;
+  },
+  "scotiabank-saddledome": async () => {
+    const { parseScotiabankSaddledomeMenu } = await import("./scotiabank-saddledome");
+    return parseScotiabankSaddledomeMenu;
+  },
+  "footprint-center": async () => {
+    const { parseFootprintCenterMenu } = await import("./footprint-center");
+    return parseFootprintCenterMenu;
+  },
+  "ball-arena": async () => {
+    const { parseBallArenaMenu } = await import("./ball-arena");
+    return parseBallArenaMenu;
+  },
+  "capital-one-arena": async () => {
+    const { parseCapitalOneArenaMenu } = await import("./capital-one-arena");
+    return parseCapitalOneArenaMenu;
+  },
+  "american-airlines-center": async () => {
+    const { parseAmericanAirlinesCenterMenu } = await import(
+      "./american-airlines-center"
+    );
+    return parseAmericanAirlinesCenterMenu;
   }
 };
 
