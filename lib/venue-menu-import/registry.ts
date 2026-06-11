@@ -418,6 +418,32 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "cpkc-stadium": async () => {
     const { parseCpkcStadiumMenu } = await import("./cpkc-stadium");
     return parseCpkcStadiumMenu;
+  },
+  "rogers-arena": async () => {
+    const { parseRogersArenaMenu } = await import("./rogers-arena");
+    return parseRogersArenaMenu;
+  },
+  "bell-centre": async () => {
+    const { parseBellCentreMenu } = await import("./bell-centre");
+    return parseBellCentreMenu;
+  },
+  "enterprise-center": async () => {
+    const { parseEnterpriseCenterMenu } = await import("./enterprise-center");
+    return parseEnterpriseCenterMenu;
+  },
+  "nationwide-arena": async () => {
+    const { parseNationwideArenaMenu } = await import("./nationwide-arena");
+    return parseNationwideArenaMenu;
+  },
+  "rocket-arena": async () => {
+    const { parseRocketArenaMenu } = await import("./rocket-arena");
+    return parseRocketArenaMenu;
+  },
+  "gainbridge-fieldhouse": async () => {
+    const { parseGainbridgeFieldhouseMenu } = await import(
+      "./gainbridge-fieldhouse"
+    );
+    return parseGainbridgeFieldhouseMenu;
   }
 };
 
