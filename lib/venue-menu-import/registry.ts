@@ -394,6 +394,30 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
       "./american-airlines-center"
     );
     return parseAmericanAirlinesCenterMenu;
+  },
+  "delta-center": async () => {
+    const { parseDeltaCenterMenu } = await import("./delta-center");
+    return parseDeltaCenterMenu;
+  },
+  "ubs-arena": async () => {
+    const { parseUbsArenaMenu } = await import("./ubs-arena");
+    return parseUbsArenaMenu;
+  },
+  "prudential-center": async () => {
+    const { parsePrudentialCenterMenu } = await import("./prudential-center");
+    return parsePrudentialCenterMenu;
+  },
+  "keybank-center": async () => {
+    const { parseKeybankCenterMenu } = await import("./keybank-center");
+    return parseKeybankCenterMenu;
+  },
+  "ppg-paints-arena": async () => {
+    const { parsePpgPaintsArenaMenu } = await import("./ppg-paints-arena");
+    return parsePpgPaintsArenaMenu;
+  },
+  "cpkc-stadium": async () => {
+    const { parseCpkcStadiumMenu } = await import("./cpkc-stadium");
+    return parseCpkcStadiumMenu;
   }
 };
 
