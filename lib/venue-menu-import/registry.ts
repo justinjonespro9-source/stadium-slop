@@ -344,6 +344,30 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "beaver-stadium": async () => {
     const { parseBeaverStadiumMenu } = await import("./beaver-stadium");
     return parseBeaverStadiumMenu;
+  },
+  "intuit-dome": async () => {
+    const { parseIntuitDomeMenu } = await import("./intuit-dome");
+    return parseIntuitDomeMenu;
+  },
+  "canada-life-centre": async () => {
+    const { parseCanadaLifeCentreMenu } = await import("./canada-life-centre");
+    return parseCanadaLifeCentreMenu;
+  },
+  "canadian-tire-centre": async () => {
+    const { parseCanadianTireCentreMenu } = await import("./canadian-tire-centre");
+    return parseCanadianTireCentreMenu;
+  },
+  "honda-center": async () => {
+    const { parseHondaCenterMenu } = await import("./honda-center");
+    return parseHondaCenterMenu;
+  },
+  "rogers-place": async () => {
+    const { parseRogersPlaceMenu } = await import("./rogers-place");
+    return parseRogersPlaceMenu;
+  },
+  "scotiabank-arena": async () => {
+    const { parseScotiabankArenaMenu } = await import("./scotiabank-arena");
+    return parseScotiabankArenaMenu;
   }
 };
 
