@@ -490,6 +490,30 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "state-farm-arena": async () => {
     const { parseStateFarmArenaMenu } = await import("./state-farm-arena");
     return parseStateFarmArenaMenu;
+  },
+  "spectrum-center": async () => {
+    const { parseSpectrumCenterMenu } = await import("./spectrum-center");
+    return parseSpectrumCenterMenu;
+  },
+  "little-caesars-arena": async () => {
+    const { parseLittleCaesarsArenaMenu } = await import("./little-caesars-arena");
+    return parseLittleCaesarsArenaMenu;
+  },
+  "paycom-center": async () => {
+    const { parsePaycomCenterMenu } = await import("./paycom-center");
+    return parsePaycomCenterMenu;
+  },
+  "kaseya-center": async () => {
+    const { parseKaseyaCenterMenu } = await import("./kaseya-center");
+    return parseKaseyaCenterMenu;
+  },
+  "bridgestone-arena": async () => {
+    const { parseBridgestoneArenaMenu } = await import("./bridgestone-arena");
+    return parseBridgestoneArenaMenu;
+  },
+  "sap-center": async () => {
+    const { parseSapCenterMenu } = await import("./sap-center");
+    return parseSapCenterMenu;
   }
 };
 
