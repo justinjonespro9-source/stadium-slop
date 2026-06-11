@@ -302,6 +302,48 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "t-mobile-arena": async () => {
     const { parseTMobileArenaMenu } = await import("./t-mobile-arena");
     return parseTMobileArenaMenu;
+  },
+  "michigan-stadium": async () => {
+    const { parseMichiganStadiumMenu } = await import("./michigan-stadium");
+    return parseMichiganStadiumMenu;
+  },
+  "ohio-stadium": async () => {
+    const { parseOhioStadiumMenu } = await import("./ohio-stadium");
+    return parseOhioStadiumMenu;
+  },
+  "bryant-denny-stadium": async () => {
+    const { parseBryantDennyStadiumMenu } = await import("./bryant-denny-stadium");
+    return parseBryantDennyStadiumMenu;
+  },
+  "neyland-stadium": async () => {
+    const { parseNeylandStadiumMenu } = await import("./neyland-stadium");
+    return parseNeylandStadiumMenu;
+  },
+  "notre-dame-stadium": async () => {
+    const { parseNotreDameStadiumMenu } = await import("./notre-dame-stadium");
+    return parseNotreDameStadiumMenu;
+  },
+  "tiger-stadium": async () => {
+    const { parseTigerStadiumMenu } = await import("./tiger-stadium");
+    return parseTigerStadiumMenu;
+  },
+  "kyle-field": async () => {
+    const { parseKyleFieldMenu } = await import("./kyle-field");
+    return parseKyleFieldMenu;
+  },
+  "sanford-stadium": async () => {
+    const { parseSanfordStadiumMenu } = await import("./sanford-stadium");
+    return parseSanfordStadiumMenu;
+  },
+  "darrell-k-royal-texas-memorial-stadium": async () => {
+    const { parseDarrellKRoyalTexasMemorialStadiumMenu } = await import(
+      "./darrell-k-royal-texas-memorial-stadium"
+    );
+    return parseDarrellKRoyalTexasMemorialStadiumMenu;
+  },
+  "beaver-stadium": async () => {
+    const { parseBeaverStadiumMenu } = await import("./beaver-stadium");
+    return parseBeaverStadiumMenu;
   }
 };
 
