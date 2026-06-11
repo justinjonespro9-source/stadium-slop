@@ -68,6 +68,87 @@ const MENU_DATA: NcaaFootballRawItem[] = [
     vendorHint: "Reed Plaza",
     dietary: ["Vegetarian"],
     tags: [...NCAA_FB, "local-vendor"]
+  },
+  {
+    name: "Georgia Dawg",
+    description: "Stadium hot dog with Bulldog-themed toppings",
+    fare: "Meals",
+    vendor: "Sanford Stadium Concessions",
+    vendorHint: "Main concourse",
+    tags: [...NCAA_FB, "signature"]
+  },
+  {
+    name: "Bulldog Burger",
+    fare: "Meals",
+    vendor: "Sanford Stadium Concessions",
+    vendorHint: "Main concourse",
+    tags: [...NCAA_FB, "signature"]
+  },
+  {
+    name: "BBQ Nachos",
+    fare: "Meals",
+    vendor: "Williamson Bros. Bar-B-Q",
+    vendorHint: sectionHint("106"),
+    tags: [...NCAA_FB, "local-vendor"]
+  },
+  {
+    name: "Athens Chicken Salad Sandwich",
+    fare: "Meals",
+    vendor: "Chicken Salad Chick",
+    vendorHint: sectionHint("122"),
+    tags: [...NCAA_FB, "local-vendor"]
+  },
+  {
+    name: "Papa John's Pepperoni Personal Pizza",
+    fare: "Meals",
+    vendor: "Papa John's",
+    vendorHint: "Multiple concourse locations",
+    tags: [...NCAA_FB]
+  },
+  {
+    name: "Chick-fil-A Waffle Fries",
+    fare: "Meals",
+    vendor: "Chick-fil-A",
+    vendorHint: "Multiple concourse locations",
+    tags: [...NCAA_FB]
+  },
+  {
+    name: "Huey Magoo's Buffalo Tenders",
+    fare: "Meals",
+    vendor: "Huey Magoo's",
+    vendorHint: "Gate 9",
+    tags: [...NCAA_FB, "local-vendor"]
+  },
+  {
+    name: "Grindhouse Veggie Burger",
+    fare: "Meals",
+    vendor: "Grindhouse Burgers",
+    vendorHint: "Reed Plaza",
+    dietary: ["Vegetarian"],
+    tags: [...NCAA_FB, "local-vendor"]
+  },
+  {
+    name: "Soft Pretzel with Cheese Cup",
+    fare: "Meals",
+    vendor: "Sanford Stadium Concessions",
+    vendorHint: "Upper concourse",
+    dietary: ["Vegetarian"],
+    tags: [...NCAA_FB]
+  },
+  {
+    name: "Loaded Nachos",
+    fare: "Meals",
+    vendor: "Sanford Stadium Concessions",
+    vendorHint: "Main concourse",
+    tags: [...NCAA_FB]
+  },
+  {
+    name: "Chocolate Chip Cookie",
+    fare: "Desserts",
+    vendor: "Sanford Stadium Concessions",
+    vendorHint: "Main concourse",
+    dietary: ["Vegetarian"],
+    tags: [...NCAA_FB]
   }
 ];
 
