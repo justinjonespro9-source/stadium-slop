@@ -116,6 +116,61 @@ export const NCAA_VENUE_GEO: Record<string, NcaaVenueGeo> = {
     reviewRadiusMeters: 900,
     timeZone: "America/Los_Angeles",
     venueClass: "football-stadium"
+  },
+  "tiger-stadium": {
+    name: "Tiger Stadium",
+    city: "Baton Rouge",
+    state: "LA",
+    country: "USA",
+    latitude: 30.412,
+    longitude: -91.185,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  "kyle-field": {
+    name: "Kyle Field",
+    city: "College Station",
+    state: "TX",
+    country: "USA",
+    latitude: 30.61,
+    longitude: -96.340,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  "sanford-stadium": {
+    name: "Sanford Stadium",
+    city: "Athens",
+    state: "GA",
+    country: "USA",
+    latitude: 33.949,
+    longitude: -83.373,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  "darrell-k-royal-texas-memorial-stadium": {
+    name: "Darrell K Royal-Texas Memorial Stadium",
+    city: "Austin",
+    state: "TX",
+    country: "USA",
+    latitude: 30.283,
+    longitude: -97.732,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  "beaver-stadium": {
+    name: "Beaver Stadium",
+    city: "University Park",
+    state: "PA",
+    country: "USA",
+    latitude: 40.812,
+    longitude: -77.856,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
   }
 };
 
