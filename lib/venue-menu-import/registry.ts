@@ -452,6 +452,28 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
   "wakemed-soccer-park": async () => {
     const { parseWakemedSoccerParkMenu } = await import("./wakemed-soccer-park");
     return parseWakemedSoccerParkMenu;
+  },
+  "centennial-stadium": async () => {
+    const { parseCentennialStadiumMenu } = await import("./centennial-stadium");
+    return parseCentennialStadiumMenu;
+  },
+  "northwestern-medicine-field-at-martin-stadium": async () => {
+    const { parseNorthwesternMedicineFieldAtMartinStadiumMenu } = await import(
+      "./northwestern-medicine-field-at-martin-stadium"
+    );
+    return parseNorthwesternMedicineFieldAtMartinStadiumMenu;
+  },
+  "caesars-superdome": async () => {
+    const { parseCaesarsSuperdomeMenu } = await import("./caesars-superdome");
+    return parseCaesarsSuperdomeMenu;
+  },
+  "allegiant-stadium": async () => {
+    const { parseAllegiantStadiumMenu } = await import("./allegiant-stadium");
+    return parseAllegiantStadiumMenu;
+  },
+  "raymond-james-stadium": async () => {
+    const { parseRaymondJamesStadiumMenu } = await import("./raymond-james-stadium");
+    return parseRaymondJamesStadiumMenu;
   }
 };
 

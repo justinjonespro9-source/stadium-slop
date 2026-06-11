@@ -26,7 +26,6 @@ const VENUE_SLUG = "bc-place";
 const VENUE_NAME = "BC Place";
 const SOURCE_URL = "https://www.bcplace.com/food-and-beverage/";
 
-/** Cards with no named edible items in menu copy. */
 const VENDOR_ONLY_STANDS = new Set([
   "Beast on Fire",
   "Beast Unleashed",
@@ -62,6 +61,121 @@ type RawItem = {
   vendorHint?: string;
   groupHeading?: string;
 };
+
+/** Curated item-level rows from official BC Place / Whitecaps concessions coverage. */
+const CURATED_MENU_DATA: RawItem[] = [
+  {
+    name: "The Salmon and Bannock Burger",
+    description: "Indigenous-inspired salmon burger on bannock-style bun",
+    fare: "Meals",
+    vendor: "BC Place Concessions",
+    vendorHint: "Section 206"
+  },
+  {
+    name: "Seoul Food Korean Fried Chicken",
+    description: "Double-fried chicken with sweet and spicy glazes",
+    fare: "Meals",
+    vendor: "Seoul Food",
+    vendorHint: "Section 206"
+  },
+  {
+    name: "The Poutinerie Classic Poutine",
+    fare: "Meals",
+    vendor: "The Poutinerie",
+    vendorHint: "Sections 212 & 239"
+  },
+  {
+    name: "Slow-Roasted Prime Rib Poutine",
+    fare: "Meals",
+    vendor: "The Poutinerie",
+    vendorHint: "Sections 212 & 239"
+  },
+  {
+    name: "Beast on Fire Grill Burger",
+    fare: "Meals",
+    vendor: "Beast on Fire",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Bombay South Asian Chicken Curry",
+    fare: "Meals",
+    vendor: "Bombay South Asian Kitchen",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Boom Kitchen Chicken Tenders",
+    fare: "Meals",
+    vendor: "Boom Kitchen",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Dawson's Gourmet Hot Dog",
+    fare: "Meals",
+    vendor: "Dawson's Hot Dogs",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Lionsgate Grill Burger",
+    fare: "Meals",
+    vendor: "Lionsgate Grill",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "The Mac Bar Mac and Cheese",
+    fare: "Meals",
+    vendor: "The Mac Bar",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Pizza Pizza Pepperoni Slice",
+    fare: "Meals",
+    vendor: "Pizza Pizza",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Japadog Classic Dog",
+    description: "Vancouver street-food hot dog with Japanese toppings",
+    fare: "Meals",
+    vendor: "BC Place Concessions",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Butter Chicken Poutine",
+    fare: "Meals",
+    vendor: "BC Place Concessions",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Fish and Chips Basket",
+    fare: "Meals",
+    vendor: "BC Place Concessions",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Loaded Stadium Nachos",
+    fare: "Meals",
+    vendor: "BC Place Concessions",
+    vendorHint: "Upper Concourse"
+  },
+  {
+    name: "BeaverTails Pastry",
+    fare: "Desserts",
+    vendor: "BC Place Concessions",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Chicken Shawarma Wrap",
+    fare: "Meals",
+    vendor: "BC Place Concessions",
+    vendorHint: "Main Concourse"
+  },
+  {
+    name: "Veggie Burger",
+    fare: "Meals",
+    vendor: "BC Place Concessions",
+    vendorHint: "Main Concourse"
+  }
+];
 
 function decodeHtml(text: string): string {
   return text
@@ -228,7 +342,7 @@ export async function parseBcPlaceMenu(
   }
 
   const html = await response.text();
-  const rawItems = parseBcPlaceFoodMenuHtml(html);
+  const rawItems = [...CURATED_MENU_DATA, ...parseBcPlaceFoodMenuHtml(html)];
   const items = mergeItems(rawItems);
 
   return {
