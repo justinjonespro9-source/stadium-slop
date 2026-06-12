@@ -23,6 +23,7 @@
     "sync:nwsl-schedule": "tsx scripts/sync-nwsl-schedule.ts",
     "sync:world-cup-schedule": "tsx scripts/sync-world-cup-schedule.ts",
     "sync:world-cup-venue-geo": "tsx scripts/sync-world-cup-venue-geo.ts",
+    "audit:world-cup-fixtures": "tsx scripts/audit-world-cup-fixtures.ts",
     "verify:venue-timezones": "tsx scripts/verify-venue-timezones.ts",
     "verify:mls-nwsl-venue-geo": "tsx scripts/verify-mls-nwsl-venue-geo.ts",
     "sync:mls-nwsl-venue-geo": "tsx scripts/sync-mls-nwsl-venue-geo.ts",
