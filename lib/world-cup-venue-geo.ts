@@ -1,7 +1,15 @@
 /**
- * FIFA World Cup 2026 host venue geolocation (Mexico venues without NFL/MLS import rows).
- * Coordinates: stadium pitch center from OpenStreetMap / Wikidata.
+ * FIFA World Cup 2026 host venue geolocation for all 16 stadiums.
+ * Composes NFL, MLS/NWSL, and Mexico registries into one canonical list.
  */
+
+import { getMlsNwslVenueGeo } from "@/lib/mls-nwsl-venue-geo";
+import { getNflVenueGeo } from "@/lib/nfl-venue-geo";
+import {
+  WORLD_CUP_VENUE_DISPLAY_NAMES,
+  WORLD_CUP_VENUE_SLUGS,
+  type WorldCupVenueSlug
+} from "@/lib/schedules/world-cup-venue-map";
 
 export type WorldCupVenueGeo = {
   name: string;
@@ -14,6 +22,9 @@ export type WorldCupVenueGeo = {
   timeZone: string;
 };
 
+export const WORLD_CUP_RECURRING_EVENT = "FIFA World Cup 2026";
+
+/** Mexico venues (also exported for ensure-world-cup-mexico-venues.ts). */
 export const WORLD_CUP_MEXICO_VENUE_GEO: Record<string, WorldCupVenueGeo> = {
   "estadio-azteca": {
     name: "Estadio Azteca",
@@ -47,6 +58,54 @@ export const WORLD_CUP_MEXICO_VENUE_GEO: Record<string, WorldCupVenueGeo> = {
   }
 };
 
+function geoFromRegistries(slug: WorldCupVenueSlug): WorldCupVenueGeo | undefined {
+  const nfl = getNflVenueGeo(slug);
+  if (nfl) {
+    return {
+      name: WORLD_CUP_VENUE_DISPLAY_NAMES[slug] ?? nfl.name,
+      city: nfl.city,
+      state: nfl.state,
+      country: nfl.country,
+      latitude: nfl.latitude,
+      longitude: nfl.longitude,
+      reviewRadiusMeters: nfl.reviewRadiusMeters,
+      timeZone: nfl.timeZone
+    };
+  }
+
+  const mls = getMlsNwslVenueGeo(slug);
+  if (mls) {
+    return {
+      name: WORLD_CUP_VENUE_DISPLAY_NAMES[slug] ?? mls.name,
+      city: mls.city,
+      state: mls.state,
+      country: mls.country,
+      latitude: mls.latitude,
+      longitude: mls.longitude,
+      reviewRadiusMeters: mls.reviewRadiusMeters,
+      timeZone: mls.timeZone
+    };
+  }
+
+  return WORLD_CUP_MEXICO_VENUE_GEO[slug];
+}
+
+export const WORLD_CUP_HOST_VENUE_GEO: Record<WorldCupVenueSlug, WorldCupVenueGeo> =
+  Object.fromEntries(
+    WORLD_CUP_VENUE_SLUGS.map((slug) => {
+      const geo = geoFromRegistries(slug);
+      if (!geo) {
+        throw new Error(`Missing World Cup geo profile for slug: ${slug}`);
+      }
+      return [slug, geo];
+    })
+  ) as Record<WorldCupVenueSlug, WorldCupVenueGeo>;
+
+export function getWorldCupHostVenueGeo(slug: string): WorldCupVenueGeo | undefined {
+  return WORLD_CUP_HOST_VENUE_GEO[slug.trim().toLowerCase() as WorldCupVenueSlug];
+}
+
+/** @deprecated Use getWorldCupHostVenueGeo */
 export function getWorldCupMexicoVenueGeo(slug: string): WorldCupVenueGeo | undefined {
   return WORLD_CUP_MEXICO_VENUE_GEO[slug.trim().toLowerCase()];
 }

@@ -1,0 +1,1046 @@
+{
+  "season": 2026,
+  "tournament": "FIFA World Cup 2026",
+  "fixtures": [
+    {
+      "matchId": "001",
+      "startsAt": "2026-06-11T21:00:00.000Z",
+      "venueName": "Estadio Azteca",
+      "venueSlug": "estadio-azteca",
+      "stage": "Group Stage",
+      "teamOneName": "Mexico",
+      "teamTwoName": "TBD",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "002",
+      "startsAt": "2026-06-12T19:00:00.000Z",
+      "venueName": "BMO Field",
+      "venueSlug": "bmo-field",
+      "stage": "Group Stage",
+      "teamOneName": "Canada",
+      "teamTwoName": "TBD",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "003",
+      "startsAt": "2026-06-12T23:00:00.000Z",
+      "venueName": "SoFi Stadium",
+      "venueSlug": "sofi-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "United States",
+      "teamTwoName": "TBD",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "004",
+      "startsAt": "2026-06-13T18:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Group Stage",
+      "teamOneName": "United States",
+      "teamTwoName": "TBD",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "005",
+      "startsAt": "2026-06-13T22:00:00.000Z",
+      "venueName": "BC Place",
+      "venueSlug": "bc-place",
+      "stage": "Group Stage",
+      "teamOneName": "Canada",
+      "teamTwoName": "TBD",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "006",
+      "startsAt": "2026-06-14T18:00:00.000Z",
+      "venueName": "Estadio Akron",
+      "venueSlug": "estadio-akron",
+      "stage": "Group Stage",
+      "teamOneName": "Mexico",
+      "teamTwoName": "TBD",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "007",
+      "startsAt": "2026-06-14T22:00:00.000Z",
+      "venueName": "Gillette Stadium",
+      "venueSlug": "gillette-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group C Team 1",
+      "teamTwoName": "Group C Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "008",
+      "startsAt": "2026-06-13T02:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group H Team 1",
+      "teamTwoName": "Group H Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "009",
+      "startsAt": "2026-06-13T17:00:00.000Z",
+      "venueName": "Levi's Stadium",
+      "venueSlug": "levi-s-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group I Team 1",
+      "teamTwoName": "Group I Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "010",
+      "startsAt": "2026-06-13T20:00:00.000Z",
+      "venueName": "Hard Rock Stadium",
+      "venueSlug": "hard-rock-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group J Team 1",
+      "teamTwoName": "Group J Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "011",
+      "startsAt": "2026-06-13T23:00:00.000Z",
+      "venueName": "Gillette Stadium",
+      "venueSlug": "gillette-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group K Team 1",
+      "teamTwoName": "Group K Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "012",
+      "startsAt": "2026-06-14T02:00:00.000Z",
+      "venueName": "BC Place",
+      "venueSlug": "bc-place",
+      "stage": "Group Stage",
+      "teamOneName": "Group L Team 1",
+      "teamTwoName": "Group L Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "013",
+      "startsAt": "2026-06-14T17:00:00.000Z",
+      "venueName": "BMO Field",
+      "venueSlug": "bmo-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group A Team 1",
+      "teamTwoName": "Group A Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "014",
+      "startsAt": "2026-06-14T20:00:00.000Z",
+      "venueName": "Estadio Azteca",
+      "venueSlug": "estadio-azteca",
+      "stage": "Group Stage",
+      "teamOneName": "Group B Team 1",
+      "teamTwoName": "Group B Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "015",
+      "startsAt": "2026-06-14T23:00:00.000Z",
+      "venueName": "Estadio BBVA",
+      "venueSlug": "estadio-bbva",
+      "stage": "Group Stage",
+      "teamOneName": "Group C Team 1",
+      "teamTwoName": "Group C Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "016",
+      "startsAt": "2026-06-15T02:00:00.000Z",
+      "venueName": "Estadio Akron",
+      "venueSlug": "estadio-akron",
+      "stage": "Group Stage",
+      "teamOneName": "Group D Team 1",
+      "teamTwoName": "Group D Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "017",
+      "startsAt": "2026-06-15T17:00:00.000Z",
+      "venueName": "MetLife Stadium",
+      "venueSlug": "metlife-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group E Team 1",
+      "teamTwoName": "Group E Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "018",
+      "startsAt": "2026-06-15T20:00:00.000Z",
+      "venueName": "SoFi Stadium",
+      "venueSlug": "sofi-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group F Team 1",
+      "teamTwoName": "Group F Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "019",
+      "startsAt": "2026-06-15T23:00:00.000Z",
+      "venueName": "AT&T Stadium",
+      "venueSlug": "att-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group G Team 1",
+      "teamTwoName": "Group G Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "020",
+      "startsAt": "2026-06-16T02:00:00.000Z",
+      "venueName": "Mercedes-Benz Stadium",
+      "venueSlug": "mercedes-benz-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group H Team 1",
+      "teamTwoName": "Group H Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "021",
+      "startsAt": "2026-06-16T17:00:00.000Z",
+      "venueName": "NRG Stadium",
+      "venueSlug": "nrg-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group I Team 1",
+      "teamTwoName": "Group I Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "022",
+      "startsAt": "2026-06-16T20:00:00.000Z",
+      "venueName": "GEHA Field at Arrowhead Stadium",
+      "venueSlug": "geha-field-at-arrowhead-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group J Team 1",
+      "teamTwoName": "Group J Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "023",
+      "startsAt": "2026-06-16T23:00:00.000Z",
+      "venueName": "Lincoln Financial Field",
+      "venueSlug": "lincoln-financial-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group K Team 1",
+      "teamTwoName": "Group K Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "024",
+      "startsAt": "2026-06-17T02:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group L Team 1",
+      "teamTwoName": "Group L Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "025",
+      "startsAt": "2026-06-17T17:00:00.000Z",
+      "venueName": "Levi's Stadium",
+      "venueSlug": "levi-s-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group A Team 1",
+      "teamTwoName": "Group A Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "026",
+      "startsAt": "2026-06-17T20:00:00.000Z",
+      "venueName": "Hard Rock Stadium",
+      "venueSlug": "hard-rock-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group B Team 1",
+      "teamTwoName": "Group B Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "027",
+      "startsAt": "2026-06-17T23:00:00.000Z",
+      "venueName": "Gillette Stadium",
+      "venueSlug": "gillette-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group C Team 1",
+      "teamTwoName": "Group C Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "028",
+      "startsAt": "2026-06-18T02:00:00.000Z",
+      "venueName": "BC Place",
+      "venueSlug": "bc-place",
+      "stage": "Group Stage",
+      "teamOneName": "Group D Team 1",
+      "teamTwoName": "Group D Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "029",
+      "startsAt": "2026-06-18T17:00:00.000Z",
+      "venueName": "BMO Field",
+      "venueSlug": "bmo-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group E Team 1",
+      "teamTwoName": "Group E Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "030",
+      "startsAt": "2026-06-18T20:00:00.000Z",
+      "venueName": "Estadio Azteca",
+      "venueSlug": "estadio-azteca",
+      "stage": "Group Stage",
+      "teamOneName": "Group F Team 1",
+      "teamTwoName": "Group F Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "031",
+      "startsAt": "2026-06-18T23:00:00.000Z",
+      "venueName": "Estadio BBVA",
+      "venueSlug": "estadio-bbva",
+      "stage": "Group Stage",
+      "teamOneName": "Group G Team 1",
+      "teamTwoName": "Group G Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "032",
+      "startsAt": "2026-06-19T02:00:00.000Z",
+      "venueName": "Estadio Akron",
+      "venueSlug": "estadio-akron",
+      "stage": "Group Stage",
+      "teamOneName": "Group H Team 1",
+      "teamTwoName": "Group H Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "033",
+      "startsAt": "2026-06-19T17:00:00.000Z",
+      "venueName": "MetLife Stadium",
+      "venueSlug": "metlife-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group I Team 1",
+      "teamTwoName": "Group I Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "034",
+      "startsAt": "2026-06-19T20:00:00.000Z",
+      "venueName": "SoFi Stadium",
+      "venueSlug": "sofi-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group J Team 1",
+      "teamTwoName": "Group J Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "035",
+      "startsAt": "2026-06-19T23:00:00.000Z",
+      "venueName": "AT&T Stadium",
+      "venueSlug": "att-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group K Team 1",
+      "teamTwoName": "Group K Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "036",
+      "startsAt": "2026-06-20T02:00:00.000Z",
+      "venueName": "Mercedes-Benz Stadium",
+      "venueSlug": "mercedes-benz-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group L Team 1",
+      "teamTwoName": "Group L Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "037",
+      "startsAt": "2026-06-20T17:00:00.000Z",
+      "venueName": "NRG Stadium",
+      "venueSlug": "nrg-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group A Team 1",
+      "teamTwoName": "Group A Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "038",
+      "startsAt": "2026-06-20T20:00:00.000Z",
+      "venueName": "GEHA Field at Arrowhead Stadium",
+      "venueSlug": "geha-field-at-arrowhead-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group B Team 1",
+      "teamTwoName": "Group B Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "039",
+      "startsAt": "2026-06-20T23:00:00.000Z",
+      "venueName": "Lincoln Financial Field",
+      "venueSlug": "lincoln-financial-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group C Team 1",
+      "teamTwoName": "Group C Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "040",
+      "startsAt": "2026-06-21T02:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group D Team 1",
+      "teamTwoName": "Group D Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "041",
+      "startsAt": "2026-06-21T17:00:00.000Z",
+      "venueName": "Levi's Stadium",
+      "venueSlug": "levi-s-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group E Team 1",
+      "teamTwoName": "Group E Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "042",
+      "startsAt": "2026-06-21T20:00:00.000Z",
+      "venueName": "Hard Rock Stadium",
+      "venueSlug": "hard-rock-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group F Team 1",
+      "teamTwoName": "Group F Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "043",
+      "startsAt": "2026-06-21T23:00:00.000Z",
+      "venueName": "Gillette Stadium",
+      "venueSlug": "gillette-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group G Team 1",
+      "teamTwoName": "Group G Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "044",
+      "startsAt": "2026-06-22T02:00:00.000Z",
+      "venueName": "BC Place",
+      "venueSlug": "bc-place",
+      "stage": "Group Stage",
+      "teamOneName": "Group H Team 1",
+      "teamTwoName": "Group H Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "045",
+      "startsAt": "2026-06-22T17:00:00.000Z",
+      "venueName": "BMO Field",
+      "venueSlug": "bmo-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group I Team 1",
+      "teamTwoName": "Group I Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "046",
+      "startsAt": "2026-06-22T20:00:00.000Z",
+      "venueName": "Estadio Azteca",
+      "venueSlug": "estadio-azteca",
+      "stage": "Group Stage",
+      "teamOneName": "Group J Team 1",
+      "teamTwoName": "Group J Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "047",
+      "startsAt": "2026-06-22T23:00:00.000Z",
+      "venueName": "Estadio BBVA",
+      "venueSlug": "estadio-bbva",
+      "stage": "Group Stage",
+      "teamOneName": "Group K Team 1",
+      "teamTwoName": "Group K Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "048",
+      "startsAt": "2026-06-23T02:00:00.000Z",
+      "venueName": "Estadio Akron",
+      "venueSlug": "estadio-akron",
+      "stage": "Group Stage",
+      "teamOneName": "Group L Team 1",
+      "teamTwoName": "Group L Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "049",
+      "startsAt": "2026-06-23T17:00:00.000Z",
+      "venueName": "MetLife Stadium",
+      "venueSlug": "metlife-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group A Team 1",
+      "teamTwoName": "Group A Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "050",
+      "startsAt": "2026-06-23T20:00:00.000Z",
+      "venueName": "SoFi Stadium",
+      "venueSlug": "sofi-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group B Team 1",
+      "teamTwoName": "Group B Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "051",
+      "startsAt": "2026-06-23T23:00:00.000Z",
+      "venueName": "AT&T Stadium",
+      "venueSlug": "att-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group C Team 1",
+      "teamTwoName": "Group C Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "052",
+      "startsAt": "2026-06-24T02:00:00.000Z",
+      "venueName": "Mercedes-Benz Stadium",
+      "venueSlug": "mercedes-benz-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group D Team 1",
+      "teamTwoName": "Group D Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "053",
+      "startsAt": "2026-06-24T17:00:00.000Z",
+      "venueName": "NRG Stadium",
+      "venueSlug": "nrg-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group E Team 1",
+      "teamTwoName": "Group E Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "054",
+      "startsAt": "2026-06-24T20:00:00.000Z",
+      "venueName": "GEHA Field at Arrowhead Stadium",
+      "venueSlug": "geha-field-at-arrowhead-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group F Team 1",
+      "teamTwoName": "Group F Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "055",
+      "startsAt": "2026-06-24T23:00:00.000Z",
+      "venueName": "Lincoln Financial Field",
+      "venueSlug": "lincoln-financial-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group G Team 1",
+      "teamTwoName": "Group G Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "056",
+      "startsAt": "2026-06-25T02:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group H Team 1",
+      "teamTwoName": "Group H Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "057",
+      "startsAt": "2026-06-25T17:00:00.000Z",
+      "venueName": "Levi's Stadium",
+      "venueSlug": "levi-s-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group I Team 1",
+      "teamTwoName": "Group I Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "058",
+      "startsAt": "2026-06-25T20:00:00.000Z",
+      "venueName": "Hard Rock Stadium",
+      "venueSlug": "hard-rock-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group J Team 1",
+      "teamTwoName": "Group J Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "059",
+      "startsAt": "2026-06-25T23:00:00.000Z",
+      "venueName": "Gillette Stadium",
+      "venueSlug": "gillette-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group K Team 1",
+      "teamTwoName": "Group K Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "060",
+      "startsAt": "2026-06-26T02:00:00.000Z",
+      "venueName": "BC Place",
+      "venueSlug": "bc-place",
+      "stage": "Group Stage",
+      "teamOneName": "Group L Team 1",
+      "teamTwoName": "Group L Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "061",
+      "startsAt": "2026-06-26T17:00:00.000Z",
+      "venueName": "BMO Field",
+      "venueSlug": "bmo-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group A Team 1",
+      "teamTwoName": "Group A Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "062",
+      "startsAt": "2026-06-26T20:00:00.000Z",
+      "venueName": "Estadio Azteca",
+      "venueSlug": "estadio-azteca",
+      "stage": "Group Stage",
+      "teamOneName": "Group B Team 1",
+      "teamTwoName": "Group B Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "063",
+      "startsAt": "2026-06-26T23:00:00.000Z",
+      "venueName": "Estadio BBVA",
+      "venueSlug": "estadio-bbva",
+      "stage": "Group Stage",
+      "teamOneName": "Group C Team 1",
+      "teamTwoName": "Group C Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "064",
+      "startsAt": "2026-06-27T02:00:00.000Z",
+      "venueName": "Estadio Akron",
+      "venueSlug": "estadio-akron",
+      "stage": "Group Stage",
+      "teamOneName": "Group D Team 1",
+      "teamTwoName": "Group D Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "065",
+      "startsAt": "2026-06-27T17:00:00.000Z",
+      "venueName": "MetLife Stadium",
+      "venueSlug": "metlife-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group E Team 1",
+      "teamTwoName": "Group E Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "066",
+      "startsAt": "2026-06-27T20:00:00.000Z",
+      "venueName": "SoFi Stadium",
+      "venueSlug": "sofi-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group F Team 1",
+      "teamTwoName": "Group F Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "067",
+      "startsAt": "2026-06-27T23:00:00.000Z",
+      "venueName": "AT&T Stadium",
+      "venueSlug": "att-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group G Team 1",
+      "teamTwoName": "Group G Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "068",
+      "startsAt": "2026-06-28T02:00:00.000Z",
+      "venueName": "Mercedes-Benz Stadium",
+      "venueSlug": "mercedes-benz-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group H Team 1",
+      "teamTwoName": "Group H Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "069",
+      "startsAt": "2026-06-28T17:00:00.000Z",
+      "venueName": "NRG Stadium",
+      "venueSlug": "nrg-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group I Team 1",
+      "teamTwoName": "Group I Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "070",
+      "startsAt": "2026-06-28T20:00:00.000Z",
+      "venueName": "GEHA Field at Arrowhead Stadium",
+      "venueSlug": "geha-field-at-arrowhead-stadium",
+      "stage": "Group Stage",
+      "teamOneName": "Group J Team 1",
+      "teamTwoName": "Group J Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "071",
+      "startsAt": "2026-06-28T23:00:00.000Z",
+      "venueName": "Lincoln Financial Field",
+      "venueSlug": "lincoln-financial-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group K Team 1",
+      "teamTwoName": "Group K Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "072",
+      "startsAt": "2026-06-29T02:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Group Stage",
+      "teamOneName": "Group L Team 1",
+      "teamTwoName": "Group L Team 2",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "073",
+      "startsAt": "2026-06-28T17:00:00.000Z",
+      "venueName": "Levi's Stadium",
+      "venueSlug": "levi-s-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 1 Winner",
+      "teamTwoName": "Match 2 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "074",
+      "startsAt": "2026-06-29T01:00:00.000Z",
+      "venueName": "Hard Rock Stadium",
+      "venueSlug": "hard-rock-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 2 Winner",
+      "teamTwoName": "Match 3 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "075",
+      "startsAt": "2026-06-29T09:00:00.000Z",
+      "venueName": "Mercedes-Benz Stadium",
+      "venueSlug": "mercedes-benz-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 3 Winner",
+      "teamTwoName": "Match 4 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "076",
+      "startsAt": "2026-06-29T17:00:00.000Z",
+      "venueName": "NRG Stadium",
+      "venueSlug": "nrg-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 4 Winner",
+      "teamTwoName": "Match 5 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "077",
+      "startsAt": "2026-06-30T01:00:00.000Z",
+      "venueName": "Lincoln Financial Field",
+      "venueSlug": "lincoln-financial-field",
+      "stage": "Round of 32",
+      "teamOneName": "Match 5 Winner",
+      "teamTwoName": "Match 6 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "078",
+      "startsAt": "2026-06-30T09:00:00.000Z",
+      "venueName": "AT&T Stadium",
+      "venueSlug": "att-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 6 Winner",
+      "teamTwoName": "Match 7 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "079",
+      "startsAt": "2026-06-30T17:00:00.000Z",
+      "venueName": "SoFi Stadium",
+      "venueSlug": "sofi-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 7 Winner",
+      "teamTwoName": "Match 8 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "080",
+      "startsAt": "2026-07-01T01:00:00.000Z",
+      "venueName": "BC Place",
+      "venueSlug": "bc-place",
+      "stage": "Round of 32",
+      "teamOneName": "Match 8 Winner",
+      "teamTwoName": "Match 9 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "081",
+      "startsAt": "2026-07-01T09:00:00.000Z",
+      "venueName": "BMO Field",
+      "venueSlug": "bmo-field",
+      "stage": "Round of 32",
+      "teamOneName": "Match 9 Winner",
+      "teamTwoName": "Match 10 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "082",
+      "startsAt": "2026-07-01T17:00:00.000Z",
+      "venueName": "Estadio BBVA",
+      "venueSlug": "estadio-bbva",
+      "stage": "Round of 32",
+      "teamOneName": "Match 10 Winner",
+      "teamTwoName": "Match 11 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "083",
+      "startsAt": "2026-07-02T01:00:00.000Z",
+      "venueName": "Estadio Akron",
+      "venueSlug": "estadio-akron",
+      "stage": "Round of 32",
+      "teamOneName": "Match 11 Winner",
+      "teamTwoName": "Match 12 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "084",
+      "startsAt": "2026-07-02T09:00:00.000Z",
+      "venueName": "Estadio Azteca",
+      "venueSlug": "estadio-azteca",
+      "stage": "Round of 32",
+      "teamOneName": "Match 12 Winner",
+      "teamTwoName": "Match 13 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "085",
+      "startsAt": "2026-07-02T17:00:00.000Z",
+      "venueName": "MetLife Stadium",
+      "venueSlug": "metlife-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 13 Winner",
+      "teamTwoName": "Match 14 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "086",
+      "startsAt": "2026-07-03T01:00:00.000Z",
+      "venueName": "GEHA Field at Arrowhead Stadium",
+      "venueSlug": "geha-field-at-arrowhead-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 14 Winner",
+      "teamTwoName": "Match 15 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "087",
+      "startsAt": "2026-07-03T09:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Round of 32",
+      "teamOneName": "Match 15 Winner",
+      "teamTwoName": "Match 16 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "088",
+      "startsAt": "2026-07-03T17:00:00.000Z",
+      "venueName": "Gillette Stadium",
+      "venueSlug": "gillette-stadium",
+      "stage": "Round of 32",
+      "teamOneName": "Match 16 Winner",
+      "teamTwoName": "Match 17 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "089",
+      "startsAt": "2026-07-04T17:00:00.000Z",
+      "venueName": "Levi's Stadium",
+      "venueSlug": "levi-s-stadium",
+      "stage": "Round of 16",
+      "teamOneName": "Match 73 Winner",
+      "teamTwoName": "Match 75 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "090",
+      "startsAt": "2026-07-05T05:00:00.000Z",
+      "venueName": "NRG Stadium",
+      "venueSlug": "nrg-stadium",
+      "stage": "Round of 16",
+      "teamOneName": "Match 74 Winner",
+      "teamTwoName": "Match 77 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "091",
+      "startsAt": "2026-07-05T17:00:00.000Z",
+      "venueName": "MetLife Stadium",
+      "venueSlug": "metlife-stadium",
+      "stage": "Round of 16",
+      "teamOneName": "Match 76 Winner",
+      "teamTwoName": "Match 78 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "092",
+      "startsAt": "2026-07-06T05:00:00.000Z",
+      "venueName": "Estadio Azteca",
+      "venueSlug": "estadio-azteca",
+      "stage": "Round of 16",
+      "teamOneName": "Match 79 Winner",
+      "teamTwoName": "Match 80 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "093",
+      "startsAt": "2026-07-06T17:00:00.000Z",
+      "venueName": "AT&T Stadium",
+      "venueSlug": "att-stadium",
+      "stage": "Round of 16",
+      "teamOneName": "Match 83 Winner",
+      "teamTwoName": "Match 84 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "094",
+      "startsAt": "2026-07-07T05:00:00.000Z",
+      "venueName": "Lumen Field",
+      "venueSlug": "lumen-field",
+      "stage": "Round of 16",
+      "teamOneName": "Match 81 Winner",
+      "teamTwoName": "Match 82 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "095",
+      "startsAt": "2026-07-07T17:00:00.000Z",
+      "venueName": "Mercedes-Benz Stadium",
+      "venueSlug": "mercedes-benz-stadium",
+      "stage": "Round of 16",
+      "teamOneName": "Match 86 Winner",
+      "teamTwoName": "Match 88 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "096",
+      "startsAt": "2026-07-08T05:00:00.000Z",
+      "venueName": "BC Place",
+      "venueSlug": "bc-place",
+      "stage": "Round of 16",
+      "teamOneName": "Match 85 Winner",
+      "teamTwoName": "Match 87 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "097",
+      "startsAt": "2026-07-09T17:00:00.000Z",
+      "venueName": "Lincoln Financial Field",
+      "venueSlug": "lincoln-financial-field",
+      "stage": "Quarter-Final",
+      "teamOneName": "Match 89 Winner",
+      "teamTwoName": "Match 90 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "098",
+      "startsAt": "2026-07-10T17:00:00.000Z",
+      "venueName": "Hard Rock Stadium",
+      "venueSlug": "hard-rock-stadium",
+      "stage": "Quarter-Final",
+      "teamOneName": "Match 93 Winner",
+      "teamTwoName": "Match 94 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "099",
+      "startsAt": "2026-07-11T17:00:00.000Z",
+      "venueName": "GEHA Field at Arrowhead Stadium",
+      "venueSlug": "geha-field-at-arrowhead-stadium",
+      "stage": "Quarter-Final",
+      "teamOneName": "Match 91 Winner",
+      "teamTwoName": "Match 92 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "100",
+      "startsAt": "2026-07-12T17:00:00.000Z",
+      "venueName": "SoFi Stadium",
+      "venueSlug": "sofi-stadium",
+      "stage": "Quarter-Final",
+      "teamOneName": "Match 95 Winner",
+      "teamTwoName": "Match 96 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "101",
+      "startsAt": "2026-07-14T20:00:00.000Z",
+      "venueName": "AT&T Stadium",
+      "venueSlug": "att-stadium",
+      "stage": "Semi-Final",
+      "teamOneName": "Match 97 Winner",
+      "teamTwoName": "Match 98 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "102",
+      "startsAt": "2026-07-15T20:00:00.000Z",
+      "venueName": "Mercedes-Benz Stadium",
+      "venueSlug": "mercedes-benz-stadium",
+      "stage": "Semi-Final",
+      "teamOneName": "Match 99 Winner",
+      "teamTwoName": "Match 100 Winner",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "103",
+      "startsAt": "2026-07-18T20:00:00.000Z",
+      "venueName": "Hard Rock Stadium",
+      "venueSlug": "hard-rock-stadium",
+      "stage": "Third Place",
+      "teamOneName": "Match 101 Loser",
+      "teamTwoName": "Match 102 Loser",
+      "status": "SCHEDULED"
+    },
+    {
+      "matchId": "104",
+      "startsAt": "2026-07-19T20:00:00.000Z",
+      "venueName": "MetLife Stadium",
+      "venueSlug": "metlife-stadium",
+      "stage": "Final",
+      "teamOneName": "Match 101 Winner",
+      "teamTwoName": "Match 102 Winner",
+      "status": "SCHEDULED"
+    }
+  ]
+}
