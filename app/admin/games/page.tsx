@@ -9,7 +9,7 @@ import {
   getVenueTimeZone,
   type AdminGamesListFilters
 } from "@/lib/admin/games";
-import { formatHomeTeamLabel } from "@/lib/game-day";
+import { resolveGameHomeTeamLabel } from "@/lib/game-display";
 import { prisma } from "@/lib/prisma";
 
 type AdminGamesPageProps = {
@@ -76,7 +76,9 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
         league: true,
         season: true,
         homeTeamSlug: true,
+        homeTeamName: true,
         awayTeamName: true,
+        isNeutralSite: true,
         startsAt: true,
         pollingOpensAt: true,
         pollingClosesAt: true,
@@ -254,7 +256,7 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
                     >
                       <td className="px-4 py-3 font-bold">{game.league}</td>
                       <td className="px-4 py-3">
-                        {formatHomeTeamLabel(game.homeTeamSlug)}
+                        {resolveGameHomeTeamLabel(game)}
                       </td>
                       <td className="px-4 py-3 text-zinc-300">{game.awayTeamName}</td>
                       <td className="px-4 py-3">

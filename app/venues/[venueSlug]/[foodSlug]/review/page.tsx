@@ -18,6 +18,7 @@ import {
   validateGameDayReviewSubmission,
   type GameDayReviewErrorCode
 } from "@/lib/game-day";
+import { formatGameDisplayName } from "@/lib/game-display";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import {
   getFileDebug,
@@ -726,7 +727,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
       {!pollingOpen && upcomingGame ? (
         <>
           {" "}
-          Next home game:{" "}
+          Next game: {formatGameDisplayName(upcomingGame, { venueHomeTeamLabel: venue.teams[0] })}{" "}
+          ·{" "}
           {formatGameDateTimeForVenue(upcomingGame.startsAt, venueTimeZone, {
             includeZone: true
           })}

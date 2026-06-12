@@ -547,7 +547,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
         ) : null}
         {venueId && (activeGame || upcomingGame) ? (
           <GameDayModeCard
-            homeTeamLabel={homeTeamLabel}
+            venueHomeTeamLabel={homeTeamLabel}
             venueTimeZone={venueTimeZone}
             activeGame={activeGame}
             upcomingGame={upcomingGame}

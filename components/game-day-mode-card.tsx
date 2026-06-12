@@ -5,12 +5,13 @@ import {
   formatGameDayPollingWindowHoursLabel,
   formatGameDayPollingWindowRangeForVenue,
   formatGameTimeForVenue,
-  formatHomeTeamLabel,
   isGameDayActive
 } from "@/lib/game-day";
+import { formatGameDisplayName } from "@/lib/game-display";
 
 type GameDayModeCardProps = {
-  homeTeamLabel: string;
+  /** Primary venue tenant — used for standard home games only, not World Cup / neutral-site fixtures. */
+  venueHomeTeamLabel?: string;
   venueTimeZone: string;
   activeGame: Game | null;
   upcomingGame: Game | null;
@@ -18,14 +19,14 @@ type GameDayModeCardProps = {
 };
 
 export function GameDayModeCard({
-  homeTeamLabel,
+  venueHomeTeamLabel = "",
   venueTimeZone,
   activeGame,
   upcomingGame,
   now = new Date()
 }: GameDayModeCardProps) {
   if (activeGame && isGameDayActive(activeGame, now)) {
-    const matchup = `${activeGame.awayTeamName} at ${homeTeamLabel}`;
+    const matchup = formatGameDisplayName(activeGame, { venueHomeTeamLabel });
     const windowRange = formatGameDayPollingWindowRangeForVenue(
       activeGame.pollingOpensAt,
       activeGame.pollingClosesAt,
@@ -66,9 +67,7 @@ export function GameDayModeCard({
     return null;
   }
 
-  const home =
-    homeTeamLabel || formatHomeTeamLabel(upcomingGame.homeTeamSlug);
-  const matchup = `${upcomingGame.awayTeamName} at ${home}`;
+  const matchup = formatGameDisplayName(upcomingGame, { venueHomeTeamLabel });
 
   return (
     <article className="media-panel-card px-3 py-2.5 sm:px-4 sm:py-3">

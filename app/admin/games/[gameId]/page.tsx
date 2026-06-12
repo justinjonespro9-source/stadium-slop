@@ -16,9 +16,9 @@ import {
 } from "@/lib/admin/games";
 import {
   formatGameDayPollingWindowHoursLabel,
-  formatGameDayPollingWindowRangeForVenue,
-  formatHomeTeamLabel
+  formatGameDayPollingWindowRangeForVenue
 } from "@/lib/game-day";
+import { formatGameDisplayName } from "@/lib/game-display";
 import { prisma } from "@/lib/prisma";
 
 type AdminGameDetailPageProps = {
@@ -64,7 +64,9 @@ export default async function AdminGameDetailPage({
       league: true,
       season: true,
       homeTeamSlug: true,
+      homeTeamName: true,
       awayTeamName: true,
+      isNeutralSite: true,
       startsAt: true,
       pollingOpensAt: true,
       pollingClosesAt: true,
@@ -83,7 +85,7 @@ export default async function AdminGameDetailPage({
     notFound();
   }
 
-  const homeLabel = formatHomeTeamLabel(game.homeTeamSlug);
+  const matchupLabel = formatGameDisplayName(game);
   const venueTimeZone = getVenueTimeZone(game.venue);
   const venueZoneLabel = formatVenueTimeZoneAbbrev(venueTimeZone, game.startsAt);
   const now = new Date();
@@ -108,7 +110,7 @@ export default async function AdminGameDetailPage({
             {game.league} · {game.season}
           </p>
           <h1 className="mt-5 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
-            {game.awayTeamName} at {homeLabel}
+            {matchupLabel}
           </h1>
           <p className="mt-2 text-sm text-zinc-400">
             {game.venue.name} ·{" "}

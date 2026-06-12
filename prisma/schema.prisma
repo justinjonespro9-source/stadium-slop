@@ -298,7 +298,9 @@ model Game {
   league          String
   season          Int
   homeTeamSlug    String
+  homeTeamName    String?
   awayTeamName    String
+  isNeutralSite   Boolean    @default(false)
   venueId         String
   startsAt        DateTime
   estimatedEndsAt DateTime?

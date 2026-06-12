@@ -17,6 +17,7 @@ import {
   GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START,
   getGameDayWindow
 } from "@/lib/game-day";
+import { formatGameDisplayName } from "@/lib/game-display";
 import { buildWorldCup2026Fixtures } from "@/lib/schedules/world-cup-2026-fixture-seeds";
 import { formatWorldCupLocalKickoff } from "@/lib/schedules/world-cup-local-kickoff";
 import { getWorldCupVenueTimeZone } from "@/lib/schedules/world-cup-fixture-timezone";
@@ -31,6 +32,32 @@ const prisma = new PrismaClient({
 const verbose = process.argv.includes("--verbose");
 const limitArg = process.argv.find((a) => a.startsWith("--limit="));
 const limit = limitArg ? Number.parseInt(limitArg.split("=")[1] ?? "10", 10) : 10;
+
+/** Venue tenant substrings that must never appear in World Cup fixture display labels. */
+const VENUE_TENANT_DISPLAY_PATTERNS: readonly RegExp[] = [
+  /\b49ers\b/i,
+  /\bchiefs\b/i,
+  /\bpatriots\b/i,
+  /\bdolphins\b/i,
+  /\bcowboys\b/i,
+  /\bfalcons\b/i,
+  /\beagles\b/i,
+  /\bseahawks\b/i,
+  /\brams\b/i,
+  /\bchargers\b/i,
+  /\bgiants\b/i,
+  /\bjets\b/i
+];
+
+function displayUsesVenueTenant(display: string): string | null {
+  for (const pattern of VENUE_TENANT_DISPLAY_PATTERNS) {
+    const match = display.match(pattern);
+    if (match) {
+      return match[0];
+    }
+  }
+  return null;
+}
 
 function isPlaceholderTeam(name: string): boolean {
   const n = name.trim();
@@ -96,7 +123,7 @@ async function main() {
 
   const venues = await prisma.venue.findMany({
     where: { slug: { in: [...WORLD_CUP_VENUE_SLUGS] } },
-    select: { id: true, slug: true, timeZone: true }
+    select: { id: true, slug: true, timeZone: true, teams: true }
   });
   const venueBySlug = new Map(venues.map((v) => [v.slug, v]));
 
@@ -104,14 +131,41 @@ async function main() {
     where: { league: WORLD_CUP_LEAGUE },
     select: {
       externalId: true,
+      league: true,
+      homeTeamSlug: true,
+      homeTeamName: true,
+      awayTeamName: true,
+      isNeutralSite: true,
       startsAt: true,
       pollingOpensAt: true,
       pollingClosesAt: true,
       venueId: true,
-      venue: { select: { slug: true, timeZone: true } }
+      venue: { select: { slug: true, timeZone: true, teams: true } }
     },
     orderBy: { startsAt: "asc" }
   });
+
+  const displayIssues: string[] = [];
+  const missingHomeNameIssues: string[] = [];
+  for (const g of games) {
+    const venueTenant = g.venue.teams[0] ?? "";
+    const display = formatGameDisplayName(g, { venueHomeTeamLabel: venueTenant });
+    const tenantHit = displayUsesVenueTenant(display);
+    if (tenantHit) {
+      displayIssues.push(
+        `${g.externalId} @ ${g.venue.slug}: "${display}" contains venue tenant "${tenantHit}"`
+      );
+    }
+    if (!g.isNeutralSite) {
+      displayIssues.push(`${g.externalId}: World Cup game missing isNeutralSite=true`);
+    }
+    if (!g.homeTeamName?.trim()) {
+      missingHomeNameIssues.push(`${g.externalId} @ ${g.venue.slug}: missing homeTeamName`);
+    }
+    if (!display.includes(" vs ")) {
+      displayIssues.push(`${g.externalId}: expected "vs" format, got "${display}"`);
+    }
+  }
 
   const dbIssues: string[] = [];
   for (const g of games) {
@@ -171,6 +225,36 @@ async function main() {
   console.log(`| Host venues in DB | ${venues.length} / ${WORLD_CUP_VENUE_SLUGS.length} |`);
   console.log(`| World Cup games in DB | ${games.length} |`);
   console.log(`| DB issues | ${dbIssues.length} |`);
+  console.log(`| Display tenant fallback issues | ${displayIssues.length} |`);
+  console.log(`| Missing homeTeamName | ${missingHomeNameIssues.length} |`);
+
+  console.log("\n## Sample fixture displays (must use vs, not venue tenant)\n");
+  const sampleSlugs = [
+    "levi-s-stadium",
+    "sofi-stadium",
+    "att-stadium",
+    "metlife-stadium"
+  ] as const;
+  for (const slug of sampleSlugs) {
+    const sample = games.find((g) => g.venue.slug === slug);
+    if (!sample) {
+      console.log(`- ${slug}: (no World Cup game in DB)`);
+      continue;
+    }
+    const display = formatGameDisplayName(sample, {
+      venueHomeTeamLabel: sample.venue.teams[0] ?? ""
+    });
+    console.log(`- ${slug}: ${display}`);
+  }
+
+  if (displayIssues.length) {
+    console.log("\n## Display issues\n");
+    for (const line of displayIssues.slice(0, 30)) console.log(`- ${line}`);
+  }
+  if (missingHomeNameIssues.length) {
+    console.log("\n## Missing homeTeamName (re-run sync:world-cup-schedule --apply)\n");
+    for (const line of missingHomeNameIssues.slice(0, 20)) console.log(`- ${line}`);
+  }
 
   if (groupTbdIssues.length) {
     console.log("\n## Group-stage TBD issues\n");
@@ -197,6 +281,8 @@ async function main() {
     groupTbdIssues.length > 0 ||
     timezoneIssues.length > 0 ||
     dbIssues.length > 0 ||
+    displayIssues.length > 0 ||
+    missingHomeNameIssues.length > 0 ||
     venues.length !== WORLD_CUP_VENUE_SLUGS.length;
 
   if (failed) {

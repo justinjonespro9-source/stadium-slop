@@ -45,6 +45,7 @@ async function ensureVenue(slug: string) {
     latitude: geo.latitude,
     longitude: geo.longitude,
     reviewRadiusMeters: geo.reviewRadiusMeters,
+    timeZone: geo.timeZone,
     venueType: VenueType.STADIUM,
     status: EntityStatus.ACTIVE
   };
