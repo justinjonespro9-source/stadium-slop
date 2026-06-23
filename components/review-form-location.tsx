@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 type ReviewFormLocationProps = {
   formId: string;
@@ -14,6 +14,11 @@ type ReviewFormLocationProps = {
 
 type LocationPhase = "idle" | "certifying" | "captured" | "submitting";
 
+type CapturedCoords = {
+  latitude: string;
+  longitude: string;
+};
+
 export function ReviewFormLocation({
   formId,
   pollingOpen,
@@ -22,18 +27,16 @@ export function ReviewFormLocation({
   testReviewModeActive = false,
   tone = "brand"
 }: ReviewFormLocationProps) {
-  const latRef = useRef<HTMLInputElement>(null);
-  const lngRef = useRef<HTMLInputElement>(null);
   const [phase, setPhase] = useState<LocationPhase>("idle");
   const [clientError, setClientError] = useState<string | null>(null);
   const [capturedAt, setCapturedAt] = useState<string | null>(null);
-  const [coordsCaptured, setCoordsCaptured] = useState(false);
+  const [capturedCoords, setCapturedCoords] = useState<CapturedCoords | null>(null);
   const isMedia = tone === "media";
 
   const canSubmit = testReviewModeActive || pollingOpen;
   const certifyBusy = phase === "certifying";
   const submitBusy = phase === "submitting";
-  const locationReady = testReviewModeActive || (coordsCaptured && !certifyBusy);
+  const locationReady = testReviewModeActive || Boolean(capturedCoords && !certifyBusy);
 
   const certifyLocation = useCallback(() => {
     setClientError(null);
@@ -53,13 +56,10 @@ export function ReviewFormLocation({
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        if (latRef.current) {
-          latRef.current.value = String(position.coords.latitude);
-        }
-        if (lngRef.current) {
-          lngRef.current.value = String(position.coords.longitude);
-        }
-        setCoordsCaptured(true);
+        setCapturedCoords({
+          latitude: String(position.coords.latitude),
+          longitude: String(position.coords.longitude)
+        });
         setCapturedAt(
           new Date().toLocaleTimeString("en-US", {
             hour: "numeric",
@@ -70,7 +70,7 @@ export function ReviewFormLocation({
       },
       (err) => {
         setPhase("idle");
-        setCoordsCaptured(false);
+        setCapturedCoords(null);
         const denied = err.code === err.PERMISSION_DENIED;
         setClientError(
           denied
@@ -90,8 +90,9 @@ export function ReviewFormLocation({
     }
 
     if (!testReviewModeActive) {
-      const lat = latRef.current?.value?.trim();
-      const lng = lngRef.current?.value?.trim();
+      const lat = capturedCoords?.latitude?.trim();
+      const lng = capturedCoords?.longitude?.trim();
+
       if (!lat || !lng) {
         setClientError("Certify your location at the stadium before submitting.");
         return;
@@ -105,7 +106,7 @@ export function ReviewFormLocation({
 
     setPhase("submitting");
     form.requestSubmit();
-  }, [canSubmit, formId, testReviewModeActive]);
+  }, [canSubmit, capturedCoords, formId, testReviewModeActive]);
 
   const testAlertClass = isMedia
     ? "media-review-alert media-review-alert--warn"
@@ -163,8 +164,18 @@ export function ReviewFormLocation({
 
   return (
     <div className="space-y-3">
-      <input ref={latRef} type="hidden" name="latitude" defaultValue="" />
-      <input ref={lngRef} type="hidden" name="longitude" defaultValue="" />
+      <input
+        type="hidden"
+        name="latitude"
+        value={capturedCoords?.latitude ?? ""}
+        readOnly
+      />
+      <input
+        type="hidden"
+        name="longitude"
+        value={capturedCoords?.longitude ?? ""}
+        readOnly
+      />
 
       {!pollingOpen ? (
         <div role="status" className={closedAlertClass}>
