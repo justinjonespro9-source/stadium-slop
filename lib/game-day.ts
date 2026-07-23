@@ -81,7 +81,11 @@ export function isGameDayInactiveStatus(status: GameStatus) {
   return GAME_DAY_INACTIVE_STATUSES.includes(status);
 }
 
-/** True when now falls inside the venue polling window and the game is not canceled/postponed. */
+/**
+ * True when now falls inside the venue polling window and the game is not canceled/postponed.
+ * Close is exclusive (`now < pollingClosesAt`) so multi-day fair windows that close at local
+ * midnight do not remain open into the next calendar day.
+ */
 export function isGameDayActive(
   game: GameDayActivityFields,
   now: Date = new Date()
@@ -92,7 +96,7 @@ export function isGameDayActive(
 
   const t = now.getTime();
   return (
-    t >= game.pollingOpensAt.getTime() && t <= game.pollingClosesAt.getTime()
+    t >= game.pollingOpensAt.getTime() && t < game.pollingClosesAt.getTime()
   );
 }
 
@@ -158,7 +162,7 @@ export async function getVenueActiveGame(
     where: {
       venueId,
       pollingOpensAt: { lte: now },
-      pollingClosesAt: { gte: now },
+      pollingClosesAt: { gt: now },
       status: { notIn: [...GAME_DAY_INACTIVE_STATUSES] }
     },
     orderBy: { startsAt: "asc" },

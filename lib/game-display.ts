@@ -1,11 +1,17 @@
 import type { Game } from "@prisma/client";
 
 import { formatHomeTeamLabel } from "./game-day";
+import { isStateFairEventGame } from "./schedules/fair-event-window";
 import { WORLD_CUP_LEAGUE } from "./schedules/world-cup-schedule";
 
 export type GameDisplayFields = Pick<
   Game,
-  "league" | "homeTeamSlug" | "homeTeamName" | "awayTeamName" | "isNeutralSite"
+  | "league"
+  | "homeTeamSlug"
+  | "homeTeamName"
+  | "awayTeamName"
+  | "isNeutralSite"
+  | "externalId"
 >;
 
 export type FormatGameDisplayNameOptions = {
@@ -39,6 +45,10 @@ export function formatGameDisplayName(
   game: GameDisplayFields,
   options: FormatGameDisplayNameOptions = {}
 ): string {
+  if (isStateFairEventGame(game)) {
+    return resolveGameHomeTeamLabel(game, options.venueHomeTeamLabel);
+  }
+
   const away = game.awayTeamName.trim();
 
   if (isNeutralSiteGame(game)) {

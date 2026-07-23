@@ -1,10 +1,11 @@
 /**
- * Wisconsin State Fair — official Food Finder is seasonal / not populated off-season.
- * Source inspected: https://wistatefair.com/fair/food-finder/
+ * Wisconsin State Fair — verified returning / classic Food Finder items (2026).
+ * Source: https://wistatefair.com/fair/food-finder/
  */
 
 import { buildFairMenuParseResult } from "../build-parse-result";
 import type { FairMenuParseResult } from "../types";
+import { WISCONSIN_2026_CORE_CATALOG } from "./wisconsin-state-fair-core-catalog-data";
 
 const VENUE_SLUG = "wisconsin-state-fair";
 const VENUE_NAME = "Wisconsin State Fair";
@@ -15,13 +16,18 @@ export async function parseWisconsinStateFairCoreCatalog(): Promise<FairMenuPars
     venueSlug: VENUE_SLUG,
     venueName: VENUE_NAME,
     sourceUrl: SOURCE_URL,
-    items: [],
+    items: WISCONSIN_2026_CORE_CATALOG.map((item) => ({
+      ...item,
+      seasonIntroduced: item.seasonIntroduced ?? "2026"
+    })),
     importSource: "core-catalog",
+    sourceYear: 2026,
     warnings: [
-      "WiStateFair.com Food Finder page states: check back in July for the tool to be running.",
-      "No item-level vendor/menu blocks in server HTML (WordPress page shell only).",
-      "Use https://wistatefair.com/fair/new-foods/ preview import until the Food Finder publishes structured listings.",
-      "food-beverage-vendors page is vendor marketing copy, not an item-level menu export."
+      "Core catalog curated from the official 2026 Food Finder (WordPress food listings).",
+      "Includes State Fair favorites, Wisconsin staples, and returning past Sporkies/Drinkies items with verified vendors.",
+      "Multi-vendor staples list a primary vendor; availability may vary by stand.",
+      "Items marked NOT RETURNING 2026 on the Food Finder were excluded.",
+      "Pork 'N' Pine Brat Burger is seeded via the 2026 new-foods import (official PDF + Food Finder), not this core catalog."
     ]
   });
 }

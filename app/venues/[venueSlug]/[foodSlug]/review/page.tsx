@@ -19,6 +19,10 @@ import {
   type GameDayReviewErrorCode
 } from "@/lib/game-day";
 import { formatGameDisplayName } from "@/lib/game-display";
+import {
+  formatFairEventDateRange,
+  isStateFairEventGame
+} from "@/lib/schedules/fair-event-window";
 import { findTodaysReviewForItem } from "@/lib/review-draft";
 import {
   getFileDebug,
@@ -716,30 +720,49 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
     state: venue.state,
     country: venue.country
   });
+  const fairCopy = isFairCopyContext(venue.slug);
+  const activeFairEvent = activeGame ? isStateFairEventGame(activeGame) : false;
+  const upcomingFairEvent = upcomingGame
+    ? isStateFairEventGame(upcomingGame)
+    : false;
 
   const statusNote = (
     <>
       {testReviewModeActive
         ? "Test review mode is on for your admin account. Submissions skip location certification and do not affect public Slop Score, Fresh Signal, or awards."
         : pollingOpen
-          ? `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium to submit.`
-          : "You can draft anytime. Certified reviews can only be submitted during an active home-game window while you're at the stadium."}
+          ? activeFairEvent
+            ? "Fair review window is open. Certify your location at the fairgrounds to submit."
+            : `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium to submit.`
+          : fairCopy
+            ? "You can draft anytime. Certified reviews open during the fair dates while you're on the fairgrounds."
+            : "You can draft anytime. Certified reviews can only be submitted during an active home-game window while you're at the stadium."}
       {!pollingOpen && upcomingGame ? (
         <>
           {" "}
-          Next game: {formatGameDisplayName(upcomingGame, { venueHomeTeamLabel: venue.teams[0] })}{" "}
+          {upcomingFairEvent ? "Upcoming fair" : "Next game"}:{" "}
+          {formatGameDisplayName(upcomingGame, {
+            venueHomeTeamLabel: venue.teams[0]
+          })}{" "}
           ·{" "}
-          {formatGameDateTimeForVenue(upcomingGame.startsAt, venueTimeZone, {
-            includeZone: true
-          })}
+          {upcomingFairEvent
+            ? formatFairEventDateRange(
+                upcomingGame.pollingOpensAt,
+                upcomingGame.pollingClosesAt,
+                venueTimeZone
+              )
+            : formatGameDateTimeForVenue(upcomingGame.startsAt, venueTimeZone, {
+                includeZone: true
+              })}
           .
         </>
       ) : null}
       {!hasVenueCoords ? (
         <>
           {" "}
-          Stadium coordinates are not on file for this venue yet — location certification may
-          fail until coords are added.
+          {fairCopy
+            ? "Fairground coordinates are not on file for this venue yet — location certification may fail until coords are added."
+            : "Stadium coordinates are not on file for this venue yet — location certification may fail until coords are added."}
         </>
       ) : null}
     </>

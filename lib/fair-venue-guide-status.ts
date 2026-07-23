@@ -8,7 +8,11 @@ function formatFoodCount(count: number): string {
 function sourceLabelFromItems(items: FoodItem[]): string {
   const tags = items.flatMap((item) => item.tags ?? []);
   const hasCore = tags.includes("core-catalog");
-  const hasPreview = tags.includes("2025-preview");
+  const hasPreview =
+    tags.includes("2025-preview") ||
+    tags.includes("2026-preview") ||
+    tags.includes("new-2026") ||
+    tags.includes("new-food");
   if (hasCore && hasPreview) {
     return "Preview + catalog sources";
   }

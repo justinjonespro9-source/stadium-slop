@@ -7,11 +7,15 @@ import { FAIR_SOURCE_YEAR } from "./types";
 export function fairItemToSource(
   raw: FairRawMenuItem,
   sourceUrl: string,
-  importTags: string[]
+  importTags: string[],
+  sourceYear: number = FAIR_SOURCE_YEAR
 ): VenueMenuSourceItem & { importTags: string[]; seasonIntroduced: string } {
   const category =
     raw.beverageCategory ??
     (raw.allowBeverage ? ("Non-Alcoholic Drink" as const) : ("Food" as const));
+
+  const tags = [...importTags, ...(raw.extraTags ?? [])];
+  const dedupedTags = [...new Set(tags)];
 
   return {
     name: raw.name,
@@ -23,8 +27,8 @@ export function fairItemToSource(
     vendorLocationHint: raw.location,
     dietaryTags: raw.dietaryTags ?? [],
     sourceUrl,
-    importTags: [...importTags],
-    seasonIntroduced: String(FAIR_SOURCE_YEAR)
+    importTags: dedupedTags,
+    seasonIntroduced: raw.seasonIntroduced ?? String(sourceYear)
   };
 }
 
@@ -36,9 +40,12 @@ export function buildFairMenuParseResult(args: {
   warnings?: string[];
   importSource?: FairImportSource;
   skippedItems?: { name: string; reason: string }[];
+  /** Defaults to FAIR_SOURCE_YEAR; set for year-specific fair imports. */
+  sourceYear?: number;
 }): FairMenuParseResult {
   const importSource = args.importSource ?? "preview";
-  const importTags = fairImportTagsForSource(importSource, args.venueSlug);
+  const sourceYear = args.sourceYear ?? FAIR_SOURCE_YEAR;
+  const importTags = fairImportTagsForSource(importSource, args.venueSlug, sourceYear);
   const warnings = [...(args.warnings ?? [])];
   const skippedItems: { name: string; reason: string }[] = [...(args.skippedItems ?? [])];
   const parsed: VenueMenuSourceItem[] = [];
@@ -53,7 +60,7 @@ export function buildFairMenuParseResult(args: {
       }
       continue;
     }
-    parsed.push(fairItemToSource(raw, args.sourceUrl, importTags));
+    parsed.push(fairItemToSource(raw, args.sourceUrl, importTags, sourceYear));
   }
 
   return {
@@ -63,7 +70,7 @@ export function buildFairMenuParseResult(args: {
     parsedAt: new Date().toISOString(),
     items: parsed,
     skippedDrinks,
-    sourceYear: FAIR_SOURCE_YEAR,
+    sourceYear,
     warnings,
     skippedItems
   };

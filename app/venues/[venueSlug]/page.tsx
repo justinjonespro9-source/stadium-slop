@@ -543,7 +543,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
       <div className="media-venue-content">
         {isFairVenueSlug(venue.slug) ? (
-          <FairPreviewNotice className="mb-5 sm:mb-6" />
+          <FairPreviewNotice className="mb-5 sm:mb-6" venueSlug={venue.slug} />
         ) : null}
         {venueId && (activeGame || upcomingGame) ? (
           <GameDayModeCard

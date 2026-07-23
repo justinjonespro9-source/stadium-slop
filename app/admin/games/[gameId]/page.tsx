@@ -91,7 +91,7 @@ export default async function AdminGameDetailPage({
   const now = new Date();
   const pollingActive =
     now >= game.pollingOpensAt &&
-    now <= game.pollingClosesAt &&
+    now < game.pollingClosesAt &&
     game.status !== "CANCELED" &&
     game.status !== "POSTPONED";
 

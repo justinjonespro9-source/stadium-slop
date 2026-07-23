@@ -62,10 +62,10 @@ const DIRECTORY_META: Record<
   },
   "wisconsin-state-fair": {
     fairDates2026: "Aug. 6 – Aug. 16, 2026",
-    statusLabel: "Foods listed",
+    statusLabel: "168 foods tracked",
     status: "preview-loaded",
-    previewItemCount: 12,
-    trackedFoodCount: 12
+    previewItemCount: 84,
+    trackedFoodCount: 168
   },
   "the-big-e": {
     fairDates2026: "Sept. 18 – Oct. 4, 2026",

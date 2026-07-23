@@ -20,14 +20,18 @@ export function parseFairImportSourceArg(argv: string[]): FairImportSource {
 
 export function fairImportTagsForSource(
   source: FairImportSource,
-  venueSlug: string
+  venueSlug: string,
+  sourceYear: number = 2025
 ): string[] {
   const base = ["state-fair", venueSlug];
   if (source === "core-catalog") {
-    return [...base, "core-catalog", "official-source", "prior-year-listing"];
+    return [...base, "core-catalog", "official-source"];
   }
   if (source === "mspmag-2025") {
     return [...base, "mspmag-2025", "third-party-source", "prior-year-listing"];
+  }
+  if (sourceYear >= 2026) {
+    return [...base, `${sourceYear}-preview`, "new-food"];
   }
   return [...base, "2025-preview", "prior-year-listing"];
 }

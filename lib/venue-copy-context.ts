@@ -251,8 +251,12 @@ export function getReviewAvailabilityHint(
 ): string {
   if (isFairCopyContext(venueSlug)) {
     return isSignedIn
-      ? "Share your fair-day take — reviews help other fairgoers."
-      : "Sign in to review foods at this fair.";
+      ? activeGame
+        ? "Certified reviews during this fair window — location required."
+        : "Browse anytime — certified reviews open during the fair."
+      : activeGame
+        ? "Sign in to submit a location-certified fair review."
+        : "Sign in to review foods at this fair.";
   }
   return isSignedIn
     ? activeGame

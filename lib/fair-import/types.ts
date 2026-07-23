@@ -29,6 +29,10 @@ export type FairRawMenuItem = {
   allowBeverage?: boolean;
   beverageCategory?: "Alcoholic Drink" | "Non-Alcoholic Drink";
   dietaryTags?: VenueMenuDietaryTag[];
+  /** Extra FoodItem tags beyond the import-source defaults (e.g. new-2026, sporkies-finalist). */
+  extraTags?: string[];
+  /** Overrides default seasonIntroduced from FAIR_SOURCE_YEAR when set. */
+  seasonIntroduced?: string;
 };
 
 export type FairMenuParseResult = VenueMenuParseResult & {

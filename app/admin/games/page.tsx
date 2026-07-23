@@ -246,7 +246,7 @@ export default async function AdminGamesPage({ searchParams }: AdminGamesPagePro
                   });
                   const isActive =
                     now >= game.pollingOpensAt &&
-                    now <= game.pollingClosesAt &&
+                    now < game.pollingClosesAt &&
                     game.status !== "CANCELED" &&
                     game.status !== "POSTPONED";
                   return (

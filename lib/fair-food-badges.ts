@@ -9,7 +9,12 @@ export type FairFoodImportBadgeLabel = "New Food" | "Fair Classic";
 export function getFairFoodImportBadge(item: FoodItem): FairFoodImportBadgeLabel | null {
   const tags = new Set((item.tags ?? []).map((tag) => tag.toLowerCase()));
 
-  if (tags.has("2025-preview")) {
+  if (
+    tags.has("2026-preview") ||
+    tags.has("2025-preview") ||
+    tags.has("new-2026") ||
+    tags.has("new-food")
+  ) {
     return "New Food";
   }
 
