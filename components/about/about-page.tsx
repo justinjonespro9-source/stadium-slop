@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { DiscoveryPageHero } from "@/components/discovery/discovery-page-hero";
-import { WORLD_CUP_GUIDE_PATH_EN } from "@/lib/world-cup-stadium-food-guide-content";
 
 const DIFFERENTIATORS = [
   {
@@ -32,7 +31,6 @@ const DIFFERENTIATORS = [
 
 const SLOP_NETWORK_LINKS = [
   { href: "/venues", label: "Stadium venues" },
-  { href: WORLD_CUP_GUIDE_PATH_EN, label: "World Cup Slop" },
   { href: "/state-fair-food-guide", label: "State Fair Slop" }
 ] as const;
 
@@ -93,7 +91,7 @@ export function AboutPage() {
             Stadium Slop is the flagship.
           </h2>
           <p className="about-page__copy mt-3 max-w-3xl text-sm leading-relaxed text-[var(--media-ink-muted)] sm:text-[0.9375rem]">
-            World Cup Slop and State Fair Slop are early extensions of the same idea: food
+            State Fair Slop is an early extension of the same idea: food
             discovery built for live-event environments where timing, location, and crowd
             feedback matter.
           </p>

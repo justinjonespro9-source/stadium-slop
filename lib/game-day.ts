@@ -1,5 +1,7 @@
 import { GameStatus, type Game } from "@prisma/client";
 
+import { ARCHIVED_COMPETITION_LEAGUES } from "./world-cup-archive";
+
 /** Fallback on-site radius when a venue row has no valid `reviewRadiusMeters`. */
 export const DEFAULT_GAME_DAY_REVIEW_RADIUS_METERS = 750;
 
@@ -161,6 +163,7 @@ export async function getVenueActiveGame(
   const games = await prisma.game.findMany({
     where: {
       venueId,
+      league: { notIn: [...ARCHIVED_COMPETITION_LEAGUES] },
       pollingOpensAt: { lte: now },
       pollingClosesAt: { gt: now },
       status: { notIn: [...GAME_DAY_INACTIVE_STATUSES] }
@@ -181,6 +184,7 @@ export async function getVenueUpcomingGame(
   return prisma.game.findFirst({
     where: {
       venueId,
+      league: { notIn: [...ARCHIVED_COMPETITION_LEAGUES] },
       startsAt: { gt: now },
       status: { notIn: [...GAME_DAY_INACTIVE_STATUSES] }
     },

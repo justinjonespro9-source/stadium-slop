@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { getGameDayWindow } from "@/lib/game-day";
+import { WORLD_CUP_2026_ARCHIVED } from "@/lib/world-cup-archive";
 import { mapSoccerFeedStatusToGameStatus } from "@/lib/schedules/soccer-game-status";
 import {
   utcInstantInRange,
@@ -196,7 +197,8 @@ export function worldCupMappedGameToPrismaData(
     estimatedEndsAt: window.estimatedEndsAt,
     pollingOpensAt: window.pollingOpensAt,
     pollingClosesAt: window.pollingClosesAt,
-    status: game.status,
+    // Tournament archived: keep rows but never reopen as live/scheduled windows.
+    status: WORLD_CUP_2026_ARCHIVED ? GameStatus.FINAL : game.status,
     externalId: game.externalId
   };
 }

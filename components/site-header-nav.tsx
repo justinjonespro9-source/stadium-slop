@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { WORLD_CUP_GUIDE_PATH_EN } from "@/lib/world-cup-stadium-food-guide-content";
-
 const STATE_FAIR_GUIDE_PATH = "/state-fair-food-guide";
 
 type SiteHeaderNavProps = {
@@ -97,7 +95,7 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    setMenuOpen(false);
+    queueMicrotask(() => setMenuOpen(false));
   }, [pathname]);
 
   useEffect(() => {
@@ -119,10 +117,9 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
 
   const isHome = pathname === "/";
   const isVenues = pathname === "/venues" || pathname.startsWith("/venues/");
-  const isWorldCup = pathname.startsWith("/world-cup") || pathname.includes("guia-comida");
   const isStateFair = pathname.startsWith(STATE_FAIR_GUIDE_PATH);
   const isAccount = pathname === "/account" || pathname === "/login";
-  const isVenuesNavActive = isVenues && !isWorldCup && !isStateFair;
+  const isVenuesNavActive = isVenues && !isStateFair;
 
   return (
     <>
@@ -135,9 +132,6 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
         </NavLink>
         <NavLink href="/venues" active={isVenuesNavActive}>
           Venues
-        </NavLink>
-        <NavLink href={WORLD_CUP_GUIDE_PATH_EN} active={isWorldCup}>
-          World Cup Slop
         </NavLink>
         <NavLink href={STATE_FAIR_GUIDE_PATH} active={isStateFair}>
           State Fair Slop
@@ -188,13 +182,6 @@ export function SiteHeaderNav({ accountHref, accountLabel }: SiteHeaderNavProps)
                     description="Search stadiums and menus"
                   >
                     Venues / Find a venue
-                  </MobileNavLink>
-                  <MobileNavLink
-                    href={WORLD_CUP_GUIDE_PATH_EN}
-                    active={isWorldCup}
-                    description="2026 host stadium food guide"
-                  >
-                    World Cup Slop
                   </MobileNavLink>
                   <MobileNavLink
                     href={STATE_FAIR_GUIDE_PATH}

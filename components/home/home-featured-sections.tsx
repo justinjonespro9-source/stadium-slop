@@ -3,10 +3,6 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import type { HomepageFeaturedItem } from "@/lib/homepage-data";
-import {
-  WORLD_CUP_GUIDE_PATH_EN,
-  WORLD_CUP_GUIDE_PATH_ES
-} from "@/lib/world-cup-stadium-food-guide-content";
 
 type HomeFeaturedSectionsProps = {
   recentlyAdded: HomepageFeaturedItem[];
@@ -174,23 +170,6 @@ function SectionShell({
 export function HomeFeaturedSections({ recentlyAdded }: HomeFeaturedSectionsProps) {
   return (
     <div className="space-y-10 sm:space-y-12">
-      <section className="media-panel-card border border-[var(--media-border)] p-5 sm:p-6">
-        <p className="media-section-eyebrow">2026 World Cup</p>
-        <h2 className="media-section-title">Know Before You Bite</h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--media-ink-muted)]">
-          Browse food at every host stadium and help fans rank what&apos;s worth trying before
-          kickoff.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Link href={WORLD_CUP_GUIDE_PATH_EN} className="media-primary-button">
-            World Cup Food Guide
-          </Link>
-          <Link href={WORLD_CUP_GUIDE_PATH_ES} hrefLang="es" className="media-cta-outline">
-            Ver guía en español
-          </Link>
-        </div>
-      </section>
-
       <SectionShell eyebrow="New on the board" title="Recently Added" href="/venues" linkLabel="Browse">
         <FeaturedItemGrid
           items={recentlyAdded}

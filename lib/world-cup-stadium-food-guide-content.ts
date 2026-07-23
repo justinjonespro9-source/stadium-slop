@@ -58,24 +58,24 @@ export type WorldCupGuideContent = {
 
 const EN_FAQ = [
   {
-    question: "What food will be at 2026 World Cup stadiums?",
+    question: "What food was at 2026 World Cup stadiums?",
     answer:
-      "Each host venue has its own concessions—local specialties, international stands, and stadium classics. Stadium Slop lists items as fans and imports add them; coverage grows match by match."
+      "Each host venue had its own concessions—local specialties, international stands, and stadium classics. Stadium Slop still lists items fans and imports added during the tournament."
   },
   {
-    question: "Can fans leave stadium food reviews?",
+    question: "Can fans still leave stadium food reviews?",
     answer:
-      "Yes. Sign in, pick a host venue and food item, and submit a review. Verified in-stadium reviews use location checks on game day so rankings reflect real fan experiences."
+      "Yes at venues that remain active on Stadium Slop. Sign in, pick a venue and food item, and submit during an eligible live event window for that stadium (club games and other supported events—not closed World Cup match windows)."
   },
   {
-    question: "Which World Cup stadium has the best food?",
+    question: "Which World Cup stadium had the best food?",
     answer:
-      "Rankings change as more fans review items. Browse each host venue on Stadium Slop to compare Slop Scores, photos, and recent reviews—there is no single official answer."
+      "Rankings reflected fan reviews during the tournament. Browse each host venue on Stadium Slop to compare Slop Scores, photos, and reviews from that period."
   },
   {
     question: "How does Stadium Slop verify reviews?",
     answer:
-      "When you review at a venue, Stadium Slop can confirm you are inside the stadium geofence during an eligible event window. That helps separate in-building game-day reviews from off-site guesses."
+      "When you review at a venue, Stadium Slop can confirm you are inside the stadium geofence during an eligible event window. That helps separate in-building reviews from off-site guesses."
   },
   {
     question: "What is Stadium Slop?",
@@ -86,24 +86,24 @@ const EN_FAQ = [
 
 const ES_FAQ = [
   {
-    question: "¿Qué comida habrá en los estadios del Mundial 2026?",
+    question: "¿Qué comida hubo en los estadios del Mundial 2026?",
     answer:
-      "Cada estadio sede tiene sus propios concessions: especialidades locales, stands internacionales y clásicos de estadio. Stadium Slop lista platillos conforme fans e importaciones los agregan; la cobertura crece partido a partido."
+      "Cada estadio sede tuvo sus propios concessions: especialidades locales, stands internacionales y clásicos de estadio. Stadium Slop aún lista platillos que fans e importaciones agregaron durante el torneo."
   },
   {
-    question: "¿Pueden los fans dejar reseñas de comida en los estadios?",
+    question: "¿Pueden los fans seguir dejando reseñas de comida en los estadios?",
     answer:
-      "Sí. Inicia sesión, elige un estadio sede y un platillo, y envía una reseña. Las reseñas verificadas dentro del estadio usan verificación de ubicación en día de partido para que los rankings reflejen experiencias reales."
+      "Sí en los estadios que siguen activos en Stadium Slop. Inicia sesión, elige un estadio y un platillo, y envía una reseña durante una ventana de evento elegible (partidos de club u otros eventos—no ventanas cerradas del Mundial)."
   },
   {
-    question: "¿Qué estadio del Mundial tiene la mejor comida?",
+    question: "¿Qué estadio del Mundial tuvo la mejor comida?",
     answer:
-      "Los rankings cambian conforme más fans dejan reseñas. Explora cada estadio sede en Stadium Slop para comparar Slop Scores, fotos y reseñas recientes—no hay una sola respuesta oficial."
+      "Los rankings reflejaron reseñas de fans durante el torneo. Explora cada estadio sede en Stadium Slop para comparar Slop Scores, fotos y reseñas de ese periodo."
   },
   {
     question: "¿Cómo verifica Stadium Slop las reseñas?",
     answer:
-      "Cuando reseñas en un estadio, Stadium Slop puede confirmar que estás dentro del geofence del estadio durante una ventana de evento elegible. Eso ayuda a separar reseñas de día de partido en el edificio de opiniones fuera del estadio."
+      "Cuando reseñas en un estadio, Stadium Slop puede confirmar que estás dentro del geofence del estadio durante una ventana de evento elegible. Eso ayuda a separar reseñas en el edificio de opiniones fuera del estadio."
   },
   {
     question: "¿Qué es Stadium Slop?",
@@ -121,14 +121,14 @@ const CONTENT: Record<WorldCupGuideLocale, WorldCupGuideContent> = {
     alternateLanguageLabel: "Español",
     htmlLang: "en",
     metadata: {
-      title: "2026 World Cup Stadium Food Guide | Stadium Slop",
+      title: "2026 World Cup Stadium Food Guide (Archive) | Stadium Slop",
       description:
-        "Find food at 2026 World Cup host stadiums with Stadium Slop. Browse venue menus, fan photos, rankings, and verified in-stadium reviews.",
+        "Historical guide to food at 2026 World Cup host stadiums on Stadium Slop. Browse venue menus, fan photos, and rankings from the completed tournament.",
       keywords: [
         "2026 World Cup",
         "World Cup stadium food",
         "stadium food guide",
-        "FIFA World Cup food",
+        "FIFA World Cup food archive",
         "host stadium food",
         "Stadium Slop"
       ]
@@ -139,15 +139,15 @@ const CONTENT: Record<WorldCupGuideLocale, WorldCupGuideContent> = {
       languageSwitchPrefix: "Also available in"
     },
     hero: {
-      eyebrow: "Stadium Slop · Fan-powered stadium food",
+      eyebrow: "Archive · 2026 World Cup complete",
       title: "2026 World Cup Stadium Food Guide",
-      tagline: "Know Before You Bite",
+      tagline: "Historical host-venue food coverage",
       description:
-        "Traveling for the 2026 World Cup? Stadium Slop helps fans discover what to eat inside each host venue, browse stadium food items, and help build fan-powered rankings with verified in-stadium reviews."
+        "The 2026 World Cup is over. This page remains as a historical guide to food at the 16 host stadiums. Venues stay browseable on Stadium Slop for their ongoing club seasons and events."
     },
     venues: {
       sectionEyebrow: (live, total) =>
-        `2026 host venues · ${live} of ${total} live on Stadium Slop`,
+        `2026 host venues (archive) · ${live} of ${total} on Stadium Slop`,
       countryLabels: {
         USA: "United States",
         Canada: "Canada",
@@ -159,33 +159,33 @@ const CONTENT: Record<WorldCupGuideLocale, WorldCupGuideContent> = {
       browseVenue: "Browse venue →",
       comingSoon: "Coming soon",
       starterCoverage:
-        "Starter coverage is live. Fans attending matches can help expand and rank food items at this venue."
+        "Coverage from the tournament remains available. Host venues continue as normal Stadium Slop guides for club games and other events."
     },
     howItWorks: {
       heading: "How Stadium Slop Works",
       stepLabel: (n) => `Step ${n}`,
       steps: [
         {
-          title: "Pick a host venue",
-          body: "Choose a 2026 World Cup stadium to see what fans are eating inside the building."
+          title: "Open a host venue",
+          body: "Choose a 2026 World Cup stadium page to see the food coverage fans and imports built."
         },
         {
           title: "Browse food items",
-          body: "Explore menus, vendors, and standout bites before you head to your match."
+          body: "Explore menus, vendors, and standout bites still listed for that stadium."
         },
         {
           title: "See fan photos and rankings",
-          body: "Compare Slop Scores, Napkin Ratings, and real photos from the stands."
+          body: "Compare Slop Scores, Napkin Ratings, and photos from real visits."
         },
         {
-          title: "Leave a verified in-stadium review",
-          body: "Share a game-day review with location verification so rankings stay trustworthy."
+          title: "Review during live venue events",
+          body: "Certified reviews open for eligible club or event windows at the stadium—not for closed World Cup match windows."
         }
       ]
     },
     cta: {
-      heading: "Be one of the first fans to help rank World Cup stadium food.",
-      body: "Pick a host venue, leave a verified review, and help travelers know what is worth ordering before kickoff.",
+      heading: "Keep exploring these host stadiums year-round.",
+      body: "World Cup match windows are closed. Browse each venue’s ongoing menu guide and leave reviews when a live eligible event is underway.",
       findVenue: "Find a venue",
       createAccount: "Create an account"
     },
@@ -205,14 +205,14 @@ const CONTENT: Record<WorldCupGuideLocale, WorldCupGuideContent> = {
     alternateLanguageLabel: "English",
     htmlLang: "es",
     metadata: {
-      title: "Guía de comida en los estadios del Mundial 2026 | Stadium Slop",
+      title: "Guía de comida en los estadios del Mundial 2026 (archivo) | Stadium Slop",
       description:
-        "Encuentra comida en los estadios sede del Mundial 2026 con Stadium Slop. Explora menús, fotos de fans, rankings y reseñas verificadas dentro del estadio.",
+        "Guía histórica de comida en los estadios sede del Mundial 2026 en Stadium Slop. Explora menús, fotos de fans y rankings del torneo concluido.",
       keywords: [
         "Mundial 2026",
         "comida estadio Mundial",
         "guía comida estadio",
-        "Copa Mundial comida",
+        "archivo Copa Mundial comida",
         "estadios sede Mundial",
         "Stadium Slop"
       ]
@@ -223,15 +223,15 @@ const CONTENT: Record<WorldCupGuideLocale, WorldCupGuideContent> = {
       languageSwitchPrefix: "También disponible en"
     },
     hero: {
-      eyebrow: "Stadium Slop · Comida de estadio impulsada por fans",
+      eyebrow: "Archivo · Mundial 2026 concluido",
       title: "Guía de comida en los estadios del Mundial 2026",
-      tagline: "Sabe qué comer antes del partido.",
+      tagline: "Cobertura histórica de estadios sede",
       description:
-        "¿Viajas para el Mundial 2026? Stadium Slop ayuda a los fans a descubrir qué comer dentro de cada estadio sede, explorar comida del estadio y ayudar a crear rankings impulsados por fans con reseñas verificadas dentro del estadio."
+        "El Mundial 2026 ya terminó. Esta página permanece como guía histórica de la comida en los 16 estadios sede. Los estadios siguen disponibles en Stadium Slop para sus temporadas de club y otros eventos."
     },
     venues: {
       sectionEyebrow: (live, total) =>
-        `Estadios sede 2026 · ${live} de ${total} en vivo en Stadium Slop`,
+        `Estadios sede 2026 (archivo) · ${live} de ${total} en Stadium Slop`,
       countryLabels: {
         USA: "Estados Unidos",
         Canada: "Canadá",
@@ -243,34 +243,33 @@ const CONTENT: Record<WorldCupGuideLocale, WorldCupGuideContent> = {
       browseVenue: "Ver estadio →",
       comingSoon: "Próximamente",
       starterCoverage:
-        "La cobertura inicial ya está en vivo. Los fans que asistan a los partidos pueden ayudar a ampliar y rankear platillos en este estadio."
+        "La cobertura del torneo sigue disponible. Los estadios sede continúan como guías normales de Stadium Slop para partidos de club y otros eventos."
     },
     howItWorks: {
       heading: "Cómo funciona Stadium Slop",
       stepLabel: (n) => `Paso ${n}`,
       steps: [
         {
-          title: "Elige un estadio sede",
-          body: "Selecciona un estadio del Mundial 2026 para ver qué están comiendo los fans dentro del edificio."
+          title: "Abre un estadio sede",
+          body: "Elige un estadio del Mundial 2026 para ver la cobertura de comida que fans e importaciones construyeron."
         },
         {
           title: "Explora la comida disponible",
-          body: "Revisa menús, vendors y platillos destacados antes de tu partido."
+          body: "Revisa menús, vendors y platillos destacados que siguen listados para ese estadio."
         },
         {
           title: "Mira fotos y rankings de fans",
-          body: "Compara Slop Scores, Napkin Ratings y fotos reales desde las gradas."
+          body: "Compara Slop Scores, Napkin Ratings y fotos de visitas reales."
         },
         {
-          title: "Deja una reseña verificada dentro del estadio",
-          body: "Comparte una reseña de día de partido con verificación de ubicación para que los rankings sean confiables."
+          title: "Reseña en eventos en vivo del estadio",
+          body: "Las reseñas certificadas abren en ventanas elegibles de club u otros eventos—no en ventanas cerradas del Mundial."
         }
       ]
     },
     cta: {
-      heading:
-        "Sé uno de los primeros fans en ayudar a rankear la comida de los estadios del Mundial.",
-      body: "Elige un estadio sede, deja una reseña verificada y ayuda a viajeros a saber qué vale la pena pedir antes del pitido inicial.",
+      heading: "Sigue explorando estos estadios sede todo el año.",
+      body: "Las ventanas de partidos del Mundial están cerradas. Explora la guía de menú de cada estadio y deja reseñas cuando haya un evento elegible en vivo.",
       findVenue: "Buscar un estadio",
       createAccount: "Crear cuenta"
     },

@@ -24,7 +24,7 @@ export type PublicSitemapUrlCounts = {
 
 const SITEMAP_PRIORITY = {
   homepage: 1,
-  worldCupGuide: 0.9,
+  worldCupGuide: 0.4,
   venue: 0.8,
   foodItem: 0.65
 } as const;
@@ -50,7 +50,7 @@ export async function loadPublicSitemapEntries(): Promise<{
   ].map((path) => ({
     url: getAbsoluteUrl(path),
     lastModified: now,
-    changeFrequency: "weekly" as const,
+    changeFrequency: "yearly" as const,
     priority: SITEMAP_PRIORITY.worldCupGuide
   }));
 

@@ -2,10 +2,10 @@ import Link from "next/link";
 
 const POPULAR_SEARCHES = [
   { label: "Dodger Stadium", href: "/venues/dodger-stadium" },
-  { label: "World Cup 2026", href: "/world-cup-stadium-food-guide" },
   { label: "Wrigley Field", href: "/venues/wrigley-field" },
   { label: "SoFi Stadium", href: "/venues/sofi-stadium" },
   { label: "MetLife Stadium", href: "/venues/metlife-stadium" },
+  { label: "State Fair Slop", href: "/state-fair-food-guide" },
   { label: "All venues", href: "/venues" }
 ] as const;
 

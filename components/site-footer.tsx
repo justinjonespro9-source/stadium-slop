@@ -8,14 +8,8 @@ import {
   PUBLIC_TRUST_STATEMENT,
   SITE_SOCIAL_LINKS
 } from "@/lib/site-contact";
-import {
-  WORLD_CUP_GUIDE_PATH_EN,
-  WORLD_CUP_GUIDE_PATH_ES
-} from "@/lib/world-cup-stadium-food-guide-content";
 
 const guideLinks = [
-  { href: WORLD_CUP_GUIDE_PATH_EN, label: "World Cup Food Guide" },
-  { href: WORLD_CUP_GUIDE_PATH_ES, label: "Guía Mundial 2026" },
   { href: "/state-fair-food-guide", label: "State Fair Slop" }
 ] as const;
 
