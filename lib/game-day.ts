@@ -221,8 +221,21 @@ export type GameDayReviewLocation = {
 export function parseReviewLocationFromForm(
   formData: FormData
 ): GameDayReviewLocation | null {
-  const latitude = Number(formData.get("latitude"));
-  const longitude = Number(formData.get("longitude"));
+  const rawLat = formData.get("latitude");
+  const rawLng = formData.get("longitude");
+  // Empty / missing fields must not coerce via Number("") / Number(null) → 0
+  // (that previously looked like Null Island and failed as outside-radius).
+  if (typeof rawLat !== "string" || typeof rawLng !== "string") {
+    return null;
+  }
+  const latTrim = rawLat.trim();
+  const lngTrim = rawLng.trim();
+  if (!latTrim || !lngTrim) {
+    return null;
+  }
+
+  const latitude = Number(latTrim);
+  const longitude = Number(lngTrim);
   if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
     return null;
   }
