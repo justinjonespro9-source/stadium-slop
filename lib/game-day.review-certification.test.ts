@@ -31,13 +31,56 @@ const TARGET_FIELD = {
   reviewRadiusMeters: 800
 } as const;
 
+/** Representative geofence samples (incl. 2026-07 zero-coord backfill centers). */
 const VENUE_SAMPLES = {
-  nfl: { slug: "metlife-stadium", latitude: 40.8128, longitude: -74.0742, reviewRadiusMeters: 1000 },
-  nhl: { slug: "grand-casino-arena", latitude: 44.9448, longitude: -93.1011, reviewRadiusMeters: 800 },
-  mls: { slug: "bmo-stadium", latitude: 34.0128, longitude: -118.2844, reviewRadiusMeters: 750 },
-  ncaa: { slug: "ohio-stadium", latitude: 40.0016, longitude: -83.0199, reviewRadiusMeters: 1100 },
-  worldCup: { slug: "estadio-azteca", latitude: 19.3029, longitude: -99.1505, reviewRadiusMeters: 1000 },
-  fair: { slug: "wisconsin-state-fair", latitude: 43.0207, longitude: -88.0101, reviewRadiusMeters: 1200 }
+  nfl: {
+    slug: "lambeau-field",
+    latitude: 44.5014,
+    longitude: -88.0622,
+    reviewRadiusMeters: 800
+  },
+  nbaNhl: {
+    slug: "td-garden",
+    latitude: 42.3664,
+    longitude: -71.0622,
+    reviewRadiusMeters: 800
+  },
+  mls: {
+    slug: "bmo-stadium",
+    latitude: 34.0128,
+    longitude: -118.2844,
+    reviewRadiusMeters: 750
+  },
+  ncaa: {
+    slug: "ohio-stadium",
+    latitude: 40.0016,
+    longitude: -83.0199,
+    reviewRadiusMeters: 1100
+  },
+  international: {
+    slug: "scotiabank-arena",
+    latitude: 43.6433,
+    longitude: -79.3792,
+    reviewRadiusMeters: 800
+  },
+  denseDowntown: {
+    slug: "madison-square-garden",
+    latitude: 40.7505,
+    longitude: -73.9935,
+    reviewRadiusMeters: 800
+  },
+  worldCup: {
+    slug: "estadio-azteca",
+    latitude: 19.3029,
+    longitude: -99.1505,
+    reviewRadiusMeters: 1000
+  },
+  fair: {
+    slug: "wisconsin-state-fair",
+    latitude: 43.0207,
+    longitude: -88.0101,
+    reviewRadiusMeters: 1200
+  }
 } as const;
 
 function offsetMeters(

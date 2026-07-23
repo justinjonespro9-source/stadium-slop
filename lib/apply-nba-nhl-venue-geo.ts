@@ -1,14 +1,15 @@
 import type { PrismaClient } from "@prisma/client";
 
-import { getNflVenueGeo, NFL_VENUE_GEO } from "@/lib/nfl-venue-geo";
+import {
+  getNbaNhlVenueGeo,
+  NBA_NHL_VENUE_SLUGS
+} from "@/lib/nba-nhl-venue-geo";
 import { isValidVenueCoordinate } from "@/lib/mls-nwsl-venue-geo";
 
 const COORD_EPSILON = 0.00015;
 
-export const NFL_VENUE_SLUGS = Object.keys(NFL_VENUE_GEO).sort();
-
-function coordinatesMatchNflRegistry(slug: string, lat: number, lng: number): boolean {
-  const geo = getNflVenueGeo(slug);
+function coordinatesMatchRegistry(slug: string, lat: number, lng: number): boolean {
+  const geo = getNbaNhlVenueGeo(slug);
   if (!geo) return false;
   return (
     Math.abs(lat - geo.latitude) <= COORD_EPSILON &&
@@ -16,24 +17,29 @@ function coordinatesMatchNflRegistry(slug: string, lat: number, lng: number): bo
   );
 }
 
-export type ApplyNflVenueGeoStats = {
+export type ApplyNbaNhlVenueGeoStats = {
   updated: number;
   skipped: number;
   notInDb: string[];
 };
 
-export async function applyNflVenueGeo(
+/**
+ * Idempotent geo apply for NBA/NHL/WNBA arenas.
+ * Updates lat/lng (+ city/state/country from registry).
+ * Preserves existing reviewRadiusMeters unless it is missing/invalid.
+ */
+export async function applyNbaNhlVenueGeo(
   prisma: PrismaClient,
   apply: boolean
-): Promise<ApplyNflVenueGeoStats> {
-  const stats: ApplyNflVenueGeoStats = {
+): Promise<ApplyNbaNhlVenueGeoStats> {
+  const stats: ApplyNbaNhlVenueGeoStats = {
     updated: 0,
     skipped: 0,
     notInDb: []
   };
 
-  for (const slug of NFL_VENUE_SLUGS) {
-    const geo = getNflVenueGeo(slug)!;
+  for (const slug of NBA_NHL_VENUE_SLUGS) {
+    const geo = getNbaNhlVenueGeo(slug)!;
     const existing = await prisma.venue.findUnique({ where: { slug } });
 
     if (!existing) {
@@ -41,20 +47,15 @@ export async function applyNflVenueGeo(
       continue;
     }
 
-    // Preserve an existing positive radius when the registry value matches it,
-    // or when the venue already has a valid radius and we are only fixing coords.
-    // World Cup host entries still assert registry radii (typically 1000).
     const radiusOk =
       Number.isFinite(existing.reviewRadiusMeters) && existing.reviewRadiusMeters > 0;
-    const radiusDrift =
-      radiusOk && existing.reviewRadiusMeters !== geo.reviewRadiusMeters;
     const needsUpdate =
       !isValidVenueCoordinate(existing.latitude, existing.longitude) ||
-      !coordinatesMatchNflRegistry(slug, existing.latitude, existing.longitude) ||
-      radiusDrift ||
+      !coordinatesMatchRegistry(slug, existing.latitude, existing.longitude) ||
       existing.city !== geo.city ||
       existing.state !== geo.state ||
-      existing.country !== geo.country;
+      existing.country !== geo.country ||
+      !radiusOk;
 
     if (!needsUpdate) {
       stats.skipped += 1;
@@ -70,7 +71,8 @@ export async function applyNflVenueGeo(
           country: geo.country,
           latitude: geo.latitude,
           longitude: geo.longitude,
-          reviewRadiusMeters: geo.reviewRadiusMeters
+          // Preserve existing radius when valid; only fill from registry if broken.
+          ...(radiusOk ? {} : { reviewRadiusMeters: geo.reviewRadiusMeters })
         }
       });
     }

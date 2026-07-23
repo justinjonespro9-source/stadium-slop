@@ -1,0 +1,1661 @@
+{
+  "generatedAt": "2026-07-23T17:33:23.720Z",
+  "title": "Active venue (0,0) review-certification coordinate backfill",
+  "methodology": "Stadium/arena structure center from Wikidata P625 (English Wikipedia sitelinks) via Wikipedia API or Wikidata SPARQL. Where Wikidata was missing or coarse (≤2 decimal places), OpenStreetMap Nominatim leisure=stadium centroids were used. Preferred target: center of seating bowl / playing surface, not parking or HQ.",
+  "counts": {
+    "activePlaceholderZero": 65,
+    "resolved": 65,
+    "unresolved": 0
+  },
+  "venues": [
+    {
+      "slug": "acrisure-stadium",
+      "name": "Acrisure Stadium",
+      "city": "Pittsburgh",
+      "state": "PA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Pittsburgh Steelers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 40.4467,
+      "proposedLongitude": -80.0158,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nfl"
+    },
+    {
+      "slug": "allegiant-stadium",
+      "name": "Allegiant Stadium",
+      "city": "Las Vegas",
+      "state": "NV",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Las Vegas Raiders"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 36.0906,
+      "proposedLongitude": -115.1839,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nfl"
+    },
+    {
+      "slug": "amerant-bank-arena",
+      "name": "Amerant Bank Arena",
+      "city": "Sunrise",
+      "state": "FL",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Florida Panthers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 26.1583,
+      "proposedLongitude": -80.3256,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "american-airlines-center",
+      "name": "American Airlines Center",
+      "city": "Dallas",
+      "state": "TX",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Dallas Mavericks",
+        "Dallas Stars"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 32.7906,
+      "proposedLongitude": -96.8103,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "ball-arena",
+      "name": "Ball Arena",
+      "city": "Denver",
+      "state": "CO",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Denver Nuggets",
+        "Colorado Avalanche"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 39.7486,
+      "proposedLongitude": -105.0075,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "barclays-center",
+      "name": "Barclays Center",
+      "city": "Brooklyn",
+      "state": "NY",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Brooklyn Nets"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 40.6827,
+      "proposedLongitude": -73.9752,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "bell-centre",
+      "name": "Bell Centre",
+      "city": "Montreal",
+      "state": "QC",
+      "country": "Canada",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Montreal Canadiens"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 45.4961,
+      "proposedLongitude": -73.5694,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "benchmark-international-arena",
+      "name": "Benchmark International Arena",
+      "city": "Tampa",
+      "state": "FL",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Tampa Bay Lightning"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 27.9428,
+      "proposedLongitude": -82.4519,
+      "coordinateSource": "Wikidata P625 via enwiki (Benchmark International Arena)",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "bridgestone-arena",
+      "name": "Bridgestone Arena",
+      "city": "Nashville",
+      "state": "TN",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Nashville Predators"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 36.1592,
+      "proposedLongitude": -86.7786,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "caesars-superdome",
+      "name": "Caesars Superdome",
+      "city": "New Orleans",
+      "state": "LA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "New Orleans Saints"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 29.9508,
+      "proposedLongitude": -90.0811,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nfl"
+    },
+    {
+      "slug": "canada-life-centre",
+      "name": "Canada Life Centre",
+      "city": "Winnipeg",
+      "state": "MB",
+      "country": "Canada",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Winnipeg Jets"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 49.8928,
+      "proposedLongitude": -97.1436,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "canadian-tire-centre",
+      "name": "Canadian Tire Centre",
+      "city": "Ottawa",
+      "state": "ON",
+      "country": "Canada",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Ottawa Senators"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 45.2969,
+      "proposedLongitude": -75.9272,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "capital-one-arena",
+      "name": "Capital One Arena",
+      "city": "Washington",
+      "state": "DC",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Washington Wizards",
+        "Washington Capitals"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 38.8981,
+      "proposedLongitude": -77.0208,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "chase-center",
+      "name": "Chase Center",
+      "city": "San Francisco",
+      "state": "CA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Golden State Warriors"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 37.7678,
+      "proposedLongitude": -122.3874,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "climate-pledge-arena",
+      "name": "Climate Pledge Arena",
+      "city": "Seattle",
+      "state": "WA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Seattle Kraken"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 47.6222,
+      "proposedLongitude": -122.3542,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "crypto-com-arena",
+      "name": "Crypto.com Arena",
+      "city": "Los Angeles",
+      "state": "CA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Los Angeles Lakers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 34.0431,
+      "proposedLongitude": -118.2672,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "delta-center",
+      "name": "Delta Center",
+      "city": "Salt Lake City",
+      "state": "UT",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Utah Jazz",
+        "Utah Hockey Club"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 40.7683,
+      "proposedLongitude": -111.9011,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "empower-field-at-mile-high",
+      "name": "Empower Field at Mile High",
+      "city": "Denver",
+      "state": "CO",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Denver Broncos"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 39.7439,
+      "proposedLongitude": -105.02,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "enterprise-center",
+      "name": "Enterprise Center",
+      "city": "St. Louis",
+      "state": "MO",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "St. Louis Blues"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 38.6267,
+      "proposedLongitude": -90.2025,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "everbank-stadium",
+      "name": "EverBank Stadium",
+      "city": "Jacksonville",
+      "state": "FL",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Jacksonville Jaguars"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 30.3239,
+      "proposedLongitude": -81.6375,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "fedexforum",
+      "name": "FedExForum",
+      "city": "Memphis",
+      "state": "TN",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Memphis Grizzlies"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 35.1383,
+      "proposedLongitude": -90.0506,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "fiserv-forum",
+      "name": "Fiserv Forum",
+      "city": "Milwaukee",
+      "state": "WI",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Milwaukee Bucks"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 43.0451,
+      "proposedLongitude": -87.9182,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "footprint-center",
+      "name": "Footprint Center",
+      "city": "Phoenix",
+      "state": "AZ",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Phoenix Suns"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 33.446,
+      "proposedLongitude": -112.0711,
+      "coordinateSource": "OpenStreetMap Nominatim way 24635397 (Mortgage Matchup Center / former Footprint Center)",
+      "coordinateMethod": "osm-nominatim",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "ford-field",
+      "name": "Ford Field",
+      "city": "Detroit",
+      "state": "MI",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Detroit Lions"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 42.34,
+      "proposedLongitude": -83.0456,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "frost-bank-center",
+      "name": "Frost Bank Center",
+      "city": "San Antonio",
+      "state": "TX",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "San Antonio Spurs"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 29.4269,
+      "proposedLongitude": -98.4375,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "gainbridge-fieldhouse",
+      "name": "Gainbridge Fieldhouse",
+      "city": "Indianapolis",
+      "state": "IN",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "WNBA"
+      ],
+      "teams": [
+        "Indiana Pacers",
+        "Indiana Fever"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 39.7639,
+      "proposedLongitude": -86.1556,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "golden-1-center",
+      "name": "Golden 1 Center",
+      "city": "Sacramento",
+      "state": "CA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Sacramento Kings"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 38.5801,
+      "proposedLongitude": -121.4995,
+      "coordinateSource": "OpenStreetMap Nominatim way 313991370 (refined; Wikidata was coarse 2dp)",
+      "coordinateMethod": "osm-nominatim",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "highmark-stadium",
+      "name": "Highmark Stadium",
+      "city": "Orchard Park",
+      "state": "NY",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Buffalo Bills"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 42.773,
+      "proposedLongitude": -78.7922,
+      "coordinateSource": "Wikidata P625 Highmark Stadium; cross-checked OSM way 1339149058",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "honda-center",
+      "name": "Honda Center",
+      "city": "Anaheim",
+      "state": "CA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Anaheim Ducks"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 33.8078,
+      "proposedLongitude": -117.8767,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "huntington-bank-field",
+      "name": "Huntington Bank Field",
+      "city": "Cleveland",
+      "state": "OH",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Cleveland Browns"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 41.5061,
+      "proposedLongitude": -81.6994,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "intuit-dome",
+      "name": "Intuit Dome",
+      "city": "Inglewood",
+      "state": "CA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "LA Clippers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 33.9451,
+      "proposedLongitude": -118.3431,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "kaseya-center",
+      "name": "Kaseya Center",
+      "city": "Miami",
+      "state": "FL",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Miami Heat"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 25.7814,
+      "proposedLongitude": -80.1881,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "keybank-center",
+      "name": "KeyBank Center",
+      "city": "Buffalo",
+      "state": "NY",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Buffalo Sabres"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 42.875,
+      "proposedLongitude": -78.8764,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "kia-center",
+      "name": "Kia Center",
+      "city": "Orlando",
+      "state": "FL",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Orlando Magic"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 28.5392,
+      "proposedLongitude": -81.3836,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "lambeau-field",
+      "name": "Lambeau Field",
+      "city": "Green Bay",
+      "state": "WI",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Green Bay Packers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 44.5014,
+      "proposedLongitude": -88.0622,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "lenovo-center",
+      "name": "Lenovo Center",
+      "city": "Raleigh",
+      "state": "NC",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Carolina Hurricanes"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 35.8033,
+      "proposedLongitude": -78.7219,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "little-caesars-arena",
+      "name": "Little Caesars Arena",
+      "city": "Detroit",
+      "state": "MI",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Detroit Pistons",
+        "Detroit Red Wings"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 42.3412,
+      "proposedLongitude": -83.0549,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "lucas-oil-stadium",
+      "name": "Lucas Oil Stadium",
+      "city": "Indianapolis",
+      "state": "IN",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Indianapolis Colts"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 39.7601,
+      "proposedLongitude": -86.1638,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "m-t-bank-stadium",
+      "name": "M&T Bank Stadium",
+      "city": "Baltimore",
+      "state": "MD",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Baltimore Ravens"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 39.2781,
+      "proposedLongitude": -76.6228,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "madison-square-garden",
+      "name": "Madison Square Garden",
+      "city": "New York",
+      "state": "NY",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "New York Knicks",
+        "New York Rangers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 40.7505,
+      "proposedLongitude": -73.9935,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "moda-center",
+      "name": "Moda Center",
+      "city": "Portland",
+      "state": "OR",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Portland Trail Blazers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 45.5317,
+      "proposedLongitude": -122.6667,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "nationwide-arena",
+      "name": "Nationwide Arena",
+      "city": "Columbus",
+      "state": "OH",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Columbus Blue Jackets"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 39.9693,
+      "proposedLongitude": -83.0061,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "northwest-stadium",
+      "name": "Northwest Stadium",
+      "city": "Landover",
+      "state": "MD",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Washington Commanders"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 38.9078,
+      "proposedLongitude": -76.8644,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nfl"
+    },
+    {
+      "slug": "paycom-center",
+      "name": "Paycom Center",
+      "city": "Oklahoma City",
+      "state": "OK",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Oklahoma City Thunder"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 35.4633,
+      "proposedLongitude": -97.515,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "paycor-stadium",
+      "name": "Paycor Stadium",
+      "city": "Cincinnati",
+      "state": "OH",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Cincinnati Bengals"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 39.095,
+      "proposedLongitude": -84.516,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nfl"
+    },
+    {
+      "slug": "ppg-paints-arena",
+      "name": "PPG Paints Arena",
+      "city": "Pittsburgh",
+      "state": "PA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Pittsburgh Penguins"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 40.4394,
+      "proposedLongitude": -79.9892,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "prudential-center",
+      "name": "Prudential Center",
+      "city": "Newark",
+      "state": "NJ",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "New Jersey Devils"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 40.7336,
+      "proposedLongitude": -74.1711,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "raymond-james-stadium",
+      "name": "Raymond James Stadium",
+      "city": "Tampa",
+      "state": "FL",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Tampa Bay Buccaneers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 27.9758,
+      "proposedLongitude": -82.5033,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nfl"
+    },
+    {
+      "slug": "rocket-arena",
+      "name": "Rocket Arena",
+      "city": "Cleveland",
+      "state": "OH",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Cleveland Cavaliers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 41.4964,
+      "proposedLongitude": -81.6881,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "rogers-arena",
+      "name": "Rogers Arena",
+      "city": "Vancouver",
+      "state": "BC",
+      "country": "Canada",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Vancouver Canucks"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 49.2778,
+      "proposedLongitude": -123.1089,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "rogers-place",
+      "name": "Rogers Place",
+      "city": "Edmonton",
+      "state": "AB",
+      "country": "Canada",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Edmonton Oilers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 53.5469,
+      "proposedLongitude": -113.4978,
+      "coordinateSource": "Wikidata P625 via enwiki",
+      "coordinateMethod": "wikipedia-api",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "sap-center",
+      "name": "SAP Center",
+      "city": "San Jose",
+      "state": "CA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "San Jose Sharks"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 37.3328,
+      "proposedLongitude": -121.9011,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "scotiabank-arena",
+      "name": "Scotiabank Arena",
+      "city": "Toronto",
+      "state": "ON",
+      "country": "Canada",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Toronto Raptors",
+        "Toronto Maple Leafs"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 43.6433,
+      "proposedLongitude": -79.3792,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "scotiabank-saddledome",
+      "name": "Scotiabank Saddledome",
+      "city": "Calgary",
+      "state": "AB",
+      "country": "Canada",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Calgary Flames"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 51.0375,
+      "proposedLongitude": -114.0519,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "smoothie-king-center",
+      "name": "Smoothie King Center",
+      "city": "New Orleans",
+      "state": "LA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "New Orleans Pelicans"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 29.9489,
+      "proposedLongitude": -90.0819,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "spectrum-center",
+      "name": "Spectrum Center",
+      "city": "Charlotte",
+      "state": "NC",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Charlotte Hornets"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 35.225,
+      "proposedLongitude": -80.8392,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "state-farm-arena",
+      "name": "State Farm Arena",
+      "city": "Atlanta",
+      "state": "GA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Atlanta Hawks"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 33.7572,
+      "proposedLongitude": -84.3964,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "state-farm-stadium",
+      "name": "State Farm Stadium",
+      "city": "Glendale",
+      "state": "AZ",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "STADIUM",
+      "primarySport": "Football",
+      "leagues": [
+        "NFL"
+      ],
+      "teams": [
+        "Arizona Cardinals"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NFL CSVs + lib/nfl-venue-geo.ts (expanded)",
+      "proposedLatitude": 33.5275,
+      "proposedLongitude": -112.2625,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nfl"
+    },
+    {
+      "slug": "t-mobile-arena",
+      "name": "T-Mobile Arena",
+      "city": "Las Vegas",
+      "state": "NV",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "Vegas Golden Knights"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 36.1029,
+      "proposedLongitude": -115.1784,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "target-center",
+      "name": "Target Center",
+      "city": "Minneapolis",
+      "state": "MN",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "WNBA"
+      ],
+      "teams": [
+        "Minnesota Timberwolves",
+        "Minnesota Lynx"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 44.9794,
+      "proposedLongitude": -93.2761,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "td-garden",
+      "name": "TD Garden",
+      "city": "Boston",
+      "state": "MA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Boston Celtics",
+        "Boston Bruins"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 42.3664,
+      "proposedLongitude": -71.0622,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "toyota-center",
+      "name": "Toyota Center",
+      "city": "Houston",
+      "state": "TX",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA"
+      ],
+      "teams": [
+        "Houston Rockets"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 29.7508,
+      "proposedLongitude": -95.3622,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "ubs-arena",
+      "name": "UBS Arena",
+      "city": "Elmont",
+      "state": "NY",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Hockey",
+      "leagues": [
+        "NHL"
+      ],
+      "teams": [
+        "New York Islanders"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 40.7121,
+      "proposedLongitude": -73.7272,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "united-center",
+      "name": "United Center",
+      "city": "Chicago",
+      "state": "IL",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Chicago Bulls",
+        "Chicago Blackhawks"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 41.8806,
+      "proposedLongitude": -87.6742,
+      "coordinateSource": "Wikidata P625 via SPARQL/enwiki",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    },
+    {
+      "slug": "wells-fargo-center",
+      "name": "Wells Fargo Center",
+      "city": "Philadelphia",
+      "state": "PA",
+      "country": "USA",
+      "currentLatitude": 0,
+      "currentLongitude": 0,
+      "reviewRadiusMeters": 800,
+      "venueType": "ARENA",
+      "primarySport": "Basketball",
+      "leagues": [
+        "NBA",
+        "NHL"
+      ],
+      "teams": [
+        "Philadelphia 76ers",
+        "Philadelphia Flyers"
+      ],
+      "timeZone": null,
+      "seedSource": "data/league-import NBA/NHL CSVs + lib/nba-nhl-venue-geo.ts (new)",
+      "proposedLatitude": 39.9012,
+      "proposedLongitude": -75.172,
+      "coordinateSource": "Wikidata P625 via enwiki sitelink Xfinity Mobile Arena (Philly arena; formerly Wells Fargo Center)",
+      "coordinateMethod": "wikidata-sparql",
+      "registry": "nba-nhl"
+    }
+  ]
+}

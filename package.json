@@ -36,6 +36,7 @@
     "audit:venue-geo": "tsx scripts/audit-venue-geo.ts",
     "sync:fair-venue-geo": "tsx scripts/sync-fair-venue-geo.ts",
     "sync:nfl-venue-geo": "tsx scripts/sync-nfl-venue-geo.ts",
+    "sync:nba-nhl-venue-geo": "tsx scripts/sync-nba-nhl-venue-geo.ts",
     "make-admin": "tsx scripts/make-admin.ts",
     "import:mlb": "tsx scripts/apply-mlb-import.ts",
     "import:mls-nwsl": "tsx scripts/import-mls-nwsl.ts",
