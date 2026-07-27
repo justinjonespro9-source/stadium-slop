@@ -150,7 +150,13 @@ export {
 export function formatHomeTeamLabel(homeTeamSlug: string) {
   return homeTeamSlug
     .split("-")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .map((part) => {
+      const lower = part.toLowerCase();
+      if (lower === "fc" || lower === "sc" || lower === "afc" || lower === "cfc") {
+        return lower.toUpperCase();
+      }
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
     .join(" ");
 }
 

@@ -30,7 +30,7 @@ function venueData(def: FairVenueDefinition) {
     latitude: def.latitude,
     longitude: def.longitude,
     reviewRadiusMeters: def.reviewRadiusMeters,
-    venueType: VenueType.OTHER,
+    venueType: VenueType.FAIRGROUNDS,
     status: EntityStatus.ACTIVE
   };
 }

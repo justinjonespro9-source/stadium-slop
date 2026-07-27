@@ -148,8 +148,7 @@ async function main() {
   const displayIssues: string[] = [];
   const missingHomeNameIssues: string[] = [];
   for (const g of games) {
-    const venueTenant = g.venue.teams[0] ?? "";
-    const display = formatGameDisplayName(g, { venueHomeTeamLabel: venueTenant });
+    const display = formatGameDisplayName(g);
     const tenantHit = displayUsesVenueTenant(display);
     if (tenantHit) {
       displayIssues.push(
@@ -241,9 +240,7 @@ async function main() {
       console.log(`- ${slug}: (no World Cup game in DB)`);
       continue;
     }
-    const display = formatGameDisplayName(sample, {
-      venueHomeTeamLabel: sample.venue.teams[0] ?? ""
-    });
+    const display = formatGameDisplayName(sample);
     console.log(`- ${slug}: ${display}`);
   }
 

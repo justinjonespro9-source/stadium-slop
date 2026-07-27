@@ -85,6 +85,7 @@ function venueTypeFromSampleLabel(value: string): VenueType {
     "golf course": VenueType.GOLF_COURSE,
     "horse track": VenueType.HORSE_TRACK,
     "college stadium": VenueType.COLLEGE_STADIUM,
+    fairgrounds: VenueType.FAIRGROUNDS,
     other: VenueType.OTHER
   };
   return map[key] ?? VenueType.STADIUM;

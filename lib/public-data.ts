@@ -21,7 +21,7 @@ import {
   type Vendor,
   type Venue
 } from "./sample-data";
-import { venueTypeLabel } from "./venue-display";
+import { venueTypeLabel, resolveVenueTypeKey } from "./venue-display";
 import { resolveVenueTeams } from "./venue-teams";
 
 type DbVenue = {
@@ -276,6 +276,14 @@ function getVerdict(score: number): FoodItem["verdict"] {
 }
 
 export function mapVenueFromDb(venue: DbVenue): Venue {
+  const venueTypeKey = resolveVenueTypeKey({
+    venueType: venue.venueType,
+    slug: venue.slug,
+    primarySport: venue.primarySport,
+    sports: venue.sports,
+    recurringEvents: venue.recurringEvents
+  });
+
   return {
     slug: venue.slug,
     name: venue.name,
@@ -289,8 +297,8 @@ export function mapVenueFromDb(venue: DbVenue): Venue {
     latitude: venue.latitude,
     longitude: venue.longitude,
     reviewRadiusMeters: venue.reviewRadiusMeters,
-    venueType: mapVenueType(venue.venueType),
-    venueTypeKey: venue.venueType,
+    venueType: mapVenueType(venueTypeKey),
+    venueTypeKey,
     primarySport: venue.primarySport ?? undefined,
     recurringEvents: venue.recurringEvents?.length
       ? [...venue.recurringEvents]

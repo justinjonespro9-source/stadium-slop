@@ -14,8 +14,6 @@ import {
 } from "@/lib/schedules/fair-event-window";
 
 type GameDayModeCardProps = {
-  /** Primary venue tenant — used for standard home games only, not World Cup / neutral-site fixtures. */
-  venueHomeTeamLabel?: string;
   venueTimeZone: string;
   activeGame: Game | null;
   upcomingGame: Game | null;
@@ -23,14 +21,13 @@ type GameDayModeCardProps = {
 };
 
 export function GameDayModeCard({
-  venueHomeTeamLabel = "",
   venueTimeZone,
   activeGame,
   upcomingGame,
   now = new Date()
 }: GameDayModeCardProps) {
   if (activeGame && isGameDayActive(activeGame, now)) {
-    const matchup = formatGameDisplayName(activeGame, { venueHomeTeamLabel });
+    const matchup = formatGameDisplayName(activeGame);
     const isFairEvent = isStateFairEventGame(activeGame);
     const windowRange = isFairEvent
       ? formatFairEventDateRange(
@@ -86,7 +83,7 @@ export function GameDayModeCard({
     return null;
   }
 
-  const matchup = formatGameDisplayName(upcomingGame, { venueHomeTeamLabel });
+  const matchup = formatGameDisplayName(upcomingGame);
   const isFairEvent = isStateFairEventGame(upcomingGame);
 
   return (

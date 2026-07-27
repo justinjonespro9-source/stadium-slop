@@ -741,9 +741,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
         <>
           {" "}
           {upcomingFairEvent ? "Upcoming fair" : "Next game"}:{" "}
-          {formatGameDisplayName(upcomingGame, {
-            venueHomeTeamLabel: venue.teams[0]
-          })}{" "}
+          {formatGameDisplayName(upcomingGame)}{" "}
           ·{" "}
           {upcomingFairEvent
             ? formatFairEventDateRange(

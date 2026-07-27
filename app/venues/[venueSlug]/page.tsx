@@ -327,7 +327,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
 
   const dbVenue = await prisma.venue.findUnique({
     where: { slug: venue.slug },
-    select: { id: true, teams: true }
+    select: { id: true }
   });
   const venueId = dbVenue?.id;
   let activeGame: Awaited<ReturnType<typeof getVenueActiveGame>> = null;
@@ -342,7 +342,6 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       console.warn("Game day schedule lookup failed; continuing without card", error);
     }
   }
-  const homeTeamLabel = dbVenue?.teams[0] ?? venue.teams[0] ?? "";
   const venueTimeZone = getVenueTimeZone({
     slug: venue.slug,
     state: venue.state,
@@ -550,7 +549,6 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
         ) : null}
         {venueId && (activeGame || upcomingGame) ? (
           <GameDayModeCard
-            venueHomeTeamLabel={homeTeamLabel}
             venueTimeZone={venueTimeZone}
             activeGame={activeGame}
             upcomingGame={upcomingGame}

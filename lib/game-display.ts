@@ -14,48 +14,36 @@ export type GameDisplayFields = Pick<
   | "externalId"
 >;
 
-export type FormatGameDisplayNameOptions = {
-  /** Venue tenant label for standard home/away matchups (ignored for neutral-site games). */
-  venueHomeTeamLabel?: string;
-};
-
-/** True when fixture teams should be shown as "Team A vs Team B" (not "away at venue tenant"). */
-export function isNeutralSiteGame(game: GameDisplayFields): boolean {
-  return game.isNeutralSite || game.league === WORLD_CUP_LEAGUE;
-}
-
-/** Resolve the home-side label from game fields (never falls back to venue tenant for neutral-site games). */
-export function resolveGameHomeTeamLabel(
-  game: GameDisplayFields,
-  venueHomeTeamLabel?: string
-): string {
+/**
+ * Home-side label for matchup text.
+ * Prefer `homeTeamName`, else title-case `homeTeamSlug`.
+ * Never infer from the venue’s primary / first-listed team.
+ */
+export function resolveGameHomeTeamLabel(game: GameDisplayFields): string {
   if (game.homeTeamName?.trim()) {
     return game.homeTeamName.trim();
-  }
-
-  if (!isNeutralSiteGame(game) && venueHomeTeamLabel?.trim()) {
-    return venueHomeTeamLabel.trim();
   }
 
   return formatHomeTeamLabel(game.homeTeamSlug);
 }
 
+/** True when fixture teams should be shown as "Team A vs Team B" (not "away at home"). */
+export function isNeutralSiteGame(game: GameDisplayFields): boolean {
+  return game.isNeutralSite || game.league === WORLD_CUP_LEAGUE;
+}
+
 /** Fan-facing matchup label: neutral-site fixtures use "vs"; home games use "away at home". */
-export function formatGameDisplayName(
-  game: GameDisplayFields,
-  options: FormatGameDisplayNameOptions = {}
-): string {
+export function formatGameDisplayName(game: GameDisplayFields): string {
   if (isStateFairEventGame(game)) {
-    return resolveGameHomeTeamLabel(game, options.venueHomeTeamLabel);
+    return resolveGameHomeTeamLabel(game);
   }
 
   const away = game.awayTeamName.trim();
+  const home = resolveGameHomeTeamLabel(game);
 
   if (isNeutralSiteGame(game)) {
-    const home = resolveGameHomeTeamLabel(game);
     return `${home} vs ${away}`;
   }
 
-  const home = resolveGameHomeTeamLabel(game, options.venueHomeTeamLabel);
   return `${away} at ${home}`;
 }
