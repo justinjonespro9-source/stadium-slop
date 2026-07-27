@@ -1,9 +1,7 @@
-import { VenueType } from "@prisma/client";
-
 import { isFairVenueSlug } from "@/lib/fair-import/venues";
 
 /** Human labels for public UI and admin (sports-first wording) */
-const VENUE_TYPE_LABEL: Record<VenueType, string> = {
+const VENUE_TYPE_LABEL: Record<string, string> = {
   BALLPARK: "Ballpark",
   STADIUM: "Stadium",
   COLLEGE_STADIUM: "College stadium",
@@ -17,7 +15,7 @@ const VENUE_TYPE_LABEL: Record<VenueType, string> = {
 };
 
 /** Stable order for admin selects */
-export const VENUE_TYPE_OPTIONS: { value: VenueType; label: string }[] = [
+export const VENUE_TYPE_OPTIONS: { value: string; label: string }[] = [
   { value: "BALLPARK", label: VENUE_TYPE_LABEL.BALLPARK },
   { value: "STADIUM", label: VENUE_TYPE_LABEL.STADIUM },
   { value: "COLLEGE_STADIUM", label: VENUE_TYPE_LABEL.COLLEGE_STADIUM },
@@ -31,7 +29,7 @@ export const VENUE_TYPE_OPTIONS: { value: VenueType; label: string }[] = [
 ];
 
 /** Optional small chip glyph — sports context, not generic “business” icons */
-const VENUE_TYPE_GLYPH: Partial<Record<VenueType, string>> = {
+const VENUE_TYPE_GLYPH: Record<string, string> = {
   BALLPARK: "⚾",
   STADIUM: "🏟",
   COLLEGE_STADIUM: "🏈",
@@ -59,12 +57,12 @@ function looksLikeStateFairSport(value: string | null | undefined): boolean {
 
 /**
  * Shared fairgrounds detection from venue type + existing fair metadata.
- * Prefer `VenueType.FAIRGROUNDS`; also recognize catalog fair slugs and
+ * Prefer `FAIRGROUNDS` venue type; also recognize catalog fair slugs and
  * `primarySport` / sports / recurring-event fair signals so OTHER legacy
  * rows still badge correctly without per-slug UI branches.
  */
 export function isFairgroundsVenue(venue: VenueTypeDisplayInput): boolean {
-  if (venue.venueType === VenueType.FAIRGROUNDS || venue.venueType === "FAIRGROUNDS") {
+  if (venue.venueType === "FAIRGROUNDS") {
     return true;
   }
 
@@ -95,14 +93,14 @@ export function isFairgroundsVenue(venue: VenueTypeDisplayInput): boolean {
 /** Canonical type key for badges / search (never invents types for ordinary OTHER venues). */
 export function resolveVenueTypeKey(venue: VenueTypeDisplayInput): string {
   if (isFairgroundsVenue(venue)) {
-    return VenueType.FAIRGROUNDS;
+    return "FAIRGROUNDS";
   }
   return venue.venueType;
 }
 
-export function venueTypeLabel(type: VenueType | string): string {
+export function venueTypeLabel(type: string): string {
   if (type in VENUE_TYPE_LABEL) {
-    return VENUE_TYPE_LABEL[type as VenueType];
+    return VENUE_TYPE_LABEL[type]!;
   }
   return type
     .toString()
@@ -112,8 +110,8 @@ export function venueTypeLabel(type: VenueType | string): string {
     .join(" ");
 }
 
-export function venueTypeGlyph(type: VenueType | string): string | undefined {
-  return VENUE_TYPE_GLYPH[type as VenueType];
+export function venueTypeGlyph(type: string): string | undefined {
+  return VENUE_TYPE_GLYPH[type];
 }
 
 /** Short line for tournament / race / major-event venues */

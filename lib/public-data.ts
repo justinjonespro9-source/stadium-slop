@@ -11,6 +11,11 @@ import {
   resolveCanonicalPublicVenueSlug
 } from "./venue-public-slug";
 import {
+  PUBLIC_VENUES_CACHE_KEY_PARTS,
+  formatPublicVenueCatalogFailureLog,
+  resolvePublicVenueCatalogFailureAction
+} from "./public-venues-catalog";
+import {
   foodItems,
   foodPhotos,
   getFoodItemsByVenueSlug,
@@ -420,6 +425,13 @@ async function withDbTimeout<T>(label: string, run: () => Promise<T>): Promise<T
   }
 }
 
+/**
+ * Public browse catalog. Must not permanently cache the static sample list —
+ * sample `venues` is only ~32 MLB+demo rows and Vercel Data Cache persists
+ * across deploys. On failure, rethrow (unless explicitly opted into sample
+ * fallback for local/demo) so `unstable_cache` does not store sample data
+ * as a valid production catalog.
+ */
 async function loadPublicVenues() {
   try {
     const dbVenues = await withDbTimeout("getPublicVenues", () =>
@@ -430,19 +442,32 @@ async function loadPublicVenues() {
       })
     );
 
-    return fallback(
-      dbVenues
-        .filter((venue) => !isDeprecatedPublicVenueSlug(venue.slug))
-        .map(mapVenueFromDb),
-      venues.filter((venue) => !isDeprecatedPublicVenueSlug(venue.slug))
-    );
+    return dbVenues
+      .filter((venue) => !isDeprecatedPublicVenueSlug(venue.slug))
+      .map(mapVenueFromDb);
   } catch (error) {
-    console.warn("Falling back to sample venues", error);
-    return venues;
+    const details = formatPublicVenueCatalogFailureLog(error);
+    if (resolvePublicVenueCatalogFailureAction() === "sample") {
+      console.warn(
+        "getPublicVenues: catalog query failed; using opt-in sample venue catalog",
+        details
+      );
+      return venues.filter((venue) => !isDeprecatedPublicVenueSlug(venue.slug));
+    }
+
+    console.error(
+      "getPublicVenues: catalog query failed; not falling back to sample venues",
+      details
+    );
+    throw error;
   }
 }
 
-const getPublicVenuesCached = cachePublicRead(["public-venues"], loadPublicVenues);
+/** Bust key after FAIRGROUNDS enum + sample-fallback poison (was `public-venues`). */
+const getPublicVenuesCached = cachePublicRead(
+  [...PUBLIC_VENUES_CACHE_KEY_PARTS],
+  loadPublicVenues
+);
 
 export async function getPublicVenues() {
   return getPublicVenuesCached();

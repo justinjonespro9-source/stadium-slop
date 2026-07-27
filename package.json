@@ -25,6 +25,7 @@
     "test:venue-teams": "tsx --test lib/venue-teams.test.ts",
     "test:game-display": "tsx --test lib/game-display.test.ts",
     "test:venue-display": "tsx --test lib/venue-display.test.ts",
+    "test:public-venues-catalog": "tsx --test lib/public-venues-catalog.test.ts",
     "audit:venue-review-geo": "tsx scripts/audit-venue-review-geo-readiness.ts",
     "seed:demo-scorecards": "tsx scripts/seed-demo-scorecards.ts",
     "sync:mlb-schedule": "tsx scripts/sync-mlb-schedule.ts",

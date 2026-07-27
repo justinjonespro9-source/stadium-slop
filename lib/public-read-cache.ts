@@ -10,5 +10,5 @@ export function cachePublicRead<T>(
   fn: () => Promise<T>,
   revalidate = PUBLIC_READ_REVALIDATE_SECONDS
 ): () => Promise<T> {
-  return unstable_cache(fn, keyParts, { revalidate });
+  return unstable_cache(fn, keyParts, { revalidate, tags: keyParts });
 }
