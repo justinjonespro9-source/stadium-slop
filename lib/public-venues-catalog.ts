@@ -6,7 +6,7 @@
 /** Versioned Data Cache key — bump the second segment to invalidate poisoned entries. */
 export const PUBLIC_VENUES_CACHE_KEY_PARTS = [
   "public-venues",
-  "v6-big-12"
+  "v7-acc"
 ] as const;
 
 export type PublicVenuesCacheKeyPart = (typeof PUBLIC_VENUES_CACHE_KEY_PARTS)[number];

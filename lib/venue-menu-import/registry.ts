@@ -473,6 +473,64 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
     );
     return parseAmonGCarterStadiumMenu;
   },
+  "alumni-stadium": async () => {
+    const { parseAlumniStadiumMenu } = await import("./acc-football-menus");
+    return parseAlumniStadiumMenu;
+  },
+  "memorial-stadium-clemson": async () => {
+    const { parseMemorialStadiumClemsonMenu } = await import(
+      "./acc-football-menus"
+    );
+    return parseMemorialStadiumClemsonMenu;
+  },
+  "doak-campbell-stadium": async () => {
+    const { parseDoakCampbellStadiumMenu } = await import("./acc-football-menus");
+    return parseDoakCampbellStadiumMenu;
+  },
+  "bobby-dodd-stadium-at-hyundai-field": async () => {
+    const { parseBobbyDoddStadiumAtHyundaiFieldMenu } = await import(
+      "./acc-football-menus"
+    );
+    return parseBobbyDoddStadiumAtHyundaiFieldMenu;
+  },
+  "ln-federal-credit-union-stadium": async () => {
+    const { parseLnFederalCreditUnionStadiumMenu } = await import(
+      "./acc-football-menus"
+    );
+    return parseLnFederalCreditUnionStadiumMenu;
+  },
+  "kenan-memorial-stadium": async () => {
+    const { parseKenanMemorialStadiumMenu } = await import(
+      "./acc-football-menus"
+    );
+    return parseKenanMemorialStadiumMenu;
+  },
+  "carter-finley-stadium": async () => {
+    const { parseCarterFinleyStadiumMenu } = await import(
+      "./acc-football-menus"
+    );
+    return parseCarterFinleyStadiumMenu;
+  },
+  "gerald-j-ford-stadium": async () => {
+    const { parseGeraldJFordStadiumMenu } = await import("./acc-football-menus");
+    return parseGeraldJFordStadiumMenu;
+  },
+  "stanford-stadium": async () => {
+    const { parseStanfordStadiumMenu } = await import("./acc-football-menus");
+    return parseStanfordStadiumMenu;
+  },
+  "jma-wireless-dome": async () => {
+    const { parseJmaWirelessDomeMenu } = await import("./acc-football-menus");
+    return parseJmaWirelessDomeMenu;
+  },
+  "scott-stadium": async () => {
+    const { parseScottStadiumMenu } = await import("./acc-football-menus");
+    return parseScottStadiumMenu;
+  },
+  "lane-stadium": async () => {
+    const { parseLaneStadiumMenu } = await import("./acc-football-menus");
+    return parseLaneStadiumMenu;
+  },
   "intuit-dome": async () => {
     const { parseIntuitDomeMenu } = await import("./intuit-dome");
     return parseIntuitDomeMenu;

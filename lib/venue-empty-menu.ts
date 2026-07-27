@@ -23,7 +23,12 @@ export const NCAA_MENU_PENDING_VENUE_SLUGS = new Set([
   "galaxy-stadium",
   "rice-eccles-stadium",
   "milan-puskar-stadium",
-  "tdecu-stadium"
+  "tdecu-stadium",
+  // ACC — thin or unpublished college item-level sources
+  "california-memorial-stadium",
+  "wallace-wade-stadium",
+  "acrisure-stadium",
+  "allegacy-federal-credit-union-stadium"
 ]);
 
 export function isNcaaMenuPendingVenue(slug: string): boolean {
