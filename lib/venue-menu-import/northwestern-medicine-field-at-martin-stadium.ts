@@ -41,21 +41,21 @@ const MENU_DATA: RawItem[] = [
     fare: "Meals",
     vendor: "Soul & Smoke",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Soul & Smoke Pulled Pork Sandwich",
     fare: "Meals",
     vendor: "Soul & Smoke",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Soul & Smoke Brisket Plate",
     fare: "Meals",
     vendor: "Soul & Smoke",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor"]
   },
   {
     name: "La Cocinita",
@@ -63,14 +63,14 @@ const MENU_DATA: RawItem[] = [
     fare: "Meals",
     vendor: "La Cocinita",
     vendorHint: "West end food trucks",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "La Cocinita Arepas",
     fare: "Meals",
     vendor: "La Cocinita",
     vendorHint: "West end food trucks",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Cheesie's Pub & Grub",
@@ -78,21 +78,21 @@ const MENU_DATA: RawItem[] = [
     fare: "Meals",
     vendor: "Cheesie's Pub & Grub",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor"]
   },
   {
     name: "Cheesie's Signature Grilled Cheese",
     fare: "Meals",
     vendor: "Cheesie's Pub & Grub",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Vienna Beef Hot Dogs",
     fare: "Meals",
     vendor: "Vienna Beef",
     vendorHint: "South Fan Zone",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Chicago-Style Vienna Beef Dog",
@@ -100,42 +100,42 @@ const MENU_DATA: RawItem[] = [
     fare: "Meals",
     vendor: "Vienna Beef",
     vendorHint: "South Fan Zone",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Serna's Italian Beef Sandwich",
     fare: "Meals",
     vendor: "Serna's Grill",
     vendorHint: "West end food trucks",
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Flash Taco Street Tacos",
     fare: "Meals",
     vendor: "Flash Taco",
     vendorHint: "West end food trucks",
-    tags: ["nwsl", "local-vendor"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor"]
   },
   {
     name: "Tacomotora Street Tacos",
     fare: "Meals",
     vendor: "Tacomotora",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor"]
   },
   {
     name: "Billy Bricks Wood-Fired Pizza Slice",
     fare: "Meals",
     vendor: "Billy Bricks",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor"]
   },
   {
     name: "Clucker's Fried Chicken Sandwich",
     fare: "Meals",
     vendor: "Clucker's",
     vendorHint: "North Fan Zone",
-    tags: ["nwsl", "local-vendor"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor"]
   },
   {
     name: "Elephant and Vine Avocado Toast",
@@ -143,7 +143,7 @@ const MENU_DATA: RawItem[] = [
     vendor: "Elephant and Vine",
     vendorHint: "South Fan Zone",
     dietary: ["Vegetarian"],
-    tags: ["nwsl", "local-vendor"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor"]
   },
   {
     name: "Rainbow Cone Ice Cream",
@@ -152,21 +152,50 @@ const MENU_DATA: RawItem[] = [
     vendor: "Rainbow Cone",
     vendorHint: "West end food trucks",
     dietary: ["Vegetarian"],
-    tags: ["nwsl", "local-vendor", "signature"]
+    tags: ["nwsl", "shared-venue", "college-football", "local-vendor", "signature"]
   },
   {
     name: "Stadium Chicken Tenders & Fries",
     fare: "Meals",
     vendor: "Martin Stadium Concessions",
     vendorHint: "South Fan Zone",
-    tags: ["nwsl"]
+    tags: ["nwsl", "shared-venue", "college-football"]
   },
   {
     name: "Loaded Nachos",
     fare: "Meals",
     vendor: "Martin Stadium Concessions",
     vendorHint: "South Fan Zone",
-    tags: ["nwsl"]
+    tags: ["nwsl", "shared-venue", "college-football"]
+  },
+  // Northwestern football 2025 enhancements (temporary Wildcats home)
+  {
+    name: "NU Stacked Smashburger",
+    description: "Smashburger from the south concession pavilion on football gamedays",
+    fare: "Meals",
+    vendor: "South Pavilion",
+    tags: ["ncaa", "college-football", "tenant:northwestern-football", "signature", "import-season:2025"]
+  },
+  {
+    name: "Wildcat Melt",
+    description: "Melt sandwich from the south pavilion",
+    fare: "Meals",
+    vendor: "South Pavilion",
+    tags: ["ncaa", "college-football", "tenant:northwestern-football", "signature", "import-season:2025"]
+  },
+  {
+    name: "Funnel Cake",
+    fare: "Desserts",
+    vendor: "Wildcat Sweets",
+    vendorHint: "Northeast corner",
+    tags: ["ncaa", "college-football", "tenant:northwestern-football", "import-season:2025"]
+  },
+  {
+    name: "Candy Cup",
+    fare: "Desserts",
+    vendor: "Wildcat Sweets",
+    vendorHint: "Northeast corner",
+    tags: ["ncaa", "college-football", "tenant:northwestern-football", "import-season:2025"]
   }
 ];
 

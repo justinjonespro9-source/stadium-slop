@@ -349,6 +349,54 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
     const { parseBeaverStadiumMenu } = await import("./beaver-stadium");
     return parseBeaverStadiumMenu;
   },
+  "camp-randall-stadium": async () => {
+    const { parseCampRandallStadiumMenu } = await import("./big-ten-football-menus");
+    return parseCampRandallStadiumMenu;
+  },
+  "huntington-bank-stadium": async () => {
+    const { parseHuntingtonBankStadiumMenu } = await import("./big-ten-football-menus");
+    return parseHuntingtonBankStadiumMenu;
+  },
+  "memorial-stadium-illinois": async () => {
+    const { parseMemorialStadiumIllinoisMenu } = await import("./big-ten-football-menus");
+    return parseMemorialStadiumIllinoisMenu;
+  },
+  "memorial-stadium-indiana": async () => {
+    const { parseMemorialStadiumIndianaMenu } = await import("./big-ten-football-menus");
+    return parseMemorialStadiumIndianaMenu;
+  },
+  "kinnick-stadium": async () => {
+    const { parseKinnickStadiumMenu } = await import("./big-ten-football-menus");
+    return parseKinnickStadiumMenu;
+  },
+  "secu-stadium": async () => {
+    const { parseSecuStadiumMenu } = await import("./big-ten-football-menus");
+    return parseSecuStadiumMenu;
+  },
+  "spartan-stadium": async () => {
+    const { parseSpartanStadiumMenu } = await import("./big-ten-football-menus");
+    return parseSpartanStadiumMenu;
+  },
+  "memorial-stadium-nebraska": async () => {
+    const { parseMemorialStadiumNebraskaMenu } = await import("./big-ten-football-menus");
+    return parseMemorialStadiumNebraskaMenu;
+  },
+  "autzen-stadium": async () => {
+    const { parseAutzenStadiumMenu } = await import("./big-ten-football-menus");
+    return parseAutzenStadiumMenu;
+  },
+  "rose-bowl": async () => {
+    const { parseRoseBowlMenu } = await import("./big-ten-football-menus");
+    return parseRoseBowlMenu;
+  },
+  "los-angeles-memorial-coliseum": async () => {
+    const { parseLosAngelesMemorialColiseumMenu } = await import("./big-ten-football-menus");
+    return parseLosAngelesMemorialColiseumMenu;
+  },
+  "husky-stadium": async () => {
+    const { parseHuskyStadiumMenu } = await import("./big-ten-football-menus");
+    return parseHuskyStadiumMenu;
+  },
   "intuit-dome": async () => {
     const { parseIntuitDomeMenu } = await import("./intuit-dome");
     return parseIntuitDomeMenu;

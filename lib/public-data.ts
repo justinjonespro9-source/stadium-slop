@@ -463,7 +463,7 @@ async function loadPublicVenues() {
   }
 }
 
-/** Bust key after Arrowhead canonical fix (was `v2-fairgrounds`, then bare `public-venues`). */
+/** Bust key after Big Ten Phase 1 venue expansion (was `v3-arrowhead-canonical`). */
 const getPublicVenuesCached = cachePublicRead(
   [...PUBLIC_VENUES_CACHE_KEY_PARTS],
   loadPublicVenues

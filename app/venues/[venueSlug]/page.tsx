@@ -69,6 +69,7 @@ import {
   getStandingsModeOptions,
   getVenuePageDescription
 } from "@/lib/venue-copy-context";
+import { venueEmptyMenuMessage } from "@/lib/venue-empty-menu";
 import {
   canonicalVenuePath,
   resolveCanonicalPublicVenueSlug
@@ -418,15 +419,17 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   const emptyStandingsMessage =
     standingsRows.length > 0
       ? null
-      : searchQuery
-        ? beforeSearchCount > 0
-          ? `No items match "${searchQuery}". Try fewer keywords or clear search.`
+      : venueFoodItems.length === 0
+        ? venueEmptyMenuMessage(venue.slug)
+        : searchQuery
+          ? beforeSearchCount > 0
+            ? `No items match "${searchQuery}". Try fewer keywords or clear search.`
+            : category === "reviewed"
+              ? "No reviewed items in this view yet. Try another mode or category."
+              : "No items match these filters."
           : category === "reviewed"
-            ? "No reviewed items in this view yet. Try another mode or category, or be the first to submit a review."
-            : "No items match these filters."
-        : category === "reviewed"
-          ? "No reviewed items in this view yet. Switch to All or another category, or leave the first review."
-          : "No items match these filters.";
+            ? "No reviewed items in this view yet. Switch to All or another category."
+            : "No items match these filters.";
   const standingsAgeGateRows = standingsRows.map(({ item, stats }) => {
     const vendor = vendorBySlug.get(item.vendorSlug);
     return {
