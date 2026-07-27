@@ -463,7 +463,7 @@ async function loadPublicVenues() {
   }
 }
 
-/** Bust key after FAIRGROUNDS enum + sample-fallback poison (was `public-venues`). */
+/** Bust key after Arrowhead canonical fix (was `v2-fairgrounds`, then bare `public-venues`). */
 const getPublicVenuesCached = cachePublicRead(
   [...PUBLIC_VENUES_CACHE_KEY_PARTS],
   loadPublicVenues
