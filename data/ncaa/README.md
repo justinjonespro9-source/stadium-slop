@@ -78,6 +78,8 @@ Big Ten Phase 1 venues live in `big-ten-football-venues.json`. Home schedules: `
 
 SEC Phase 1 venues live in `sec-football-venues.json`. Home schedules: `npm run sync:ncaa-sec-schedule -- --apply`.
 
+Big 12 Phase 1 venues live in `big-12-football-venues.json`. Home schedules: `npm run sync:ncaa-big-12-schedule -- --apply`.
+
 ## Source of truth
 
 Curate item-level rows from official athletics gameday / concessions pages. The pilot pack (`ncaa-venues.json`) uses athletics site URLs as `source_url` anchors — re-verify menus each season.

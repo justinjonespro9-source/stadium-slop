@@ -23,7 +23,22 @@ export const NCAA_VENUE_SLUG_ALIASES: Record<string, string> = {
   "gaylord-family-oklahoma-memorial": "gaylord-family-oklahoma-memorial-stadium",
   "razorback-stadium": "donald-w-reynolds-razorback-stadium",
   "memorial-stadium-missouri": "faurot-field-at-memorial-stadium",
-  "faurot-field": "faurot-field-at-memorial-stadium"
+  "faurot-field": "faurot-field-at-memorial-stadium",
+  // Big 12 sponsored / legacy names → canonical
+  "arizona-stadium": "casino-del-sol-stadium",
+  "sun-devil-stadium": "mountain-america-stadium",
+  "jones-at-t-stadium": "galaxy-stadium",
+  "jones-att-stadium": "galaxy-stadium",
+  "jones-stadium": "galaxy-stadium",
+  "fbc-mortgage-stadium": "acrisure-bounce-house",
+  "bounce-house": "acrisure-bounce-house",
+  "spectrum-stadium": "acrisure-bounce-house",
+  "bright-house-networks-stadium": "acrisure-bounce-house",
+  "memorial-stadium-kansas": "david-booth-kansas-memorial-stadium",
+  "kansas-memorial-stadium": "david-booth-kansas-memorial-stadium",
+  "david-booth-memorial-stadium": "david-booth-kansas-memorial-stadium",
+  "mountaineer-field": "milan-puskar-stadium",
+  "john-oquinn-field-at-tdecu-stadium": "tdecu-stadium"
 };
 
 /**
@@ -81,6 +96,26 @@ export const SEC_PRIMARY_FOOTBALL_SLUGS = [
   "darrell-k-royal-texas-memorial-stadium",
   "kyle-field",
   "firstbank-stadium"
+] as const;
+
+/** Big 12 primary football stadium slugs (2026 membership, 16 programs). */
+export const BIG_12_PRIMARY_FOOTBALL_SLUGS = [
+  "casino-del-sol-stadium",
+  "mountain-america-stadium",
+  "mclane-stadium",
+  "lavell-edwards-stadium",
+  "nippert-stadium",
+  "folsom-field",
+  "tdecu-stadium",
+  "jack-trice-stadium",
+  "david-booth-kansas-memorial-stadium",
+  "bill-snyder-family-stadium",
+  "boone-pickens-stadium",
+  "amon-g-carter-stadium",
+  "galaxy-stadium",
+  "acrisure-bounce-house",
+  "rice-eccles-stadium",
+  "milan-puskar-stadium"
 ] as const;
 
 export function resolveNcaaVenueSlug(slug: string, mergeInto?: string): string {

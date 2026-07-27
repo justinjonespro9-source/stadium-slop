@@ -496,6 +496,216 @@ export const NCAA_VENUE_GEO: Record<string, NcaaVenueGeo> = {
     reviewRadiusMeters: 1000,
     timeZone: "America/Chicago",
     venueClass: "football-stadium"
+  },
+
+  // --- Big 12 Phase 1 ---
+  // Coords: OSM stadium footprints where available; Wikipedia bowl center when
+  // Nominatim lacks a stadium hit (TDECU, Galaxy, Acrisure Bounce House, Casino Del Sol).
+  // Radii: college football 1000–1200m convention.
+
+  /**
+   * Casino Del Sol Stadium (Arizona) — bowl center (Tucson).
+   * Formerly Arizona Stadium; alias arizona-stadium → this slug.
+   */
+  "casino-del-sol-stadium": {
+    name: "Casino Del Sol Stadium",
+    city: "Tucson",
+    state: "AZ",
+    country: "USA",
+    latitude: 32.2288,
+    longitude: -110.9488,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Phoenix",
+    venueClass: "football-stadium"
+  },
+  /** Mountain America Stadium (ASU) — field center (Tempe). Formerly Sun Devil Stadium. */
+  "mountain-america-stadium": {
+    name: "Mountain America Stadium",
+    city: "Tempe",
+    state: "AZ",
+    country: "USA",
+    latitude: 33.4263,
+    longitude: -111.9327,
+    reviewRadiusMeters: 1200,
+    timeZone: "America/Phoenix",
+    venueClass: "football-stadium"
+  },
+  /** McLane Stadium — field center (Waco). */
+  "mclane-stadium": {
+    name: "McLane Stadium",
+    city: "Waco",
+    state: "TX",
+    country: "USA",
+    latitude: 31.5582,
+    longitude: -97.1157,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** LaVell Edwards Stadium — field center (Provo). */
+  "lavell-edwards-stadium": {
+    name: "LaVell Edwards Stadium",
+    city: "Provo",
+    state: "UT",
+    country: "USA",
+    latitude: 40.2573,
+    longitude: -111.6546,
+    reviewRadiusMeters: 1200,
+    timeZone: "America/Denver",
+    venueClass: "football-stadium"
+  },
+  /** Nippert Stadium — field center (Cincinnati). Distinct from TQL Stadium. */
+  "nippert-stadium": {
+    name: "Nippert Stadium",
+    city: "Cincinnati",
+    state: "OH",
+    country: "USA",
+    latitude: 39.1311,
+    longitude: -84.5162,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Folsom Field — field center (Boulder). */
+  "folsom-field": {
+    name: "Folsom Field",
+    city: "Boulder",
+    state: "CO",
+    country: "USA",
+    latitude: 40.0093,
+    longitude: -105.2661,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Denver",
+    venueClass: "football-stadium"
+  },
+  /** TDECU Stadium / John O'Quinn Field — bowl center (Houston). Wikipedia footprint. */
+  "tdecu-stadium": {
+    name: "TDECU Stadium",
+    city: "Houston",
+    state: "TX",
+    country: "USA",
+    latitude: 29.7219,
+    longitude: -95.3492,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Jack Trice Stadium — field center (Ames). */
+  "jack-trice-stadium": {
+    name: "Jack Trice Stadium",
+    city: "Ames",
+    state: "IA",
+    country: "USA",
+    latitude: 42.014,
+    longitude: -93.6358,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /**
+   * David Booth Kansas Memorial Stadium — field center (Lawrence).
+   * Distinct from Allen Fieldhouse (basketball) and other Memorial Stadiums.
+   */
+  "david-booth-kansas-memorial-stadium": {
+    name: "David Booth Kansas Memorial Stadium",
+    city: "Lawrence",
+    state: "KS",
+    country: "USA",
+    latitude: 38.9631,
+    longitude: -95.2463,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Bill Snyder Family Stadium — field center (Manhattan). */
+  "bill-snyder-family-stadium": {
+    name: "Bill Snyder Family Stadium",
+    city: "Manhattan",
+    state: "KS",
+    country: "USA",
+    latitude: 39.202,
+    longitude: -96.5938,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Boone Pickens Stadium — field center (Stillwater). */
+  "boone-pickens-stadium": {
+    name: "Boone Pickens Stadium",
+    city: "Stillwater",
+    state: "OK",
+    country: "USA",
+    latitude: 36.1257,
+    longitude: -97.0676,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Amon G. Carter Stadium — field center (Fort Worth). */
+  "amon-g-carter-stadium": {
+    name: "Amon G. Carter Stadium",
+    city: "Fort Worth",
+    state: "TX",
+    country: "USA",
+    latitude: 32.7098,
+    longitude: -97.368,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /**
+   * Galaxy Stadium (Texas Tech) — field center (Lubbock).
+   * Formerly Jones AT&T Stadium; aliases point here.
+   */
+  "galaxy-stadium": {
+    name: "Galaxy Stadium",
+    city: "Lubbock",
+    state: "TX",
+    country: "USA",
+    latitude: 33.5911,
+    longitude: -101.8728,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /**
+   * Acrisure Bounce House (UCF) — field center (Orlando).
+   * Formerly FBC Mortgage Stadium / Spectrum Stadium.
+   */
+  "acrisure-bounce-house": {
+    name: "Acrisure Bounce House",
+    city: "Orlando",
+    state: "FL",
+    country: "USA",
+    latitude: 28.6091,
+    longitude: -81.1924,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Rice-Eccles Stadium — field center (Salt Lake City). */
+  "rice-eccles-stadium": {
+    name: "Rice-Eccles Stadium",
+    city: "Salt Lake City",
+    state: "UT",
+    country: "USA",
+    latitude: 40.7599,
+    longitude: -111.8489,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Denver",
+    venueClass: "football-stadium"
+  },
+  /** Milan Puskar Stadium — field center (Morgantown). */
+  "milan-puskar-stadium": {
+    name: "Milan Puskar Stadium",
+    city: "Morgantown",
+    state: "WV",
+    country: "USA",
+    latitude: 39.6502,
+    longitude: -79.955,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
   }
 };
 

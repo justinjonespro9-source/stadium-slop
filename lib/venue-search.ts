@@ -143,7 +143,17 @@ const VENUE_SLUG_SEARCH_ALIASES: Record<string, readonly string[]> = {
   "gainbridge-fieldhouse": ["bankers life", "indiana"],
   "scotiabank-saddledome": ["calgary", "saddledome", "flames"],
   "canada-life-centre": ["winnipeg", "jets", "mtn centre"],
-  "climate-pledge-arena": ["seattle kraken", "keyarena"]
+  "climate-pledge-arena": ["seattle kraken", "keyarena"],
+  // Big 12 naming-rights / former stadium names
+  "casino-del-sol-stadium": ["arizona stadium", "arizona wildcats"],
+  "galaxy-stadium": ["jones at t stadium", "jones att stadium", "jones stadium", "texas tech"],
+  "acrisure-bounce-house": [
+    "fbc mortgage stadium",
+    "bounce house",
+    "spectrum stadium",
+    "ucf knights"
+  ],
+  "mountain-america-stadium": ["sun devil stadium", "arizona state"]
 };
 
 function stateSearchTokens(state: string): string[] {
