@@ -397,6 +397,34 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
     const { parseHuskyStadiumMenu } = await import("./big-ten-football-menus");
     return parseHuskyStadiumMenu;
   },
+  "jordan-hare-stadium": async () => {
+    const { parseJordanHareStadiumMenu } = await import("./sec-football-menus");
+    return parseJordanHareStadiumMenu;
+  },
+  "kroger-field": async () => {
+    const { parseKrogerFieldMenu } = await import("./sec-football-menus");
+    return parseKrogerFieldMenu;
+  },
+  "vaught-hemingway-stadium": async () => {
+    const { parseVaughtHemingwayStadiumMenu } = await import("./sec-football-menus");
+    return parseVaughtHemingwayStadiumMenu;
+  },
+  "faurot-field-at-memorial-stadium": async () => {
+    const { parseFaurotFieldAtMemorialStadiumMenu } = await import(
+      "./sec-football-menus"
+    );
+    return parseFaurotFieldAtMemorialStadiumMenu;
+  },
+  "gaylord-family-oklahoma-memorial-stadium": async () => {
+    const { parseGaylordFamilyOklahomaMemorialStadiumMenu } = await import(
+      "./sec-football-menus"
+    );
+    return parseGaylordFamilyOklahomaMemorialStadiumMenu;
+  },
+  "firstbank-stadium": async () => {
+    const { parseFirstbankStadiumMenu } = await import("./sec-football-menus");
+    return parseFirstbankStadiumMenu;
+  },
   "intuit-dome": async () => {
     const { parseIntuitDomeMenu } = await import("./intuit-dome");
     return parseIntuitDomeMenu;

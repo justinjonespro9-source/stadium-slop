@@ -6,7 +6,12 @@
 export const NCAA_MENU_PENDING_VENUE_SLUGS = new Set([
   "ryan-field",
   "ross-ade-stadium",
-  "shi-stadium"
+  "shi-stadium",
+  // SEC — thin or unpublished item-level sources (venues still ACTIVE)
+  "donald-w-reynolds-razorback-stadium",
+  "ben-hill-griffin-stadium",
+  "davis-wade-stadium",
+  "williams-brice-stadium"
 ]);
 
 export function isNcaaMenuPendingVenue(slug: string): boolean {
