@@ -2,6 +2,10 @@
  * Big Ten / NCAA venues intentionally seeded without a starter menu
  * (thin or unpublished concession sources). Venue pages should show a
  * clean "Menu coming soon" empty state — not a filter miss.
+ *
+ * Note: `acrisure-stadium` is pending for *Pitt/college-verified* dishes only.
+ * Existing Steelers/NFL rows remain ACTIVE for general stadium visits; college
+ * context filtering lives in `lib/shared-venue-menu-scope.ts`.
  */
 export const NCAA_MENU_PENDING_VENUE_SLUGS = new Set([
   "ryan-field",

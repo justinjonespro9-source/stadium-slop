@@ -14,7 +14,8 @@ function buildQuery(
   mode: StandingsMode,
   category: CategoryFilter,
   vendorSlug: string,
-  q: string
+  q: string,
+  team = ""
 ) {
   const params = new URLSearchParams();
   if (mode !== "season") {
@@ -30,6 +31,10 @@ function buildQuery(
   if (trimmed) {
     params.set("q", trimmed);
   }
+  const teamTrim = team.trim();
+  if (teamTrim) {
+    params.set("team", teamTrim);
+  }
   const qs = params.toString();
   return `/venues/${venueSlug}${qs ? `?${qs}` : ""}`;
 }
@@ -41,6 +46,7 @@ export function VenueVendorSelect({
   vendorSlug,
   vendors,
   q,
+  team = "",
   tone = "brand"
 }: {
   venueSlug: string;
@@ -49,6 +55,7 @@ export function VenueVendorSelect({
   vendorSlug: string;
   vendors: Vendor[];
   q: string;
+  team?: string;
   tone?: "brand" | "media";
 }) {
   const router = useRouter();
@@ -66,7 +73,7 @@ export function VenueVendorSelect({
         aria-label="Filter by vendor"
         onChange={(e) => {
           const next = e.target.value;
-          router.push(buildQuery(venueSlug, mode, category, next, q));
+          router.push(buildQuery(venueSlug, mode, category, next, q, team));
         }}
       >
         <option value="all">All vendors</option>

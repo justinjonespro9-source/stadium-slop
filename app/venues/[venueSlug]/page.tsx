@@ -71,6 +71,12 @@ import {
 } from "@/lib/venue-copy-context";
 import { venueEmptyMenuMessage } from "@/lib/venue-empty-menu";
 import {
+  collegeMenuPendingMessage,
+  filterItemsForCollegeMenuContext,
+  resolveCollegeMenuContext,
+  sharedStadiumCollegePendingNotice
+} from "@/lib/shared-venue-menu-scope";
+import {
   canonicalVenuePath,
   resolveCanonicalPublicVenueSlug
 } from "@/lib/venue-public-slug";
@@ -99,6 +105,8 @@ type VenuePageProps = {
     category?: string;
     vendor?: string;
     q?: string;
+    /** Shared-stadium tenant scope, e.g. pittsburgh-panthers / miami-hurricanes */
+    team?: string;
   }>;
 };
 
@@ -219,7 +227,8 @@ function buildVenueHref(
   mode: StandingsMode,
   category: CategoryFilter,
   vendorSlug: string,
-  searchQuery: string
+  searchQuery: string,
+  teamQuery = ""
 ) {
   const params = new URLSearchParams();
 
@@ -240,6 +249,11 @@ function buildVenueHref(
     params.set("q", trimmed);
   }
 
+  const team = teamQuery.trim();
+  if (team) {
+    params.set("team", team);
+  }
+
   const query = params.toString();
   return `/venues/${venueSlug}${query ? `?${query}` : ""}`;
 }
@@ -249,20 +263,29 @@ function FilterChips({
   mode,
   category,
   vendorSlug,
-  searchQuery
+  searchQuery,
+  teamQuery
 }: {
   venueSlug: string;
   mode: StandingsMode;
   category: CategoryFilter;
   vendorSlug: string;
   searchQuery: string;
+  teamQuery: string;
 }) {
   return (
     <div className="mt-2 flex flex-wrap gap-1.5">
       {categoryOptions.map((option) => (
         <Link
           key={option.value}
-          href={buildVenueHref(venueSlug, mode, option.value, vendorSlug, searchQuery)}
+          href={buildVenueHref(
+            venueSlug,
+            mode,
+            option.value,
+            vendorSlug,
+            searchQuery,
+            teamQuery
+          )}
           className={`media-hero-pill sm:px-3 sm:text-xs ${
             category === option.value ? "media-hero-pill--active" : ""
           }`}
@@ -279,20 +302,29 @@ function ModeChips({
   mode,
   category,
   vendorSlug,
-  searchQuery
+  searchQuery,
+  teamQuery
 }: {
   venueSlug: string;
   mode: StandingsMode;
   category: CategoryFilter;
   vendorSlug: string;
   searchQuery: string;
+  teamQuery: string;
 }) {
   return (
     <div className="mt-2 flex flex-wrap gap-1.5">
       {getStandingsModeOptions(venueSlug).map((option) => (
         <Link
           key={option.value}
-          href={buildVenueHref(venueSlug, option.value, category, vendorSlug, searchQuery)}
+          href={buildVenueHref(
+            venueSlug,
+            option.value,
+            category,
+            vendorSlug,
+            searchQuery,
+            teamQuery
+          )}
           className={`media-hero-pill px-3 py-2 text-xs sm:px-4 sm:text-sm ${
             mode === option.value ? "media-hero-pill--active" : ""
           }`}
@@ -316,6 +348,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
       if (query?.category) qs.set("category", query.category);
       if (query?.vendor) qs.set("vendor", query.vendor);
       if (query?.q) qs.set("q", query.q);
+      if (query?.team) qs.set("team", query.team);
       const suffix = qs.toString() ? `?${qs.toString()}` : "";
       redirect(`${canonicalVenuePath(canonicalSlug)}${suffix}`);
     }
@@ -349,13 +382,33 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
     country: venue.country
   });
 
-  const [venueFoodItems, venueVendors, venueFreshReviews, venueStatsMap] =
+  const [rawVenueFoodItems, venueVendors, venueFreshReviews, venueStatsMap] =
     await Promise.all([
       getPublicFoodItemsByVenueSlug(venue.slug),
       getPublicVendorsByVenueSlug(venue.slug),
       getVenueFreshFeedReviews(venue.slug),
       getVenueItemSlopStatsMap(venue.slug)
     ]);
+  const teamQuery = (query?.team ?? "").trim();
+  const collegeMenuContext = resolveCollegeMenuContext({
+    venueSlug: venue.slug,
+    teamQuery,
+    activeHomeTeamSlug: activeGame?.homeTeamSlug ?? null,
+    activeLeague: activeGame?.league ?? null
+  });
+  const venueFoodItems = collegeMenuContext
+    ? filterItemsForCollegeMenuContext(
+        venue.slug,
+        rawVenueFoodItems,
+        collegeMenuContext.collegeTenantSlug
+      )
+    : rawVenueFoodItems;
+  const collegeMenuFilteredEmpty =
+    Boolean(collegeMenuContext) &&
+    rawVenueFoodItems.length > 0 &&
+    venueFoodItems.length === 0;
+  const sharedCollegePendingNotice =
+    !collegeMenuContext ? sharedStadiumCollegePendingNotice(venue.slug) : null;
   const fanFavoriteEntries = venueFoodItems.map((item) => ({
     itemSlug: item.slug,
     allTime: resolveVenueItemSlopStats(venueStatsMap, item.slug, "allTime"),
@@ -419,17 +472,22 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   const emptyStandingsMessage =
     standingsRows.length > 0
       ? null
-      : venueFoodItems.length === 0
-        ? venueEmptyMenuMessage(venue.slug)
-        : searchQuery
-          ? beforeSearchCount > 0
-            ? `No items match "${searchQuery}". Try fewer keywords or clear search.`
+      : collegeMenuFilteredEmpty && collegeMenuContext
+        ? collegeMenuPendingMessage(
+            venue.slug,
+            collegeMenuContext.collegeTenantSlug
+          )
+        : venueFoodItems.length === 0
+          ? venueEmptyMenuMessage(venue.slug)
+          : searchQuery
+            ? beforeSearchCount > 0
+              ? `No items match "${searchQuery}". Try fewer keywords or clear search.`
+              : category === "reviewed"
+                ? "No reviewed items in this view yet. Try another mode or category."
+                : "No items match these filters."
             : category === "reviewed"
-              ? "No reviewed items in this view yet. Try another mode or category."
-              : "No items match these filters."
-          : category === "reviewed"
-            ? "No reviewed items in this view yet. Switch to All or another category."
-            : "No items match these filters.";
+              ? "No reviewed items in this view yet. Switch to All or another category."
+              : "No items match these filters.";
   const standingsAgeGateRows = standingsRows.map(({ item, stats }) => {
     const vendor = vendorBySlug.get(item.vendorSlug);
     return {
@@ -482,6 +540,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           category={category}
           vendorSlug={vendorSlug}
           searchQuery={searchQuery}
+          teamQuery={teamQuery}
         />
         <FilterChips
           venueSlug={venue.slug}
@@ -489,6 +548,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           category={category}
           vendorSlug={vendorSlug}
           searchQuery={searchQuery}
+          teamQuery={teamQuery}
         />
         <form
           method="get"
@@ -502,6 +562,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           {vendorSlug !== "all" ? (
             <input type="hidden" name="vendor" value={vendorSlug} />
           ) : null}
+          {teamQuery ? <input type="hidden" name="team" value={teamQuery} /> : null}
           <label className="block min-w-0 flex-1 sm:max-w-md">
             <span className="sr-only">Search items in this venue</span>
             <input
@@ -519,7 +580,14 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             </button>
             {searchQuery ? (
               <Link
-                href={buildVenueHref(venue.slug, mode, category, vendorSlug, "")}
+                href={buildVenueHref(
+                  venue.slug,
+                  mode,
+                  category,
+                  vendorSlug,
+                  "",
+                  teamQuery
+                )}
                 className="inline-flex items-center rounded-full px-3 py-2 text-[0.7rem] font-bold text-white/65 underline-offset-2 hover:text-white hover:underline"
               >
                 Clear
@@ -534,6 +602,7 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
           vendorSlug={vendorSlug}
           vendors={venueVendors}
           q={searchQuery}
+          team={teamQuery}
           tone="media"
         />
         {selectedVendor ? (
@@ -556,6 +625,25 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
             activeGame={activeGame}
             upcomingGame={upcomingGame}
           />
+        ) : null}
+
+        {sharedCollegePendingNotice ? (
+          <p className="media-panel-card mt-5 px-4 py-3 text-sm leading-relaxed text-[var(--media-ink-muted)] sm:mt-6">
+            {sharedCollegePendingNotice}
+          </p>
+        ) : null}
+        {collegeMenuContext ? (
+          <p className="mt-5 text-sm leading-relaxed text-[var(--media-ink-muted)] sm:mt-6">
+            Showing concessions scoped to{" "}
+            <span className="font-semibold text-[var(--media-ink)]">
+              {collegeMenuContext.collegeTenantSlug === "pittsburgh-panthers"
+                ? "Pittsburgh Panthers"
+                : collegeMenuContext.collegeTenantSlug === "miami-hurricanes"
+                  ? "Miami Hurricanes"
+                  : collegeMenuContext.collegeTenantSlug}
+            </span>
+            . NFL-only specials are hidden in this view.
+          </p>
         ) : null}
 
         {showVenuePartnerPlacement ? (
