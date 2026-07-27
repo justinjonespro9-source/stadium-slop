@@ -71,8 +71,9 @@ export const KNOWN_DUPLICATE_GROUPS: Array<{
   },
   {
     label: "GEHA Field at Arrowhead Stadium (Kansas City Chiefs)",
-    canonicalSlug: "arrowhead-stadium",
-    aliasSlugs: ["geha-field-at-arrowhead-stadium", "arrowhead"]
+    // Production DB + NFL/World Cup imports use this slug; keep shorter names as redirects.
+    canonicalSlug: "geha-field-at-arrowhead-stadium",
+    aliasSlugs: ["arrowhead-stadium", "arrowhead"]
   }
 ];
 
