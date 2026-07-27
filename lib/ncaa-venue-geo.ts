@@ -359,6 +359,143 @@ export const NCAA_VENUE_GEO: Record<string, NcaaVenueGeo> = {
     reviewRadiusMeters: 1100,
     timeZone: "America/Chicago",
     venueClass: "football-stadium"
+  },
+
+  // --- SEC Phase 1 ---
+  // Coords: field/bowl center from OSM stadium footprints (Nominatim) + athletics maps.
+  // Radii: college football 1000–1200m convention.
+
+  /** Donald W. Reynolds Razorback Stadium — bowl center (Fayetteville). */
+  "donald-w-reynolds-razorback-stadium": {
+    name: "Donald W. Reynolds Razorback Stadium",
+    city: "Fayetteville",
+    state: "AR",
+    country: "USA",
+    latitude: 36.0681,
+    longitude: -94.1789,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Jordan-Hare Stadium — field center (Auburn). */
+  "jordan-hare-stadium": {
+    name: "Jordan-Hare Stadium",
+    city: "Auburn",
+    state: "AL",
+    country: "USA",
+    latitude: 32.6022,
+    longitude: -85.4892,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Ben Hill Griffin Stadium — bowl center (Gainesville). */
+  "ben-hill-griffin-stadium": {
+    name: "Ben Hill Griffin Stadium",
+    city: "Gainesville",
+    state: "FL",
+    country: "USA",
+    latitude: 29.65,
+    longitude: -82.3488,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /**
+   * Kroger Field (Kentucky) — field center (Lexington).
+   * Legacy name Commonwealth Stadium; keep slug kroger-field (current official).
+   */
+  "kroger-field": {
+    name: "Kroger Field",
+    city: "Lexington",
+    state: "KY",
+    country: "USA",
+    latitude: 38.0227,
+    longitude: -84.5051,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Vaught-Hemingway Stadium — field center (Oxford). */
+  "vaught-hemingway-stadium": {
+    name: "Vaught-Hemingway Stadium",
+    city: "Oxford",
+    state: "MS",
+    country: "USA",
+    latitude: 34.362,
+    longitude: -89.5342,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Davis Wade Stadium — field center (Starkville). OSM way 207653615. */
+  "davis-wade-stadium": {
+    name: "Davis Wade Stadium",
+    city: "Starkville",
+    state: "MS",
+    country: "USA",
+    latitude: 33.4565,
+    longitude: -88.7934,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /**
+   * Faurot Field at Memorial Stadium (Missouri) — field center (Columbia).
+   * Distinct from Illinois / Indiana / Nebraska Memorial Stadiums.
+   */
+  "faurot-field-at-memorial-stadium": {
+    name: "Faurot Field at Memorial Stadium",
+    city: "Columbia",
+    state: "MO",
+    country: "USA",
+    latitude: 38.9358,
+    longitude: -92.3322,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /**
+   * Gaylord Family – Oklahoma Memorial Stadium — bowl center (Norman).
+   * Playing surface Owen Field is not a separate venue slug.
+   */
+  "gaylord-family-oklahoma-memorial-stadium": {
+    name: "Gaylord Family – Oklahoma Memorial Stadium",
+    city: "Norman",
+    state: "OK",
+    country: "USA",
+    latitude: 35.2057,
+    longitude: -97.4423,
+    reviewRadiusMeters: 1200,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Williams-Brice Stadium — field center (Columbia, S.C.). */
+  "williams-brice-stadium": {
+    name: "Williams-Brice Stadium",
+    city: "Columbia",
+    state: "SC",
+    country: "USA",
+    latitude: 33.9731,
+    longitude: -81.0192,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /**
+   * FirstBank Stadium (Vanderbilt) — field center (Nashville).
+   * Formerly Vanderbilt Stadium at Dudley Field; keep sponsored slug.
+   */
+  "firstbank-stadium": {
+    name: "FirstBank Stadium",
+    city: "Nashville",
+    state: "TN",
+    country: "USA",
+    latitude: 36.1439,
+    longitude: -86.8089,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
   }
 };
 

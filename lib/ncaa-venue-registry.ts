@@ -14,7 +14,16 @@ export const NCAA_VENUE_SLUG_ALIASES: Record<string, string> = {
   // Memorial Stadium disambiguation (legacy draft slugs → canonical)
   "memorial-stadium-champaign": "memorial-stadium-illinois",
   "indiana-memorial-stadium": "memorial-stadium-indiana",
-  "memorial-stadium-lincoln": "memorial-stadium-nebraska"
+  "memorial-stadium-lincoln": "memorial-stadium-nebraska",
+  // SEC sponsored / legacy names → canonical
+  "commonwealth-stadium": "kroger-field",
+  "vanderbilt-stadium": "firstbank-stadium",
+  "dudley-field": "firstbank-stadium",
+  "oklahoma-memorial-stadium": "gaylord-family-oklahoma-memorial-stadium",
+  "gaylord-family-oklahoma-memorial": "gaylord-family-oklahoma-memorial-stadium",
+  "razorback-stadium": "donald-w-reynolds-razorback-stadium",
+  "memorial-stadium-missouri": "faurot-field-at-memorial-stadium",
+  "faurot-field": "faurot-field-at-memorial-stadium"
 };
 
 /**
@@ -52,6 +61,26 @@ export const BIG_TEN_PRIMARY_FOOTBALL_SLUGS = [
   "los-angeles-memorial-coliseum",
   "husky-stadium",
   "camp-randall-stadium"
+] as const;
+
+/** SEC primary football stadium slugs (2026 membership, 16 programs). */
+export const SEC_PRIMARY_FOOTBALL_SLUGS = [
+  "bryant-denny-stadium",
+  "donald-w-reynolds-razorback-stadium",
+  "jordan-hare-stadium",
+  "ben-hill-griffin-stadium",
+  "sanford-stadium",
+  "kroger-field",
+  "tiger-stadium",
+  "vaught-hemingway-stadium",
+  "davis-wade-stadium",
+  "faurot-field-at-memorial-stadium",
+  "gaylord-family-oklahoma-memorial-stadium",
+  "williams-brice-stadium",
+  "neyland-stadium",
+  "darrell-k-royal-texas-memorial-stadium",
+  "kyle-field",
+  "firstbank-stadium"
 ] as const;
 
 export function resolveNcaaVenueSlug(slug: string, mergeInto?: string): string {

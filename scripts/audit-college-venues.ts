@@ -10,6 +10,8 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
+import { SEC_PRIMARY_FOOTBALL_SLUGS } from "../lib/ncaa-venue-registry";
+
 const connectionString =
   process.env.DATABASE_URL ??
   "postgresql://postgres:postgres@localhost:5432/stadium_slop?schema=public";
@@ -255,6 +257,16 @@ async function main() {
   console.log(
     `Martin Stadium (NU temporary): ${martin ? "present" : "MISSING"}`
   );
+
+  const secPrimary = [...SEC_PRIMARY_FOOTBALL_SLUGS];
+  const secMissing = secPrimary.filter((s) => !present.has(s));
+  console.log("\n## SEC primary stadium coverage\n");
+  console.log(`Present: ${secPrimary.length - secMissing.length} / ${secPrimary.length}`);
+  if (secMissing.length) {
+    console.log(`Missing: ${secMissing.map((s) => `\`${s}\``).join(", ")}`);
+  } else {
+    console.log("Missing: none");
+  }
 }
 
 main()
