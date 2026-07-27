@@ -22,6 +22,7 @@
     "validate:wisconsin-state-fair-review-flow": "tsx scripts/validate-wisconsin-state-fair-review-flow.ts",
     "archive:world-cup-2026": "tsx scripts/archive-world-cup-2026.ts",
     "test:review-location-certification": "tsx --test lib/game-day.review-certification.test.ts",
+    "test:venue-teams": "tsx --test lib/venue-teams.test.ts",
     "audit:venue-review-geo": "tsx scripts/audit-venue-review-geo-readiness.ts",
     "seed:demo-scorecards": "tsx scripts/seed-demo-scorecards.ts",
     "sync:mlb-schedule": "tsx scripts/sync-mlb-schedule.ts",

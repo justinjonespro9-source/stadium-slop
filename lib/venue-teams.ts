@@ -181,17 +181,37 @@ export function formatHomeOfTeams(teams: string[], venueSlug?: string): string |
   return `the ${rest} & ${last}`;
 }
 
-/** Inline tenant list for headers and cards (full team names). */
-export function formatVenueTeamsInline(teams: string[], venueSlug?: string): string {
-  const sorted = sortVenueTeamsStable(teams, venueSlug);
+/**
+ * One normalized tenant list for UI summaries: trim, dedupe by team slug, then
+ * stable primary-first / A–Z order. Always derive remaining counts from this list.
+ */
+export function normalizeVenueTeams(teams: string[], venueSlug?: string): string[] {
+  return sortVenueTeamsStable(dedupeTeams(teams), venueSlug);
+}
+
+/**
+ * Inline tenant list for headers and cards (full team names).
+ *
+ * - 0 teams → `null` (callers hide the team line)
+ * - 1 team → that name only
+ * - 2 teams → both names
+ * - 3+ teams → `[primary] & N more` (N = remaining after primary)
+ * Never emits "& 0 more" or a negative remaining count.
+ */
+export function formatVenueTeamsInline(
+  teams: string[],
+  venueSlug?: string
+): string | null {
+  const sorted = normalizeVenueTeams(teams, venueSlug);
   if (sorted.length === 0) {
-    return "—";
+    return null;
+  }
+  if (sorted.length === 1) {
+    return sorted[0]!;
   }
   if (sorted.length === 2) {
     return `${sorted[0]} & ${sorted[1]}`;
   }
-  if (sorted.length === 3) {
-    return `${sorted[0]}, ${sorted[1]} & ${sorted[2]}`;
-  }
-  return `${sorted.slice(0, 2).join(", ")} & ${sorted.length - 2} more`;
+  const remaining = sorted.length - 1;
+  return `${sorted[0]} & ${remaining} more`;
 }

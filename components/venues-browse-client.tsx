@@ -119,6 +119,7 @@ export function VenuesBrowseClient({
               const summary =
                 summariesByVenueSlug[venue.slug] ?? EMPTY_VENUE_BROWSE_SUMMARY;
               const topItem = summary.topItem;
+              const teamLine = formatVenueTeamsInline(venue.teams, venue.slug);
 
               return (
                 <Link key={venue.slug} href={`/venues/${venue.slug}`} className="media-card block h-full">
@@ -143,9 +144,11 @@ export function VenuesBrowseClient({
                       </span>
                     </div>
 
-                    <p className="mt-2 line-clamp-2 text-xs font-semibold text-[var(--media-ink-muted)]">
-                      {venue.teams.length > 0 ? formatVenueTeamsInline(venue.teams) : "—"}
-                    </p>
+                    {teamLine ? (
+                      <p className="mt-2 line-clamp-2 text-xs font-semibold text-[var(--media-ink-muted)]">
+                        {teamLine}
+                      </p>
+                    ) : null}
 
                     <div className="mt-3 flex-1 rounded-lg border border-[var(--media-border)] bg-[var(--media-surface)] px-2.5 py-2">
                       <p className="text-[0.65rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">

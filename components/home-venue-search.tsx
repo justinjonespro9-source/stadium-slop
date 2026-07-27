@@ -174,9 +174,9 @@ export function HomeVenueSearch({ venues, variant = "default" }: HomeVenueSearch
             className="max-h-[min(16.5rem,calc(100dvh-12rem))] overflow-y-auto py-1.5 sm:py-2"
           >
             {capped.map((venue, index) => {
-              const teamLine = formatVenueTeamsInline(venue.teams);
+              const teamLine = formatVenueTeamsInline(venue.teams, venue.slug);
               const metaChips =
-                teamLine.length > 96 ? `${teamLine.slice(0, 96)}…` : teamLine;
+                teamLine && teamLine.length > 96 ? `${teamLine.slice(0, 96)}…` : teamLine;
 
               const isActive = index === activeIndex;
 

@@ -440,15 +440,18 @@ export default async function VenuePage({ params, searchParams }: VenuePageProps
   });
   const isSignedIn = Boolean(await getContributorUserId());
 
+  const venueTeamLine = formatVenueTeamsInline(venue.teams, venue.slug);
   const venueMetaLine = (
     <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
       <span>
         {venue.city}, {venue.state}
       </span>
-      <span className="text-white/35">·</span>
-      <span className="font-semibold text-white/92">
-        {formatVenueTeamsInline(venue.teams, venue.slug)}
-      </span>
+      {venueTeamLine ? (
+        <>
+          <span className="text-white/35">·</span>
+          <span className="font-semibold text-white/92">{venueTeamLine}</span>
+        </>
+      ) : null}
       {venue.primarySport || venue.sports[0] ? (
         <>
           <span className="text-white/35">·</span>

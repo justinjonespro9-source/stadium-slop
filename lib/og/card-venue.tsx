@@ -41,7 +41,7 @@ function VenueNotFoundInner(): ReactElement {
 }
 
 function VenueInner({ venue }: { venue: Venue }): ReactElement {
-  const teamLine = venue.teams.length ? formatVenueTeamsInline(venue.teams) : null;
+  const teamLine = formatVenueTeamsInline(venue.teams, venue.slug);
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>

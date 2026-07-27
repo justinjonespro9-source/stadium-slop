@@ -495,6 +495,7 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
 
   const napkinEligible = isNapkinEligibleItem(foodItem);
   const priceReportDbReady = Boolean(foodItem.id);
+  const venueTeamLine = formatVenueTeamsInline(venue.teams, venue.slug);
 
   const vendor = await getPublicVendorForFoodItem(foodItem);
   const [foodPhotos, priceIntel, venueMenuItems, venueStatsMap, careerStats] =
@@ -975,8 +976,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
                     </span>
                   ) : null}
                   {venue.venueType}
-                </span>{" "}
-                · {formatVenueTeamsInline(venue.teams)} · {foodItem.category} ·{" "}
+                </span>
+                {venueTeamLine ? <> · {venueTeamLine}</> : null} · {foodItem.category} ·{" "}
                 {foodItem.itemType}
                 {foodItem.beverageStyle ? ` · ${foodItem.beverageStyle}` : ""}
                 {foodItem.ageRestricted ? " · 21+" : ""}

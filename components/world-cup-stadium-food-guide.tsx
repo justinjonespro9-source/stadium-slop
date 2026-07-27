@@ -44,11 +44,8 @@ function WorldCupVenueCard({
 
       {host.venue ? (
         <p className="mt-2 line-clamp-2 text-xs font-semibold text-[var(--media-ink-muted)]">
-          {host.venue.teams.length > 0
-            ? formatVenueTeamsInline(host.venue.teams)
-            : host.venue.city
-              ? `${host.venue.city}, ${host.venue.state}`
-              : "—"}
+          {formatVenueTeamsInline(host.venue.teams, host.venue.slug) ??
+            (host.venue.city ? `${host.venue.city}, ${host.venue.state}` : "—")}
         </p>
       ) : (
         <p className="mt-2 text-xs text-[var(--media-ink-dim)]">{v.venuePageComing}</p>
