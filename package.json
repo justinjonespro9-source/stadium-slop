@@ -39,6 +39,8 @@
     "sync:ncaa-sec-schedule": "tsx scripts/sync-ncaa-sec-schedule.ts",
     "test:ncaa-sec-schedule": "tsx --test lib/schedules/ncaa-sec-schedule.test.ts",
     "import:sec-menus": "tsx scripts/import-sec-menus.ts",
+    "sync:ncaa-big-12-schedule": "tsx scripts/sync-ncaa-big-12-schedule.ts",
+    "test:ncaa-big-12-schedule": "tsx --test lib/schedules/ncaa-big-12-schedule.test.ts",
     "sync:world-cup-venue-geo": "tsx scripts/sync-world-cup-venue-geo.ts",
     "audit:world-cup-fixtures": "tsx scripts/audit-world-cup-fixtures.ts",
     "verify:venue-timezones": "tsx scripts/verify-venue-timezones.ts",
