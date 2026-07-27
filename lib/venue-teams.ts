@@ -46,6 +46,8 @@ const SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
     "Chicago Stars FC",
     "Northwestern Wildcats"
   ],
+  "hard-rock-stadium": ["Miami Dolphins", "Miami Hurricanes"],
+  "acrisure-stadium": ["Pittsburgh Steelers", "Pittsburgh Panthers"],
   "inter-co-stadium": ["Orlando City SC", "Orlando Pride"],
   "sports-illustrated-stadium": ["New York Red Bulls", "NJ/NY Gotham FC"]
 };
@@ -81,7 +83,9 @@ const SHARED_VENUE_TEAM_ORDER: Record<string, readonly string[]> = {
     "San Diego FC",
     "San Diego Wave FC",
     "San Diego State Aztecs"
-  ]
+  ],
+  "hard-rock-stadium": ["Miami Dolphins", "Miami Hurricanes"],
+  "acrisure-stadium": ["Pittsburgh Steelers", "Pittsburgh Panthers"]
 };
 
 function dedupeTeams(teams: string[]): string[] {

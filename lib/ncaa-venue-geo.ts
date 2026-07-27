@@ -706,6 +706,188 @@ export const NCAA_VENUE_GEO: Record<string, NcaaVenueGeo> = {
     reviewRadiusMeters: 1100,
     timeZone: "America/New_York",
     venueClass: "football-stadium"
+  },
+
+  // ── ACC Phase 1 football (bowl / field centers; OSM + athletics maps) ──
+  /** Alumni Stadium — field center (Chestnut Hill). */
+  "alumni-stadium": {
+    name: "Alumni Stadium",
+    city: "Chestnut Hill",
+    state: "MA",
+    country: "USA",
+    latitude: 42.3351,
+    longitude: -71.1664,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** California Memorial Stadium — field center (Berkeley). */
+  "california-memorial-stadium": {
+    name: "California Memorial Stadium",
+    city: "Berkeley",
+    state: "CA",
+    country: "USA",
+    latitude: 37.871,
+    longitude: -122.2508,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Los_Angeles",
+    venueClass: "football-stadium"
+  },
+  /** Memorial Stadium (Clemson / Death Valley) — field center. */
+  "memorial-stadium-clemson": {
+    name: "Memorial Stadium",
+    city: "Clemson",
+    state: "SC",
+    country: "USA",
+    latitude: 34.6788,
+    longitude: -82.8432,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Wallace Wade Stadium — field center (Durham). */
+  "wallace-wade-stadium": {
+    name: "Wallace Wade Stadium",
+    city: "Durham",
+    state: "NC",
+    country: "USA",
+    latitude: 35.9953,
+    longitude: -78.9419,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Doak Campbell Stadium — field center (Tallahassee). */
+  "doak-campbell-stadium": {
+    name: "Doak Campbell Stadium",
+    city: "Tallahassee",
+    state: "FL",
+    country: "USA",
+    latitude: 30.438,
+    longitude: -84.3044,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Bobby Dodd Stadium at Hyundai Field — field center (Atlanta). */
+  "bobby-dodd-stadium-at-hyundai-field": {
+    name: "Bobby Dodd Stadium at Hyundai Field",
+    city: "Atlanta",
+    state: "GA",
+    country: "USA",
+    latitude: 33.7725,
+    longitude: -84.3928,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** L&N Federal Credit Union Stadium — field center (Louisville). */
+  "ln-federal-credit-union-stadium": {
+    name: "L&N Federal Credit Union Stadium",
+    city: "Louisville",
+    state: "KY",
+    country: "USA",
+    latitude: 38.2058,
+    longitude: -85.7589,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Kenan Memorial Stadium — field center (Chapel Hill). */
+  "kenan-memorial-stadium": {
+    name: "Kenan Memorial Stadium",
+    city: "Chapel Hill",
+    state: "NC",
+    country: "USA",
+    latitude: 35.9069,
+    longitude: -79.0479,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Carter-Finley Stadium — field center (Raleigh). */
+  "carter-finley-stadium": {
+    name: "Carter-Finley Stadium",
+    city: "Raleigh",
+    state: "NC",
+    country: "USA",
+    latitude: 35.8006,
+    longitude: -78.7194,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Gerald J. Ford Stadium — field center (Dallas / SMU). */
+  "gerald-j-ford-stadium": {
+    name: "Gerald J. Ford Stadium",
+    city: "Dallas",
+    state: "TX",
+    country: "USA",
+    latitude: 32.8405,
+    longitude: -96.7828,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Chicago",
+    venueClass: "football-stadium"
+  },
+  /** Stanford Stadium — field center. */
+  "stanford-stadium": {
+    name: "Stanford Stadium",
+    city: "Stanford",
+    state: "CA",
+    country: "USA",
+    latitude: 37.4346,
+    longitude: -122.1611,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/Los_Angeles",
+    venueClass: "football-stadium"
+  },
+  /** JMA Wireless Dome — bowl center (Syracuse; formerly Carrier Dome). */
+  "jma-wireless-dome": {
+    name: "JMA Wireless Dome",
+    city: "Syracuse",
+    state: "NY",
+    country: "USA",
+    latitude: 43.0362,
+    longitude: -76.1362,
+    reviewRadiusMeters: 1000,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Scott Stadium — field center (Charlottesville). */
+  "scott-stadium": {
+    name: "Scott Stadium",
+    city: "Charlottesville",
+    state: "VA",
+    country: "USA",
+    latitude: 38.0313,
+    longitude: -78.5136,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Lane Stadium — field center (Blacksburg). */
+  "lane-stadium": {
+    name: "Lane Stadium",
+    city: "Blacksburg",
+    state: "VA",
+    country: "USA",
+    latitude: 37.22,
+    longitude: -80.4181,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
+  },
+  /** Allegacy Federal Credit Union Stadium — field center (Winston-Salem). */
+  "allegacy-federal-credit-union-stadium": {
+    name: "Allegacy Federal Credit Union Stadium",
+    city: "Winston-Salem",
+    state: "NC",
+    country: "USA",
+    latitude: 36.1306,
+    longitude: -80.2547,
+    reviewRadiusMeters: 1100,
+    timeZone: "America/New_York",
+    venueClass: "football-stadium"
   }
 };
 

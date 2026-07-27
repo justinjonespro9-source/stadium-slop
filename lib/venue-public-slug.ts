@@ -16,7 +16,23 @@ export const SPONSORED_NAME_PUBLIC_REDIRECTS: Record<string, string> = {
   "fbc-mortgage-stadium": "acrisure-bounce-house",
   "bounce-house": "acrisure-bounce-house",
   "spectrum-stadium": "acrisure-bounce-house",
-  "bright-house-networks-stadium": "acrisure-bounce-house"
+  "bright-house-networks-stadium": "acrisure-bounce-house",
+  // ACC former / sponsored names
+  "clemson-memorial-stadium": "memorial-stadium-clemson",
+  "doak-s-campbell-stadium": "doak-campbell-stadium",
+  "bobby-dodd-stadium": "bobby-dodd-stadium-at-hyundai-field",
+  "grant-field": "bobby-dodd-stadium-at-hyundai-field",
+  "cardinal-stadium": "ln-federal-credit-union-stadium",
+  "papa-johns-cardinal-stadium": "ln-federal-credit-union-stadium",
+  "l-and-n-federal-credit-union-stadium": "ln-federal-credit-union-stadium",
+  "l-n-federal-credit-union-stadium": "ln-federal-credit-union-stadium",
+  "kenan-stadium": "kenan-memorial-stadium",
+  "heinz-field": "acrisure-stadium",
+  "carrier-dome": "jma-wireless-dome",
+  "bb-t-field": "allegacy-federal-credit-union-stadium",
+  "bbandt-field": "allegacy-federal-credit-union-stadium",
+  "truist-field-at-wake-forest": "allegacy-federal-credit-union-stadium",
+  "groves-stadium": "allegacy-federal-credit-union-stadium"
 };
 
 /** Legacy public URL slugs → canonical venue slug (permanent redirect). */

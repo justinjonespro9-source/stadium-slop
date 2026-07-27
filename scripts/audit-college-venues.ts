@@ -10,7 +10,7 @@ import "dotenv/config";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-import { SEC_PRIMARY_FOOTBALL_SLUGS, BIG_12_PRIMARY_FOOTBALL_SLUGS } from "../lib/ncaa-venue-registry";
+import { SEC_PRIMARY_FOOTBALL_SLUGS, BIG_12_PRIMARY_FOOTBALL_SLUGS, ACC_PRIMARY_FOOTBALL_SLUGS } from "../lib/ncaa-venue-registry";
 
 const connectionString =
   process.env.DATABASE_URL ??
@@ -274,6 +274,16 @@ async function main() {
   console.log(`Present: ${big12Primary.length - big12Missing.length} / ${big12Primary.length}`);
   if (big12Missing.length) {
     console.log(`Missing: ${big12Missing.map((s) => `\`${s}\``).join(", ")}`);
+  } else {
+    console.log("Missing: none");
+  }
+
+  const accPrimary = [...ACC_PRIMARY_FOOTBALL_SLUGS];
+  const accMissing = accPrimary.filter((s) => !present.has(s));
+  console.log("\n## ACC primary stadium coverage\n");
+  console.log(`Present: ${accPrimary.length - accMissing.length} / ${accPrimary.length}`);
+  if (accMissing.length) {
+    console.log(`Missing: ${accMissing.map((s) => `\`${s}\``).join(", ")}`);
   } else {
     console.log("Missing: none");
   }

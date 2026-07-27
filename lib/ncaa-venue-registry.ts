@@ -38,7 +38,25 @@ export const NCAA_VENUE_SLUG_ALIASES: Record<string, string> = {
   "kansas-memorial-stadium": "david-booth-kansas-memorial-stadium",
   "david-booth-memorial-stadium": "david-booth-kansas-memorial-stadium",
   "mountaineer-field": "milan-puskar-stadium",
-  "john-oquinn-field-at-tdecu-stadium": "tdecu-stadium"
+  "john-oquinn-field-at-tdecu-stadium": "tdecu-stadium",
+  // ACC sponsored / legacy names → canonical
+  "clemson-memorial-stadium": "memorial-stadium-clemson",
+  "death-valley": "memorial-stadium-clemson",
+  "doak-s-campbell-stadium": "doak-campbell-stadium",
+  "bobby-dodd-stadium": "bobby-dodd-stadium-at-hyundai-field",
+  "grant-field": "bobby-dodd-stadium-at-hyundai-field",
+  "cardinal-stadium": "ln-federal-credit-union-stadium",
+  "papa-johns-cardinal-stadium": "ln-federal-credit-union-stadium",
+  "l-and-n-federal-credit-union-stadium": "ln-federal-credit-union-stadium",
+  "l-n-federal-credit-union-stadium": "ln-federal-credit-union-stadium",
+  "kenan-stadium": "kenan-memorial-stadium",
+  "heinz-field": "acrisure-stadium",
+  "carrier-dome": "jma-wireless-dome",
+  "bb-t-field": "allegacy-federal-credit-union-stadium",
+  "bbandt-field": "allegacy-federal-credit-union-stadium",
+  "truist-field-at-wake-forest": "allegacy-federal-credit-union-stadium",
+  "groves-stadium": "allegacy-federal-credit-union-stadium",
+  "alumni-stadium-boston-college": "alumni-stadium"
 };
 
 /**
@@ -47,13 +65,17 @@ export const NCAA_VENUE_SLUG_ALIASES: Record<string, string> = {
  */
 export const NCAA_EXISTING_VENUE_SLUGS = new Set([
   "snapdragon-stadium",
-  "northwestern-medicine-field-at-martin-stadium"
+  "northwestern-medicine-field-at-martin-stadium",
+  "hard-rock-stadium",
+  "acrisure-stadium"
 ]);
 
 /** Extra college tenants when merging into shared venues. */
 export const NCAA_SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
   "snapdragon-stadium": ["San Diego State Aztecs"],
-  "northwestern-medicine-field-at-martin-stadium": ["Northwestern Wildcats"]
+  "northwestern-medicine-field-at-martin-stadium": ["Northwestern Wildcats"],
+  "hard-rock-stadium": ["Miami Hurricanes"],
+  "acrisure-stadium": ["Pittsburgh Panthers"]
 };
 
 /** Big Ten primary football stadium slugs (2026 membership). */
@@ -116,6 +138,27 @@ export const BIG_12_PRIMARY_FOOTBALL_SLUGS = [
   "acrisure-bounce-house",
   "rice-eccles-stadium",
   "milan-puskar-stadium"
+] as const;
+
+/** ACC primary football stadium slugs (2026 membership, 17 programs; ND excluded). */
+export const ACC_PRIMARY_FOOTBALL_SLUGS = [
+  "alumni-stadium",
+  "california-memorial-stadium",
+  "memorial-stadium-clemson",
+  "wallace-wade-stadium",
+  "doak-campbell-stadium",
+  "bobby-dodd-stadium-at-hyundai-field",
+  "ln-federal-credit-union-stadium",
+  "hard-rock-stadium",
+  "kenan-memorial-stadium",
+  "carter-finley-stadium",
+  "acrisure-stadium",
+  "gerald-j-ford-stadium",
+  "stanford-stadium",
+  "jma-wireless-dome",
+  "scott-stadium",
+  "lane-stadium",
+  "allegacy-federal-credit-union-stadium"
 ] as const;
 
 export function resolveNcaaVenueSlug(slug: string, mergeInto?: string): string {

@@ -80,6 +80,8 @@ SEC Phase 1 venues live in `sec-football-venues.json`. Home schedules: `npm run 
 
 Big 12 Phase 1 venues live in `big-12-football-venues.json`. Home schedules: `npm run sync:ncaa-big-12-schedule -- --apply`.
 
+ACC Phase 1 venues live in `acc-football-venues.json`. Home schedules: `npm run sync:ncaa-acc-schedule -- --apply`. Notre Dame football is Independent and is not counted in the ACC 17.
+
 ## Source of truth
 
 Curate item-level rows from official athletics gameday / concessions pages. The pilot pack (`ncaa-venues.json`) uses athletics site URLs as `source_url` anchors — re-verify menus each season.

@@ -153,7 +153,32 @@ const VENUE_SLUG_SEARCH_ALIASES: Record<string, readonly string[]> = {
     "spectrum stadium",
     "ucf knights"
   ],
-  "mountain-america-stadium": ["sun devil stadium", "arizona state"]
+  "mountain-america-stadium": ["sun devil stadium", "arizona state"],
+  // ACC former / sponsored names
+  "memorial-stadium-clemson": ["clemson memorial stadium", "death valley", "clemson"],
+  "bobby-dodd-stadium-at-hyundai-field": [
+    "bobby dodd stadium",
+    "hyundai field",
+    "grant field",
+    "georgia tech"
+  ],
+  "ln-federal-credit-union-stadium": [
+    "cardinal stadium",
+    "papa johns cardinal stadium",
+    "l and n stadium",
+    "louisville"
+  ],
+  "doak-campbell-stadium": ["doak s campbell stadium", "doak campbell", "florida state"],
+  "kenan-memorial-stadium": ["kenan stadium", "north carolina tar heels"],
+  "acrisure-stadium": ["heinz field", "pittsburgh panthers", "pittsburgh steelers"],
+  "jma-wireless-dome": ["carrier dome", "jma dome", "syracuse"],
+  "allegacy-federal-credit-union-stadium": [
+    "bb t field",
+    "truist field",
+    "groves stadium",
+    "wake forest"
+  ],
+  "hard-rock-stadium": ["miami hurricanes", "miami dolphins"]
 };
 
 function stateSearchTokens(state: string): string[] {
