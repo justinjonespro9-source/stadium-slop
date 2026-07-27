@@ -41,6 +41,8 @@
     "import:sec-menus": "tsx scripts/import-sec-menus.ts",
     "sync:ncaa-big-12-schedule": "tsx scripts/sync-ncaa-big-12-schedule.ts",
     "test:ncaa-big-12-schedule": "tsx --test lib/schedules/ncaa-big-12-schedule.test.ts",
+    "import:big-12-menus": "tsx scripts/import-big-12-menus.ts",
+    "reconcile:big-12-mclane-tdecu": "tsx scripts/reconcile-big-12-mclane-tdecu.ts",
     "sync:world-cup-venue-geo": "tsx scripts/sync-world-cup-venue-geo.ts",
     "audit:world-cup-fixtures": "tsx scripts/audit-world-cup-fixtures.ts",
     "verify:venue-timezones": "tsx scripts/verify-venue-timezones.ts",

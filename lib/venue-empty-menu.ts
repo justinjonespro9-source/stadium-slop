@@ -11,7 +11,15 @@ export const NCAA_MENU_PENDING_VENUE_SLUGS = new Set([
   "donald-w-reynolds-razorback-stadium",
   "ben-hill-griffin-stadium",
   "davis-wade-stadium",
-  "williams-brice-stadium"
+  "williams-brice-stadium",
+  // Big 12 — thin or unpublished item-level sources
+  "lavell-edwards-stadium",
+  "jack-trice-stadium",
+  "boone-pickens-stadium",
+  "galaxy-stadium",
+  "rice-eccles-stadium",
+  "milan-puskar-stadium",
+  "tdecu-stadium"
 ]);
 
 export function isNcaaMenuPendingVenue(slug: string): boolean {

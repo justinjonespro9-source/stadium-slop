@@ -425,6 +425,54 @@ const parsers: Record<string, () => Promise<VenueMenuParser>> = {
     const { parseFirstbankStadiumMenu } = await import("./sec-football-menus");
     return parseFirstbankStadiumMenu;
   },
+  "mclane-stadium": async () => {
+    const { parseMclaneStadiumMenu } = await import("./big-12-football-menus");
+    return parseMclaneStadiumMenu;
+  },
+  "david-booth-kansas-memorial-stadium": async () => {
+    const { parseDavidBoothKansasMemorialStadiumMenu } = await import(
+      "./big-12-football-menus"
+    );
+    return parseDavidBoothKansasMemorialStadiumMenu;
+  },
+  "folsom-field": async () => {
+    const { parseFolsomFieldMenu } = await import("./big-12-football-menus");
+    return parseFolsomFieldMenu;
+  },
+  "nippert-stadium": async () => {
+    const { parseNippertStadiumMenu } = await import("./big-12-football-menus");
+    return parseNippertStadiumMenu;
+  },
+  "mountain-america-stadium": async () => {
+    const { parseMountainAmericaStadiumMenu } = await import(
+      "./big-12-football-menus"
+    );
+    return parseMountainAmericaStadiumMenu;
+  },
+  "bill-snyder-family-stadium": async () => {
+    const { parseBillSnyderFamilyStadiumMenu } = await import(
+      "./big-12-football-menus"
+    );
+    return parseBillSnyderFamilyStadiumMenu;
+  },
+  "acrisure-bounce-house": async () => {
+    const { parseAcrisureBounceHouseMenu } = await import(
+      "./big-12-football-menus"
+    );
+    return parseAcrisureBounceHouseMenu;
+  },
+  "casino-del-sol-stadium": async () => {
+    const { parseCasinoDelSolStadiumMenu } = await import(
+      "./big-12-football-menus"
+    );
+    return parseCasinoDelSolStadiumMenu;
+  },
+  "amon-g-carter-stadium": async () => {
+    const { parseAmonGCarterStadiumMenu } = await import(
+      "./big-12-football-menus"
+    );
+    return parseAmonGCarterStadiumMenu;
+  },
   "intuit-dome": async () => {
     const { parseIntuitDomeMenu } = await import("./intuit-dome");
     return parseIntuitDomeMenu;

@@ -22,7 +22,7 @@ describe("public venues cache configuration", () => {
   it("uses a versioned cache key (not bare public-venues)", () => {
     assert.deepEqual([...PUBLIC_VENUES_CACHE_KEY_PARTS], [
       "public-venues",
-      "v5-sec"
+      "v6-big-12"
     ]);
     assert.notEqual(PUBLIC_VENUES_CACHE_KEY_PARTS.length, 1);
   });
@@ -50,7 +50,7 @@ describe("production catalog failure policy", () => {
   it("logs useful context and never implies sample is the production catalog", () => {
     const log = formatPublicVenueCatalogFailureLog(new Error("prisma enum boom"));
     assert.match(log.message, /prisma enum boom/);
-    assert.deepEqual(log.cacheKey, ["public-venues", "v5-sec"]);
+    assert.deepEqual(log.cacheKey, ["public-venues", "v6-big-12"]);
     assert.equal(log.sampleFallbackAllowed, allowSampleVenueCatalogFallback());
   });
 
