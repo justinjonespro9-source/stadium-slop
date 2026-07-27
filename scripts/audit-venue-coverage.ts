@@ -39,7 +39,23 @@ const NCAA_FOOTBALL_SLUGS = new Set([
   "sanford-stadium",
   "darrell-k-royal-texas-memorial-stadium",
   "beaver-stadium",
-  "snapdragon-stadium"
+  "snapdragon-stadium",
+  "memorial-stadium-illinois",
+  "memorial-stadium-indiana",
+  "kinnick-stadium",
+  "secu-stadium",
+  "spartan-stadium",
+  "huntington-bank-stadium",
+  "memorial-stadium-nebraska",
+  "ryan-field",
+  "northwestern-medicine-field-at-martin-stadium",
+  "autzen-stadium",
+  "ross-ade-stadium",
+  "shi-stadium",
+  "rose-bowl",
+  "los-angeles-memorial-coliseum",
+  "husky-stadium",
+  "camp-randall-stadium"
 ]);
 
 function normLeagues(leagues: string[]): Set<string> {

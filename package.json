@@ -28,6 +28,7 @@
     "test:public-venues-catalog": "tsx --test lib/public-venues-catalog.test.ts",
     "test:venue-cleanup-arrowhead": "tsx --test lib/venue-cleanup.arrowhead.test.ts",
     "audit:venue-review-geo": "tsx scripts/audit-venue-review-geo-readiness.ts",
+    "audit:college-venues": "tsx scripts/audit-college-venues.ts",
     "seed:demo-scorecards": "tsx scripts/seed-demo-scorecards.ts",
     "sync:mlb-schedule": "tsx scripts/sync-mlb-schedule.ts",
     "sync:mls-schedule": "tsx scripts/sync-mls-schedule.ts",

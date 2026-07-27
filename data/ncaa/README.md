@@ -71,7 +71,10 @@ Use `league=NCAA` (or `NCAA Football` / `NCAA Basketball`) for flat spreadsheet 
 npm run import:ncaa -- --dry-run
 npm run import:ncaa -- --apply
 npm run import:ncaa -- --apply ./data/ncaa/custom-pack.json
+npm run import:ncaa -- --apply ./data/ncaa/big-ten-football-venues.json
 ```
+
+Big Ten Phase 1 venues live in `big-ten-football-venues.json`. Home schedules: `npm run sync:ncaa-big-ten-schedule -- --apply`.
 
 ## Source of truth
 

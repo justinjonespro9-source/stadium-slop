@@ -42,6 +42,10 @@ const SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
   "providence-park": ["Portland Timbers", "Portland Thorns FC"],
   "paypal-park": ["San Jose Earthquakes", "Bay FC"],
   "snapdragon-stadium": ["San Diego FC", "San Diego Wave FC", "San Diego State Aztecs"],
+  "northwestern-medicine-field-at-martin-stadium": [
+    "Chicago Stars FC",
+    "Northwestern Wildcats"
+  ],
   "inter-co-stadium": ["Orlando City SC", "Orlando Pride"],
   "sports-illustrated-stadium": ["New York Red Bulls", "NJ/NY Gotham FC"]
 };

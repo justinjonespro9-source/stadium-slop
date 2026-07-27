@@ -20,6 +20,7 @@ import { inferItemTypeFromImport } from "./item-type-classification";
 import { ncaaSkipReasonForItem, shouldSkipNcaaItem } from "./ncaa-import-filters";
 import type { NcaaImportPayload, NcaaItemImportRow, NcaaVenueImportRow } from "./ncaa-import-shape";
 import {
+  NCAA_EXISTING_VENUE_SLUGS,
   NCAA_SHARED_VENUE_TEAMS,
   ncaaVenueMetaFromRow,
   resolveNcaaVenueSlug
@@ -195,7 +196,11 @@ async function ensureVenue(
           existing.leagues.includes("MLB") ||
           existing.leagues.includes("NBA") ||
           existing.leagues.includes("NHL") ||
-          existing.leagues.includes("MLS"));
+          existing.leagues.includes("MLS") ||
+          existing.leagues.includes("NWSL"));
+
+      const isSharedExisting =
+        Boolean(row.mergeIntoVenueSlug) || NCAA_EXISTING_VENUE_SLUGS.has(slug);
 
       await prisma.venue.update({
         where: { id: existing.id },
@@ -203,12 +208,18 @@ async function ensureVenue(
           leagues: mergedLeagues,
           teams: resolvedTeams,
           sports: mergedSports,
-          primarySport: keepPrimary ? existing.primarySport : existing.primarySport ?? meta.primarySport,
+          primarySport: keepPrimary
+            ? existing.primarySport
+            : (existing.primarySport ?? meta.primarySport),
           school: existing.school ?? meta.school,
           timeZone: existing.timeZone ?? meta.timeZone,
           ...(meta.latitude ? { latitude: meta.latitude } : {}),
           ...(meta.longitude ? { longitude: meta.longitude } : {}),
           reviewRadiusMeters: meta.reviewRadiusMeters,
+          // Never overwrite shared pro venue types (e.g. Snapdragon/Martin STADIUM).
+          ...(!isSharedExisting && row.venueType
+            ? { venueType: venueTypeFromRow(row.venueType) }
+            : {}),
           status: EntityStatus.ACTIVE
         }
       });

@@ -8,16 +8,51 @@ import type { NcaaVenueImportRow } from "./ncaa-import-shape";
 /** NCAA import slug → canonical Stadium Slop venue slug (shared buildings). */
 export const NCAA_VENUE_SLUG_ALIASES: Record<string, string> = {
   "sdccu-stadium": "snapdragon-stadium",
-  "san-diego-state-stadium": "snapdragon-stadium"
+  "san-diego-state-stadium": "snapdragon-stadium",
+  "martin-stadium": "northwestern-medicine-field-at-martin-stadium",
+  "northwestern-medicine-field": "northwestern-medicine-field-at-martin-stadium",
+  // Memorial Stadium disambiguation (legacy draft slugs → canonical)
+  "memorial-stadium-champaign": "memorial-stadium-illinois",
+  "indiana-memorial-stadium": "memorial-stadium-indiana",
+  "memorial-stadium-lincoln": "memorial-stadium-nebraska"
 };
 
-/** Existing pro venue slugs NCAA tenants should merge into (no duplicate venues). */
-export const NCAA_EXISTING_VENUE_SLUGS = new Set(["snapdragon-stadium"]);
+/**
+ * Existing pro/shared venue slugs NCAA tenants should merge into
+ * (no duplicate venue rows).
+ */
+export const NCAA_EXISTING_VENUE_SLUGS = new Set([
+  "snapdragon-stadium",
+  "northwestern-medicine-field-at-martin-stadium"
+]);
 
 /** Extra college tenants when merging into shared venues. */
 export const NCAA_SHARED_VENUE_TEAMS: Record<string, readonly string[]> = {
-  "snapdragon-stadium": ["San Diego State Aztecs"]
+  "snapdragon-stadium": ["San Diego State Aztecs"],
+  "northwestern-medicine-field-at-martin-stadium": ["Northwestern Wildcats"]
 };
+
+/** Big Ten primary football stadium slugs (2026 membership). */
+export const BIG_TEN_PRIMARY_FOOTBALL_SLUGS = [
+  "memorial-stadium-illinois",
+  "memorial-stadium-indiana",
+  "kinnick-stadium",
+  "secu-stadium",
+  "michigan-stadium",
+  "spartan-stadium",
+  "huntington-bank-stadium",
+  "memorial-stadium-nebraska",
+  "ryan-field",
+  "ohio-stadium",
+  "autzen-stadium",
+  "beaver-stadium",
+  "ross-ade-stadium",
+  "shi-stadium",
+  "rose-bowl",
+  "los-angeles-memorial-coliseum",
+  "husky-stadium",
+  "camp-randall-stadium"
+] as const;
 
 export function resolveNcaaVenueSlug(slug: string, mergeInto?: string): string {
   const key = slug.trim().toLowerCase();
