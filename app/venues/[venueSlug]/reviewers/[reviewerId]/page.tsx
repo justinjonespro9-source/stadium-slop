@@ -93,7 +93,7 @@ export default async function VenueReviewerHistoryPage({
       </DiscoveryPageHero>
 
       <div className="media-discovery-content max-w-3xl">
-        <VenueReviewerHistoryList reviews={view.reviews} />
+        <VenueReviewerHistoryList reviews={view.reviews} venueSlug={venueSlug} />
       </div>
     </main>
   );

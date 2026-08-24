@@ -1975,19 +1975,38 @@ body[data-mobile-nav-open] .media-nav-bar {
   box-shadow: var(--media-shadow-card);
 }
 
+.venue-partner-card--activation {
+  border-color: rgba(255, 107, 26, 0.22);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 4px 6px rgba(12, 18, 32, 0.05),
+    0 18px 40px rgba(12, 18, 32, 0.12);
+}
+
+.venue-partner-card__hero {
+  isolation: isolate;
+}
+
 @media (min-width: 1024px) {
   .venue-partner-card--sidebar {
+    border-radius: 1.375rem;
+    box-shadow:
+      0 4px 6px rgba(12, 18, 32, 0.05),
+      0 22px 44px rgba(12, 18, 32, 0.14);
+  }
+
+  .venue-partner-card--sidebar.venue-partner-card--activation {
+    box-shadow:
+      0 4px 6px rgba(12, 18, 32, 0.05),
+      0 22px 44px rgba(255, 107, 26, 0.12);
+  }
+
+  .venue-partner-card--sidebar.venue-partner-card--demo {
     padding: 1.375rem 1.5rem 1.5rem;
     border-radius: 1.375rem;
     box-shadow:
       0 4px 6px rgba(12, 18, 32, 0.04),
       0 16px 36px rgba(255, 107, 26, 0.1);
-  }
-
-  .venue-partner-card--sidebar.venue-partner-card--configured,
-  .venue-partner-card--sidebar.venue-partner-card--live {
-    border-color: rgba(255, 107, 26, 0.34);
-    background: linear-gradient(160deg, #fff 0%, #fff9f4 52%, #fff4eb 100%);
   }
 
   .venue-partner-card--sidebar .venue-partner-card__headline {
@@ -2004,15 +2023,15 @@ body[data-mobile-nav-open] .media-nav-bar {
     font-size: 0.625rem;
     letter-spacing: 0.18em;
   }
+
+  .venue-partner-card--sidebar .venue-partner-card__actions {
+    padding: 1.125rem 1.375rem 1.375rem;
+  }
 }
 
 .venue-partner-card--demo {
   border-style: dashed;
   border-color: rgba(255, 107, 26, 0.28);
-}
-
-.venue-partner-card--configured {
-  border-color: rgba(255, 107, 26, 0.3);
 }
 
 .venue-partner-card__cta--secondary {
@@ -4503,5 +4522,136 @@ body[data-mobile-nav-open] .media-nav-bar {
 .claim-listing-cta__link:hover {
   border-color: var(--slop-gold);
   background: color-mix(in srgb, var(--slop-gold-bright) 14%, transparent);
+}
+
+/* Campaign follow landing — mobile-first, existing navy / cream / orange tokens */
+.follow-page {
+  min-height: 100%;
+  background: var(--slop-navy);
+  color: var(--slop-cream);
+}
+
+.follow-page__panel {
+  box-sizing: border-box;
+  width: min(28rem, 100%);
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.75rem;
+}
+
+.follow-page__brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.follow-page__wordmark {
+  max-width: min(16.5rem, 78vw) !important;
+  max-height: none !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.follow-page__headline {
+  margin: 0;
+  font-size: clamp(2rem, 9vw, 2.65rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-align: center;
+  color: #fff;
+}
+
+.follow-page__lede {
+  margin: 0.85rem auto 0;
+  max-width: 22rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--slop-cream);
+}
+
+.follow-page__socials {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.follow-page__social {
+  display: flex;
+  min-height: 3.35rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--slop-cream);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.85rem 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+}
+
+.follow-page__social:hover,
+.follow-page__social:focus-visible {
+  border-color: var(--media-orange);
+  color: #fff;
+  background: rgba(255, 107, 26, 0.12);
+}
+
+.follow-page__icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex-shrink: 0;
+}
+
+.follow-page__venue {
+  margin-top: 2.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--slop-line-strong);
+  text-align: center;
+}
+
+.follow-page__venue-copy {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.follow-page__venue-cta {
+  display: flex;
+  min-height: 3.35rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: linear-gradient(180deg, var(--media-orange-bright) 0%, var(--media-orange) 100%);
+  padding: 0.85rem 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.12), 0 8px 22px rgba(255, 107, 26, 0.28);
+}
+
+.follow-page__venue-cta:hover,
+.follow-page__venue-cta:focus-visible {
+  filter: brightness(1.05);
+}
+
+.follow-page__free {
+  margin: 1.5rem 0 0;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--slop-gold);
 }
 

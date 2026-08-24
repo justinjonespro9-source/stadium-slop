@@ -23,6 +23,9 @@ Optional / informational (usually set by the host, not hand-copied):
 Optional tuning:
 
 - `STADIUM_SLOP_DB_QUERY_TIMEOUT_MS` — Milliseconds for the home page venue list DB call before falling back to sample data (default **4000**). Helps local dev when `DATABASE_URL` points at an unreachable host (TCP hang) so `/` still responds.
+- `NEXT_PUBLIC_STADIUM_SLOP_FACEBOOK_URL` — Optional official Facebook profile URL. If unset, `/follow` omits Facebook. Instagram, X, TikTok, and YouTube are defined in `lib/site-contact.ts`.
+
+Campaign QR redirects (`/go/[slug]`) and `/follow` write `CampaignVisit` rows. After deploying this change, run **`npm run db:migrate:deploy`** against production Postgres so those tables exist.
 
 ### Dev server appears “Ready” but `curl` / the browser hangs
 

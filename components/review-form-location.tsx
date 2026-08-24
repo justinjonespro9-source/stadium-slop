@@ -10,6 +10,8 @@ type ReviewFormLocationProps = {
   /** Admin QA: submit without geolocation or active game window. */
   testReviewModeActive?: boolean;
   tone?: "brand" | "media";
+  /** Fair venues: use fairgrounds copy instead of stadium/home-game copy. */
+  isFairgrounds?: boolean;
 };
 
 type LocationPhase = "idle" | "certifying" | "captured" | "submitting";
@@ -25,7 +27,8 @@ export function ReviewFormLocation({
   reviewRadiusMeters,
   isDraft = false,
   testReviewModeActive = false,
-  tone = "brand"
+  tone = "brand",
+  isFairgrounds = false
 }: ReviewFormLocationProps) {
   const [phase, setPhase] = useState<LocationPhase>("idle");
   const [clientError, setClientError] = useState<string | null>(null);
@@ -47,7 +50,9 @@ export function ReviewFormLocation({
 
     if (!navigator.geolocation) {
       setClientError(
-        "This browser cannot use location. Try your phone at the stadium with location enabled."
+        isFairgrounds
+          ? "This browser cannot use location. Try your phone at the fairgrounds with location enabled."
+          : "This browser cannot use location. Try your phone at the stadium with location enabled."
       );
       return;
     }
@@ -75,12 +80,14 @@ export function ReviewFormLocation({
         setClientError(
           denied
             ? "Location permission is off. Allow location for this site in your browser settings, then certify again."
-            : "Could not read your location. Move to an open area at the stadium and try again."
+            : isFairgrounds
+              ? "Could not read your location. Move to an open area at the fairgrounds and try again."
+              : "Could not read your location. Move to an open area at the stadium and try again."
         );
       },
       { enableHighAccuracy: true, timeout: 15_000, maximumAge: 60_000 }
     );
-  }, [pollingOpen]);
+  }, [pollingOpen, isFairgrounds]);
 
   const submitReview = useCallback(() => {
     setClientError(null);
@@ -94,7 +101,11 @@ export function ReviewFormLocation({
       const lng = capturedCoords?.longitude?.trim();
 
       if (!lat || !lng) {
-        setClientError("Certify your location at the stadium before submitting.");
+        setClientError(
+          isFairgrounds
+            ? "Certify your location at the fairgrounds before submitting."
+            : "Certify your location at the stadium before submitting."
+        );
         return;
       }
     }
@@ -106,7 +117,7 @@ export function ReviewFormLocation({
 
     setPhase("submitting");
     form.requestSubmit();
-  }, [canSubmit, capturedCoords, formId, testReviewModeActive]);
+  }, [canSubmit, capturedCoords, formId, testReviewModeActive, isFairgrounds]);
 
   const testAlertClass = isMedia
     ? "media-review-alert media-review-alert--warn"
@@ -180,11 +191,12 @@ export function ReviewFormLocation({
       {!pollingOpen ? (
         <div role="status" className={closedAlertClass}>
           <p className={`font-bold ${isMedia ? "text-[var(--media-ink)]" : "text-zinc-300"}`}>
-            No active home-game window
+            {isFairgrounds ? "Fair reviews not open yet" : "No active home-game window"}
           </p>
           <p className={isMedia ? "mt-1 text-[var(--media-ink-muted)]" : "mt-1"}>
-            Reviews open during active home-game windows only. You can draft your scorecard anytime;
-            certified submit unlocks when polling is open at this stadium.
+            {isFairgrounds
+              ? "Certified reviews open during Fair hours while you are on the fairgrounds. You can draft your scorecard anytime."
+              : "Reviews open during active home-game windows only. You can draft your scorecard anytime; certified submit unlocks when polling is open at this stadium."}
           </p>
         </div>
       ) : null}
@@ -194,9 +206,9 @@ export function ReviewFormLocation({
           Location certification
         </h2>
         <p className={bodyClass}>
-          You can draft anytime. Certified reviews can only be submitted during an active
-          home-game window while you&apos;re at the stadium (within {reviewRadiusMeters}m of the
-          venue).
+          {isFairgrounds
+            ? `You can draft anytime. Certified reviews can only be submitted during Fair hours while you're on the fairgrounds (within ${reviewRadiusMeters}m of the grounds).`
+            : `You can draft anytime. Certified reviews can only be submitted during an active home-game window while you're at the stadium (within ${reviewRadiusMeters}m of the venue).`}
         </p>
 
         {phase === "captured" && capturedAt ? (
@@ -237,7 +249,9 @@ export function ReviewFormLocation({
 
         {pollingOpen && !locationReady && !certifyBusy ? (
           <p className={stepHintClass}>
-            Step 1: certify at the stadium. Step 2: submit your certified review.
+            {isFairgrounds
+              ? "Step 1: certify at the fairgrounds. Step 2: submit your certified review."
+              : "Step 1: certify at the stadium. Step 2: submit your certified review."}
           </p>
         ) : null}
       </section>

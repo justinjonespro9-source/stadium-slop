@@ -3,6 +3,7 @@ import "server-only";
 import { UserRole } from "@prisma/client";
 
 import { resolveUserRoleForEmail } from "@/lib/auth/admin";
+import { getFirstTouchCampaignSlugFromCookies } from "@/lib/campaigns/attribution";
 import {
   handleBaseFromEmail,
   uniqueContributorHandle
@@ -43,6 +44,7 @@ export async function syncUserFromOAuth(input: OAuthProfileInput) {
   }
 
   const handle = await uniqueContributorHandle(handleBaseFromEmail(email));
+  const acquisitionCampaignSlug = await getFirstTouchCampaignSlugFromCookies();
 
   return prisma.user.create({
     data: {
@@ -50,7 +52,8 @@ export async function syncUserFromOAuth(input: OAuthProfileInput) {
       displayName: input.displayName,
       handle,
       avatarUrl: input.avatarUrl ?? null,
-      role
+      role,
+      acquisitionCampaignSlug
     }
   });
 }

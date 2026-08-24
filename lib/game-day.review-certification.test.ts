@@ -21,7 +21,7 @@ import {
   GAME_DAY_POLLING_OPENS_MINUTES_BEFORE_START,
   GAME_DAY_POLLING_CLOSES_MINUTES_AFTER_START
 } from "./game-day";
-import { buildFairEventGameData, WISCONSIN_STATE_FAIR_2026_WINDOW } from "./schedules/fair-event-window";
+import { buildFairEventGameData, MINNESOTA_STATE_FAIR_2026_WINDOW, WISCONSIN_STATE_FAIR_2026_WINDOW } from "./schedules/fair-event-window";
 
 /** Real Target Field DB coordinates (also in game-day-venue-coords seed). */
 const TARGET_FIELD = {
@@ -492,6 +492,19 @@ describe("edge cases", () => {
     assert.equal(isGameDayActive(fair, new Date("2026-08-06T05:00:00.000Z")), true);
     assert.equal(isGameDayActive(fair, new Date("2026-08-17T04:59:59.999Z")), true);
     assert.equal(isGameDayActive(fair, new Date("2026-08-17T05:00:00.000Z")), false);
+  });
+
+  it("Minnesota State Fair 2026 window spans Aug 27–Sept 7 CT as one event", () => {
+    const fair = buildFairEventGameData(MINNESOTA_STATE_FAIR_2026_WINDOW);
+    assert.equal(fair.externalId, "fair-minnesota-state-fair-2026");
+    assert.equal(fair.league, "State Fair");
+    assert.equal(fair.pollingOpensAt.toISOString(), "2026-08-27T05:00:00.000Z");
+    assert.equal(fair.pollingClosesAt.toISOString(), "2026-09-08T05:00:00.000Z");
+    assert.equal(isGameDayActive(fair, new Date("2026-08-26T23:00:00.000Z")), false);
+    assert.equal(isGameDayActive(fair, new Date("2026-08-27T05:00:00.000Z")), true);
+    assert.equal(isGameDayActive(fair, new Date("2026-09-01T17:00:00.000Z")), true);
+    assert.equal(isGameDayActive(fair, new Date("2026-09-08T04:59:59.999Z")), true);
+    assert.equal(isGameDayActive(fair, new Date("2026-09-08T05:00:00.000Z")), false);
   });
 
   it("lat/lng argument order is (lat, lon) consistently in distance calc", () => {

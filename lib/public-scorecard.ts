@@ -20,7 +20,7 @@ import type {
   ReviewConsensusLabel
 } from "@/lib/sample-data";
 import { getScorecardShareDescription, getScorecardShareTitle } from "@/lib/scorecard-share";
-import { venueShareContextFromPartner, venuePartnerFromVenue } from "@/lib/venue-partner";
+import { venueShareContextFromPartner } from "@/lib/venue-partner";
 import type { ReviewHistoryVisibility } from "@/lib/reviewer-visibility";
 
 export type PublicScorecardView = {
@@ -224,7 +224,8 @@ export async function getPublicScorecardByReviewId(
   const metaLine = formatSlopCardMetaRow({
     locationLine,
     verifiedGameDay: review.verifiedGameDay,
-    dateLabel: review.dateLabel
+    dateLabel: review.dateLabel,
+    venueSlug
   });
 
   return {

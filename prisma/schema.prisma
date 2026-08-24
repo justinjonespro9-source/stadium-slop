@@ -208,6 +208,11 @@ enum GameStatus {
   CANCELED
 }
 
+enum CampaignVisitKind {
+  REDIRECT
+  FOLLOW
+}
+
 model User {
   id                         String          @id @default(cuid())
   email                      String          @unique
@@ -228,6 +233,8 @@ model User {
   websiteUrl                 String?
   socialLinksPublic          Boolean         @default(false)
   reviewHistoryVisibility    ReviewHistoryVisibility @default(VENUE_CONTEXT_ONLY)
+  /** First-touch campaign slug from /go or /follow. Set once at signup. */
+  acquisitionCampaignSlug    String?
   createdAt                  DateTime        @default(now())
   updatedAt                  DateTime        @updatedAt
 
@@ -240,6 +247,7 @@ model User {
   reportFlags                ReportFlag[]    @relation("ReporterFlags")
 
   @@index([homeVenueId])
+  @@index([acquisitionCampaignSlug])
 }
 
 model Venue {
@@ -406,6 +414,8 @@ model Review {
   seasonLabel             String
   note                    String?
   status                  EntityStatus     @default(ACTIVE)
+  /** Campaign slug present when the review was first created. */
+  campaignSlug            String?
   createdAt               DateTime         @default(now())
   updatedAt               DateTime         @updatedAt
 
@@ -423,6 +433,7 @@ model Review {
   @@index([foodItemId, isTestReview, status])
   @@index([venueId])
   @@index([gameId])
+  @@index([campaignSlug])
 }
 
 model HelpfulLike {
@@ -550,4 +561,16 @@ model ReportFlag {
   @@index([targetType, targetId])
   @@index([status])
   @@index([reporterUserId])
+}
+
+/** Anonymous campaign hit (QR / social redirect or follow-page view). No IP or fingerprint. */
+model CampaignVisit {
+  id            String            @id @default(cuid())
+  campaignSlug  String
+  kind          CampaignVisitKind
+  destination   String
+  createdAt     DateTime          @default(now())
+
+  @@index([campaignSlug, createdAt])
+  @@index([campaignSlug, kind])
 }

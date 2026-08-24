@@ -43,7 +43,7 @@ export function VenueFreshFeed({
         </div>
       </div>
       <p className="mb-3 text-[0.75rem] leading-snug text-[var(--media-ink-muted)] sm:text-xs">
-        Fresh fan scorecards from around the stadium.
+        {getVenueFreshFeedSubcopy(venueSlug)}
       </p>
 
       <SlopScorecardCarousel swipeHint={cards.length > 1}>
@@ -51,7 +51,8 @@ export function VenueFreshFeed({
           const photoUrlNorm = normalizePublicImageUrl(review.photoUrl);
           const metaLine = formatSlopCardMetaRow({
             verifiedGameDay: review.verifiedGameDay,
-            dateLabel: review.dateLabel
+            dateLabel: review.dateLabel,
+            venueSlug
           });
 
           const itemLink = (

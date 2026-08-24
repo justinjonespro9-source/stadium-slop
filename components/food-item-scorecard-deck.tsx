@@ -89,7 +89,8 @@ export function FoodItemScorecardDeck({
           const metaLine = formatSlopCardMetaRow({
             locationLine: slopCardLocation,
             verifiedGameDay: review.verifiedGameDay,
-            dateLabel: review.dateLabel
+            dateLabel: review.dateLabel,
+            venueSlug
           });
 
           const isOwnScorecard =

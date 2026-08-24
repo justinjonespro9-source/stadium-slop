@@ -2,7 +2,6 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import {
@@ -14,7 +13,6 @@ import {
   getPublicVenueBySlug,
   slugFilterInsensitive
 } from "@/lib/public-data";
-import type { FoodReview } from "@/lib/sample-data";
 import { prisma } from "@/lib/prisma";
 import {
   getVenueItemSlopStatsMap,
@@ -94,14 +92,13 @@ import {
   getCommunitySignalsTitle,
   getFanPhotosSectionEyebrow,
   getFoodPhotoAlt,
+  isFairCopyContext,
   getFreshDetailWhenClosed,
   getFreshDetailWhenLive,
-  getFreshSignalStatLabel,
-  getPriceStatLabel,
-  getReplayStatLabel,
   getReplayValueSectionTitle,
   getPriceCheckSectionTitle,
   getReviewAvailabilityHint,
+  getReviewCtaLabel,
   mapConsensusStatsForVenue
 } from "@/lib/venue-copy-context";
 
@@ -151,9 +148,13 @@ export async function generateMetadata({
     ? "Season Slop Score awaits the first bite."
     : `Season Slop Score ${seasonStats.averageSlopScore.toFixed(1)} (${getSlopScoreTier(seasonStats.averageSlopScore)})`;
 
-  const freshPart = freshStats.hasFreshToday
-    ? `Game Day Fresh ${freshStats.averageSlopScore.toFixed(1)} today.`
-    : "Game Day Fresh signal quiet so far.";
+  const freshPart = isFairCopyContext(venue.slug)
+    ? freshStats.hasFreshToday
+      ? `Fair-day Fresh ${freshStats.averageSlopScore.toFixed(1)} today.`
+      : "Fair-day Fresh signal quiet so far."
+    : freshStats.hasFreshToday
+      ? `Game Day Fresh ${freshStats.averageSlopScore.toFixed(1)} today.`
+      : "Game Day Fresh signal quiet so far.";
 
   const description = `${foodItem.name} at ${venue.name}. ${scorePart} ${freshPart} ${SITE_TAGLINE_SHORT}`;
   const path = `/venues/${venue.slug}/${foodItem.slug}`;
@@ -573,11 +574,11 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
       console.warn("Active game lookup failed on item page", error);
     }
   }
-  const reviewCtaLabel = hasTodaysReview
-    ? "Edit today’s review"
-    : activeGame
-      ? "Review this item — game-day certified"
-      : "Reviews open during home games";
+  const reviewCtaLabel = getReviewCtaLabel(
+    venue.slug,
+    hasTodaysReview,
+    Boolean(activeGame)
+  );
   const itemPath = `/venues/${venue.slug}/${foodItem.slug}`;
   const itemPageWithReviewsAnchor = `${itemPath}#fan-photo-reviews`;
   const baseReportContext: Omit<ReportContentContext, "reviewId" | "photoUrl"> =
@@ -632,7 +633,8 @@ export default async function FoodPage({ params, searchParams }: FoodPageProps) 
         metaLine: formatSlopCardMetaRow({
           locationLine: slopCardLocation,
           verifiedGameDay: leadReview.verifiedGameDay,
-          dateLabel: leadReview.dateLabel
+          dateLabel: leadReview.dateLabel,
+          venueSlug: venue.slug
         }),
         slopScore: leadReview.slopScore,
         highlightLabels: pickSlopCardHighlights(

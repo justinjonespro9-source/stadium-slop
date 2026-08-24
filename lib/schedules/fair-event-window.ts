@@ -68,6 +68,19 @@ export const WISCONSIN_STATE_FAIR_2026_WINDOW: FairEventWindowSpec = {
   timeZone: "America/Chicago"
 };
 
+/**
+ * Minnesota State Fair 2026 — Aug 27 through Sept 7 (closes at midnight Sept 8 CT).
+ * Official run: https://www.mnstatefair.org/
+ */
+export const MINNESOTA_STATE_FAIR_2026_WINDOW: FairEventWindowSpec = {
+  venueSlug: "minnesota-state-fair",
+  season: 2026,
+  opensLocalDate: "2026-08-27",
+  closesLocalDate: "2026-09-08",
+  displayName: "Minnesota State Fair 2026",
+  timeZone: "America/Chicago"
+};
+
 function requireLocalMidnight(localDate: string, timeZone: string): Date {
   const parsed = parseDatetimeLocalInTimeZone(`${localDate}T00:00`, timeZone);
   if (!parsed) {

@@ -27,6 +27,7 @@ import type { StoredProfileSocial } from "@/lib/profile-social-links";
 import { handleDisplayFromStored } from "@/lib/profile-identity-display";
 import { prisma } from "@/lib/prisma";
 import { isGameDayKeyTodayForVenue } from "@/lib/game-day";
+import { isFairVenueSlug } from "@/lib/fair-preview";
 import {
   MOCK_USER_COOKIE_NAME,
   allowMockUserAccess,
@@ -50,7 +51,7 @@ function reviewRowDateLabel(
   updatedAt: Date
 ): string {
   if (isGameDayKeyTodayForVenue(gameDayKey, venueSlug)) {
-    return "Today · game day";
+    return isFairVenueSlug(venueSlug) ? "Today · fair day" : "Today · game day";
   }
   const tail = gameDayKey.match(/(\d{4}-\d{2}-\d{2})$/);
   let dateStr = updatedAt.toLocaleDateString("en-US", {
@@ -67,7 +68,9 @@ function reviewRowDateLabel(
     });
   }
   return verifiedGameDay
-    ? `${dateStr} · verified at park`
+    ? isFairVenueSlug(venueSlug)
+      ? `${dateStr} · verified at the fair`
+      : `${dateStr} · verified at park`
     : `${dateStr} · logged`;
 }
 

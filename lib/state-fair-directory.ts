@@ -1,9 +1,14 @@
+import { MINNESOTA_2026_NEW_FOODS } from "@/lib/fair-import/parsers/minnesota-state-fair-2026-new-foods";
 import {
   FAIR_VENUE_SLUGS,
   getFairVenueDefinition,
   type FairVenueSlug
 } from "@/lib/fair-import/venues";
 import { FAIR_PREVIEW_NOTICE } from "@/lib/fair-preview";
+
+/** Applied Minnesota catalog size after the 2026 preview import (returning stands kept). */
+const MINNESOTA_TRACKED_FOOD_COUNT = 225;
+const MINNESOTA_2026_PREVIEW_COUNT = MINNESOTA_2026_NEW_FOODS.length;
 
 export const STATE_FAIR_DIRECTORY_DISCLAIMER = FAIR_PREVIEW_NOTICE;
 
@@ -41,10 +46,10 @@ const DIRECTORY_META: Record<
 > = {
   "minnesota-state-fair": {
     fairDates2026: "Aug. 27 – Sept. 7, 2026",
-    statusLabel: "176 foods tracked",
+    statusLabel: `${MINNESOTA_TRACKED_FOOD_COUNT} foods tracked`,
     status: "preview-loaded",
-    previewItemCount: 22,
-    trackedFoodCount: 176
+    previewItemCount: MINNESOTA_2026_PREVIEW_COUNT,
+    trackedFoodCount: MINNESOTA_TRACKED_FOOD_COUNT
   },
   "iowa-state-fair": {
     fairDates2026: "Aug. 13 – Aug. 23, 2026",

@@ -10,6 +10,11 @@ import type { FoodItem, Vendor } from "@/lib/sample-data";
 import { formatFairVendorDisplayName } from "@/lib/fair-venue-copy";
 import { getSlopScoreTier, type ItemSlopStats } from "@/lib/slop-stats-display";
 
+function formatRatingCountLabel(count: number): string {
+  if (count <= 0) return "No ratings yet";
+  return count === 1 ? "1 rating" : `${count} ratings`;
+}
+
 function formatItemPriceHint(item: FoodItem): string | null {
   if (item.reportedPrice != null && item.reportedPrice > 0) {
     return `$${item.reportedPrice.toFixed(2)}`;
@@ -180,7 +185,9 @@ export function VenueStandingRow({
           aria-label={`${item.name}${unrated ? "" : ` — ${stats.averageSlopScore.toFixed(1)} Slop Score`}`}
         >
           <div className="flex items-start justify-between gap-2">
-            <span className={`media-venue-rank ${rankClass}`}>#{rank}</span>
+            <span className={`media-venue-rank ${rankClass}`}>
+              {unrated ? "—" : `#${rank}`}
+            </span>
             <div className="min-w-[3rem] shrink-0 text-right">
               {liveFresh ? (
                 <div className="mb-0.5 flex items-center justify-end gap-1">
@@ -197,13 +204,16 @@ export function VenueStandingRow({
                 <>
                   <p className="media-venue-score text-[var(--media-ink-dim)]">—</p>
                   <p className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
-                    {isFreshStandingsTab ? "No fresh" : "Unrated"}
+                    {isFreshStandingsTab ? "No fresh" : "No ratings yet"}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="media-venue-score">{stats.averageSlopScore.toFixed(1)}</p>
                   <p className="mt-0.5 text-[0.55rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
+                    {formatRatingCountLabel(stats.reviewCount)}
+                  </p>
+                  <p className="mt-0.5 text-[0.5rem] font-bold uppercase tracking-[0.08em] text-[var(--media-ink-dim)]">
                     {isFreshStandingsTab ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
                   </p>
                 </>
@@ -263,7 +273,7 @@ export function VenueStandingRow({
           }`}
           aria-hidden
         >
-          {rank}
+          {unrated ? "—" : rank}
         </div>
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
@@ -301,7 +311,7 @@ export function VenueStandingRow({
                 —
               </p>
               <p className="text-[0.55rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)] sm:text-[0.6rem]">
-                {isFreshStandingsTab ? "No fresh" : "Unrated"}
+                {isFreshStandingsTab ? "No fresh" : "No ratings yet"}
               </p>
             </>
           ) : (
@@ -310,6 +320,9 @@ export function VenueStandingRow({
                 {stats.averageSlopScore.toFixed(1)}
               </p>
               <p className="text-[0.55rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)] sm:text-[0.6rem]">
+                {formatRatingCountLabel(stats.reviewCount)}
+              </p>
+              <p className="text-[0.5rem] font-bold uppercase tracking-[0.1em] text-[var(--slop-cream-dim)] sm:text-[0.58rem]">
                 {isFreshStandingsTab ? "Fresh" : getSlopScoreTier(stats.averageSlopScore)}
               </p>
             </>

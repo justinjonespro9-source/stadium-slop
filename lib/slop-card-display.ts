@@ -1,5 +1,6 @@
 /** Client-safe Slop Card label + layout helpers (no DB). */
 
+import { isFairVenueSlug } from "@/lib/fair-preview";
 import { isFanFavoriteHighlightLabel } from "@/lib/fan-favorite-awards";
 
 const HIGHLIGHT_PRIORITY = [
@@ -82,13 +83,18 @@ export function formatSlopCardMetaRow(parts: {
   locationLine?: string;
   verifiedGameDay?: boolean;
   dateLabel?: string;
+  venueSlug?: string;
 }): string {
   const segments: string[] = [];
   if (parts.locationLine?.trim()) {
     segments.push(parts.locationLine.trim());
   }
   if (parts.verifiedGameDay) {
-    segments.push("Game day verified");
+    segments.push(
+      parts.venueSlug && isFairVenueSlug(parts.venueSlug)
+        ? "Fairgrounds verified"
+        : "Game day verified"
+    );
   } else if (parts.dateLabel?.trim()) {
     segments.push(parts.dateLabel.trim());
   }

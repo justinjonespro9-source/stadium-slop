@@ -1,4 +1,8 @@
 import { isFairVenueSlug } from "@/lib/fair-preview";
+import {
+  GAME_DAY_REVIEW_ERROR_MESSAGES,
+  type GameDayReviewErrorCode
+} from "@/lib/game-day-review-errors";
 import type { PriceCheckLabel, ReplayValueLabel } from "@/lib/sample-data";
 
 export type VenueCopyContext = "stadium" | "fair";
@@ -142,6 +146,7 @@ export function getNoFanPhotoLabel(venueSlug: string): string {
 }
 
 export function getSlopSignalsSectionTitle(venueSlug: string): string {
+  void venueSlug;
   return "Slop Signals";
 }
 
@@ -267,6 +272,24 @@ export function getReviewAvailabilityHint(
       : "Browse anytime — reviews open on game day.";
 }
 
+export function getReviewCtaLabel(
+  venueSlug: string,
+  hasTodaysReview: boolean,
+  activeGame: boolean
+): string {
+  if (hasTodaysReview) {
+    return "Edit today’s review";
+  }
+  if (isFairCopyContext(venueSlug)) {
+    return activeGame
+      ? "Review this item — fair-hours certified"
+      : "Reviews open during Fair hours";
+  }
+  return activeGame
+    ? "Review this item — game-day certified"
+    : "Reviews open during home games";
+}
+
 export function getVenuePageDescription(
   venueSlug: string,
   venueName: string,
@@ -337,6 +360,7 @@ export function getSuggestMenuItemTitle(venueSlug: string): string {
 }
 
 export function getSuggestMenuItemSummaryEyebrow(venueSlug: string): string {
+  void venueSlug;
   return "Missing something?";
 }
 
@@ -360,4 +384,23 @@ export function getSuggestMenuItemNotePlaceholder(venueSlug: string): string {
   return isFairCopyContext(venueSlug)
     ? "Optional: price, stand, or menu context"
     : "Optional: price, section, or menu context";
+}
+
+export function getGameDayReviewErrorMessage(
+  code: GameDayReviewErrorCode,
+  venueSlug: string
+): string {
+  if (!isFairCopyContext(venueSlug)) {
+    return GAME_DAY_REVIEW_ERROR_MESSAGES[code];
+  }
+  switch (code) {
+    case "no-active-game":
+      return "Reviews open during Fair hours only.";
+    case "missing-location":
+      return "Location certification is required to submit a fair review.";
+    case "outside-radius":
+      return "You must be at the fairgrounds to submit a certified review.";
+    default:
+      return GAME_DAY_REVIEW_ERROR_MESSAGES[code];
+  }
 }

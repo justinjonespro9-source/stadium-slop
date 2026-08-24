@@ -3,12 +3,17 @@ import Link from "next/link";
 
 import type { VenueReviewerHistoryReview } from "@/lib/venue-reviewer-history";
 import { slopScoreDisplay } from "@/lib/slop-card-display";
+import { isFairVenueSlug } from "@/lib/fair-preview";
 
 type VenueReviewerHistoryListProps = {
   reviews: VenueReviewerHistoryReview[];
+  venueSlug?: string;
 };
 
-export function VenueReviewerHistoryList({ reviews }: VenueReviewerHistoryListProps) {
+export function VenueReviewerHistoryList({
+  reviews,
+  venueSlug
+}: VenueReviewerHistoryListProps) {
   if (reviews.length === 0) {
     return (
       <p className="media-panel-card px-4 py-6 text-center text-sm text-[var(--media-ink-muted)]">
@@ -41,7 +46,11 @@ export function VenueReviewerHistoryList({ reviews }: VenueReviewerHistoryListPr
               <p className="truncate text-sm font-black text-[var(--media-ink)]">{review.foodName}</p>
               <p className="mt-0.5 text-xs text-[var(--media-ink-muted)]">
                 {review.dateLabel}
-                {review.verifiedGameDay ? " · verified at park" : null}
+                {review.verifiedGameDay
+                  ? venueSlug && isFairVenueSlug(venueSlug)
+                    ? " · verified at the fair"
+                    : " · verified at park"
+                  : null}
               </p>
               <p className="mt-1 text-[0.65rem] font-bold text-[var(--media-orange-deep)]">
                 View item →

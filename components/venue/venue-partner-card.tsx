@@ -7,14 +7,11 @@ import {
   formatInstagramProfileUrl,
   formatXProfileUrl,
   hasVenuePartnerConfigured,
-  hasVenueShareSocialConfigured,
   type VenuePartnerConfig
 } from "@/lib/venue-partner";
 
 const PARTNER_VALUE_COPY =
   "Drive fans to tickets, merch, offers, and official social channels.";
-
-const SHARE_NOTE_COPY = "Scorecard shares include team handle and hashtag.";
 
 type VenuePartnerCardProps = {
   venueName: string;
@@ -25,10 +22,19 @@ type VenuePartnerCardProps = {
   sticky?: boolean;
 };
 
-function PartnerBadge({ tone = "card" }: { tone?: "card" | "hero" }) {
+function PartnerBadge({ tone = "card" }: { tone?: "card" | "hero" | "activation" }) {
   if (tone === "hero") {
     return (
       <span className="venue-partner-card__badge venue-partner-card__badge--hero mt-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[0.58rem] font-black uppercase tracking-[0.14em] text-[var(--media-orange-bright)] backdrop-blur-sm sm:text-[0.62rem]">
+        <span aria-hidden className="size-1.5 rounded-full bg-[var(--media-orange-bright)]" />
+        Founding venue partner
+      </span>
+    );
+  }
+
+  if (tone === "activation") {
+    return (
+      <span className="venue-partner-card__badge venue-partner-card__badge--activation inline-flex w-fit items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[0.56rem] font-black uppercase tracking-[0.14em] text-[var(--media-orange-bright)] backdrop-blur-sm">
         <span aria-hidden className="size-1.5 rounded-full bg-[var(--media-orange-bright)]" />
         Founding venue partner
       </span>
@@ -49,16 +55,6 @@ function PartnerValueProp({ className = "" }: { className?: string }) {
       className={`venue-partner-card__value text-sm leading-relaxed text-[var(--media-ink-muted)] ${className}`.trim()}
     >
       {PARTNER_VALUE_COPY}
-    </p>
-  );
-}
-
-function PartnerShareNote({ className = "" }: { className?: string }) {
-  return (
-    <p
-      className={`venue-partner-card__share-note text-[0.65rem] leading-snug text-[var(--media-ink-dim)] ${className}`.trim()}
-    >
-      {SHARE_NOTE_COPY}
     </p>
   );
 }
@@ -108,6 +104,110 @@ function formatSocialHandle(raw?: string | null): string | null {
   return trimmed.startsWith("@") ? trimmed : `@${trimmed.replace(/^@+/, "")}`;
 }
 
+function ConfiguredPartnerHero({
+  partnerName,
+  logoUrl,
+  eyebrow,
+  showBadge,
+  xUrl,
+  instagramUrl,
+  xLabel,
+  instagramLabel
+}: {
+  partnerName: string;
+  logoUrl?: string;
+  eyebrow: string;
+  showBadge: boolean;
+  xUrl: string | null;
+  instagramUrl: string | null;
+  xLabel: string | null;
+  instagramLabel: string | null;
+}) {
+  const hasSocial = Boolean(xUrl || instagramUrl);
+
+  return (
+    <div className="venue-partner-card__hero relative overflow-hidden">
+      <div
+        className="venue-partner-card__hero-bg absolute inset-0 bg-[linear-gradient(165deg,#121a28_0%,#0a1018_55%,#060a10_100%)]"
+        aria-hidden
+      />
+      <div
+        className="venue-partner-card__hero-glow absolute inset-0 opacity-100"
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse 90% 70% at 50% -10%, rgba(255,107,26,0.28), transparent 58%), radial-gradient(ellipse 50% 40% at 100% 100%, rgba(255,255,255,0.05), transparent 50%)"
+        }}
+        aria-hidden
+      />
+
+      <div className="venue-partner-card__hero-body relative flex min-h-[9.5rem] flex-col items-center justify-center px-4 pb-4 pt-5 text-center sm:min-h-[10.5rem] lg:min-h-[11.5rem] lg:px-5 lg:pb-5 lg:pt-6">
+        {logoUrl ? (
+          <div className="venue-partner-card__hero-logo relative h-[4.5rem] w-[4.5rem] overflow-hidden rounded-2xl border border-white/15 bg-white shadow-[0_12px_32px_rgba(0,0,0,0.35)] sm:h-20 sm:w-20 lg:h-[5.5rem] lg:w-[5.5rem]">
+            <Image
+              src={logoUrl}
+              alt=""
+              fill
+              className="object-contain p-2.5 sm:p-3"
+              sizes="(max-width: 1023px) 72px, 88px"
+              unoptimized
+            />
+          </div>
+        ) : (
+          <div
+            className="venue-partner-card__hero-monogram flex h-[4.75rem] w-[4.75rem] items-center justify-center rounded-2xl border border-white/15 bg-[linear-gradient(145deg,rgba(255,107,26,0.95)_0%,rgba(220,82,12,0.98)_100%)] text-xl font-black tracking-[0.06em] text-white shadow-[0_12px_32px_rgba(255,107,26,0.28)] sm:h-20 sm:w-20 sm:text-2xl lg:h-[5.75rem] lg:w-[5.75rem] lg:text-[1.65rem]"
+            aria-hidden
+          >
+            {partnerInitials(partnerName)}
+          </div>
+        )}
+
+        <div className="mt-4 w-full min-w-0">
+          <p className="text-[0.58rem] font-black uppercase tracking-[0.16em] text-white/55 sm:text-[0.6rem]">
+            {eyebrow}
+          </p>
+          <h2 className="venue-partner-card__headline mt-1.5 text-lg font-black leading-tight tracking-tight text-white sm:text-xl lg:text-[1.35rem]">
+            {partnerName}
+          </h2>
+          {showBadge ? (
+            <div className="mt-2.5 flex justify-center">
+              <PartnerBadge tone="activation" />
+            </div>
+          ) : null}
+          {hasSocial ? (
+            <div className="venue-partner-card__social venue-partner-card__social--hero mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[0.65rem] font-bold text-white/55">
+              {xUrl && xLabel ? (
+                <Link
+                  href={xUrl}
+                  className="transition hover:text-[var(--media-orange-bright)]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {xLabel}
+                </Link>
+              ) : null}
+              {xUrl && instagramUrl ? (
+                <span aria-hidden className="text-white/30">
+                  ·
+                </span>
+              ) : null}
+              {instagramUrl && instagramLabel ? (
+                <Link
+                  href={instagramUrl}
+                  className="transition hover:text-[var(--media-orange-bright)]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {instagramLabel}
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function VenuePartnerCard({
   venueName,
   venueSlug,
@@ -117,21 +217,20 @@ export function VenuePartnerCard({
 }: VenuePartnerCardProps) {
   const configured = hasVenuePartnerConfigured(partner);
   const showBadge = Boolean(partner.foundingVenuePartner);
-  const showShareNote = hasVenueShareSocialConfigured(partner);
-  const cardClassName = [
-    "venue-partner-card",
-    "media-panel-card",
-    configured && showBadge ? "media-panel-card--accent venue-partner-card--configured" : "",
-    !configured ? "media-panel-card--accent venue-partner-card--demo" : "",
-    configured ? "venue-partner-card--live" : "",
-    "border p-4 sm:p-5",
-    sticky ? "venue-partner-card--sidebar lg:sticky lg:top-24" : "",
-    className
-  ]
-    .filter(Boolean)
-    .join(" ");
 
   if (!configured) {
+    const cardClassName = [
+      "venue-partner-card",
+      "media-panel-card",
+      "media-panel-card--accent",
+      "venue-partner-card--demo",
+      "border p-4 sm:p-5",
+      sticky ? "venue-partner-card--sidebar lg:sticky lg:top-24" : "",
+      className
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     return (
       <aside className={cardClassName} aria-label="Founding venue partner placement preview">
         <p className="venue-partner-card__eyebrow text-[0.6rem] font-black uppercase tracking-[0.16em] text-[var(--media-orange-deep)]">
@@ -197,7 +296,7 @@ export function VenuePartnerCard({
   const partnerName = partner.partnerName?.trim() ?? "";
   const logoUrl = partner.partnerLogoUrl?.trim();
   const partnerUrl = partner.partnerUrl?.trim();
-  const partnerCta = partner.partnerCtaText?.trim() || "Official site";
+  const partnerCta = partner.partnerCtaText?.trim() || "Visit site";
   const ticketsUrl = partner.ticketsUrl?.trim();
   const teamShopUrl = partner.teamShopUrl?.trim();
   const xUrl = formatXProfileUrl(partner.xHandle);
@@ -206,9 +305,9 @@ export function VenuePartnerCard({
   const instagramLabel = formatSocialHandle(partner.instagramHandle);
 
   const primaryLink = ticketsUrl
-    ? { href: ticketsUrl, label: "Get tickets", variant: "primary" as const }
+    ? { href: ticketsUrl, label: "Get tickets" }
     : partnerUrl
-      ? { href: partnerUrl, label: partnerCta, variant: "primary" as const }
+      ? { href: partnerUrl, label: partnerCta }
       : null;
 
   const secondaryLinks: { href: string; label: string }[] = [];
@@ -221,99 +320,51 @@ export function VenuePartnerCard({
 
   const eyebrow = showBadge ? "Founding venue partner" : "Venue partner";
 
+  const cardClassName = [
+    "venue-partner-card",
+    "venue-partner-card--live",
+    "venue-partner-card--activation",
+    "overflow-hidden border",
+    sticky ? "venue-partner-card--sidebar lg:sticky lg:top-24" : "",
+    className
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <aside className={cardClassName} aria-label={`${partnerName} partner card`}>
-      {showBadge ? <PartnerBadge /> : null}
-
-      <div className={`flex items-center gap-3 ${showBadge ? "mt-3" : ""}`}>
-        {logoUrl ? (
-          <div className="venue-partner-card__logo relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-[var(--media-border)] bg-white shadow-sm lg:h-16 lg:w-16">
-            <Image
-              src={logoUrl}
-              alt=""
-              fill
-              className="object-contain p-2"
-              sizes="(max-width: 1023px) 56px, 64px"
-              unoptimized
-            />
-          </div>
-        ) : (
-          <div
-            className="venue-partner-card__logo venue-partner-card__logo--initials flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[var(--media-border)] bg-white text-sm font-black text-[var(--media-orange-deep)] shadow-sm lg:h-16 lg:w-16 lg:text-base"
-            aria-hidden
-          >
-            {partnerInitials(partnerName)}
-          </div>
-        )}
-        <div className="min-w-0">
-          <p className="venue-partner-card__eyebrow text-[0.6rem] font-black uppercase tracking-[0.16em] text-[var(--media-ink-dim)]">
-            {eyebrow}
-          </p>
-          <h2 className="venue-partner-card__headline mt-1 text-base font-black leading-snug text-[var(--media-ink)] sm:text-[1.05rem]">
-            {partnerName}
-          </h2>
-        </div>
-      </div>
-
-      <PartnerValueProp className="mt-3 lg:mt-4" />
-      {showShareNote ? <PartnerShareNote className="mt-2" /> : null}
+      <ConfiguredPartnerHero
+        partnerName={partnerName}
+        logoUrl={logoUrl}
+        eyebrow={eyebrow}
+        showBadge={showBadge}
+        xUrl={xUrl}
+        instagramUrl={instagramUrl}
+        xLabel={xLabel}
+        instagramLabel={instagramLabel}
+      />
 
       {primaryLink || secondaryLinks.length > 0 ? (
-        <div className="mt-4 space-y-2.5 lg:mt-5">
+        <div className="venue-partner-card__actions space-y-2.5 bg-[var(--media-white)] p-4 sm:p-5">
           {primaryLink ? (
-            <PartnerLink href={primaryLink.href} variant={primaryLink.variant}>
+            <PartnerLink href={primaryLink.href} variant="primary">
               {primaryLink.label}
             </PartnerLink>
           ) : null}
           {secondaryLinks.length > 0 ? (
-            <div>
-              <p className="venue-partner-card__links-label mb-2 text-[0.58rem] font-black uppercase tracking-[0.14em] text-[var(--media-ink-dim)]">
-                Game day
-              </p>
-              <div
-                className={
-                  secondaryLinks.length > 1
-                    ? "grid grid-cols-2 gap-2"
-                    : "grid gap-2"
-                }
-              >
-                {secondaryLinks.map((link) => (
-                  <PartnerLink key={link.href} href={link.href} variant="secondary">
-                    {link.label}
-                  </PartnerLink>
-                ))}
-              </div>
+            <div
+              className={
+                secondaryLinks.length > 1
+                  ? "grid grid-cols-2 gap-2"
+                  : "grid gap-2"
+              }
+            >
+              {secondaryLinks.map((link) => (
+                <PartnerLink key={link.href} href={link.href} variant="secondary">
+                  {link.label}
+                </PartnerLink>
+              ))}
             </div>
-          ) : null}
-        </div>
-      ) : null}
-
-      {xUrl || instagramUrl ? (
-        <div className="venue-partner-card__social mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-[var(--media-border)] pt-3 text-[0.7rem] font-bold text-[var(--media-ink-muted)] lg:mt-4 lg:pt-4">
-          {xUrl && xLabel ? (
-            <Link
-              href={xUrl}
-              className="hover:text-[var(--media-orange-deep)]"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {xLabel}
-            </Link>
-          ) : null}
-          {xUrl && instagramUrl ? (
-            <span aria-hidden className="text-[var(--media-ink-dim)]">
-              ·
-            </span>
-          ) : null}
-          {instagramUrl && instagramLabel ? (
-            <Link
-              href={instagramUrl}
-              className="hover:text-[var(--media-orange-deep)]"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {instagramLabel}
-            </Link>
           ) : null}
         </div>
       ) : null}

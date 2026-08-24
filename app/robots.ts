@@ -21,6 +21,7 @@ export default function robots(): MetadataRoute.Robots {
           "/suggest-correction",
           "/report-content",
           "/login",
+          "/go",
           // Existing account / moderation / API surfaces (not public content)
           "/admin",
           "/account",

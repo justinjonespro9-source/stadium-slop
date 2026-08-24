@@ -6,6 +6,7 @@ import { isUnratedItemStats } from "@/components/food-item-empty-states";
 import { getSlopScoreTier, type ItemSlopStats } from "@/lib/slop-stats-display";
 import type { FoodItem, Venue } from "@/lib/sample-data";
 import { SITE_TAGLINE_SHORT } from "@/lib/site-metadata";
+import { isFairVenueSlug } from "@/lib/fair-preview";
 
 function FoodFallbackInner(props: {
   headline: string;
@@ -109,13 +110,16 @@ function FoodLoadedInner(props: {
   const scoreDisplay = unrated ? "—" : season.averageSlopScore.toFixed(1);
   const tierDisplay = unrated ? "Awaiting first season score" : getSlopScoreTier(season.averageSlopScore);
 
-  let freshLine = "No Game Day Fresh signal yet.";
+  const fairCopy = isFairVenueSlug(props.venue.slug);
+  let freshLine = fairCopy
+    ? "No Fair-day Fresh signal yet."
+    : "No Game Day Fresh signal yet.";
   if (fresh?.hasFreshToday) {
     const score = fresh.averageSlopScore.toFixed(1);
     const tail = props.item.freshWindowLabel?.trim()
       ? ` · ${ellipsis(props.item.freshWindowLabel, 40)}`
       : "";
-    freshLine = `Game Day Fresh ${score}${tail}`;
+    freshLine = `${fairCopy ? "Fair-day Fresh" : "Game Day Fresh"} ${score}${tail}`;
   }
 
   const heroAlt = `${props.item.name} fan photo`;

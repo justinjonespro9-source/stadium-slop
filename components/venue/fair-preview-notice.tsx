@@ -3,6 +3,9 @@ import { FAIR_PREVIEW_NOTICE } from "@/lib/fair-preview";
 const WISCONSIN_STATE_FAIR_NOTICE =
   "Stadium Slop is an independent, fan-powered concessions guide and is not affiliated with or endorsed by the Wisconsin State Fair. Menu items and availability may change.";
 
+const MINNESOTA_STATE_FAIR_NOTICE =
+  "Stadium Slop is an independent, fan-powered concessions guide and is not affiliated with or endorsed by the Minnesota State Fair. 2026 new foods are listed from official announcements; availability can change at the stand.";
+
 export function FairPreviewNotice({
   className = "",
   venueSlug
@@ -13,7 +16,9 @@ export function FairPreviewNotice({
   const notice =
     venueSlug === "wisconsin-state-fair"
       ? WISCONSIN_STATE_FAIR_NOTICE
-      : FAIR_PREVIEW_NOTICE;
+      : venueSlug === "minnesota-state-fair"
+        ? MINNESOTA_STATE_FAIR_NOTICE
+        : FAIR_PREVIEW_NOTICE;
 
   return (
     <p

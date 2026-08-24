@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
 import { PriceCheck, ReplayValue } from "@prisma/client";
-import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
+import { getFirstTouchCampaignSlugFromCookies } from "@/lib/campaigns/attribution";
 import { getPublicFoodItemBySlug, getPublicVenueBySlug, slugFilterInsensitive } from "@/lib/public-data";
 import {
   buildGameDayKey,
@@ -66,12 +66,12 @@ import {
   getReplayValueSectionTitle,
   getReviewDayBadgeLabel,
   getReviewFormRequirementsHint,
-  getReviewPhotoSectionTitle,
   getReviewSignInPhotoHint,
   getReviewSubmitFootnote,
   getSlopSignalsSectionTitle,
   getFoodPhotoAlt,
   getHotTakePlaceholder,
+  getGameDayReviewErrorMessage,
   isFairCopyContext
 } from "@/lib/venue-copy-context";
 
@@ -437,6 +437,9 @@ async function submitReview(formData: FormData) {
     }
   }
 
+  const campaignSlug =
+    (await getFirstTouchCampaignSlugFromCookies()) ?? user.acquisitionCampaignSlug ?? null;
+
   const review = await prisma.review.upsert({
     where: {
       userId_foodItemId_gameDayKey: {
@@ -467,6 +470,7 @@ async function submitReview(formData: FormData) {
       priceCheck: priceCheckData,
       seasonLabel,
       note: noteValue ? noteValue.slice(0, 300) : null,
+      campaignSlug,
       ...gameDayVerification
     }
   });
@@ -576,7 +580,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
       : null;
 
   const reviewFormErrorMessage = gameDayErrorCode
-    ? GAME_DAY_REVIEW_ERROR_MESSAGES[gameDayErrorCode]
+    ? getGameDayReviewErrorMessage(gameDayErrorCode, venueSlug)
     : urlError === "rate-limit"
       ? "Too many submissions in a short window. Please wait a few minutes and try again."
     : urlError === "missing-score"
@@ -589,10 +593,10 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
           ? "Pick a Price Check — how was the value?"
           : reviewPagePhotoErrorMessage(urlError);
 
-  const photoRetryDetailMessage = reviewPagePhotoErrorMessage(urlPhotoError);
-
   const reviewErrorAlertTitle = gameDayErrorCode
-    ? "Game-day review not accepted"
+    ? isFairCopyContext(venueSlug)
+      ? "Fair review not accepted"
+      : "Game-day review not accepted"
     : urlError === "missing-score" ||
         urlError === "missing-replay" ||
         urlError === "missing-price" ||
@@ -936,6 +940,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               reviewRadiusMeters={reviewRadiusMeters}
               isDraft={Boolean(draft)}
               testReviewModeActive={testReviewModeActive}
+              isFairgrounds={isFairCopyContext(venue.slug)}
             />
           </section>
         </form>
