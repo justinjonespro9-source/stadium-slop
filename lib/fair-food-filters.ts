@@ -23,6 +23,7 @@ export type FairFoodFilterDefinition = {
   label: string;
 };
 
+/** Base labels; "new-foods" is rewritten to "New for {year}" via getFairFoodFilterDefinitions. */
 export const FAIR_FOOD_FILTER_DEFINITIONS: FairFoodFilterDefinition[] = [
   { key: "new-foods", label: "New Foods" },
   { key: "sweet", label: "Sweet" },
@@ -35,7 +36,7 @@ export const FAIR_FOOD_FILTER_DEFINITIONS: FairFoodFilterDefinition[] = [
   { key: "21-plus", label: "21+" }
 ];
 
-const NEW_FOOD_PREVIEW_TAG = "2025-preview";
+const NEW_SEASON_TAG_RE = /^new-(\d{4})$/i;
 
 const SWEET_RE =
   /\b(sweet|dessert|desserts|candy|chocolate|cheesecake|churro|cookie|milkshake|malt\b|float\b|funnel cake|ice cream|sorbet|salpicon|delight|brownie|donut|doughnut|cinnamon roll|banana split|slushie|slushy|smoothie|shake\b|frozen custard|hot chocolate)\b/i;
@@ -71,16 +72,41 @@ function itemHaystack(item: FoodItem): string {
     .toLowerCase();
 }
 
-function hasNewFoodSignals(item: FoodItem): boolean {
-  const tags = (item.tags ?? []).map((t) => t.toLowerCase());
-  if (tags.includes(NEW_FOOD_PREVIEW_TAG)) {
-    return true;
+/** Latest `new-YYYY` tag year in the catalog; falls back to the current calendar year. */
+export function resolveFairNewFoodsSeasonYear(
+  items: FoodItem[],
+  fallbackYear: number = new Date().getFullYear()
+): number {
+  let maxYear = 0;
+  for (const item of items) {
+    for (const tag of item.tags ?? []) {
+      const match = NEW_SEASON_TAG_RE.exec(tag.trim());
+      if (match) {
+        maxYear = Math.max(maxYear, Number(match[1]));
+      }
+    }
   }
-  if (item.isNewThisSeason) {
-    return true;
-  }
-  // Imports stamp seasonIntroduced with the catalog year; that is not a "new food" signal.
-  return false;
+  return maxYear > 0 ? maxYear : fallbackYear;
+}
+
+export function getFairNewFoodsFilterLabel(seasonYear: number): string {
+  return `New for ${seasonYear}`;
+}
+
+export function getFairFoodFilterDefinitions(
+  seasonYear: number
+): FairFoodFilterDefinition[] {
+  return FAIR_FOOD_FILTER_DEFINITIONS.map((def) =>
+    def.key === "new-foods"
+      ? { ...def, label: getFairNewFoodsFilterLabel(seasonYear) }
+      : def
+  );
+}
+
+/** Only items explicitly tagged `new-{seasonYear}` — not prior-year preview catalogs. */
+export function itemHasNewSeasonTag(item: FoodItem, seasonYear: number): boolean {
+  const target = `new-${seasonYear}`;
+  return (item.tags ?? []).some((tag) => tag.trim().toLowerCase() === target);
 }
 
 function matchesSweet(item: FoodItem, haystack: string): boolean {
@@ -114,13 +140,14 @@ function matchesDessert(haystack: string): boolean {
 
 export function itemMatchesFairFoodFilter(
   item: FoodItem,
-  filter: FairFoodFilterKey
+  filter: FairFoodFilterKey,
+  seasonYear: number = resolveFairNewFoodsSeasonYear([item])
 ): boolean {
   const haystack = itemHaystack(item);
 
   switch (filter) {
     case "new-foods":
-      return hasNewFoodSignals(item);
+      return itemHasNewSeasonTag(item, seasonYear);
     case "sweet":
       return matchesSweet(item, haystack);
     case "savory":
@@ -144,17 +171,21 @@ export function itemMatchesFairFoodFilter(
 
 export function countFairFoodFilterMatches(
   items: FoodItem[],
-  filter: FairFoodFilterKey
+  filter: FairFoodFilterKey,
+  seasonYear?: number
 ): number {
-  return items.filter((item) => itemMatchesFairFoodFilter(item, filter)).length;
+  const year = seasonYear ?? resolveFairNewFoodsSeasonYear(items);
+  return items.filter((item) => itemMatchesFairFoodFilter(item, filter, year)).length;
 }
 
 export function buildFairFoodFilterCounts(
-  items: FoodItem[]
+  items: FoodItem[],
+  seasonYear?: number
 ): Record<FairFoodFilterKey, number> {
+  const year = seasonYear ?? resolveFairNewFoodsSeasonYear(items);
   const counts = {} as Record<FairFoodFilterKey, number>;
   for (const key of FAIR_FOOD_FILTER_KEYS) {
-    counts[key] = countFairFoodFilterMatches(items, key);
+    counts[key] = countFairFoodFilterMatches(items, key, year);
   }
   return counts;
 }

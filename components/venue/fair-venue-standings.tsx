@@ -10,8 +10,9 @@ import {
 import { FairFoodFilterBar } from "@/components/venue/fair-food-filter-bar";
 import {
   buildFairFoodFilterCounts,
-  FAIR_FOOD_FILTER_DEFINITIONS,
+  getFairFoodFilterDefinitions,
   itemMatchesFairFoodFilter,
+  resolveFairNewFoodsSeasonYear,
   type FairFoodFilterKey
 } from "@/lib/fair-food-filters";
 
@@ -41,14 +42,27 @@ export function FairVenueStandings({
   };
 
   const items = useMemo(() => rows.map((row) => row.item), [rows]);
-  const filterCounts = useMemo(() => buildFairFoodFilterCounts(items), [items]);
+  const newFoodsSeasonYear = useMemo(
+    () => resolveFairNewFoodsSeasonYear(items),
+    [items]
+  );
+  const filterDefinitions = useMemo(
+    () => getFairFoodFilterDefinitions(newFoodsSeasonYear),
+    [newFoodsSeasonYear]
+  );
+  const filterCounts = useMemo(
+    () => buildFairFoodFilterCounts(items, newFoodsSeasonYear),
+    [items, newFoodsSeasonYear]
+  );
 
   const filteredRows = useMemo(() => {
     if (!activeFilter) {
       return rows;
     }
-    return rows.filter((row) => itemMatchesFairFoodFilter(row.item, activeFilter));
-  }, [rows, activeFilter]);
+    return rows.filter((row) =>
+      itemMatchesFairFoodFilter(row.item, activeFilter, newFoodsSeasonYear)
+    );
+  }, [rows, activeFilter, newFoodsSeasonYear]);
 
   const paginateList = filteredRows.length > FAIR_STANDINGS_PAGE_SIZE;
   const visibleRows = paginateList
@@ -59,7 +73,7 @@ export function FairVenueStandings({
     paginateList && visibleRows.length < filteredRows.length;
 
   const activeFilterLabel = activeFilter
-    ? FAIR_FOOD_FILTER_DEFINITIONS.find((def) => def.key === activeFilter)?.label
+    ? filterDefinitions.find((def) => def.key === activeFilter)?.label
     : null;
 
   const totalReviews = rows.reduce((sum, row) => sum + row.stats.reviewCount, 0);
@@ -83,6 +97,8 @@ export function FairVenueStandings({
       <FairFoodFilterBar
         activeFilter={activeFilter}
         counts={filterCounts}
+        allItemsCount={items.length}
+        newFoodsSeasonYear={newFoodsSeasonYear}
         onFilterChange={handleFilterChange}
       />
 
