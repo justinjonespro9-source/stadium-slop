@@ -594,6 +594,12 @@ export default async function AdminPage() {
                 >
                   User accounts
                 </Link>
+                <Link
+                  href="/admin/campaigns"
+                  className="block w-full rounded-full border border-zinc-700 px-4 py-2 text-center text-xs font-bold uppercase tracking-[0.15em] text-zinc-300 transition hover:border-[var(--slop-orange)] hover:text-[var(--slop-orange)]"
+                >
+                  Campaign analytics
+                </Link>
               </div>
               <form action={adminSignOut} className="mt-3">
                 <button
