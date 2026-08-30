@@ -409,6 +409,8 @@ model Review {
   verifiedGameDay         Boolean          @default(false)
   /** QA/admin test submissions — excluded from public Slop Score, Fresh Signal, and awards. */
   isTestReview            Boolean          @default(false)
+  /** Admin explicitly skipped GPS; review still counts as public certified. */
+  adminLocationOverride   Boolean          @default(false)
   locationVerifiedAt      DateTime?
   distanceFromVenueMeters Int?
   seasonLabel             String

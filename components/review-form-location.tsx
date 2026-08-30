@@ -9,6 +9,8 @@ type ReviewFormLocationProps = {
   isDraft?: boolean;
   /** Admin QA: submit without geolocation or active game window. */
   testReviewModeActive?: boolean;
+  /** Authenticated DB admin: may explicitly skip GPS during an open event window. */
+  canUseAdminLocationOverride?: boolean;
   tone?: "brand" | "media";
   /** Fair venues: use fairgrounds copy instead of stadium/home-game copy. */
   isFairgrounds?: boolean;
@@ -27,6 +29,7 @@ export function ReviewFormLocation({
   reviewRadiusMeters,
   isDraft = false,
   testReviewModeActive = false,
+  canUseAdminLocationOverride = false,
   tone = "brand",
   isFairgrounds = false
 }: ReviewFormLocationProps) {
@@ -34,12 +37,16 @@ export function ReviewFormLocation({
   const [clientError, setClientError] = useState<string | null>(null);
   const [capturedAt, setCapturedAt] = useState<string | null>(null);
   const [capturedCoords, setCapturedCoords] = useState<CapturedCoords | null>(null);
+  const [overrideEnabled, setOverrideEnabled] = useState(false);
   const isMedia = tone === "media";
 
-  const canSubmit = testReviewModeActive || pollingOpen;
+  const usingOverride = canUseAdminLocationOverride && overrideEnabled;
+  const usingTestReview = testReviewModeActive && !usingOverride;
+  const canSubmit = usingTestReview || pollingOpen;
   const certifyBusy = phase === "certifying";
   const submitBusy = phase === "submitting";
-  const locationReady = testReviewModeActive || Boolean(capturedCoords && !certifyBusy);
+  const locationReady =
+    usingOverride || usingTestReview || Boolean(capturedCoords && !certifyBusy);
 
   const certifyLocation = useCallback(() => {
     setClientError(null);
@@ -96,7 +103,7 @@ export function ReviewFormLocation({
       return;
     }
 
-    if (!testReviewModeActive) {
+    if (!usingOverride && !usingTestReview) {
       const lat = capturedCoords?.latitude?.trim();
       const lng = capturedCoords?.longitude?.trim();
 
@@ -117,9 +124,19 @@ export function ReviewFormLocation({
 
     setPhase("submitting");
     form.requestSubmit();
-  }, [canSubmit, capturedCoords, formId, testReviewModeActive, isFairgrounds]);
+  }, [
+    canSubmit,
+    capturedCoords,
+    formId,
+    usingOverride,
+    usingTestReview,
+    isFairgrounds
+  ]);
 
   const testAlertClass = isMedia
+    ? "media-review-alert media-review-alert--warn"
+    : "rounded-xl border border-amber-700/70 bg-amber-950/40 px-3 py-2.5 text-xs leading-relaxed text-amber-100";
+  const overrideAlertClass = isMedia
     ? "media-review-alert media-review-alert--warn"
     : "rounded-xl border border-amber-700/70 bg-amber-950/40 px-3 py-2.5 text-xs leading-relaxed text-amber-100";
   const closedAlertClass = isMedia
@@ -149,10 +166,69 @@ export function ReviewFormLocation({
   const stepHintClass = isMedia
     ? "mt-2 text-[0.65rem] leading-relaxed text-[var(--media-ink-dim)]"
     : "mt-2 text-[0.65rem] leading-relaxed text-zinc-500";
+  const checkboxLabelClass = isMedia
+    ? "flex cursor-pointer items-start gap-2 rounded-xl border border-[rgba(255,107,26,0.28)] bg-[rgba(255,107,26,0.06)] px-3 py-2.5 text-xs leading-relaxed text-[var(--media-ink)]"
+    : "flex cursor-pointer items-start gap-2 rounded-xl border border-[color:rgba(255,159,28,0.35)] bg-[color:rgba(255,159,28,0.06)] px-3 py-2.5 text-xs leading-relaxed text-zinc-200";
 
-  if (testReviewModeActive) {
+  const overrideCheckbox = canUseAdminLocationOverride ? (
+    <label className={checkboxLabelClass}>
+      <input
+        type="checkbox"
+        name="adminLocationOverride"
+        value="1"
+        checked={overrideEnabled}
+        onChange={(event) => setOverrideEnabled(event.target.checked)}
+        className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--media-orange,#ff9f1c)]"
+      />
+      <span>
+        <span className="font-bold">Admin location override</span>
+        <span className={isMedia ? "mt-1 block text-[var(--media-ink-muted)]" : "mt-1 block text-zinc-400"}>
+          Skip GPS for this review only. The event window must still be open. This creates a public
+          certified review that counts toward Slop Score, Fresh Signal, and awards.
+        </span>
+      </span>
+    </label>
+  ) : null;
+
+  if (usingOverride) {
     return (
       <div className="space-y-3">
+        {overrideCheckbox}
+        {!pollingOpen ? (
+          <div role="status" className={closedAlertClass}>
+            <p className={`font-bold ${isMedia ? "text-[var(--media-ink)]" : "text-zinc-300"}`}>
+              {isFairgrounds ? "Fair reviews not open yet" : "No active home-game window"}
+            </p>
+            <p className={isMedia ? "mt-1 text-[var(--media-ink-muted)]" : "mt-1"}>
+              Admin location override still requires an active event window. You can draft your
+              scorecard anytime.
+            </p>
+          </div>
+        ) : (
+          <div role="status" className={overrideAlertClass}>
+            <p className="font-bold">Public certified review (admin location override)</p>
+            <p className="mt-1">
+              GPS is skipped for this submission. The review is stored as a normal public scorecard
+              with game-day certification. Photos are not marked on-site.
+            </p>
+          </div>
+        )}
+        <button
+          type="button"
+          disabled={!pollingOpen || submitBusy}
+          onClick={submitReview}
+          className={submitBtnClass}
+        >
+          {submitBusy ? "Submitting review…" : "Submit certified review (location override)"}
+        </button>
+      </div>
+    );
+  }
+
+  if (usingTestReview) {
+    return (
+      <div className="space-y-3">
+        {overrideCheckbox}
         <div role="status" className={testAlertClass}>
           <p className="font-bold">Test review mode (admin QA)</p>
           <p className="mt-1">
@@ -175,6 +251,7 @@ export function ReviewFormLocation({
 
   return (
     <div className="space-y-3">
+      {overrideCheckbox}
       <input
         type="hidden"
         name="latitude"

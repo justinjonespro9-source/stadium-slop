@@ -15,9 +15,14 @@ import {
   getVenueUpcomingGame,
   parseReviewLocationFromForm,
   resolveVenueReviewRadiusMeters,
-  validateGameDayReviewSubmission,
   type GameDayReviewErrorCode
 } from "@/lib/game-day";
+import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
+import { resolveAdminAccessForUserId } from "@/lib/auth/resolve-admin-access";
+import {
+  isAdminLocationOverrideRequested,
+  resolveReviewSubmissionCertification
+} from "@/lib/review-certification";
 import { formatGameDisplayName } from "@/lib/game-display";
 import {
   formatFairEventDateRange,
@@ -47,7 +52,6 @@ import {
   canSubmitTestReviews,
   getTestReviewModeStatus
 } from "@/lib/admin/test-reviews";
-import { getContributorUserId, requireContributorUserId } from "@/lib/auth/contributor-id";
 import {
   LOW_SCORE_PHOTO_MESSAGE,
   SLOP_SCORE_DEFAULT,
@@ -354,9 +358,27 @@ async function submitReview(formData: FormData) {
   const today = new Date();
   const seasonLabel = String(today.getFullYear());
   const testReviewMode = await canSubmitTestReviews(userId);
-  const gameDayKey = testReviewMode
-    ? buildTestReviewGameDayKey(venue.slug, today)
-    : buildGameDayKey(venue.slug, today);
+  const adminAccess = await resolveAdminAccessForUserId(userId);
+  const activeGame = await getVenueActiveGame(venue.id);
+  const certification = resolveReviewSubmissionCertification({
+    isAdmin: adminAccess.isAdmin,
+    adminLocationOverrideRequested: isAdminLocationOverrideRequested(formData),
+    testReviewMode,
+    activeGame,
+    venueLatitude: venue.latitude,
+    venueLongitude: venue.longitude,
+    reviewRadiusMeters: venue.reviewRadiusMeters,
+    location: parseReviewLocationFromForm(formData)
+  });
+
+  if (!certification.ok) {
+    redirect(`${canonicalItemPath}/review?error=${certification.code}`);
+  }
+
+  const gameDayKey =
+    certification.gameDayKeyKind === "test"
+      ? buildTestReviewGameDayKey(venue.slug, today)
+      : buildGameDayKey(venue.slug, today);
   const replayValueData =
     typeof replayValue === "string" && replayValue in ReplayValue
       ? (replayValue as ReplayValue)
@@ -373,44 +395,14 @@ async function submitReview(formData: FormData) {
     redirect(`${canonicalItemPath}/review?error=missing-price`);
   }
 
-  let gameDayVerification: {
-    gameId: string | null;
-    verifiedGameDay: boolean;
-    locationVerifiedAt: Date | null;
-    distanceFromVenueMeters: number | null;
-    isTestReview: boolean;
+  const gameDayVerification = {
+    gameId: certification.gameId,
+    verifiedGameDay: certification.verifiedGameDay,
+    locationVerifiedAt: certification.locationVerifiedAt,
+    distanceFromVenueMeters: certification.distanceFromVenueMeters,
+    isTestReview: certification.isTestReview,
+    adminLocationOverride: certification.adminLocationOverride
   };
-
-  if (testReviewMode) {
-    gameDayVerification = {
-      gameId: null,
-      verifiedGameDay: false,
-      locationVerifiedAt: null,
-      distanceFromVenueMeters: null,
-      isTestReview: true
-    };
-  } else {
-    const activeGame = await getVenueActiveGame(venue.id);
-    const gameDayCheck = validateGameDayReviewSubmission({
-      activeGame,
-      venueLatitude: venue.latitude,
-      venueLongitude: venue.longitude,
-      reviewRadiusMeters: venue.reviewRadiusMeters,
-      location: parseReviewLocationFromForm(formData)
-    });
-
-    if (!gameDayCheck.ok) {
-      redirect(`${canonicalItemPath}/review?error=${gameDayCheck.code}`);
-    }
-
-    gameDayVerification = {
-      gameId: gameDayCheck.game.id,
-      verifiedGameDay: true,
-      locationVerifiedAt: new Date(),
-      distanceFromVenueMeters: gameDayCheck.distanceFromVenueMeters,
-      isTestReview: false
-    };
-  }
 
   if (requiresLowScorePhoto(slopScore)) {
     const hasNewPhoto = photoFieldPre != null;
@@ -531,7 +523,7 @@ async function submitReview(formData: FormData) {
           url: publicUrl,
           alt: `${foodItemRow.name} fan photo`,
           caption: null,
-          verifiedOnSite: true,
+          verifiedOnSite: !certification.adminLocationOverride,
           status: "ACTIVE"
         }
       });
@@ -669,6 +661,8 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
 
   const testReviewStatus = await getTestReviewModeStatus(contributorUserId);
   const testReviewModeActive = testReviewStatus.active;
+  const adminAccess = await resolveAdminAccessForUserId(contributorUserId);
+  const canUseAdminLocationOverride = adminAccess.isAdmin;
 
   const draft = foodItem.id
     ? await findTodaysReviewForItem({
@@ -733,7 +727,17 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
   const statusNote = (
     <>
       {testReviewModeActive
-        ? "Test review mode is on for your admin account. Submissions skip location certification and do not affect public Slop Score, Fresh Signal, or awards."
+        ? canUseAdminLocationOverride
+          ? "Test review mode is on for your admin account. Submissions skip location certification and do not affect public Slop Score, Fresh Signal, or awards. Enable Admin location override to post a public certified review without GPS during an open event window."
+          : "Test review mode is on for your admin account. Submissions skip location certification and do not affect public Slop Score, Fresh Signal, or awards."
+        : canUseAdminLocationOverride
+          ? pollingOpen
+            ? activeFairEvent
+              ? "Fair review window is open. Certify your location at the fairgrounds, or enable Admin location override to submit a public certified review without GPS."
+              : `Active home-game window (${pollingWindowHoursLabel}). Certify your location at the stadium, or enable Admin location override to submit a public certified review without GPS.`
+            : fairCopy
+              ? "You can draft anytime. Certified reviews open during the fair dates. Admin location override still requires the fair window to be open."
+              : "You can draft anytime. Certified reviews can only be submitted during an active home-game window. Admin location override still requires that window to be open."
         : pollingOpen
           ? activeFairEvent
             ? "Fair review window is open. Certify your location at the fairgrounds to submit."
@@ -940,6 +944,7 @@ export default async function ReviewPage({ params, searchParams }: ReviewPagePro
               reviewRadiusMeters={reviewRadiusMeters}
               isDraft={Boolean(draft)}
               testReviewModeActive={testReviewModeActive}
+              canUseAdminLocationOverride={canUseAdminLocationOverride}
               isFairgrounds={isFairCopyContext(venue.slug)}
             />
           </section>
