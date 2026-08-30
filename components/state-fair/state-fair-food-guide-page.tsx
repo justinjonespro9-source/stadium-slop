@@ -8,7 +8,7 @@ const HOW_IT_WORKS_COPY =
 const PAGE_DISCLAIMER =
   "Unofficial fan-powered guide. Food and vendor listings may change. Not affiliated with or endorsed by any state fair.";
 
-export function StateFairFoodGuidePage() {
+export async function StateFairFoodGuidePage() {
   return (
     <main className="media-page-shell state-fair-guide min-h-screen">
       <section className="state-fair-guide-hero relative overflow-hidden text-white">

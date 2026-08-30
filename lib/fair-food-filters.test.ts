@@ -83,4 +83,43 @@ describe("fair new-foods season filter", () => {
     });
     assert.equal(itemMatchesFairFoodFilter(previewHeavy, "new-foods", 2026), false);
   });
+
+  it("keeps returning Specialty Sips out of New for 2026 and in 21+", () => {
+    const returningSip = fairItem("Orange Shandy", {
+      itemType: "Alcoholic Drink",
+      category: "Alcoholic Drink",
+      tags: ["fair-finder", "specialty-sips"],
+      description: "Fair-exclusive 21+ specialty beer from Millstream Brewing Co (4% ABV).",
+      ageRestricted: true,
+      alcoholic: true,
+      isNewThisSeason: false
+    });
+    assert.equal(itemMatchesFairFoodFilter(returningSip, "new-foods", 2026), false);
+    assert.equal(itemMatchesFairFoodFilter(returningSip, "21-plus", 2026), true);
+  });
+
+  it("includes age-restricted lemonade-named sips in 21+", () => {
+    const lager = fairItem("Pink Lemonade Lager", {
+      itemType: "Alcoholic Drink",
+      category: "Alcoholic Drink",
+      tags: ["fair-finder", "specialty-sips", "new-2026"],
+      description: "Fair-exclusive 21+ specialty beer at Dino's Gyros (5% ABV).",
+      ageRestricted: true,
+      alcoholic: true
+    });
+    assert.equal(itemMatchesFairFoodFilter(lager, "21-plus", 2026), true);
+  });
+
+  it("includes age-restricted wine slushies in 21+", () => {
+    const slushie = fairItem("Cherry Wine Slushy", {
+      itemType: "Alcoholic Drink",
+      category: "Alcoholic Drink",
+      tags: ["fair-finder", "specialty-sips", "new-2026"],
+      description: "Fair-exclusive 21+ specialty wine at French Crêperie (6% ABV).",
+      ageRestricted: true,
+      alcoholic: true
+    });
+    assert.equal(itemMatchesFairFoodFilter(slushie, "21-plus", 2026), true);
+    assert.equal(itemMatchesFairFoodFilter(slushie, "new-foods", 2026), true);
+  });
 });

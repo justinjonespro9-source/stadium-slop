@@ -9,6 +9,7 @@ import type { FairMenuParseResult } from "../types";
 import { MINNESOTA_2025_PREVIEW_ITEMS } from "./minnesota-state-fair-preview-data";
 import { MINNESOTA_2026_NEW_FOODS } from "./minnesota-state-fair-2026-new-foods";
 import { parseMinnesotaStateFairCoreCatalog } from "./minnesota-state-fair-core-catalog";
+import { parseMinnesotaStateFairFairFinder2026 } from "./minnesota-state-fair-fair-finder-2026";
 import { parseMinnesotaStateFairMspMag2025 } from "./minnesota-state-fair-mspmag-2025";
 
 const VENUE_SLUG = "minnesota-state-fair";
@@ -28,6 +29,10 @@ export async function parseMinnesotaStateFairMenu(
 
   if (source === "mspmag-2025") {
     return parseMinnesotaStateFairMspMag2025();
+  }
+
+  if (source === "fair-finder-2026") {
+    return parseMinnesotaStateFairFairFinder2026();
   }
 
   return buildFairMenuParseResult({

@@ -5,6 +5,7 @@
  *   npm run import:fair-menu -- --fair=minnesota-state-fair --dry-run
  *   npm run import:fair-menu -- --fair=minnesota-state-fair --source=core-catalog --dry-run
  *   npm run import:fair-menu -- --fair=minnesota-state-fair --source=mspmag-2025 --dry-run
+ *   npm run import:fair-menu -- --fair=minnesota-state-fair --source=fair-finder-2026 --dry-run
  *   npm run import:fair-menu -- --fair=all --dry-run
  *   npm run ensure:fair-venues -- --dry-run
  *   npm run import:fair-menu -- --fair=iowa-state-fair --apply
@@ -83,7 +84,9 @@ async function runFairImport(
       ? "core catalog"
       : source === "mspmag-2025"
         ? "MSP Mag 2025 (third-party factual)"
-        : `${parseResult.sourceYear} preview`;
+        : source === "fair-finder-2026"
+          ? "Fair Finder + Specialty Sips 2026 expansion"
+          : `${parseResult.sourceYear} preview`;
   console.log(`  Source (${label}): ${parseResult.sourceUrl}`);
   console.log(`  Parsed items: ${parseResult.items.length}`);
   console.log(`  Skipped in parser: ${parseResult.skippedItems.length}`);
@@ -216,7 +219,7 @@ async function main() {
 
   if (!slugs.length) {
     console.error(
-      "Usage: npm run import:fair-menu -- --fair=<slug|all> [--source=preview|core-catalog|mspmag-2025] [--dry-run|--apply]"
+      "Usage: npm run import:fair-menu -- --fair=<slug|all> [--source=preview|core-catalog|mspmag-2025|fair-finder-2026] [--dry-run|--apply]"
     );
     console.error(`\nFair slugs: ${getRegisteredFairSlugs().join(", ")}`);
     process.exit(1);

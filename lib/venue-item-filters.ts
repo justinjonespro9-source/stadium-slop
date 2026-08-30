@@ -38,7 +38,7 @@ export const GENERIC_BEVERAGE_RE =
 
 /** Named cocktails and specialty adult pours (21+ bucket). */
 export const SPECIALTY_ADULT_DRINK_RE =
-  /\b(bloody mary|margarita|old fashioned|manhattan|mojito|daiquiri|martini|negroni|moscow mule|whiskey sour|michelada|paloma|spritz|signature cocktail|craft cocktail|spiked|boozy|tequila|bourbon|whiskey|whisky|rum punch|frozen margarita|distillery|moonshine|cantina|highball|ritas?\b|mule\b|cocktail|mocktail|21\+|age restricted)\b/i;
+  /\b(bloody mary|margarita|old fashioned|manhattan|mojito|daiquiri|martini|negroni|moscow mule|whiskey sour|michelada|paloma|spritz|signature cocktail|craft cocktail|spiked|boozy|tequila|bourbon|whiskey|whisky|rum punch|frozen margarita|distillery|moonshine|cantina|highball|ritas?\b|mule\b|cocktail|mocktail)\b|21\+|age[ -]?restricted/i;
 
 export function itemFilterHaystack(
   item: Pick<FoodItem, "name" | "description" | "category" | "itemType" | "tags">
@@ -98,25 +98,15 @@ export function isSpecialtyAdultDrinkItem(
     "name" | "description" | "category" | "itemType" | "tags" | "ageRestricted"
   >
 ): boolean {
+  if (item.ageRestricted || item.itemType === "Alcoholic Drink") {
+    return !isGenericBeverageItem(item);
+  }
+
   if (isDessertFunDrinkItem(item)) {
     return false;
   }
 
-  const haystack = itemFilterHaystack(item);
-
-  if (item.ageRestricted) {
-    return !isGenericBeverageItem(item);
-  }
-
-  if (item.itemType !== "Alcoholic Drink") {
-    return false;
-  }
-
-  if (isGenericBeverageItem(item)) {
-    return false;
-  }
-
-  return SPECIALTY_ADULT_DRINK_RE.test(haystack);
+  return SPECIALTY_ADULT_DRINK_RE.test(itemFilterHaystack(item));
 }
 
 export function itemMatchesSweetsFilter(item: FoodItem): boolean {

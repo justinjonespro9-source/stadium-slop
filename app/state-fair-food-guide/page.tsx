@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { StateFairFoodGuidePage } from "@/components/state-fair/state-fair-food-guide-page";
 import { getAbsoluteUrl, OG_CARD } from "@/lib/site-metadata";
 
-export const dynamic = "force-static";
+export const revalidate = 300;
 
 const TITLE = "State Fair Slop — Find fair foods worth the line";
 const DESCRIPTION =
@@ -44,6 +44,6 @@ export const metadata: Metadata = {
   }
 };
 
-export default function StateFairFoodGuideRoute() {
+export default async function StateFairFoodGuideRoute() {
   return <StateFairFoodGuidePage />;
 }

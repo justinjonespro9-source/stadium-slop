@@ -1,4 +1,9 @@
-export const FAIR_IMPORT_SOURCES = ["preview", "core-catalog", "mspmag-2025"] as const;
+export const FAIR_IMPORT_SOURCES = [
+  "preview",
+  "core-catalog",
+  "mspmag-2025",
+  "fair-finder-2026"
+] as const;
 
 export type FairImportSource = (typeof FAIR_IMPORT_SOURCES)[number];
 
@@ -13,8 +18,11 @@ export function parseFairImportSourceArg(argv: string[]): FairImportSource {
   if (raw === "mspmag-2025") {
     return "mspmag-2025";
   }
+  if (raw === "fair-finder-2026") {
+    return "fair-finder-2026";
+  }
   throw new Error(
-    `Unknown --source=${raw}. Use preview, core-catalog, or mspmag-2025.`
+    `Unknown --source=${raw}. Use preview, core-catalog, mspmag-2025, or fair-finder-2026.`
   );
 }
 
@@ -29,6 +37,9 @@ export function fairImportTagsForSource(
   }
   if (source === "mspmag-2025") {
     return [...base, "mspmag-2025", "third-party-source", "prior-year-listing"];
+  }
+  if (source === "fair-finder-2026") {
+    return [...base, "fair-finder", "official-source"];
   }
   if (sourceYear >= 2026) {
     return [...base, `${sourceYear}-preview`, "new-food"];

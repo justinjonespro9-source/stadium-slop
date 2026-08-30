@@ -88,6 +88,20 @@ function resolveVenueMenuImportSlug(venueSlug: string): string {
   return VENUE_MENU_IMPORT_SLUG_ALIASES[venueSlug.toLowerCase()] ?? venueSlug;
 }
 
+/**
+ * Stadium menu imports (no importTags) keep the previous always-new create behavior.
+ * Fair imports only mark an item new-this-season when tagged `new-YYYY` or `new-food`.
+ */
+export function isNewThisSeasonFromImportTags(importTags: string[] | undefined): boolean {
+  if (!importTags?.length) {
+    return true;
+  }
+  return importTags.some((tag) => {
+    const normalized = tag.trim().toLowerCase();
+    return normalized === "new-food" || /^new-\d{4}$/.test(normalized);
+  });
+}
+
 type ExistingItemRow = {
   id: string;
   slug: string;
@@ -131,7 +145,7 @@ async function applyVenueMenuImportAgainstExisting(
   const rows: VenueMenuImportRow[] = [];
   let added = 0;
   let matched = 0;
-  let skipped = 0;
+  const skipped = 0;
   let duplicates = 0;
 
   const seenNormNames = new Set<string>();
@@ -261,9 +275,10 @@ async function applyVenueMenuImportAgainstExisting(
             ? new Prisma.Decimal(sourceItem.price)
             : null,
           tags,
-          isNewThisSeason: true,
+          isNewThisSeason: isNewThisSeasonFromImportTags(sourceItem.importTags),
           seasonIntroduced:
             sourceItem.seasonIntroduced ?? String(new Date().getFullYear()),
+          alcoholic: sourceItem.category === "Alcoholic Drink",
           ageRestricted: sourceItem.category === "Alcoholic Drink"
         }
       });

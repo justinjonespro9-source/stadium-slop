@@ -6,7 +6,7 @@ import {
 } from "@/lib/fair-import/venues";
 import { FAIR_PREVIEW_NOTICE } from "@/lib/fair-preview";
 
-/** Applied Minnesota catalog size after the 2026 preview import (returning stands kept). */
+/** Static fallback when live ACTIVE counts are unavailable. Overlay replaces this on the public directory. */
 const MINNESOTA_TRACKED_FOOD_COUNT = 225;
 const MINNESOTA_2026_PREVIEW_COUNT = MINNESOTA_2026_NEW_FOODS.length;
 
@@ -111,4 +111,29 @@ export function formatTrackedFoodCount(count: number): string {
     return `${count} foods tracked`;
   }
   return count === 1 ? "1 food tracked" : `${count} foods tracked`;
+}
+
+/**
+ * Overlay live ACTIVE food counts onto static directory metadata.
+ * Unknown slugs keep the fallback. A venue-shell with 0 live items stays a shell.
+ */
+export function applyLiveTrackedFoodCounts(
+  entries: readonly StateFairDirectoryEntry[],
+  countsBySlug: Readonly<Partial<Record<string, number>>>
+): StateFairDirectoryEntry[] {
+  return entries.map((entry) => {
+    const live = countsBySlug[entry.slug];
+    if (live == null || !Number.isFinite(live) || live < 0) {
+      return { ...entry };
+    }
+    if (entry.status === "venue-shell" && live === 0) {
+      return { ...entry };
+    }
+    return {
+      ...entry,
+      trackedFoodCount: live,
+      statusLabel: formatTrackedFoodCount(live),
+      status: live > 0 ? "preview-loaded" : entry.status
+    };
+  });
 }

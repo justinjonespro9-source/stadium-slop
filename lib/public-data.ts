@@ -572,7 +572,7 @@ export async function getPublicFoodItemsByVenueSlug(venueSlug: string) {
   const normalized = venueSlug.trim();
   // Fair catalog imports can jump in size; include a cache generation so new rows show without waiting for TTL.
   const cacheKey = isFairVenueSlug(normalized)
-    ? ["public-food-items", normalized, "fair-catalog-v2"]
+    ? ["public-food-items", normalized, "fair-catalog-v3"]
     : ["public-food-items", normalized];
   return cachePublicRead(cacheKey, () => loadPublicFoodItemsByVenueSlug(normalized))();
 }

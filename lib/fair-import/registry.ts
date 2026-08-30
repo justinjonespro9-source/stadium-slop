@@ -42,6 +42,9 @@ export function fairSupportsImportSource(slug: string, source: FairImportSource)
   if (source === "mspmag-2025") {
     return slug === "minnesota-state-fair";
   }
+  if (source === "fair-finder-2026") {
+    return slug === "minnesota-state-fair";
+  }
   if (source === "core-catalog") {
     return CORE_CATALOG_FAIRS.has(slug);
   }

@@ -3,13 +3,12 @@ import Link from "next/link";
 import {
   formatPreviewItemCount,
   formatTrackedFoodCount,
-  STATE_FAIR_DIRECTORY_ENTRIES,
+  type StateFairDirectoryEntry,
   type StateFairDirectoryStatus
 } from "@/lib/state-fair-directory";
+import { getLiveStateFairDirectoryEntries } from "@/lib/state-fair-directory-live";
 
-function fairFoodMetaLine(
-  fair: (typeof STATE_FAIR_DIRECTORY_ENTRIES)[number]
-): string | null {
+function fairFoodMetaLine(fair: StateFairDirectoryEntry): string | null {
   if (fair.trackedFoodCount != null && fair.trackedFoodCount > 0) {
     return formatTrackedFoodCount(fair.trackedFoodCount);
   }
@@ -29,7 +28,8 @@ function statusBadgeClass(status: StateFairDirectoryStatus): string {
   return "state-fair-directory-card__status state-fair-directory-card__status--shell";
 }
 
-export function StateFairDirectorySection() {
+export async function StateFairDirectorySection() {
+  const entries = await getLiveStateFairDirectoryEntries();
   return (
     <section
       className="state-fair-directory mt-4 sm:mt-6"
@@ -40,7 +40,7 @@ export function StateFairDirectorySection() {
         State Fair Food Guides
       </h2>
       <ul className="state-fair-directory-grid mt-4 sm:mt-5">
-        {STATE_FAIR_DIRECTORY_ENTRIES.map((fair) => {
+        {entries.map((fair) => {
           const foodMeta = fairFoodMetaLine(fair);
           return (
           <li key={fair.slug} className="state-fair-directory-card">
