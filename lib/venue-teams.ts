@@ -77,6 +77,7 @@ const SHARED_VENUE_TEAM_ORDER: Record<string, readonly string[]> = {
   "att-stadium": ["Dallas Cowboys"],
   "arrowhead-stadium": ["Kansas City Chiefs"],
   "geha-field-at-arrowhead-stadium": ["Kansas City Chiefs"],
+  "nissan-stadium": ["Tennessee Titans"],
   "yankee-stadium": ["New York Yankees", "New York City FC"],
   "citi-field": ["New York Mets", "New York City FC"],
   "snapdragon-stadium": [

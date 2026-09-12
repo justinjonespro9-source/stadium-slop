@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Dependency trees (default node_modules plus leftover install backups)
+    "node_modules/**",
+    "node_modules_old/**",
   ]),
 ]);
 

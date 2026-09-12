@@ -1,6 +1,8 @@
 import { FAIR_VENUE_TIMEZONE } from "@/lib/fair-venue-geo";
 import { getMlbBallparkSeedRows } from "@/lib/mlb-ballpark-seed-data";
 import { buildMlsNwslVenueTimeZoneMap } from "@/lib/mls-nwsl-venue-geo";
+import { buildNflVenueTimeZoneMap } from "@/lib/nfl-venue-geo";
+import { NFL_INTERNATIONAL_VENUE_TIME_ZONES } from "@/lib/schedules/nfl-international-venue-geo";
 import { WORLD_CUP_MEXICO_VENUE_GEO } from "@/lib/world-cup-venue-geo";
 
 /** US state / territory → IANA timezone for MLB ballparks. */
@@ -90,6 +92,10 @@ const VENUE_SLUG_TIMEZONE_OVERRIDES: Record<string, string> = {
 
 const MLB_SLUG_TIMEZONE: Record<string, string> = {};
 const MLS_NWSL_SLUG_TIMEZONE = buildMlsNwslVenueTimeZoneMap();
+const NFL_SLUG_TIMEZONE = {
+  ...buildNflVenueTimeZoneMap(),
+  ...NFL_INTERNATIONAL_VENUE_TIME_ZONES
+};
 
 for (const row of getMlbBallparkSeedRows()) {
   const slug = row.slug;
@@ -121,6 +127,7 @@ export function getVenueTimeZone(venue: VenueTimeZoneInput): string {
   const fromSlug =
     MLB_SLUG_TIMEZONE[venue.slug] ??
     MLS_NWSL_SLUG_TIMEZONE[venue.slug] ??
+    NFL_SLUG_TIMEZONE[venue.slug] ??
     VENUE_SLUG_TIMEZONE_OVERRIDES[venue.slug] ??
     FAIR_VENUE_TIMEZONE[venue.slug as keyof typeof FAIR_VENUE_TIMEZONE] ??
     WORLD_CUP_MEXICO_SLUG_TIMEZONE[venue.slug];

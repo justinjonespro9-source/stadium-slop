@@ -1,0 +1,114 @@
+{
+  "venueSlug": "geha-field-at-arrowhead-stadium",
+  "venueName": "GEHA Field at Arrowhead Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.businesswire.com/news/home/20260909842365/en/",
+    "title": "Aramark Sports + Entertainment Kicks Off 2026 NFL Season Across Eight NFL Stadiums",
+    "type": "official_operator",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Aramark 2026 release. Full Arrowhead menu remains app-only; this pass only imports the three sourced 2026 items with sections. Mucho Melt was not already in production.",
+  "vendors": [
+    {
+      "name": "KC Dilla",
+      "section": "135",
+      "location": "135",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "kc-dilla"
+    },
+    {
+      "name": "Burger Kitchen",
+      "section": "102, 116",
+      "location": "102, 116",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "burger-kitchen"
+    }
+  ],
+  "items": [
+    {
+      "name": "The Mucho Melt",
+      "vendorName": "KC Dilla",
+      "description": "Official 2026 layered tortilla tower with guajillo-spiced beef, beans, sweet potato fries, Cotija and cheddar, guacamole, pico de gallo, and pineapple skewers.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "135"
+      ],
+      "location": "135",
+      "basePrice": 21.59,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "kc-dilla",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Lava Burger",
+      "vendorName": "Burger Kitchen",
+      "description": "Official 2026 cheese-stuffed burger with thick-cut bacon, roasted tomato, chives, and jalape\u00f1o popper spread on a sourdough boule.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "102"
+      ],
+      "location": "102",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "burger-kitchen",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Pork Belly Bomb",
+      "vendorName": "Burger Kitchen",
+      "description": "Official 2026 cream cheese and Boursin-filled bite coated in Parmesan and sour cream & onion chips, finished with candied bacon and red pepper jelly.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "116"
+      ],
+      "location": "116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "burger-kitchen",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "app_only",
+      "name": "Full Arrowhead stand census",
+      "reason": "Official A-Z guide points to the Chiefs app for complete menus."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Smokehouse Burger",
+      "existingItemSlug": "smokehouse-burger",
+      "existingVendorSlug": "burger-kitchen",
+      "recommendation": "manual_review",
+      "evidence": "Existing Burger Kitchen Smokehouse Burger at 102/116 is not the 2026 Lava Burger. Keep both.",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Steak Quesadilla",
+      "existingItemSlug": "steak-quesadilla",
+      "existingVendorSlug": "kc-dilla",
+      "recommendation": "manual_review",
+      "evidence": "Existing KC Dilla quesadillas at 135/323 are not the Mucho Melt tower. Keep both.",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/"
+    }
+  ]
+}

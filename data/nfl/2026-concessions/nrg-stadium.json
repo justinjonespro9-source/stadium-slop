@@ -1,0 +1,118 @@
+{
+  "venueSlug": "nrg-stadium",
+  "venueName": "NRG Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.businesswire.com/news/home/20260909842365/en/",
+    "title": "Aramark Sports + Entertainment Kicks Off 2026 NFL Season Across Eight NFL Stadiums",
+    "type": "official_operator",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Aramark 2026 Reliant/NRG items with sections. Click2Houston named additional bowls without stand numbers; those were not imported. Existing local-partner rows left in place. Headline CSV contamination from Lincoln Financial names is not treated as stale without positive NRG evidence.",
+  "vendors": [
+    {
+      "name": "Battle Red Berry Bird",
+      "section": "101, 121, 520, 546",
+      "location": "101, 121, 520, 546",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chef Sonia's Southern Mac Bowl",
+      "section": "103, 123",
+      "location": "103, 123",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Korean Meatball Bao",
+      "section": "118, 138, 510, 532",
+      "location": "118, 138, 510, 532",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Battle Red Berry Bird",
+      "vendorName": "Battle Red Berry Bird",
+      "description": "Official 2026 fried chicken breast tossed in strawberry buffalo sauce with coleslaw, pickles, and Cajun cheese curds on challah, served with tater kegs and chipotle aioli.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "101",
+        "121",
+        "520",
+        "546"
+      ],
+      "location": "101, 121, 520, 546",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Chef Sonia's Southern Mac Bowl",
+      "vendorName": "Chef Sonia's Southern Mac Bowl",
+      "description": "Official 2026 bowl of crispy fried chicken bites, roasted corn, hatch chile mac and cheese, and Cajun brown gravy, named for General Concessions Chef Sonia.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "103",
+        "123"
+      ],
+      "location": "103, 123",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Korean Meatball Bao",
+      "vendorName": "Korean Meatball Bao",
+      "description": "Official 2026 Korean braised beef meatball with sesame ginger slaw on a steamed bao bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118",
+        "138",
+        "510",
+        "532"
+      ],
+      "location": "118, 138, 510, 532",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "incomplete_location",
+      "name": "Get Jacked Protein Power Burger Bowl / peri peri nachos",
+      "reason": "Named in local TV coverage without published stand numbers."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Seafood Boudin Wings",
+      "existingItemSlug": "stuff-d-wings-seafood-boudin-wings",
+      "existingVendorSlug": "stuff-d-wings",
+      "recommendation": "manual_review",
+      "evidence": "Existing STUFF'd Wings at 510 is not the Korean Meatball Bao also listed at 510. Keep both.",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/"
+    }
+  ]
+}

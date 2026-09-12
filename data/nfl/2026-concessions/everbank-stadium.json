@@ -1,0 +1,175 @@
+{
+  "venueSlug": "everbank-stadium",
+  "venueName": "EverBank Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+    "title": "Jaguars and Delaware North Sportservice unveil new food and beverage offerings at EverBank Stadium for 2026 season",
+    "type": "official_operator",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Official Delaware North 2026 release. Preserve reviewed Bono's BBQ and DUUUVAL Dawgs. Update 904 Burger / Red Zone Burger in place. Fan First Favorites $4.99 staples excluded.",
+  "vendors": [
+    {
+      "name": "904 Prime Burger",
+      "section": "105, 132",
+      "location": "105, 132",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "904-burger"
+    },
+    {
+      "name": "Yucatan Cantina",
+      "section": "125",
+      "location": "125",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Little Caesars",
+      "section": "141, 207, 234",
+      "location": "141, 207, 234",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mac n Cheese Bar",
+      "section": "Lower Clubs",
+      "location": "Lower Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "The Red Zone Burger",
+      "vendorName": "904 Prime Burger",
+      "description": "Official 2026 highlight: double burger with melted cheese, bacon, crispy fried onions, and barbecue sauce at stands 105 and 132.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105",
+        "132"
+      ],
+      "location": "105, 132",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH",
+      "notes": "UPDATE canonical Red Zone Burger. Vendor 904 Burger \u2192 904 Prime Burger. Preserve slug.",
+      "existingItemSlug": "904-burger-the-red-zone-burger",
+      "existingVendorSlug": "904-burger",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "River City Heatwave",
+      "vendorName": "904 Prime Burger",
+      "description": "Official 2026 debut: tater tots with hand-breaded shrimp, popcorn chicken, datil pepper sauce, blue cheese, mini peppers, chives, lemon, and celery-carrot salad at stands 105 and 132.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "105",
+        "132"
+      ],
+      "location": "105, 132",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Poquet Quesadillas",
+      "vendorName": "Yucatan Cantina",
+      "description": "Official 2026 debut at stand 125: chicken, melted cheese, and roasted peppers in grilled flour tortillas.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "125"
+      ],
+      "location": "125",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Italian Cheese Bread",
+      "vendorName": "Little Caesars",
+      "description": "Official 2026 Little Caesars Italian Cheese Bread at stand 141 and Upper Clubs 207 and 234.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "141",
+        "207",
+        "234"
+      ],
+      "location": "141, 207, 234",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "3 Meat Treat Pizza",
+      "vendorName": "Little Caesars",
+      "description": "Official 2026 Little Caesars 3 Meat Treat pizza at stand 141 and Upper Clubs 207 and 234.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "141",
+        "207",
+        "234"
+      ],
+      "location": "141, 207, 234",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Mac n Cheese Bar",
+      "vendorName": "Mac n Cheese Bar",
+      "description": "Official 2026 Lower Clubs build-your-own mac and cheese bar.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Lower Clubs"
+      ],
+      "location": "Lower Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "Fan First Favorites $4.99",
+      "reason": "Hot dogs, nachos, popcorn, candy, pretzels, beer."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Coastal Taqueria",
+      "existingItemSlug": "coastal-taqueria-coastal-taqueria",
+      "existingVendorSlug": "coastal-taqueria",
+      "recommendation": "manual_review",
+      "evidence": "CSV Coastal Taqueria is at section 125, the official 2026 Yucatan Cantina stand. Possible replacement. Reviewed Bono's BBQ and DUUUVAL Dawgs were not touched.",
+      "sourceUrl": "https://media.delawarenorth.com/jacksonville-jaguars-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-at-everbank-stadium-for-2026-season/"
+    }
+  ]
+}

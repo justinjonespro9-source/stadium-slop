@@ -1,0 +1,141 @@
+{
+  "venueSlug": "northwest-stadium",
+  "venueName": "Northwest Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://northweststadium.com/concessions",
+    "title": "Northwest Stadium Concessions Guide",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Northwest Stadium stand directory plus Commanders Flavors of the Season items located in quality local coverage of the official preview. Generic Fan Fare, Tostitos, Dippin' Dots, Walking Taco, and $5 Bud Light excluded. Hail Mary Cheesesteak skipped (no section).",
+  "vendors": [
+    {
+      "name": "DMV Crab Cage",
+      "section": "137",
+      "location": "137",
+      "status": "ACTIVE",
+      "sourceUrl": "https://northweststadium.com/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "DC BBQ Pocket",
+      "section": "120",
+      "location": "120",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.thebanner.com/culture/food-drink/new-food-commanders-northwest-stadium-ZFOD5WWGYFFIBJ53P2SHDP7E4Q/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Ben's Chili Bowl",
+      "section": "123, 415, 441",
+      "location": "123, 415, 441",
+      "status": "ACTIVE",
+      "sourceUrl": "https://northweststadium.com/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Branson Lounge",
+      "section": "307",
+      "location": "307",
+      "status": "ACTIVE",
+      "sourceUrl": "https://northweststadium.com/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "branson-lounge-gallery"
+    }
+  ],
+  "items": [
+    {
+      "name": "Crab Stuffed Pretzel",
+      "vendorName": "DMV Crab Cage",
+      "description": "2026 Flavors of the Season: crab-shaped pretzel with lemon-tarragon Chesapeake crab, mozzarella, provolone, garlic butter, and Parmesan at section 137.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "137"
+      ],
+      "location": "137",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.thebanner.com/culture/food-drink/new-food-commanders-northwest-stadium-ZFOD5WWGYFFIBJ53P2SHDP7E4Q/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "DC BBQ Pocket",
+      "vendorName": "DC BBQ Pocket",
+      "description": "2026 Flavors of the Season: housemade dough stuffed with 17-hour smoked brisket, beans, half-smoke sausage, provolone, and mozzarella at section 120.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120"
+      ],
+      "location": "120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.thebanner.com/culture/food-drink/new-food-commanders-northwest-stadium-ZFOD5WWGYFFIBJ53P2SHDP7E4Q/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Ben's Chili Bowl Half-Smoke",
+      "vendorName": "Ben's Chili Bowl",
+      "description": "Official stand directory plus 2026 preview: Ben's Chili Bowl returns with half-smokes, chili, and chili cheese fries at 123, 415, and 441.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "123",
+        "415",
+        "441"
+      ],
+      "location": "123, 415, 441",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://northweststadium.com/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sushi Push Pop",
+      "vendorName": "Branson Lounge",
+      "description": "2026 Flavors of the Season: Maryland blue crab, avocado, flying fish roe, and fiery corn puffs in a burgundy-and-gold tube at Branson Lounge, section 307.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "307"
+      ],
+      "location": "307",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.thebanner.com/culture/food-drink/new-food-commanders-northwest-stadium-ZFOD5WWGYFFIBJ53P2SHDP7E4Q/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "branson-lounge-gallery",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "Fan Fare / Tostitos / Dippin' Dots / Walking Taco",
+      "reason": "Generic stadium staples."
+    },
+    {
+      "kind": "incomplete_location",
+      "name": "Hail Mary Cheesesteak",
+      "reason": "Named in WJLA coverage without a section."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Branson Lounge & Gallery",
+      "existingItemSlug": "branson-lounge-gallery-branson-lounge-gallery",
+      "existingVendorSlug": "branson-lounge-gallery",
+      "recommendation": "manual_review",
+      "evidence": "Canonical lounge row remains. Sushi Push Pop added as a SKU rather than replacing it.",
+      "sourceUrl": "https://northweststadium.com/concessions"
+    }
+  ]
+}

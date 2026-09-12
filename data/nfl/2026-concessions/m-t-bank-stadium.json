@@ -1,0 +1,463 @@
+{
+  "venueSlug": "m-t-bank-stadium",
+  "venueName": "M&T Bank Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.mandtbankstadium.com/visit/food-beverage",
+    "title": "Food & Beverage | M&T Bank Stadium",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Official M&T Bank Stadium stand directory. Production is headline CSV. Update Jimmy's Famous Seafood in place. Directory is a stand map, not a full plated SKU list. No prices published.",
+  "vendors": [
+    {
+      "name": "Jimmy's Famous Seafood",
+      "section": "123, 201, 231",
+      "location": "123, 201, 231",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "jimmy-s-famous-seafood"
+    },
+    {
+      "name": "Shake Shack",
+      "section": "Shake Shack",
+      "location": "Shake Shack",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bmore Nacho Co.",
+      "section": "142, 536",
+      "location": "142, 536",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Tell Tale Tots",
+      "section": "130, 150",
+      "location": "130, 150",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Ground & Pound",
+      "section": "134, 206, 225, 248, 501",
+      "location": "134, 206, 225, 248, 501",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Ravenous Chicken",
+      "section": "119, 146, 229, 514, 541",
+      "location": "119, 146, 229, 514, 541",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Poe's Pit",
+      "section": "Poe's Pit",
+      "location": "Poe's Pit",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chesapeake Churro Co.",
+      "section": "119, 224, 250, 529",
+      "location": "119, 224, 250, 529",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chesapeake Market",
+      "section": "111, 138, 504, 528",
+      "location": "111, 138, 504, 528",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Crush Collective",
+      "section": "102, 123, 204, 234",
+      "location": "102, 123, 204, 234",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Club Cheesesteaks",
+      "section": "202, 219",
+      "location": "202, 219",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mid Atlantic Melt",
+      "section": "Mid Atlantic Melt",
+      "location": "Mid Atlantic Melt",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Glizzy Glides",
+      "section": "103, 150",
+      "location": "103, 150",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Crab Cakes",
+      "vendorName": "Jimmy's Famous Seafood",
+      "description": "Official Jimmy's Famous Seafood crab cakes, a Baltimore stadium tradition, at sections 123, 201, and 231.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "123",
+        "201",
+        "231"
+      ],
+      "location": "123, 201, 231",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH",
+      "notes": "UPDATE of canonical Jimmy's Famous Seafood vendor-as-item. Official directory lists crab cakes, crabby egg rolls, and seafood-inspired specialty hot dogs. Preserve slug.",
+      "existingItemSlug": "jimmy-s-famous-seafood-jimmy-s-famous-seafood",
+      "existingVendorSlug": "jimmy-s-famous-seafood"
+    },
+    {
+      "name": "Crabby Egg Rolls",
+      "vendorName": "Jimmy's Famous Seafood",
+      "description": "Official Jimmy's Famous Seafood crabby egg rolls at sections 123, 201, and 231.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "123",
+        "201",
+        "231"
+      ],
+      "location": "123, 201, 231",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "ShackBurger",
+      "vendorName": "Shake Shack",
+      "description": "Shake Shack road-side smashburger. Official M&T directory lists smashburgers, flat-top hot dogs, and custard shakes. Stand section is not numbered on the directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Shake Shack"
+      ],
+      "location": "Shake Shack",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Specialty Nachos",
+      "vendorName": "Bmore Nacho Co.",
+      "description": "Official Bmore Nacho Co. specialty nachos at sections 142 and 536.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "142",
+        "536"
+      ],
+      "location": "142, 536",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Loaded Tater Tots",
+      "vendorName": "Tell Tale Tots",
+      "description": "Official Tell Tale Tots loaded tater tots with creative toppings at sections 130 and 150.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "130",
+        "150"
+      ],
+      "location": "130, 150",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Smashburger",
+      "vendorName": "Ground & Pound",
+      "description": "Official Ground & Pound smashburgers at sections 134, 206, 225, 248, and 501.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "134",
+        "206",
+        "225",
+        "248",
+        "501"
+      ],
+      "location": "134, 206, 225, 248, 501",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Hand-Breaded Chicken Tenders",
+      "vendorName": "Ravenous Chicken",
+      "description": "Official Ravenous Chicken hand-breaded tenders and specialty sandwiches at sections 119, 146, 229, 514, and 541.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "119",
+        "146",
+        "229",
+        "514",
+        "541"
+      ],
+      "location": "119, 146, 229, 514, 541",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pulled Pork Sandwich",
+      "vendorName": "Poe's Pit",
+      "description": "Official Poe's Pit pulled pork sandwich. Directory does not print a section number for this BBQ stand.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Poe's Pit"
+      ],
+      "location": "Poe's Pit",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Burnt End Mac and Cheese",
+      "vendorName": "Poe's Pit",
+      "description": "Official Poe's Pit burnt end mac and cheese.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Poe's Pit"
+      ],
+      "location": "Poe's Pit",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Churros",
+      "vendorName": "Chesapeake Churro Co.",
+      "description": "Official Chesapeake Churro Co. traditional and specialty churros at sections 119, 224, 250, and 529.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "119",
+        "224",
+        "250",
+        "529"
+      ],
+      "location": "119, 224, 250, 529",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Baltimore Snowball",
+      "vendorName": "Chesapeake Churro Co.",
+      "description": "Official Chesapeake Churro Co. classic Baltimore snowball at sections 119, 224, 250, and 529.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "SWEET",
+      "sections": [
+        "119",
+        "224",
+        "250",
+        "529"
+      ],
+      "location": "119, 224, 250, 529",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pit Beef",
+      "vendorName": "Chesapeake Market",
+      "description": "Official Chesapeake Market Maryland pit beef and crab-inspired specialties at sections 111, 138, 504, and 528.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "111",
+        "138",
+        "504",
+        "528"
+      ],
+      "location": "111, 138, 504, 528",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Orange Crush",
+      "vendorName": "Crush Collective",
+      "description": "Official Crush Collective signature Orange Crush cocktails at sections 102, 123, 204, and 234.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "102",
+        "123",
+        "204",
+        "234"
+      ],
+      "location": "102, 123, 204, 234",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheesesteak",
+      "vendorName": "Club Cheesesteaks",
+      "description": "Official Club Level beef and chicken cheesesteaks prepared to order at sections 202 and 219.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "202",
+        "219"
+      ],
+      "location": "202, 219",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheesesteak",
+      "vendorName": "Mid Atlantic Melt",
+      "description": "Official Mid Atlantic Melt made-to-order cheesesteaks with thinly sliced steak and melted cheese. Directory does not print a section number.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Mid Atlantic Melt"
+      ],
+      "location": "Mid Atlantic Melt",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Flock Friendly Hot Dog",
+      "vendorName": "Glizzy Glides",
+      "description": "Official Glizzy Glides Flock Friendly hot dogs portable at sections 103 and 150.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "103",
+        "150"
+      ],
+      "location": "103, 150",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage",
+      "confidence": "HIGH"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "Bud Light Party Zone / domestic beer / fountain soda",
+      "reason": "Generic beverage stands."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Pizza / Kickoff Classics value staples / 410 Fly By snacks",
+      "reason": "Generic pizza, value hot dogs, packaged snacks."
+    }
+  ],
+  "staleReview": [
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Ekiben",
+      "existingItemSlug": "ekiben-ekiben",
+      "existingVendorSlug": "ekiben",
+      "recommendation": "hide",
+      "evidence": "CSV North Plaza row. Official 2026 directory does not list Ekiben. Left active.",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Grotto Pizza",
+      "existingItemSlug": "grotto-pizza-grotto-pizza",
+      "existingVendorSlug": "grotto-pizza",
+      "recommendation": "hide",
+      "evidence": "CSV pizza concept. Official directory lists a generic Pizza stand, not Grotto Pizza. Left active.",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Hoffman\u2019s Meats",
+      "existingItemSlug": "hoffman-s-meats-hoffman-s-meats",
+      "existingVendorSlug": "hoffman-s-meats",
+      "recommendation": "hide",
+      "evidence": "Not on the live official stand directory. Left active.",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The 1996 Crab Stack",
+      "existingItemSlug": "the-1996-crab-stack-the-1996-crab-stack",
+      "existingVendorSlug": "the-1996-crab-stack",
+      "recommendation": "hide",
+      "evidence": "Headline CSV novelty not named on the official stand directory. Left active.",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage"
+    }
+  ],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Chaps Pit Beef",
+      "existingItemSlug": "chaps-pit-beef-chaps-pit-beef",
+      "existingVendorSlug": "chaps-pit-beef",
+      "recommendation": "manual_review",
+      "evidence": "CSV Chaps Pit Beef at 113 & 342 may overlap official Chesapeake Market pit beef at 111, 138, 504, 528. Do not merge automatically.",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Baltimore Chop",
+      "existingItemSlug": "the-baltimore-chop-the-baltimore-chop",
+      "existingVendorSlug": "the-baltimore-chop",
+      "recommendation": "manual_review",
+      "evidence": "CSV smash/chop concept at 134 may overlap Ground & Pound smashburgers at 134. Do not merge automatically.",
+      "sourceUrl": "https://www.mandtbankstadium.com/visit/food-beverage"
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "venueSlug": "huntington-bank-field",
+  "venueName": "Huntington Bank Field",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://huntingtonbankfield.com/food-beverage/",
+    "title": "Food & Beverage - Huntington Bank Field",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Huntington Bank Field vendor directory plus Aramark 2026 featured items. Generic C-Town Eats hot dogs, pretzels, and beer bars excluded.",
+  "vendors": [
+    {
+      "name": "Hungry Dawgs Grill",
+      "section": "118",
+      "location": "118",
+      "status": "ACTIVE",
+      "sourceUrl": "https://huntingtonbankfield.com/food-beverage/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mabel's BBQ",
+      "section": "115, 307, 332",
+      "location": "115, 307, 332",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "mabel-s-bbq"
+    },
+    {
+      "name": "Tenders Love and Chicken",
+      "section": "128, 304, 329",
+      "location": "128, 304, 329",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "tenders-love-and-chicken"
+    },
+    {
+      "name": "Rocco Whalen\u2019s Great Lakes Cheesesteaks",
+      "section": "121, 139, 420, 509, 533",
+      "location": "121, 139, 420, 509, 533",
+      "status": "ACTIVE",
+      "sourceUrl": "https://huntingtonbankfield.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rocco-whalen-s-great-lakes-cheesesteaks"
+    },
+    {
+      "name": "Brat & Brew",
+      "section": "140",
+      "location": "140",
+      "status": "ACTIVE",
+      "sourceUrl": "https://huntingtonbankfield.com/food-beverage/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Hot Dog Flight",
+      "vendorName": "Hungry Dawgs Grill",
+      "description": "Official 2026 flight of three mini dogs: Buffalo Blitz (buffalo chicken dip, celery, blue cheese, Buffalo sauce), Italian Stallion (spaghetti, meatballs, marinara, Parmesan, basil), and Brisket Dog (smoked brisket, fried onions, pickles, bourbon BBQ, Gouda).",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118"
+      ],
+      "location": "118",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Polish Boy",
+      "vendorName": "Mabel's BBQ",
+      "description": "Official 2026 Cleveland classic: kielbasa, fries, poppy-seed coleslaw, Mabel's Sweet Cleveland BBQ Sauce, Tony Packo's pickles, and pickled red onions on brioche.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115",
+        "307",
+        "332"
+      ],
+      "location": "115, 307, 332",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "mabel-s-bbq",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Golden Chicken Sandwich",
+      "vendorName": "Tenders Love and Chicken",
+      "description": "Official 2026 crispy chicken tenders with Carolina Gold sauce, shredded cheddar, onion straws, and pickles on brioche.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "128",
+        "304",
+        "329"
+      ],
+      "location": "128, 304, 329",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "tenders-love-and-chicken",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "The Tremonster",
+      "vendorName": "Rocco Whalen\u2019s Great Lakes Cheesesteaks",
+      "description": "Official stadium menu: sliced sirloin, fancy mushrooms, Whizzy b\u00e9chamel, and green onion.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "121",
+        "139",
+        "420",
+        "509",
+        "533"
+      ],
+      "location": "121, 139, 420, 509, 533",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://huntingtonbankfield.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rocco-whalen-s-great-lakes-cheesesteaks"
+    },
+    {
+      "name": "Irish Pierogi Nachos",
+      "vendorName": "Brat & Brew",
+      "description": "Official stadium menu: pierogies, corned beef, sauerkraut, Thousand Island, and sour cream at section 140.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "140"
+      ],
+      "location": "140",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://huntingtonbankfield.com/food-beverage/",
+      "confidence": "HIGH"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "C-Town Eats / Pilot Fast Favorites staples",
+      "reason": "Hot dogs, pizza, pretzels, packaged snacks."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Spicy Slaw Dog",
+      "existingItemSlug": "dawg-house-the-spicy-slaw-dog",
+      "existingVendorSlug": "dawg-house",
+      "recommendation": "manual_review",
+      "evidence": "Existing Dawg House at 107 & 138 is not Hungry Dawgs Grill section 118. Keep both.",
+      "sourceUrl": "https://huntingtonbankfield.com/food-beverage/"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Hot Honey Chicken Sandwich",
+      "existingItemSlug": "tenders-love-and-chicken-hot-honey-chicken-sandwich",
+      "existingVendorSlug": "tenders-love-and-chicken",
+      "recommendation": "manual_review",
+      "evidence": "Existing Hot Honey Chicken Sandwich is not the 2026 Golden Chicken Sandwich. Keep both.",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/"
+    }
+  ]
+}

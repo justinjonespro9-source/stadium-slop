@@ -1,0 +1,219 @@
+{
+  "venueSlug": "metlife-stadium",
+  "venueName": "MetLife Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+    "title": "Delaware North Sportservice unveils new food, beverage and retail experiences at MetLife Stadium for the 2026 season",
+    "type": "official_operator",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Official Delaware North 2026 release. Update Nonna Fusco's, Tacos Roqueros spelling, and Fat Rooster locations in place.",
+  "vendors": [
+    {
+      "name": "Nonna Fusco's Kitchen",
+      "section": "118, 335, Mezzanine Clubs",
+      "location": "118, 335, Mezzanine Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "nonna-fusco-s-kitchen"
+    },
+    {
+      "name": "Tacos Roqueros",
+      "section": "MetLife West Hall, 313, Mezzanine Clubs",
+      "location": "MetLife West Hall, 313, Mezzanine Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "taco-s-raqueros"
+    },
+    {
+      "name": "Fat Rooster",
+      "section": "MetLife West Hall, 101, 317, Mezzanine Clubs",
+      "location": "MetLife West Hall, 101, 317, Mezzanine Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "fat-rooster"
+    },
+    {
+      "name": "Garden State Rippers",
+      "section": "MetLife West Hall, 317, Mezzanine Clubs",
+      "location": "MetLife West Hall, 317, Mezzanine Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Filet Mignon Carvery",
+      "section": "108, Mezzanine Clubs",
+      "location": "108, Mezzanine Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Pasta with Nonna's Sauce",
+      "vendorName": "Nonna Fusco's Kitchen",
+      "description": "Official 2026 Pasta Fresca expansion at sections 118 and 335 and both Mezzanine Clubs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118",
+        "335",
+        "Mezzanine Clubs"
+      ],
+      "location": "118, 335, Mezzanine Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "notes": "UPDATE canonical pasta. Preserve slug pasta-with-nonnas-sauce.",
+      "existingItemSlug": "pasta-with-nonnas-sauce",
+      "existingVendorSlug": "nonna-fusco-s-kitchen"
+    },
+    {
+      "name": "Sunday Gravy",
+      "vendorName": "Nonna Fusco's Kitchen",
+      "description": "Official 2026 seasonal Sunday Gravy during colder-weather games at sections 118 and 335 and both Mezzanine Clubs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118",
+        "335",
+        "Mezzanine Clubs"
+      ],
+      "location": "118, 335, Mezzanine Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Tacos",
+      "vendorName": "Tacos Roqueros",
+      "description": "Official 2026 Tacos Roqueros refreshed menu at MetLife West Hall, section 313, and both Mezzanine Clubs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "MetLife West Hall",
+        "313",
+        "Mezzanine Clubs"
+      ],
+      "location": "MetLife West Hall, 313, Mezzanine Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "notes": "UPDATE vendor spelling Taco's Raqueros \u2192 Tacos Roqueros. Preserve tacos slug.",
+      "existingItemSlug": "tacos",
+      "existingVendorSlug": "taco-s-raqueros"
+    },
+    {
+      "name": "Spicy Chicken Sandwich",
+      "vendorName": "Fat Rooster",
+      "description": "Official 2026 Fat Rooster spicy chicken sandwich at MetLife West Hall, sections 101 and 317, and both Mezzanine Clubs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "MetLife West Hall",
+        "101",
+        "317",
+        "Mezzanine Clubs"
+      ],
+      "location": "MetLife West Hall, 101, 317, Mezzanine Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "existingItemSlug": "spicy-chicken-sandwich",
+      "existingVendorSlug": "fat-rooster"
+    },
+    {
+      "name": "Colombian-Style Ripper",
+      "vendorName": "Garden State Rippers",
+      "description": "Official 2026 Thumann's natural-casing Colombian-style ripper at MetLife West Hall, section 317, and both Mezzanine Clubs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "MetLife West Hall",
+        "317",
+        "Mezzanine Clubs"
+      ],
+      "location": "MetLife West Hall, 317, Mezzanine Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Jersey Chili Cheese Ripper",
+      "vendorName": "Garden State Rippers",
+      "description": "Official 2026 Jersey chili cheese ripper with house-made chili at MetLife West Hall, section 317, and both Mezzanine Clubs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "MetLife West Hall",
+        "317",
+        "Mezzanine Clubs"
+      ],
+      "location": "MetLife West Hall, 317, Mezzanine Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Carved-to-Order Filet Mignon Sandwich",
+      "vendorName": "Filet Mignon Carvery",
+      "description": "Official 2026 debut of freshly carved filet mignon in general concessions at section 108 and both Mezzanine Clubs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "108",
+        "Mezzanine Clubs"
+      ],
+      "location": "108, Mezzanine Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "retail",
+      "name": "Laser-engraved football zone",
+      "reason": "Retail, not food."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Spicy Chicken Sandwiches",
+      "existingItemSlug": "spicy-chicken-sandwiches",
+      "existingVendorSlug": "fat-rooster",
+      "recommendation": "manual_review",
+      "evidence": "Second Fat Rooster spicy sandwich row. Canonical UPDATE used spicy-chicken-sandwich.",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The \"Final\" Ribeye Sandwich",
+      "existingItemSlug": "the-final-ribeye-sandwich-the-final-ribeye-sandwich",
+      "existingVendorSlug": "the-final-ribeye-sandwich",
+      "recommendation": "manual_review",
+      "evidence": "Existing ribeye at 117 vs 2026 carved filet at 108. Do not merge.",
+      "sourceUrl": "https://media.delawarenorth.com/delaware-north-sportservice-unveils-new-food-beverage-and-retail-experiences-at-metlife-stadium-for-the-2026-season/"
+    }
+  ]
+}

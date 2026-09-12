@@ -1,0 +1,466 @@
+{
+  "venueSlug": "allegiant-stadium",
+  "venueName": "Allegiant Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://visit.allegiantstadium.com/plan-your-visit/food-beverage-menu-guide",
+    "title": "Food & Beverage Menu Guide | Allegiant Stadium",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Re-reconcile using the live official menu guide plus A-Z House Deals stand numbers. Silver & Black 2026 WOW items still have no stand/section mapping and remain SKIP. A-Z exact stand numbers are preferred over the menu guide's adjacent-section search tags. No deactivations.",
+  "vendors": [
+    {
+      "name": "Guy Fieri's",
+      "section": "243",
+      "location": "243",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "existingVendorSlug": "guy-fieri-s"
+    },
+    {
+      "name": "Pizza Rock by Tony Gemignani",
+      "section": "118, 140, 206, 230, 308",
+      "location": "118, 140, 206, 230, 308",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "existingVendorSlug": "pizza-rock-by-tony-gemignani"
+    },
+    {
+      "name": "Rollin' Smoke BBQ",
+      "section": "340",
+      "location": "340",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rollin-smoke-bbq"
+    },
+    {
+      "name": "Boomtown Burgers",
+      "section": "312",
+      "location": "312",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bandero Tequila Bar",
+      "section": "126, 141, 309, 324",
+      "location": "126, 141, 309, 324",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Hibachi Done Wright",
+      "section": "330",
+      "location": "330",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pinkbox Doughnuts",
+      "section": "128",
+      "location": "128",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Vito's Tacos",
+      "section": "125, 316, 335",
+      "location": "125, 316, 335",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Tu Michoacana",
+      "section": "242, 316, 334",
+      "location": "242, 316, 334",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Taqueria Ktrina",
+      "section": "331",
+      "location": "331",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Picanha Steak",
+      "section": "307",
+      "location": "307",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Freed's Bakery",
+      "section": "106",
+      "location": "106",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pacha Mamas",
+      "section": "120",
+      "location": "120",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Our Haus Sausage",
+      "section": "223",
+      "location": "223",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Tailgater Trash Can Nachos",
+      "vendorName": "Guy Fieri's",
+      "description": "Official Guy Fieri's Tailgate Kitchen House Deals stand at section 243.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "243"
+      ],
+      "location": "243",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "existingItemSlug": "guy-fieri-s-tailgater-trash-can-nachos",
+      "existingVendorSlug": "guy-fieri-s"
+    },
+    {
+      "name": "Pizza Rock by Tony Gemignani",
+      "vendorName": "Pizza Rock by Tony Gemignani",
+      "description": "Official Slice House / Pizza Rock stands at sections 118, 140, 206, 230, and 308.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118",
+        "140",
+        "206",
+        "230",
+        "308"
+      ],
+      "location": "118, 140, 206, 230, 308",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "pizza-rock-by-tony-gemignani-pizza-rock-by-tony-gemignani",
+      "existingVendorSlug": "pizza-rock-by-tony-gemignani"
+    },
+    {
+      "name": "Chopped Brisket Sandwich",
+      "vendorName": "Rollin' Smoke BBQ",
+      "description": "Official Rollin Smoke stand at section 340.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "340"
+      ],
+      "location": "340",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "existingItemSlug": "chopped-brisket-sandwich",
+      "existingVendorSlug": "rollin-smoke-bbq"
+    },
+    {
+      "name": "Outlaw Fries",
+      "vendorName": "Rollin' Smoke BBQ",
+      "description": "Official Rollin Smoke stand at section 340. Production 312 is now Boomtown Burgers.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "340"
+      ],
+      "location": "340",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "existingItemSlug": "outlaw-fries",
+      "existingVendorSlug": "rollin-smoke-bbq"
+    },
+    {
+      "name": "Boomtown Burgers",
+      "vendorName": "Boomtown Burgers",
+      "description": "Official Boomtown Burgers House Deals stand at section 312.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "312"
+      ],
+      "location": "312",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Spicy Margarita",
+      "vendorName": "Bandero Tequila Bar",
+      "description": "Official 2026 Bandero Tequila spicy margarita at A-Z Bandero Bar stands.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "126",
+        "141",
+        "309",
+        "324"
+      ],
+      "location": "126, 141, 309, 324",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.oakviewgroup.com/wp-content/uploads/2026/08/Silver-and-Black-Reveal-Food-Draft-FINAL.pdf",
+      "confidence": "HIGH",
+      "notes": "PDF lists Bandero Tequila as new in 2026 and names the Spicy Margarita.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Hibachi Done Wright",
+      "vendorName": "Hibachi Done Wright",
+      "description": "Official 2026 Hibachi Done Wright stand at section 330.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "330"
+      ],
+      "location": "330",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.oakviewgroup.com/wp-content/uploads/2026/08/Silver-and-Black-Reveal-Food-Draft-FINAL.pdf",
+      "confidence": "HIGH",
+      "notes": "PDF lists Hibachi Done Wright as new in 2026. A-Z locates the stand at 330.",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Raider Donut",
+      "vendorName": "Pinkbox Doughnuts",
+      "description": "Official Pinkbox Doughnuts stand at section 128, listed for Raider donuts.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "128"
+      ],
+      "location": "128",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Vito's Tacos",
+      "vendorName": "Vito's Tacos",
+      "description": "Official Vito's Tacos stands at sections 125, 316, and 335.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "125",
+        "316",
+        "335"
+      ],
+      "location": "125, 316, 335",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Paletas",
+      "vendorName": "Tu Michoacana",
+      "description": "Official Tu Michoacana paletas at sections 242, 316, and 334.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "242",
+        "316",
+        "334"
+      ],
+      "location": "242, 316, 334",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Taqueria Ktrina",
+      "vendorName": "Taqueria Ktrina",
+      "description": "Official Taqueria Ktrina stand at section 331.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "331"
+      ],
+      "location": "331",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Picanha Steak",
+      "vendorName": "Picanha Steak",
+      "description": "Official Picanha Steak stand at section 307.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "307"
+      ],
+      "location": "307",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Freed's Bakery",
+      "vendorName": "Freed's Bakery",
+      "description": "Official Freed's Bakery stand at section 106, listed for churros, cannolis, and desserts.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "106"
+      ],
+      "location": "106",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Pacha Mamas",
+      "vendorName": "Pacha Mamas",
+      "description": "Official Pacha Mamas stand at section 120.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120"
+      ],
+      "location": "120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Our Haus Sausage",
+      "vendorName": "Our Haus Sausage",
+      "description": "Official Our Haus Sausage stand at section 223.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "223"
+      ],
+      "location": "223",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "unmapped_wow",
+      "name": "Fry Bread Pot Roast Taco",
+      "reason": "Official 2026 WOW item still has no stand/section. Sporting Tribune reports opponent-week limits."
+    },
+    {
+      "kind": "unmapped_wow",
+      "name": "Street Dog Torta",
+      "reason": "Official 2026 WOW item still has no stand/section."
+    },
+    {
+      "kind": "unmapped_wow",
+      "name": "Focaccia and Lox Sandwich",
+      "reason": "Official 2026 WOW item still has no stand/section."
+    },
+    {
+      "kind": "unmapped_wow",
+      "name": "Chile Relleno Burger",
+      "reason": "Official 2026 WOW item still has no stand/section. Do not guess onto Boomtown."
+    },
+    {
+      "kind": "unmapped_wow",
+      "name": "Really Big Chicken & Waffles / specialty dogs / New Menu Items / desserts",
+      "reason": "PDF names plated SKUs without locations. Specialty dogs are opponent-week limited."
+    },
+    {
+      "kind": "location_uncertain",
+      "name": "Blvd Bar B Q & Wings",
+      "reason": "PDF says new in 2026, but live guide only has a 121-130 search cluster and A-Z has no stand number."
+    },
+    {
+      "kind": "location_uncertain",
+      "name": "Fuku / Antidote / BBQ Mexicana / Border Grill / Mr. Fries Man / Ninth Island Bowlz / The Carvery",
+      "reason": "Named on the live guide, but only adjacent-section search tags or club ranges, not A-Z stand numbers."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Taco Bell Cantina / Gridiron / Smash Burgers / Walking Taco / House Deals / fountain soda",
+      "reason": "Generic chain tacos, hot dogs, pretzels, or category headings."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Lady Luck Margarita / Strawberry Mint Mule / Endzone Mojito / Raiders Rose",
+      "reason": "Named specialty cocktails with no sourced stand."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Pizza Rock",
+      "existingItemSlug": "pizza-rock-margherita-slice",
+      "existingVendorSlug": "pizza-rock",
+      "recommendation": "manual_review",
+      "evidence": "A-Z Slice House at 118/140/206/230/308 matches Pizza Rock by Tony Gemignani. Keep the second Pizza Rock slug at 118; do not merge.",
+      "sourceUrl": "https://www.allegiantstadium.com/plan-your-visit/a-z-guide"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Fukuburger",
+      "existingItemSlug": "fukuburger-the-black-hole-burger",
+      "existingVendorSlug": "fukuburger",
+      "recommendation": "manual_review",
+      "evidence": "PDF names Fuku Chicken from David Chang on the 100-level cluster. Production Fukuburger at 121 is a different local burger record. Do not merge or relocate without a stand number.",
+      "sourceUrl": "https://visit.allegiantstadium.com/plan-your-visit/food-beverage-menu-guide"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Pi\u00f1a",
+      "existingItemSlug": "pina-pina",
+      "existingVendorSlug": "pina",
+      "recommendation": "manual_review",
+      "evidence": "Production already has duplicate Pi\u00f1a vendors (pina and pi-a) at 104. Not in this live directory fetch. Keep both; do not hide.",
+      "sourceUrl": "https://visit.allegiantstadium.com/plan-your-visit/food-beverage-menu-guide"
+    }
+  ]
+}

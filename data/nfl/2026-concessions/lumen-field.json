@@ -1,0 +1,262 @@
+{
+  "venueSlug": "lumen-field",
+  "venueName": "Lumen Field",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+    "title": "Seahawks Announce New Food & Beverage Items at Lumen Field for the 2026 Season",
+    "type": "official_team",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Seahawks/Levy 2026 announcement. JSN Menu items that launch later in 2026 are still sourced as 2026 offerings. 12s Combo hot dogs excluded. Existing Rookie/All-Pro/284 tender rows left in place.",
+  "vendors": [
+    {
+      "name": "JSN Menu",
+      "section": "114, 132, 230, 311, 336",
+      "location": "114, 132, 230, 311, 336",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "PNW Kitchen",
+      "section": "113",
+      "location": "113",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "pnw-kitchen"
+    },
+    {
+      "name": "Big Walt\u2019s Kitchen",
+      "section": "126, 214, 230, 321",
+      "location": "126, 214, 230, 321",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "big-walt-s-kitchen"
+    },
+    {
+      "name": "King's Hawaiian",
+      "section": "120, 131, 305, 335",
+      "location": "120, 131, 305, 335",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "kings-hawaiian"
+    },
+    {
+      "name": "Legion",
+      "section": "204, 240",
+      "location": "204, 240",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "legion"
+    },
+    {
+      "name": "Mister Softee",
+      "section": "116, 141, 214, 230",
+      "location": "116, 141, 214, 230",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "mister-softee"
+    }
+  ],
+  "items": [
+    {
+      "name": "Jerk Salmon Nachos",
+      "vendorName": "JSN Menu",
+      "description": "Official 2026 JSN Menu: tortilla chips with pickled jalape\u00f1os, Fresno peppers, cheese sauce, and juniper-jerk smoked salmon in a collectible receiver-glove container. Served Sep 9\u2013Oct 25.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "132",
+        "230",
+        "311",
+        "336"
+      ],
+      "location": "114, 132, 230, 311, 336",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Breads & JSN Spreads",
+      "vendorName": "JSN Menu",
+      "description": "Official 2026 JSN Menu: warm artisan breads with jalape\u00f1o jam, smoked salmon spread, and nectarine butter. Served Nov 2\u2013Nov 8.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "132",
+        "230",
+        "311",
+        "336"
+      ],
+      "location": "114, 132, 230, 311, 336",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Jicama Steak Noodles",
+      "vendorName": "JSN Menu",
+      "description": "Official 2026 JSN Menu: seared steak and pickled jicama over ramen in house bone broth. Served Dec 7\u2013Dec 25.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "132",
+        "230",
+        "311",
+        "336"
+      ],
+      "location": "114, 132, 230, 311, 336",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Buffalo Chicken Yard Nachos",
+      "vendorName": "PNW Kitchen",
+      "description": "Official 2026 shareable nachos with buffalo chicken, celery, and blue cheese crumble at PNW Kitchen, section 113.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "113"
+      ],
+      "location": "113",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "pnw-kitchen",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Top 100 Combo",
+      "vendorName": "Big Walt\u2019s Kitchen",
+      "description": "Official 2026 shareable combo of all three tender flavors \u2014 The Rookie, The All-Pro, and The 284 \u2014 on fries at sections 126, 214, 230, and 321.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "126",
+        "214",
+        "230",
+        "321"
+      ],
+      "location": "126, 214, 230, 321",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "big-walt-s-kitchen",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "King's Plate",
+      "vendorName": "King's Hawaiian",
+      "description": "Official 2026 loaded BBQ combo: pulled pork, andouille, grilled pineapple slaw, BBQ baked beans, and two King's Hawaiian rolls in a souvenir 12s Tray.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120",
+        "131",
+        "305",
+        "335"
+      ],
+      "location": "120, 131, 305, 335",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "kings-hawaiian",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Jerk Chicken Sliders",
+      "vendorName": "Legion",
+      "description": "Official 2026 five jerk chicken sliders on King's Hawaiian pretzel buns with grilled pineapple slaw and spicy mayo.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "204",
+        "240"
+      ],
+      "location": "204, 240",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "legion",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Legion of Blue Dirty Soda",
+      "vendorName": "Mister Softee",
+      "description": "Official 2026 rotational dirty soda: Sprite with blue raspberry syrup and a sweet cream topper.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "116",
+        "141",
+        "214",
+        "230"
+      ],
+      "location": "116, 141, 214, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "mister-softee",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "12s Combo",
+      "reason": "Two hot dogs and pretzel bites for $12."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Yard Nachos",
+      "existingItemSlug": "yard-nachos",
+      "existingVendorSlug": "pacific-northwest-kitchen",
+      "recommendation": "manual_review",
+      "evidence": "Existing Yard Nachos / PNW Kitchen pork-belly bowl are not the 2026 Buffalo Chicken Yard Nachos. Keep both.",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Rookie",
+      "existingItemSlug": "the-rookie",
+      "existingVendorSlug": "big-walt-s-kitchen",
+      "recommendation": "manual_review",
+      "evidence": "Existing individual tender SKUs are not the 2026 Top 100 Combo platter. Keep both.",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The \"Dirty\" Emerald Soda",
+      "existingItemSlug": "district-market-the-dirty-emerald-soda",
+      "existingVendorSlug": "district-market",
+      "recommendation": "manual_review",
+      "evidence": "Existing dirty soda at District Market is not the Legion of Blue rotation. Keep both.",
+      "sourceUrl": "https://www.seahawks.com/news/seahawks-announce-new-food-beverage-items-at-lumen-field-for-the-2026-season"
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "venueSlug": "empower-field-at-mile-high",
+  "venueName": "Empower Field at Mile High",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.businesswire.com/news/home/20260909842365/en/",
+    "title": "Aramark Sports + Entertainment Kicks Off 2026 NFL Season Across Eight NFL Stadiums",
+    "type": "official_operator",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Aramark 2026 release with sourced sections. CBS listed additional local vendors; those without Aramark/team section confirmation were not imported. Mile High Favs $5 staples excluded.",
+  "vendors": [
+    {
+      "name": "Beast in a Blanket",
+      "section": "128",
+      "location": "128",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chicken & Champagne Bucket",
+      "section": "512",
+      "location": "512",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Nine in the Box",
+      "section": "United Globe Clubs",
+      "location": "United Globe Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Beast in a Blanket",
+      "vendorName": "Beast in a Blanket",
+      "description": "Official 2026 shareable: 2-foot grilled hot dog and brisket burnt ends wrapped in puff pastry with cheddar, goat cheese, secret sauce, avocado cream, crispy pickled onions, and jalape\u00f1o.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "128"
+      ],
+      "location": "128",
+      "basePrice": 45,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Chicken & Champagne Bucket",
+      "vendorName": "Chicken & Champagne Bucket",
+      "description": "Official 2026 12-piece fried chicken with two cans of champagne in a souvenir bucket. 21+ with valid ID.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "512"
+      ],
+      "location": "512",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Nine in the Box",
+      "vendorName": "Nine in the Box",
+      "description": "Official 2026 stack of nine wagyu sliders with sharp white cheddar, caramelized onions, steak tomato, and tangy burger sauce on brioche.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "United Globe Clubs"
+      ],
+      "location": "United Globe Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "Mile High Favs $5 staples",
+      "reason": "Hot dogs, nachos, pretzels, popcorn, candy, soda, water."
+    },
+    {
+      "kind": "unsourced_section",
+      "name": "Aloha Cones / Carrera's / Cupbop / Mister Oso SKUs",
+      "reason": "Local-media sections not used; Aramark named the vendors but not those SKU stands in the HIGH release."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": []
+}

@@ -1,0 +1,399 @@
+{
+  "venueSlug": "lucas-oil-stadium",
+  "venueName": "Lucas Oil Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+    "title": "Colts and Sodexo Live! unveil new food and beverage offerings for 2026 season",
+    "type": "official_team",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Official Colts/Sodexo 2026 culinary showcase. Update Mambo's Cheesesteak and Gameday Matchup Cocktails in place. Suite-only items with sourced club/suite locations included when distinctive. No estimated prices except the $4.99 Fan First program which is generic and excluded.",
+  "vendors": [
+    {
+      "name": "Mambo's Cheesesteak",
+      "section": "139",
+      "location": "139",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "existingVendorSlug": "mambo-s-cheesesteak"
+    },
+    {
+      "name": "Touchdown Taverns",
+      "section": "Touchdown Taverns",
+      "location": "Touchdown Taverns",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "existingVendorSlug": "caesars-sportsbook-lounge"
+    },
+    {
+      "name": "Stadium Box",
+      "section": "105, 347, 543",
+      "location": "105, 347, 543",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Dirty Sodas",
+      "section": "529",
+      "location": "529",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Asian Favorites",
+      "section": "109",
+      "location": "109",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "HotBox Pizza",
+      "section": "Pizza Stands",
+      "location": "Pizza Stands",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "East & West Loge Grill",
+      "section": "East & West Loge Grill",
+      "location": "East & West Loge Grill",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sub Zero Nitrogen Ice Cream",
+      "section": "Loge Clubs",
+      "location": "Loge Clubs",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Orange Leaf",
+      "section": "323",
+      "location": "323",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Creative Coffee",
+      "section": "Blue Room",
+      "location": "Blue Room",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Mambo's Cheesesteak",
+      "vendorName": "Mambo's Cheesesteak",
+      "description": "Official 2026 minority-business partner at section 139: Philly cheesesteaks, loaded fries, and Latin-inspired sandwiches with Peruvian flavors.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "139"
+      ],
+      "location": "139",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "notes": "UPDATE canonical Mambo's Cheesesteak in place. Preserve slug. labeledNewFor2026 because the Colts article lists it among four new MBEs for 2026.",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "mambo-s-cheesesteak-mambo-s-cheesesteak",
+      "existingVendorSlug": "mambo-s-cheesesteak",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Gameday Matchup Cocktails",
+      "vendorName": "Touchdown Taverns",
+      "description": "Official 2026 rotating matchup cocktails served in commemorative cooler cups at all GA Touchdown Taverns and Clubs, beginning with Midnight Flock on Sept 13.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "Touchdown Taverns",
+        "Clubs"
+      ],
+      "location": "Touchdown Taverns, Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "notes": "UPDATE existing Gameday Matchup Cocktails. Vendor renamed from Caesars Sportsbook Lounge to official Touchdown Taverns. Preserve slug.",
+      "existingItemSlug": "caesars-sportsbook-lounge-gameday-matchup-cocktails",
+      "existingVendorSlug": "caesars-sportsbook-lounge",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "The Crown Highball",
+      "vendorName": "Touchdown Taverns",
+      "description": "Official 2026 premium cooler cocktail: Crown Royal whisky, lemon juice, honey, and club soda.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "Touchdown Taverns",
+        "Clubs"
+      ],
+      "location": "Touchdown Taverns, Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Loaded Tater Tots",
+      "vendorName": "Stadium Box",
+      "description": "Official 2026 football-shaped tater tots with Buffalo chicken, Philly cheesesteak, or vegan street-style toppings at sections 105, 347, and 543.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "105",
+        "347",
+        "543"
+      ],
+      "location": "105, 347, 543",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Stadium Box Loaded Fries",
+      "vendorName": "Stadium Box",
+      "description": "Official 2026 loaded fries in a commemorative Lucas Oil Stadium container at sections 105, 347, and 543.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "105",
+        "347",
+        "543"
+      ],
+      "location": "105, 347, 543",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Loaded Footlong Corn Dog",
+      "vendorName": "Stadium Box",
+      "description": "Official 2026 footlong corn dog topped with chili and cheese at sections 105, 347, and 543.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105",
+        "347",
+        "543"
+      ],
+      "location": "105, 347, 543",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Dirty Sodas",
+      "vendorName": "Dirty Sodas",
+      "description": "Official 2026 customizable sodas with flavored syrups and sweet cream at section 529.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "529"
+      ],
+      "location": "529",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Chicken Teriyaki",
+      "vendorName": "Asian Favorites",
+      "description": "Official 2026 chicken teriyaki served with fried rice at section 109.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109"
+      ],
+      "location": "109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Beef and Broccoli",
+      "vendorName": "Asian Favorites",
+      "description": "Official 2026 beef and broccoli served with fried rice at section 109.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109"
+      ],
+      "location": "109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Meatball Sub",
+      "vendorName": "HotBox Pizza",
+      "description": "Official 2026 HotBox Pizza meatball sub: beef and pork meatballs, marinara, mozzarella on a hoagie. Club pizza stands.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pizza Stands"
+      ],
+      "location": "Pizza Stands",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Chef Tony's Chorizo Tacos",
+      "vendorName": "East & West Loge Grill",
+      "description": "Official 2026 club tacos: soft tortilla, chorizo, salsa verde, onions, and cilantro.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "East & West Loge Grill"
+      ],
+      "location": "East & West Loge Grill",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Pork Loin Sandwich",
+      "vendorName": "East & West Loge Grill",
+      "description": "Official 2026 smoked pork loin on brioche with pickles and BBQ sauce at East & West Loge Grill.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "East & West Loge Grill"
+      ],
+      "location": "East & West Loge Grill",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Sub Zero Nitrogen Ice Cream",
+      "vendorName": "Sub Zero Nitrogen Ice Cream",
+      "description": "Official 2026 made-to-order nitrogen ice cream in the Loge Clubs. New minority-business partner.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Loge Clubs"
+      ],
+      "location": "Loge Clubs",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Orange Leaf Frozen Yogurt",
+      "vendorName": "Orange Leaf",
+      "description": "Official 2026 Orange Leaf mix-and-match frozen yogurt at section 323. New minority-business partner.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "323"
+      ],
+      "location": "323",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Handcrafted Coffee",
+      "vendorName": "Creative Coffee",
+      "description": "Official 2026 Creative Coffee handcrafted coffee at the Blue Room and East & West Loge Anvil Bar. New minority-business partner.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "Blue Room",
+        "East & West Loge Anvil Bar"
+      ],
+      "location": "Blue Room, East & West Loge Anvil Bar",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "Draft beer cup / Dasani / generic pizza",
+      "reason": "Generic beverage vessel and filler."
+    },
+    {
+      "kind": "suite_census",
+      "name": "Most suite buffet SKUs",
+      "reason": "Suite catering list is long; imported only distinctive named sandwiches already covered in clubs when sourced."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Pizza Box Nachos",
+      "existingItemSlug": "pizza-box-nachos-pizza-box-nachos",
+      "existingVendorSlug": "pizza-box-nachos",
+      "recommendation": "manual_review",
+      "evidence": "May be the same product family as official 2026 Stadium Box Nachos in East & West Heartland Market clubs. Do not merge automatically.",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Vegan Street Style Loaded Fries",
+      "existingItemSlug": "vegan-street-style-loaded-fries-vegan-street-style-loaded-fries",
+      "existingVendorSlug": "vegan-street-style-loaded-fries",
+      "recommendation": "manual_review",
+      "evidence": "Shares sections 105 and 543 with official Loaded Tater Tots vegan street-style topping. Do not merge automatically.",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The \"Dirty\" Circle City Soda",
+      "existingItemSlug": "touchdown-taverns-the-dirty-circle-city-soda",
+      "existingVendorSlug": "touchdown-taverns",
+      "recommendation": "manual_review",
+      "evidence": "CSV dirty soda at 132 vs official 2026 Dirty Sodas stand at 529. Different sections; possible related concept. Do not merge.",
+      "sourceUrl": "https://www.colts.com/news/lucas-oil-stadium-concessions-indianapolis-colts-new-food-beverage-2026-gameday-nfl-season-souvenir-loaded-fries-nachos-beer-premium-cooler-cocktails-tater-tots-dirty-sodas-chicken-teriyaki-footlong-corn-dog-ice-cream-yogurt-cheesesteak-coffee"
+    }
+  ]
+}

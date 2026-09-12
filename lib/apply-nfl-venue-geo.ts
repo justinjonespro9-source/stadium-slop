@@ -54,7 +54,8 @@ export async function applyNflVenueGeo(
       radiusDrift ||
       existing.city !== geo.city ||
       existing.state !== geo.state ||
-      existing.country !== geo.country;
+      existing.country !== geo.country ||
+      existing.timeZone !== geo.timeZone;
 
     if (!needsUpdate) {
       stats.skipped += 1;
@@ -70,7 +71,8 @@ export async function applyNflVenueGeo(
           country: geo.country,
           latitude: geo.latitude,
           longitude: geo.longitude,
-          reviewRadiusMeters: geo.reviewRadiusMeters
+          reviewRadiusMeters: geo.reviewRadiusMeters,
+          timeZone: geo.timeZone
         }
       });
     }

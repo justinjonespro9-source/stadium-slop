@@ -270,9 +270,48 @@ export const NFL_VENUE_GEO: Record<string, NflVenueGeo> = {
     longitude: -112.2625,
     reviewRadiusMeters: 800,
     timeZone: "America/Phoenix"
+  },
+  "u-s-bank-stadium": {
+    name: "U.S. Bank Stadium",
+    city: "Minneapolis",
+    state: "MN",
+    country: "USA",
+    latitude: 44.9738,
+    longitude: -93.2581,
+    reviewRadiusMeters: 800,
+    timeZone: "America/Chicago"
+  },
+  "us-bank-stadium": {
+    name: "U.S. Bank Stadium",
+    city: "Minneapolis",
+    state: "MN",
+    country: "USA",
+    latitude: 44.9738,
+    longitude: -93.2581,
+    reviewRadiusMeters: 800,
+    timeZone: "America/Chicago"
+  },
+  "nissan-stadium": {
+    name: "Nissan Stadium",
+    city: "Nashville",
+    state: "TN",
+    country: "USA",
+    latitude: 36.16639,
+    longitude: -86.77139,
+    reviewRadiusMeters: 800,
+    timeZone: "America/Chicago"
   }
 };
 
 export function getNflVenueGeo(slug: string): NflVenueGeo | undefined {
   return NFL_VENUE_GEO[slug.trim().toLowerCase()];
+}
+
+/** IANA timezone per NFL venue slug for `getVenueTimeZone`. */
+export function buildNflVenueTimeZoneMap(): Record<string, string> {
+  const map: Record<string, string> = {};
+  for (const [slug, geo] of Object.entries(NFL_VENUE_GEO)) {
+    map[slug] = geo.timeZone;
+  }
+  return map;
 }

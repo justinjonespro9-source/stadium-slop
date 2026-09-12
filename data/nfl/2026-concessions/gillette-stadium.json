@@ -1,0 +1,72 @@
+{
+  "venueSlug": "gillette-stadium",
+  "venueName": "Gillette Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.patriots.com/news/legal-sea-foods-named-official-seafood-restaurant-and-clam-chowder-of-the-new-england-patriots-and-gillette-stadium",
+    "title": "Legal Sea Foods Named Official Seafood Restaurant and Clam Chowder of the New England Patriots and Gillette Stadium",
+    "type": "official_team",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Official Patriots/Legal Sea Foods 2026 partnership. Clam Chowder Poutine is a different product. 100 and 300 are the sourced levels; exact stand numbers were not published.",
+  "vendors": [
+    {
+      "name": "Legal Sea Foods",
+      "section": "100, 300",
+      "location": "100, 300",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.patriots.com/news/legal-sea-foods-named-official-seafood-restaurant-and-clam-chowder-of-the-new-england-patriots-and-gillette-stadium",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "New England Clam Chowder",
+      "vendorName": "Legal Sea Foods",
+      "description": "Official 2026 Legal Sea Foods New England Clam Chowder at select 100- and 300-level stands.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100",
+        "300"
+      ],
+      "location": "100, 300",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.patriots.com/news/legal-sea-foods-named-official-seafood-restaurant-and-clam-chowder-of-the-new-england-patriots-and-gillette-stadium",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Lobster Roll",
+      "vendorName": "Legal Sea Foods",
+      "description": "Official 2026 Legal Sea Foods lobster rolls at select 100- and 300-level stands.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100",
+        "300"
+      ],
+      "location": "100, 300",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.patriots.com/news/legal-sea-foods-named-official-seafood-restaurant-and-clam-chowder-of-the-new-england-patriots-and-gillette-stadium",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Clam Chowder Poutine",
+      "existingItemSlug": "clam-chowder-poutine-clam-chowder-poutine",
+      "existingVendorSlug": "clam-chowder-poutine",
+      "recommendation": "manual_review",
+      "evidence": "Existing poutine is not the Legal Sea Foods cup of chowder. Keep both.",
+      "sourceUrl": "https://www.patriots.com/news/legal-sea-foods-named-official-seafood-restaurant-and-clam-chowder-of-the-new-england-patriots-and-gillette-stadium"
+    }
+  ]
+}

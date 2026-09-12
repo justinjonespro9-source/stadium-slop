@@ -1,0 +1,230 @@
+{
+  "venueSlug": "hard-rock-stadium",
+  "venueName": "Hard Rock Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.hardrockstadium.com/concessions/",
+    "title": "Concessions - Hard Rock Stadium",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Live official Hard Rock directory. Production already has a richer parsed menu. This pass updates official locations and adds distinctive missing stands.",
+  "vendors": [
+    {
+      "name": "Sol Cubano",
+      "section": "120, 242, 350",
+      "location": "120, 242, 350",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "sol-cubano"
+    },
+    {
+      "name": "Tacotomia",
+      "section": "231, 341",
+      "location": "231, 341",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "talkin-tacos"
+    },
+    {
+      "name": "Chef Creole",
+      "section": "329",
+      "location": "329",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "305 Sliders",
+      "section": "111",
+      "location": "111",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Asia Bites",
+      "section": "244",
+      "location": "244",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Kebab Joint",
+      "section": "129, 135",
+      "location": "129, 135",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Walking Tacos",
+      "section": "311, 338",
+      "location": "311, 338",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Croquetas",
+      "vendorName": "Sol Cubano",
+      "description": "Official Sol Cubano croquetas at sections 120, 242, and 350.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "120",
+        "242",
+        "350"
+      ],
+      "location": "120, 242, 350",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "existingItemSlug": "croquetas",
+      "existingVendorSlug": "sol-cubano"
+    },
+    {
+      "name": "Cuban Empanadas",
+      "vendorName": "Sol Cubano",
+      "description": "Official Sol Cubano Cuban empanadas at sections 120, 242, and 350.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120",
+        "242",
+        "350"
+      ],
+      "location": "120, 242, 350",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "existingItemSlug": "cuban-empanadas",
+      "existingVendorSlug": "sol-cubano"
+    },
+    {
+      "name": "Street Tacos",
+      "vendorName": "Tacotomia",
+      "description": "Official Tacotomia tacos at sections 231 and 341. Production stored Talkin Tacos.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "231",
+        "341"
+      ],
+      "location": "231, 341",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "existingItemSlug": "street-tacos",
+      "existingVendorSlug": "talkin-tacos"
+    },
+    {
+      "name": "Haitian Plate",
+      "vendorName": "Chef Creole",
+      "description": "Official Chef Creole Haitian stand at section 329. Directory does not print individual SKUs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "329"
+      ],
+      "location": "329",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "305 Sliders",
+      "vendorName": "305 Sliders",
+      "description": "Official 305 Sliders stand at section 111.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "111"
+      ],
+      "location": "111",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Asia Bites",
+      "vendorName": "Asia Bites",
+      "description": "Official Asia Bites stand at section 244.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "244"
+      ],
+      "location": "244",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Chicken Shawarma",
+      "vendorName": "Kebab Joint",
+      "description": "Official Kebab Joint at sections 129 and 135. Updates the existing empty-location shawarma row.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "129",
+        "135"
+      ],
+      "location": "129, 135",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH",
+      "existingItemSlug": "chicken-shawarma"
+    },
+    {
+      "name": "Walking Taco",
+      "vendorName": "Walking Tacos",
+      "description": "Official Walking Tacos stands at sections 311 and 338.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "311",
+        "338"
+      ],
+      "location": "311, 338",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/",
+      "confidence": "HIGH"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "CANTALOUPE / Fan Favorites / Wynwood Walkthrough",
+      "reason": "Generic popcorn, nachos, pretzels, hot dogs."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Coyo Taco",
+      "existingItemSlug": "coyo-taco-coyo-taco",
+      "existingVendorSlug": "coyo-taco",
+      "recommendation": "manual_review",
+      "evidence": "Coyo Taco is not on the live official directory. Tacotomia occupies 231/341.",
+      "sourceUrl": "https://www.hardrockstadium.com/concessions/"
+    }
+  ]
+}

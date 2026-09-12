@@ -1,0 +1,115 @@
+{
+  "venueSlug": "sofi-stadium",
+  "venueName": "SoFi Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.sofistadium.com/news/detail/sofi-stadium-and-legends-global-debut-new-food-beverage-and-merchandise-offerings-for-the-2026-nfl-season",
+    "title": "SoFi Stadium And Legends Global Debut New Food, Beverage And Merchandise Offerings For The 2026 NFL Season",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Official SoFi/Legends 2026 announcement. Existing dining-guide menu left intact except Brookie vendor UPDATE and BBQ location expansion. Frites and unnamed concession SKUs excluded: no printed stand/section.",
+  "vendors": [
+    {
+      "name": "Touchdown Treats",
+      "section": "400, 500",
+      "location": "400, 500",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.sofistadium.com/news/detail/sofi-stadium-and-legends-global-debut-new-food-beverage-and-merchandise-offerings-for-the-2026-nfl-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "touchdown-treats"
+    }
+  ],
+  "items": [
+    {
+      "name": "Brookie",
+      "vendorName": "Touchdown Treats",
+      "description": "Official 2026 Touchdown Treats Brookie at new 400- and 500-level locations.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "400",
+        "500"
+      ],
+      "location": "400, 500",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.sofistadium.com/news/detail/sofi-stadium-and-legends-global-debut-new-food-beverage-and-merchandise-offerings-for-the-2026-nfl-season",
+      "confidence": "HIGH",
+      "notes": "UPDATE existing Brookie to Touchdown Treats. Preserve slug brookie.",
+      "existingItemSlug": "brookie",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Whoopie of the Game",
+      "vendorName": "Touchdown Treats",
+      "description": "Official 2026 Touchdown Treats Whoopie of the Game at 400- and 500-level locations.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "400",
+        "500"
+      ],
+      "location": "400, 500",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.sofistadium.com/news/detail/sofi-stadium-and-legends-global-debut-new-food-beverage-and-merchandise-offerings-for-the-2026-nfl-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Chocolate Cake",
+      "vendorName": "Touchdown Treats",
+      "description": "Official 2026 Touchdown Treats chocolate cake at 400- and 500-level locations.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "400",
+        "500"
+      ],
+      "location": "400, 500",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.sofistadium.com/news/detail/sofi-stadium-and-legends-global-debut-new-food-beverage-and-merchandise-offerings-for-the-2026-nfl-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Gelato",
+      "vendorName": "Touchdown Treats",
+      "description": "Official 2026 Touchdown Treats gelato at 400- and 500-level locations.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "400",
+        "500"
+      ],
+      "location": "400, 500",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.sofistadium.com/news/detail/sofi-stadium-and-legends-global-debut-new-food-beverage-and-merchandise-offerings-for-the-2026-nfl-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "missing_section",
+      "name": "Frites Butter Chicken / Short Rib / Pastrami",
+      "reason": "No printed stand or section."
+    },
+    {
+      "kind": "missing_section",
+      "name": "Baked Ziti / Buffalo Chicken Wrap / SPAM Dog / Pickle Fries / Chicken Club / Jalapeno Cheddar Sausage / Fiesta Chopped Salad",
+      "reason": "Concession refresh SKUs with no stand names."
+    },
+    {
+      "kind": "generic_novelty",
+      "name": "Dippin' Dots",
+      "reason": "Ice cream novelty filler."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": []
+}

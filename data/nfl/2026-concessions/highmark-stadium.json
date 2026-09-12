@@ -1,0 +1,942 @@
+{
+  "venueSlug": "highmark-stadium",
+  "venueName": "Highmark Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+    "title": "Highmark Stadium Food and Beverage Offerings For 2026 Season",
+    "type": "official_team",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Inaugural Highmark Stadium / Legends Global 2026 menu from the official Buffalo Bills article (Aug 12, 2026), with neighborhood-market stand names confirmed by on-site 2026 reporting. Existing Stadium Slop rows are a 2026 headline CSV import of prior-stadium/creative names (Charlie the Butcher, La Nova, Miller Lite Brew Pub, numeric sections). Those rows stay active as STALE_REVIEW unless they are clearly the same 2026 SKU (Beef on Weck, Tim Hortons Coffee). No prices are published. Do not reuse old Orchard Park stand identities.",
+  "vendors": [
+    {
+      "name": "Kaisertown",
+      "section": "Kaisertown",
+      "location": "Kaisertown",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "beef-on-weck"
+    },
+    {
+      "name": "Tim Hortons",
+      "section": "Tim Hortons",
+      "location": "Tim Hortons",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "tim-hortons"
+    },
+    {
+      "name": "Chiavetta's",
+      "section": "Bud Light Marketplace",
+      "location": "Bud Light Marketplace",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Southern Junction",
+      "section": "Pepsi Marketplace",
+      "location": "Pepsi Marketplace",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Rizzo's",
+      "section": "Rizzo's",
+      "location": "Rizzo's",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Anderson's Frozen Custard",
+      "section": "Allentown",
+      "location": "Allentown",
+      "status": "ACTIVE",
+      "sourceUrl": "https://stepoutbuffalo.com/highmark-stadium-surprising-details/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Babcia's Pierogi",
+      "section": "Babcia's Pierogi",
+      "location": "Babcia's Pierogi",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Half Luna Empanadas",
+      "section": "Half Luna Empanadas",
+      "location": "Half Luna Empanadas",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "John Young's Original",
+      "section": "John Young's Original",
+      "location": "John Young's Original",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Park Edge Sweet Shoppe",
+      "section": "Park Edge Sweet Shoppe",
+      "location": "Park Edge Sweet Shoppe",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pham's Kitchen",
+      "section": "Pham's Kitchen",
+      "location": "Pham's Kitchen",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Five Points",
+      "section": "Five Points",
+      "location": "Five Points",
+      "status": "ACTIVE",
+      "sourceUrl": "https://stepoutbuffalo.com/highmark-stadium-surprising-details/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "North Park",
+      "section": "North Park",
+      "location": "North Park",
+      "status": "ACTIVE",
+      "sourceUrl": "https://stepoutbuffalo.com/highmark-stadium-surprising-details/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Black Rock",
+      "section": "Black Rock",
+      "location": "Black Rock",
+      "status": "ACTIVE",
+      "sourceUrl": "https://stepoutbuffalo.com/highmark-stadium-surprising-details/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Billieve Bar",
+      "section": "Billieve Bar",
+      "location": "Billieve Bar",
+      "status": "ACTIVE",
+      "sourceUrl": "https://stepoutbuffalo.com/highmark-stadium-surprising-details/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Beef on Weck",
+      "vendorName": "Kaisertown",
+      "description": "Official 2026 Highmark/Legends Beef on Weck: Wegmans kimmelweck roll, top round, au jus, horseradish, and a dill pickle spear. Sold at Kaisertown. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Kaisertown"
+      ],
+      "location": "Kaisertown",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "existingItemSlug": "beef-on-weck-beef-on-weck",
+      "existingVendorSlug": "beef-on-weck",
+      "notes": "UPDATE of canonical CSV Beef on Weck. Official 2026 SKU uses Wegmans kimmelweck, top round, au jus, and horseradish. Vendor renamed from Beef on Weck to Kaisertown (neighborhood stand on the inaugural Highmark concourse). Do not keep Charlie the Butcher — that is prior-stadium."
+    },
+    {
+      "name": "Tim Hortons Coffee",
+      "vendorName": "Tim Hortons",
+      "description": "Official 2026 Highmark drinks list includes Tim Hortons Coffee. No price is published.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "Tim Hortons"
+      ],
+      "location": "Tim Hortons",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "existingItemSlug": "tim-hortons-tim-hortons",
+      "existingVendorSlug": "tim-hortons",
+      "notes": "UPDATE of the CSV vendor-as-item Tim Hortons row. Official 2026 drinks list confirms Tim Hortons Coffee. Timbits / Blue & Red donut from the CSV are not on the official inaugural menu."
+    },
+    {
+      "name": "Rizzo's Chicken Parm Sandwich",
+      "vendorName": "Rizzo's",
+      "description": "Matty Matheson's official 2026 Highmark sandwich: Portuguese roll, chicken cutlet, pomodoro, mozzarella, parmesan, roasted peppers, and garlic parmesan dressing. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Rizzo's"
+      ],
+      "location": "Rizzo's",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "notes": "Official Bills article names this Rizzo's Chicken Parm Sandwich / Chicken Parm Sub."
+    },
+    {
+      "name": "Chicken Finger Sub",
+      "vendorName": "Five Points",
+      "description": "Official 2026 Highmark sandwich: sub roll, hot sauce, Treasure Cave Blue Cheese, lettuce, and tomato. Five Points is the reported chicken-finger/Royal market on the inaugural concourse. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Five Points"
+      ],
+      "location": "Five Points",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "notes": "Stand mapping from inaugural Highmark neighborhood-market reporting; SKU from official Bills menu."
+    },
+    {
+      "name": "Bills Mafia Stinger",
+      "vendorName": "Five Points",
+      "description": "Official 2026 Highmark sandwich: sub roll, shaved steak, buffalo chicken finger, caramelized onions, cheese whiz, and Treasure Cave Blue Cheese. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Five Points"
+      ],
+      "location": "Five Points",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Royal Sub",
+      "vendorName": "Five Points",
+      "description": "Official 2026 Highmark Royal Sub: fennel sausage, capicola, provolone, lettuce, tomato, and garlic aioli on a sub roll. Five Points is reported as the Royal dish market. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Five Points"
+      ],
+      "location": "Five Points",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Highmark Wings",
+      "vendorName": "Five Points",
+      "description": "Official 2026 Highmark exclusive wings served with Treasure Cave Blue Cheese and celery. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Five Points"
+      ],
+      "location": "Five Points",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "notes": "Stadium-exclusive wing SKU. Official article does not print a stand number; placed at Five Points, the reported chicken market."
+    },
+    {
+      "name": "Spicy Golden BBQ Wings",
+      "vendorName": "Five Points",
+      "description": "Official 2026 Highmark exclusive spicy golden BBQ wings with Treasure Cave Blue Cheese and celery. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Five Points"
+      ],
+      "location": "Five Points",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "John Young's Mumbo Wings",
+      "vendorName": "John Young's Original",
+      "description": "Official 2026 Highmark collaborator wings using John Young's mumbo sauce, served with Treasure Cave Blue Cheese and celery. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "John Young's Original"
+      ],
+      "location": "John Young's Original",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chicken Fingers",
+      "vendorName": "Five Points",
+      "description": "Official 2026 Highmark chicken fingers served with Treasure Cave Blue Cheese. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Five Points"
+      ],
+      "location": "Five Points",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Buffalo Chicken Fingers",
+      "vendorName": "Five Points",
+      "description": "Official 2026 Highmark buffalo chicken fingers served with Treasure Cave Blue Cheese. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Five Points"
+      ],
+      "location": "Five Points",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheese Pizza",
+      "vendorName": "North Park",
+      "description": "Official 2026 Highmark cheese pizza with Saputo Gold Mozzarella and pizza sauce. North Park is the reported pizza-and-subs market. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "North Park"
+      ],
+      "location": "North Park",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pepperoni Pizza",
+      "vendorName": "North Park",
+      "description": "Official 2026 Highmark pepperoni pizza with Saputo Gold Mozzarella, pizza sauce, and cup-and-char pepperoni. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "North Park"
+      ],
+      "location": "North Park",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sausage and Banana Pepper Pizza",
+      "vendorName": "North Park",
+      "description": "Official 2026 Highmark pizza with Saputo Gold Mozzarella, Italian sausage, banana peppers, and pizza sauce. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "North Park"
+      ],
+      "location": "North Park",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Blue and Red Burger",
+      "vendorName": "Black Rock",
+      "description": "Official 2026 Highmark burger: potato bun, Treasure Cave Blue Cheese, and bacon red onion jam. Black Rock is the reported burger-and-dog market. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Black Rock"
+      ],
+      "location": "Black Rock",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sweet Italian Sausage",
+      "vendorName": "Black Rock",
+      "description": "Official 2026 Highmark sweet Italian sausage on a sub roll with stewed peppers and onions. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Black Rock"
+      ],
+      "location": "Black Rock",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Loaded Footlong Hot Dog",
+      "vendorName": "Black Rock",
+      "description": "Official 2026 Highmark Sahlen's footlong hot dog with mustard, hot relish, diced onion, and a pickle spear. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Black Rock"
+      ],
+      "location": "Black Rock",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "notes": "Do not reuse the CSV Sahlen's Hot Dogs row under La Nova Wings; that attachment is malformed/legacy."
+    },
+    {
+      "name": "Highmark Nachos",
+      "vendorName": "North Park",
+      "description": "Official 2026 Highmark nachos: Tostitos, BBQ burnt ends, white queso, pico de gallo, jalapeños, and sour cream. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "North Park"
+      ],
+      "location": "North Park",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH",
+      "notes": "Official SNACKS list does not name a stand; attached to North Park as a concourse market rather than inventing a section number."
+    },
+    {
+      "name": "Orchard Park Party Mix",
+      "vendorName": "North Park",
+      "description": "Official 2026 Highmark snack: Frito-Lay Munchies Mix, fries, crispy onions, fried cheese curds, and Treasure Cave Blue Cheese. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "North Park"
+      ],
+      "location": "North Park",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Poutine",
+      "vendorName": "North Park",
+      "description": "Official 2026 Highmark poutine: fries, cheese curds, and brown gravy. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "North Park"
+      ],
+      "location": "North Park",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chiavetta's BBQ Chicken Platter",
+      "vendorName": "Chiavetta's",
+      "description": "Official 2026 Bud Light Marketplace platter: Chiavetta's BBQ chicken leg quarter, potato salad, and cornbread. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Bud Light Marketplace"
+      ],
+      "location": "Bud Light Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Texas Trinity",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction plate: prime brisket, ancho-cardamom pork spare rib, house-made kielbasa, pickles, mild BBQ, and coconut curry. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Barbacurry Foldie",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction foldie: barbacoa-style beef, garam masala, onions, slaw, and paratha. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cauliflower Foldie",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction vegetarian foldie: cauliflower, bell peppers, onions, coconut curry, and paratha. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Texas Twinkie",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction smoked bacon-wrapped jalapeño stuffed with brisket and cream cheese. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Texish Street Corn",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction street corn: smoked charred corn, paprika aioli, crema, spiced paneer, crushed papadum, and cilantro. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Smoked Street Veg",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction vegetable plate: spinach and coconut sauce, seasonal vegetables, pomegranate, and crema. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Banana Pudding",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction banana pudding with homemade vanilla wafer, banana, and cardamom whipped cream. No price is published.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chocolate Pecan Bar",
+      "vendorName": "Southern Junction",
+      "description": "Official 2026 Southern Junction dessert: pecan pie filling, dark chocolate, Irish whiskey, and buttercream. No price is published.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Pepsi Marketplace"
+      ],
+      "location": "Pepsi Marketplace",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Soft Serve Custard",
+      "vendorName": "Anderson's Frozen Custard",
+      "description": "Official 2026 Anderson's frozen custard: vanilla, chocolate, or swirl. Allentown is the reported pizza-and-custard market. No price is published.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Allentown"
+      ],
+      "location": "Allentown",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Babcia's Pierogis",
+      "vendorName": "Babcia's Pierogi",
+      "description": "Official 2026 Highmark collaborator pierogi with farmers cheese, caramelized onions, and sour cream. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Babcia's Pierogi"
+      ],
+      "location": "Babcia's Pierogi",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bean Empanadas",
+      "vendorName": "Half Luna Empanadas",
+      "description": "Official 2026 Half Luna empanadas: fresh dough, beans, and cilantro sauce. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Half Luna Empanadas"
+      ],
+      "location": "Half Luna Empanadas",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sponge Candy",
+      "vendorName": "Park Edge Sweet Shoppe",
+      "description": "Official 2026 Park Edge Sweet Shoppe sponge candy, a South Buffalo specialty. No price is published.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Park Edge Sweet Shoppe"
+      ],
+      "location": "Park Edge Sweet Shoppe",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Five Spiced Chicken Banh Mi",
+      "vendorName": "Pham's Kitchen",
+      "description": "Official 2026 Pham's Kitchen banh mi: French baguette, char-grilled five-spice chicken, pickled daikon and carrots, cucumber, jalapeño, and cilantro. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pham's Kitchen"
+      ],
+      "location": "Pham's Kitchen",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Traditional Banh Mi",
+      "vendorName": "Pham's Kitchen",
+      "description": "Official 2026 Pham's Kitchen banh mi: French baguette, Viet bologna and pork, pickled daikon and carrots, cucumber, jalapeño, and cilantro. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Pham's Kitchen"
+      ],
+      "location": "Pham's Kitchen",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Labatt Beer Horn",
+      "vendorName": "Billieve Bar",
+      "description": "Official 2026 Highmark exclusive: a reusable bison-horn Labatt drinking vessel sold only at this stadium. Official copy places specialty drinks at bar areas throughout the venue. No price is published.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "Billieve Bar"
+      ],
+      "location": "Billieve Bar",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Tart Cherry Smash",
+      "vendorName": "Billieve Bar",
+      "description": "Official 2026 Highmark signature cocktail: Captain Morgan Spiced Rum, mint, lime, and tart cherry in a bowling-ball souvenir cup. No price is published.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "Billieve Bar"
+      ],
+      "location": "Billieve Bar",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season",
+      "confidence": "HIGH"
+    }
+  ],
+  "staleReview": [
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The \"Battle Boat\"",
+      "existingItemSlug": "the-battle-boat-the-battle-boat",
+      "existingVendorSlug": "the-battle-boat",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: absent from the official inaugural 2026 Highmark/Legends menu. CSV used old-style section numbers (124 & 306) that do not match the new neighborhood-market concourse. Left active; do not auto-hide.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Queen City Weck",
+      "existingItemSlug": "the-queen-city-weck-the-queen-city-weck",
+      "existingVendorSlug": "the-queen-city-weck",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: official 2026 SKU is Beef on Weck (Wegmans kimmelweck, au jus, horseradish), not Queen City Weck with horseradish beer cheese fondue. CSV location '716 Stands' is prior-stadium language. Left active; do not auto-hide.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "All-Dressed Chicken Tenders",
+      "existingItemSlug": "all-dressed-chicken-tenders-all-dressed-chicken-tenders",
+      "existingVendorSlug": "all-dressed-chicken-tenders",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: not on the official 2026 Highmark menu. Official chicken items are Chicken Fingers / Buffalo Chicken Fingers with Treasure Cave Blue Cheese, not an all-dressed chip spice blend. CSV located it at Miller Lite Brew Pub, which is not a 2026 Highmark market. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The MVP Sandwich",
+      "existingItemSlug": "the-mvp-sandwich-the-mvp-sandwich",
+      "existingVendorSlug": "the-mvp-sandwich",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: flank-steak MVP sandwich is absent from the official 2026 sandwich list (Beef on Weck, Chicken Finger Sub, Bills Mafia Stinger, Royal Sub, Rizzo's Chicken Parm). Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Hippo Pocket",
+      "existingItemSlug": "the-hippo-pocket-the-hippo-pocket",
+      "existingVendorSlug": "the-hippo-pocket",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: not on the official inaugural Highmark/Legends menu. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "La Nova Wings",
+      "existingItemSlug": "la-nova-wings-la-nova-wings",
+      "existingVendorSlug": "la-nova-wings",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: La Nova is not a named 2026 Highmark collaborator. Official wing program is Highmark Wings, Spicy Golden BBQ Wings, and John Young's Mumbo Wings. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Sahlen’s Hot Dogs",
+      "existingItemSlug": "la-nova-wings-sahlen-s-hot-dogs",
+      "existingVendorSlug": "la-nova-wings",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: malformed CSV row (Sahlen's dogs attached to La Nova Wings). Official 2026 SKU is Loaded Footlong Hotdog on Sahlen's, created as a new Black Rock item rather than rewriting this wrong vendor attachment. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Perry’s Ice Cream",
+      "existingItemSlug": "perry-s-ice-cream-perry-s-ice-cream",
+      "existingVendorSlug": "perry-s-ice-cream",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: official 2026 frozen dessert collaborator is Anderson's Frozen Custard, not Perry's. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Miller Lite Brew Pub",
+      "existingItemSlug": "the-miller-lite-brew-pub-the-miller-lite-brew-pub",
+      "existingVendorSlug": "the-miller-lite-brew-pub",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: this is a place-as-item leftover. Official 2026 beer marketplaces are Bud Light Marketplace and Pepsi Marketplace, not a Miller Lite Brew Pub food item. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Jack in Black",
+      "existingItemSlug": "jack-in-black-jack-in-black",
+      "existingVendorSlug": "jack-in-black",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: Jack Daniel's espresso cocktail is not on the official 2026 specialty-drink list (Labatt Beer Horn, Tart Cherry Smash). CSV also stored it as a non-alcoholic drink. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Cocktail Carafe",
+      "existingItemSlug": "jack-in-black-the-cocktail-carafe",
+      "existingVendorSlug": "jack-in-black",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: souvenir carafe / Bills Blue Lemonade is not on the official 2026 Highmark drink list. Official souvenir cocktail is the Tart Cherry Smash bowling-ball cup. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Chickpea Blitz",
+      "existingItemSlug": "the-chickpea-blitz-the-chickpea-blitz",
+      "existingVendorSlug": "the-chickpea-blitz",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: not on the official 2026 Highmark menu. Official vegetarian plates include Cauliflower Foldie and Smoked Street Veg at Southern Junction. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Spitako Chicken",
+      "existingItemSlug": "spitako-chicken-spitako-chicken",
+      "existingVendorSlug": "spitako-chicken",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: not a named 2026 Highmark collaborator or SKU. CSV used old section 218 numbering. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Vegan \"Powerhouse\" Quesadilla",
+      "existingItemSlug": "vegan-powerhouse-quesadilla-vegan-powerhouse-quesadilla",
+      "existingVendorSlug": "vegan-powerhouse-quesadilla",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: not on the official 2026 Highmark menu. CSV located it at Miller Lite Brew Pub, which is not a current Highmark market. Left active.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    }
+  ],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Queen City Weck",
+      "existingItemSlug": "the-queen-city-weck-the-queen-city-weck",
+      "existingVendorSlug": "the-queen-city-weck",
+      "recommendation": "manual_review",
+      "evidence": "Same product family as official Beef on Weck, but CSV describes horseradish beer cheese fondue versus official au jus and horseradish. Do not merge.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "La Nova Wings",
+      "existingItemSlug": "la-nova-wings-la-nova-wings",
+      "existingVendorSlug": "la-nova-wings",
+      "recommendation": "manual_review",
+      "evidence": "Uncertain relationship to Highmark Wings / John Young's Mumbo Wings. Different operator brand; do not merge.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Perry’s Ice Cream",
+      "existingItemSlug": "perry-s-ice-cream-perry-s-ice-cream",
+      "existingVendorSlug": "perry-s-ice-cream",
+      "recommendation": "manual_review",
+      "evidence": "Different local frozen-dessert brand from official Anderson's Frozen Custard. Do not merge.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "All-Dressed Chicken Tenders",
+      "existingItemSlug": "all-dressed-chicken-tenders-all-dressed-chicken-tenders",
+      "existingVendorSlug": "all-dressed-chicken-tenders",
+      "recommendation": "manual_review",
+      "evidence": "Not confirmed as the official Chicken Fingers SKU (all-dressed chip spice vs Treasure Cave Blue Cheese). Do not merge.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Sahlen’s Hot Dogs",
+      "existingItemSlug": "la-nova-wings-sahlen-s-hot-dogs",
+      "existingVendorSlug": "la-nova-wings",
+      "recommendation": "manual_review",
+      "evidence": "Same brand family as Loaded Footlong Hot Dog, but attached to the wrong vendor and missing the official loaded build. Do not rewrite this row into the new Black Rock item.",
+      "sourceUrl": "https://www.buffalobills.com/news/highmark-stadium-food-and-beverage-offerings-for-2026-season"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic",
+      "name": "Pepsi / Diet Pepsi / Starry / Gatorade / Aquafina / LIFEWTR",
+      "reason": "Generic packaged drinks."
+    },
+    {
+      "kind": "generic",
+      "name": "Popcorn / Soft Pretzel / Lay's / Doritos / Cheetos / Fritos",
+      "reason": "Generic packaged snacks."
+    },
+    {
+      "kind": "generic",
+      "name": "French Fries",
+      "reason": "Plain fries without a distinctive build."
+    },
+    {
+      "kind": "generic",
+      "name": "Chips & Cheese",
+      "reason": "Generic chips-and-cheese cup."
+    },
+    {
+      "kind": "generic",
+      "name": "Hotdog",
+      "reason": "Plain Sahlen's dog without the official loaded/footlong build."
+    },
+    {
+      "kind": "generic",
+      "name": "Cheeseburger",
+      "reason": "Standard cheeseburger; Blue and Red Burger is the distinctive Highmark burger."
+    },
+    {
+      "kind": "generic",
+      "name": "Family Style Pepperoni",
+      "reason": "Size variant of pepperoni pizza, not a separate plated SKU for Stadium Slop."
+    },
+    {
+      "kind": "generic",
+      "name": "Blue Cheese Cup",
+      "reason": "Side cup, not a reviewable plated item."
+    },
+    {
+      "kind": "generic",
+      "name": "Nikki's Assorted Chocolates & Candies",
+      "reason": "Assorted candy heading."
+    },
+    {
+      "kind": "generic",
+      "name": "M&Ms / Reese's / Sour Patch / Swedish Fish",
+      "reason": "Packaged candy."
+    },
+    {
+      "kind": "ingredient-program",
+      "name": "Urban Fruits & Veggies / Buffalo Go Green peppers",
+      "reason": "Ingredient/hot-sauce greenhouse partnership, not a plated menu item."
+    },
+    {
+      "kind": "unmapped-size",
+      "name": "Footlong Hotdog",
+      "reason": "Official lists a plain Sahlen's footlong plus the loaded footlong; only the loaded build is imported."
+    }
+  ]
+}

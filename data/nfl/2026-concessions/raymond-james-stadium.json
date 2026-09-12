@@ -1,0 +1,483 @@
+{
+  "venueSlug": "raymond-james-stadium",
+  "venueName": "Raymond James Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+    "title": "Food & Drink Offerings at Raymond James Stadium",
+    "type": "official_team",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Live official Buccaneers food-beverage page plus the official specialty-items page. Aussie Grill stays at 118/204/241 from the specialty page; F&B 143 is Bucs Burger. No labeledNewFor2026 \u2014 neither official page says these must-tries are new for 2026. No deactivations.",
+  "vendors": [
+    {
+      "name": "Tampa Mojo Chicken & Yellow Rice Bowl",
+      "section": "115",
+      "location": "115",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "tampa-mojo-chicken-yellow-rice-bowl"
+    },
+    {
+      "name": "The \"Sweet Stack\"",
+      "section": "129, 207, 232",
+      "location": "129, 207, 232",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "the-sweet-stack"
+    },
+    {
+      "name": "Colony Grill",
+      "section": "109, 134, 311, 336",
+      "location": "109, 134, 311, 336",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "colony-grill"
+    },
+    {
+      "name": "Tampa Fried Chicken Co.",
+      "section": "317, 329",
+      "location": "317, 329",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "tampa-fried-chicken-co"
+    },
+    {
+      "name": "Aussie Grill",
+      "section": "118, 204, 241",
+      "location": "118, 204, 241",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "existingVendorSlug": "aussie-grill"
+    },
+    {
+      "name": "Chicken Shawarma",
+      "section": "140, 210, 234",
+      "location": "140, 210, 234",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Beef Birria Tacos",
+      "section": "137",
+      "location": "137",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bucs Burger",
+      "section": "143",
+      "location": "143",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Burnt End Mac & Cheese",
+      "section": "114, 139, 213, 238, 307, 339",
+      "location": "114, 139, 213, 238, 307, 339",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Burnt End Sandwich",
+      "section": "114, 139, 213, 238, 307, 339",
+      "location": "114, 139, 213, 238, 307, 339",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Meatball Sub",
+      "section": "208, 233",
+      "location": "208, 233",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Montreal Smoked Beef Sandwich",
+      "section": "207, 232",
+      "location": "207, 232",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bucs Sundae",
+      "section": "207, 232",
+      "location": "207, 232",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Tampa Mojo Chicken & Yellow Rice Bowl",
+      "vendorName": "Tampa Mojo Chicken & Yellow Rice Bowl",
+      "description": "Official must-try Tampa Mojo Chicken and Yellow Rice Bowl at section 115.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115"
+      ],
+      "location": "115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "tampa-mojo-chicken-yellow-rice-bowl-tampa-mojo-chicken-yellow-rice-bowl",
+      "existingVendorSlug": "tampa-mojo-chicken-yellow-rice-bowl"
+    },
+    {
+      "name": "The \"Sweet Stack\"",
+      "vendorName": "The \"Sweet Stack\"",
+      "description": "Official must-try Sweet Stack at sections 129, 207, and 232.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "129",
+        "207",
+        "232"
+      ],
+      "location": "129, 207, 232",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "the-sweet-stack-the-sweet-stack",
+      "existingVendorSlug": "the-sweet-stack"
+    },
+    {
+      "name": "Colony Grill",
+      "vendorName": "Colony Grill",
+      "description": "Official Colony Grill at sections 109, 134, 311, and 336.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109",
+        "134",
+        "311",
+        "336"
+      ],
+      "location": "109, 134, 311, 336",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "colony-grill-colony-grill",
+      "existingVendorSlug": "colony-grill"
+    },
+    {
+      "name": "Colony Grill Hot Oil Pizza Slice",
+      "vendorName": "Colony Grill",
+      "description": "Official Colony Grill thin-crust hot oil pizza at sections 109, 134, 311, and 336.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109",
+        "134",
+        "311",
+        "336"
+      ],
+      "location": "109, 134, 311, 336",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "existingItemSlug": "colony-grill-hot-oil-pizza-slice",
+      "existingVendorSlug": "colony-grill"
+    },
+    {
+      "name": "Tampa Fried Chicken Co.",
+      "vendorName": "Tampa Fried Chicken Co.",
+      "description": "Official Tampa Fried Chicken Co. at sections 317 and 329.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "317",
+        "329"
+      ],
+      "location": "317, 329",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "tampa-fried-chicken-co-tampa-fried-chicken-co",
+      "existingVendorSlug": "tampa-fried-chicken-co"
+    },
+    {
+      "name": "Tampa Fried Chicken Sandwich",
+      "vendorName": "Tampa Fried Chicken Co.",
+      "description": "Official Tampa Fried Chicken Co. sandwich at sections 317 and 329.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "317",
+        "329"
+      ],
+      "location": "317, 329",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "existingItemSlug": "tampa-fried-chicken-sandwich",
+      "existingVendorSlug": "tampa-fried-chicken-co"
+    },
+    {
+      "name": "Aussie Grill Original Chicken Sandwich",
+      "vendorName": "Aussie Grill",
+      "description": "Official Aussie Grill Original Chicken Sandwich at sections 118, 204, and 241.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118",
+        "204",
+        "241"
+      ],
+      "location": "118, 204, 241",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "existingVendorSlug": "aussie-grill"
+    },
+    {
+      "name": "Chicken Shawarma",
+      "vendorName": "Chicken Shawarma",
+      "description": "Official must-try Chicken Shawarma at sections 140, 210, and 234.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "140",
+        "210",
+        "234"
+      ],
+      "location": "140, 210, 234",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Beef Birria Tacos",
+      "vendorName": "Beef Birria Tacos",
+      "description": "Slow roasted barbacoa, cotija, cilantro, and pickled red onion in a crisp tortilla at section 137.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "137"
+      ],
+      "location": "137",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Bucs Burger",
+      "vendorName": "Bucs Burger",
+      "description": "Cheeseburger topped with brisket, served with tater tots at section 143.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "143"
+      ],
+      "location": "143",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Burnt End Mac & Cheese",
+      "vendorName": "Burnt End Mac & Cheese",
+      "description": "Burnt ends, mac and cheese, fried onions, BBQ drizzle, and Cheeto dust.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "139",
+        "213",
+        "238",
+        "307",
+        "339"
+      ],
+      "location": "114, 139, 213, 238, 307, 339",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Burnt End Sandwich",
+      "vendorName": "Burnt End Sandwich",
+      "description": "BBQ burnt ends and fried onions on a potato roll.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "139",
+        "213",
+        "238",
+        "307",
+        "339"
+      ],
+      "location": "114, 139, 213, 238, 307, 339",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Meatball Sub",
+      "vendorName": "Meatball Sub",
+      "description": "Hoagie roll, meatballs, marinara, and mozzarella at sections 208 and 233.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "208",
+        "233"
+      ],
+      "location": "208, 233",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Montreal Smoked Beef Sandwich",
+      "vendorName": "Montreal Smoked Beef Sandwich",
+      "description": "Slow roasted pastrami on marble rye with kettle chips at sections 207 and 232.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "207",
+        "232"
+      ],
+      "location": "207, 232",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Bucs Sundae",
+      "vendorName": "Bucs Sundae",
+      "description": "Soft serve vanilla, strawberry sauce, whipped cream, sprinkles, mini cupcake, and donut hole.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "207",
+        "232"
+      ],
+      "location": "207, 232",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "$10 Kids Meals / $20 Family Meal / Chip & Soda Combo / Pretzel & Cheese Bundle",
+      "reason": "Value combos of hot dogs, chips, pretzels, and fountain soda."
+    },
+    {
+      "kind": "generic_combo",
+      "name": "$22 Tampa 2",
+      "reason": "Tampa Cuban plus 24 oz Pepsi at 132. Combo soda is generic; Cuban sandwich mapping is uncertain vs existing Cuban Dog / Pressed Cuban."
+    },
+    {
+      "kind": "no_sku",
+      "name": "Tampa Bay Chef Series",
+      "reason": "Named club/section locations only; no plated SKUs."
+    },
+    {
+      "kind": "no_sku",
+      "name": "Checkers & Rally's",
+      "reason": "2026 stand expansion has no distinctive sourced SKU."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Walking Taco / Grilled Bratwurst",
+      "reason": "Generic snack/sausage listings on the specialty page."
+    },
+    {
+      "kind": "uncertain_sku",
+      "name": "BBQ Bacon Dog / BBQ Bacon Footlong Dog",
+      "reason": "Official name is BBQ Bacon Dog but the published description is buffalo chicken dip. Skip rather than guess."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Healthy Bowl",
+      "existingItemSlug": "healthy-bowl-healthy-bowl",
+      "existingVendorSlug": "healthy-bowl",
+      "recommendation": "manual_review",
+      "evidence": "Chicken Shawarma is listed at 140, 210, and 234. Production Healthy Bowl is at 140 (quinoa/kale bowls). Keep both; do not merge.",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Pressed Cuban",
+      "existingItemSlug": "ybor-press-the-pressed-cuban",
+      "existingVendorSlug": "ybor-press",
+      "recommendation": "manual_review",
+      "evidence": "Meatball Sub is listed at 208 and 233, the same sections as Ybor Press. Tampa 2 Cuban combo is at 132. Do not merge.",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Tampa Cuban Dog",
+      "existingItemSlug": "the-tampa-cuban-dog-the-tampa-cuban-dog",
+      "existingVendorSlug": "the-tampa-cuban-dog",
+      "recommendation": "manual_review",
+      "evidence": "Tampa 2 combo names a Tampa Cuban at 132, overlapping Cuban Dog sections 107/132. Not imported as a new sandwich.",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Hot Pastrami Marble Rye",
+      "existingItemSlug": "desoto-deli-hot-pastrami-marble-rye",
+      "existingVendorSlug": "desoto-deli",
+      "recommendation": "manual_review",
+      "evidence": "Montreal Smoked Beef Sandwich is pastrami on marble rye at 207/232. Desoto Deli pastrami is at 107/132. Keep both.",
+      "sourceUrl": "https://www.buccaneers.com/specialty-food-items-raymond-james-stadium"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Aussie Grill",
+      "existingItemSlug": "aussie-grill-aussie-grill",
+      "existingVendorSlug": "aussie-grill",
+      "recommendation": "manual_review",
+      "evidence": "F&B lists Aussie Grill at 118 and 143. Specialty page puts Original Chicken Sandwich at 118/204/241 and Bucs Burger at 143. Kept production Aussie sections; created Bucs Burger at 143.",
+      "sourceUrl": "https://www.buccaneers.com/stadium/gameday/food-beverage"
+    }
+  ]
+}

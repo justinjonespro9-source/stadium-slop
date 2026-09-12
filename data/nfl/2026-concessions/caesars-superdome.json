@@ -1,0 +1,155 @@
+{
+  "venueSlug": "caesars-superdome",
+  "venueName": "Caesars Superdome",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+    "title": "Saints and Legends Global enhance food and beverage experience at Caesars Superdome for 2026 season",
+    "type": "official_team",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "Official Saints/Legends 2026 announcement. Existing Louisiana items are returning favorites and left as MATCH by omission. Lucky Dog is a documented return. Rotating 2026 specialties are labeled new. $6 anniversary staples excluded. No stand numbers for most 2026 specialties; use sourced concept tokens only.",
+  "vendors": [
+    {
+      "name": "Lucky Dog",
+      "section": "Lucky Dog",
+      "location": "Lucky Dog",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bayou Smash",
+      "section": "Bayou Smash",
+      "location": "Bayou Smash",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Dome Nachos",
+      "section": "Dome Nachos",
+      "location": "Dome Nachos",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Jewel of the South",
+      "section": "Jewel of the South",
+      "location": "Jewel of the South",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Lucky Dog",
+      "vendorName": "Lucky Dog",
+      "description": "Official 2026 Saints/Legends announcement confirms the highly anticipated return of Lucky Dog. Exact section is not printed.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Lucky Dog"
+      ],
+      "location": "Lucky Dog",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH",
+      "notes": "Returning favorite, not labeled as a 2026 launch.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Bayou Smash Burgers",
+      "vendorName": "Bayou Smash",
+      "description": "Official 2026 rotating specialty: Bayou Smash Burgers. Stand number is not printed.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Bayou Smash"
+      ],
+      "location": "Bayou Smash",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Pork and Alligator Burger",
+      "vendorName": "Bayou Smash",
+      "description": "Official 2026 rotating specialty pork and alligator burger. Stand number is not printed.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Bayou Smash"
+      ],
+      "location": "Bayou Smash",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Dome Nachos",
+      "vendorName": "Dome Nachos",
+      "description": "Official 2026 rotating specialty nachos with pork carnitas, chicken tinga, or house-made seafood queso.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "Dome Nachos"
+      ],
+      "location": "Dome Nachos",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Jewel of the South Cocktail",
+      "vendorName": "Jewel of the South",
+      "description": "Official 2026 signature cocktail program created with Jewel of the South. Individual recipes were not published.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "Jewel of the South"
+      ],
+      "location": "Jewel of the South",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "$6 Anniversary Menu",
+      "reason": "Hot dogs, popcorn, pretzels, nachos, Dasani, select draft beer."
+    },
+    {
+      "kind": "partner_without_sku",
+      "name": "King Creole / Mrs. Wheats / Sweet Soulfood / Haydel's",
+      "reason": "Named partners without a published SKU."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Seafood Nachos",
+      "existingItemSlug": "504-eats-seafood-nachos",
+      "existingVendorSlug": "504-eats",
+      "recommendation": "manual_review",
+      "evidence": "Existing Seafood Nachos may overlap 2026 Dome Nachos seafood queso. Do not merge.",
+      "sourceUrl": "https://www.neworleanssaints.com/news/saints-gameday-concessions-value-menu-upgrades-caesars-superdome-2026-nfl-season"
+    }
+  ]
+}

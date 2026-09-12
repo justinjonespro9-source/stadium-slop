@@ -1,0 +1,1143 @@
+{
+  "venueSlug": "u-s-bank-stadium",
+  "venueName": "U.S. Bank Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.usbankstadium.com/guest-experience/concessions",
+    "title": "Concessions | U.S. Bank Stadium (Aramark)",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-11"
+  },
+  "notes": "U.S. Bank reconciliation against the live official Aramark concessions directory (Food Selections + Portable Stands + Concession Stands), the Aramark 2026 NFL kickoff release (Wedbush/Bizwire), FoodService Director's 2026 stadium-menu roundup, and Mpls.St.Paul Magazine's Sept 11, 2026 new-food preview. Production slug is u-s-bank-stadium. Existing Stadium Slop rows are mostly a 2026 headline CSV plus three native reviewed records (Parlour Burger, Smokehouse Brisket Stack, Upper Deck Cold Nachos). Canonical matches are updated in place. Hippo Pocket is confirmed on Centro's 2026 program by MSP Mag and is UPDATE, not STALE. Official directory prints no prices. Do not treat CSV isNewThisSeason as 2026-new evidence. Smokehouse and Upper Deck reviewed rows are left untouched. No deletes or hides.",
+  "vendors": [
+    {
+      "name": "Parlour",
+      "section": "118",
+      "location": "118",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "parlour-burger"
+    },
+    {
+      "name": "Soul Bowl",
+      "section": "317",
+      "location": "317",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "soul-bowl"
+    },
+    {
+      "name": "Be Graceful",
+      "section": "121, 329",
+      "location": "121, 329",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "be-graceful"
+    },
+    {
+      "name": "Original Hockey Mom Brownies",
+      "section": "111, 360",
+      "location": "111, 360",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "official-hockey-mom-brownies"
+    },
+    {
+      "name": "Von Hanson's Brats",
+      "section": "131, 317",
+      "location": "131, 317",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "von-hanson-s-meats"
+    },
+    {
+      "name": "Centro",
+      "section": "105",
+      "location": "105",
+      "status": "ACTIVE",
+      "sourceUrl": "https://investor.wedbush.com/wedbush/article/bizwire-2026-9-9-aramark-sports-entertainment-kicks-off-2026-nfl-season-across-eight-nfl-stadiums-with-new-menu-items-enhanced-premium-experiences-and-local-partnerships",
+      "confidence": "HIGH",
+      "existingVendorSlug": "the-hippo-pocket"
+    },
+    {
+      "name": "North Star Grill",
+      "section": "103, 124, 132, 304, 313, 328, 345",
+      "location": "103, 124, 132, 304, 313, 328, 345",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Kenny's Meatball Wagon",
+      "section": "110",
+      "location": "110",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "La Borinqua",
+      "section": "110",
+      "location": "110",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Ben's Pretzels",
+      "section": "129, 317",
+      "location": "129, 317",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Tap Society",
+      "section": "124",
+      "location": "124",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Wells Roadside",
+      "section": "103",
+      "location": "103",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Tender Lovin Chix",
+      "section": "121",
+      "location": "121",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sweet Habits",
+      "section": "119",
+      "location": "119",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Curds N Cakes",
+      "section": "114, 310",
+      "location": "114, 310",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pothole Pizza",
+      "section": "114, 134, 307, 349",
+      "location": "114, 134, 307, 349",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Rusty Taco",
+      "section": "105, 113, 122, 311, 317, 341",
+      "location": "105, 113, 122, 311, 317, 341",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Walking Taco",
+      "section": "119, 134, 360",
+      "location": "119, 134, 360",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "MN Brat",
+      "section": "101, 348",
+      "location": "101, 348",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mac Truck Mac & Cheese",
+      "section": "111",
+      "location": "111",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Heritage Tea House & Wings",
+      "section": "344",
+      "location": "344",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "O'Cheese",
+      "section": "109",
+      "location": "109",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Steak & Cheese",
+      "section": "107, 334",
+      "location": "107, 334",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Schweigerts Hot Dogs",
+      "section": "131, 317",
+      "location": "131, 317",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Love You Cookie",
+      "section": "346",
+      "location": "346",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "T-Rex Cookies",
+      "section": "129",
+      "location": "129",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mini Donuts",
+      "section": "111, 328",
+      "location": "111, 328",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Maui Wowi",
+      "section": "111",
+      "location": "111",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Minnesnowii",
+      "section": "304",
+      "location": "304",
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Union",
+      "section": "111",
+      "location": "111",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Parlour Burger",
+      "vendorName": "Parlour",
+      "description": "Parlour's stadium smashburger with American cheese and secret sauce, sold at the official Parlour stand. Official 2026 Aramark directory lists Parlour at section 118 only.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118"
+      ],
+      "location": "118",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "UPDATE of reviewed canonical Parlour Burger. Preserve slug parlour-burger-parlour-burger. Vendor renamed from Parlour Burger to official stand name Parlour. Drop unsourced CSV section 344.",
+      "existingItemSlug": "parlour-burger-parlour-burger",
+      "existingVendorSlug": "parlour-burger"
+    },
+    {
+      "name": "Soul Bowl",
+      "vendorName": "Soul Bowl",
+      "description": "Official Soul Bowl concession stand on the 2026 Aramark directory at section 317. Directory does not reprint individual bowl SKUs.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "317"
+      ],
+      "location": "317",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "UPDATE location to official section 317. Drop unsourced CSV section 214. Keep vendor-as-item because the directory lists the named concept without SKUs.",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "soul-bowl-soul-bowl",
+      "existingVendorSlug": "soul-bowl"
+    },
+    {
+      "name": "Be Graceful",
+      "vendorName": "Be Graceful",
+      "description": "Official Be Graceful GF and vegan food-options stand at sections 121 and 329.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "121",
+        "329"
+      ],
+      "location": "121, 329",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "UPDATE locations from CSV 121, 328 to official 121, 329. Keep named concept row; directory does not print individual vegan SKUs.",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "be-graceful-be-graceful",
+      "existingVendorSlug": "be-graceful"
+    },
+    {
+      "name": "Original Hockey Mom Brownies",
+      "vendorName": "Original Hockey Mom Brownies",
+      "description": "Official Original Hockey Mom Brownies stand. Food Selections list brownies and GF brownies at sections 111 and 360.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "111",
+        "360"
+      ],
+      "location": "111, 360",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "UPDATE official stand name (CSV said Official Hockey Mom Brownies) and replace vague Multiple Sections with 111, 360.",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "official-hockey-mom-brownies-official-hockey-mom-brownies",
+      "existingVendorSlug": "official-hockey-mom-brownies"
+    },
+    {
+      "name": "Brat-in-a-Blanket",
+      "vendorName": "Von Hanson's Brats",
+      "description": "Von Hanson's bratwurst wrapped in a seasoned pretzel crust, sold at the official Von Hanson's Brats stands.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "131",
+        "317"
+      ],
+      "location": "131, 317",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "UPDATE canonical Von Hanson's Meats vendor-as-item to official stand name Von Hanson's Brats and the distinctive Brat-in-a-Blanket product. Locations 131, 317 replace unsourced CSV 103, 124, 237.",
+      "existingItemSlug": "von-hanson-s-meats-von-hanson-s-meats",
+      "existingVendorSlug": "von-hanson-s-meats"
+    },
+    {
+      "name": "The Hippo Pocket",
+      "vendorName": "Centro",
+      "description": "Centro's Hippo Pocket: a deep-fried tortilla pocket stuffed with seasoned beef, queso, lettuce, tomato, and lime crema, with a Philly cheesesteak version also offered. Mpls.St.Paul Magazine's Sept 11, 2026 preview confirms Hippo Pockets on Centro's current U.S. Bank program alongside loaded nachos and purple-and-gold soft-serve margaritas.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "349"
+      ],
+      "location": "349",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "UPDATE, not STALE. Official Aramark directory does not list a Hippo Pocket stand, but current-season MSP Mag attributes Hippo Pockets to Centro. Preserve slug. Do not invent section 105 from the margarita listing; keep CSV section 349 until Centro prints a Hippo Pocket section.",
+      "existingItemSlug": "the-hippo-pocket-the-hippo-pocket",
+      "existingVendorSlug": "the-hippo-pocket"
+    },
+    {
+      "name": "The Raid Burger",
+      "vendorName": "North Star Grill",
+      "description": "Aramark 2026 debut: double bacon cheeseburger topped with buffalo cheese curds, an onion ring, and ranch on a brioche bun. Official Aramark kickoff release lists sections 101 and 328.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "101",
+        "328"
+      ],
+      "location": "101, 328",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://investor.wedbush.com/wedbush/article/bizwire-2026-9-9-aramark-sports-entertainment-kicks-off-2026-nfl-season-across-eight-nfl-stadiums-with-new-menu-items-enhanced-premium-experiences-and-local-partnerships",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026 from Aramark/Wedbush and FoodService Director. North Star Grill is the official stand that includes 328; 101 is the Aramark item location (also MN Brat Dog). Do not attribute to Birch's without a 2026 official source.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Kenny's Meatball Sub",
+      "vendorName": "Kenny's Meatball Wagon",
+      "description": "Aramark 2026 debut: meatballs and marinara on a toasted bun at section 110. MSP Mag describes Kenny's Meatball Wagon / Sweet Taste of Italy combining meatballs with garlic bread at the same section.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "110"
+      ],
+      "location": "110",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://investor.wedbush.com/wedbush/article/bizwire-2026-9-9-aramark-sports-entertainment-kicks-off-2026-nfl-season-across-eight-nfl-stadiums-with-new-menu-items-enhanced-premium-experiences-and-local-partnerships",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. Official directory lists Blue Line Bar at 110; do not collapse Kenny's into that bar.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Soft Serve Margarita",
+      "vendorName": "Centro",
+      "description": "Aramark 2026 debut: purple-and-gold Vikings-colored soft-serve margarita for fans 21+ with valid ID, section 105. MSP Mag confirms Centro's viral soft-serve margaritas this season.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "105"
+      ],
+      "location": "105",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://investor.wedbush.com/wedbush/article/bizwire-2026-9-9-aramark-sports-entertainment-kicks-off-2026-nfl-season-across-eight-nfl-stadiums-with-new-menu-items-enhanced-premium-experiences-and-local-partnerships",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. Attach to Centro (Hippo Pocket vendor renamed in place). Official directory does not print the Centro stand name.",
+      "existingVendorSlug": "the-hippo-pocket",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Puerto Rican Rice Bowl",
+      "vendorName": "La Borinqua",
+      "description": "New 2026 vendor La Borinqua at section 110: gluten-free Puerto Rican rice bowls with three protein options, from family recipes including roasted pork.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "110"
+      ],
+      "location": "110",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026 from MSP Mag. Same section as Kenny's and Blue Line Bar; keep as its own restaurant partner.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Pincho Chicken Kabobs",
+      "vendorName": "La Borinqua",
+      "description": "New 2026 La Borinqua pincho chicken kabobs at section 110.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "110"
+      ],
+      "location": "110",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026 from MSP Mag.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Cinnamon Sugar Pretzel",
+      "vendorName": "Ben's Pretzels",
+      "description": "New 2026 Ben's Pretzels gluten-free and vegan share-sized cinnamon sugar pretzel, prepared same-day, sections 129 and 317.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "129",
+        "317"
+      ],
+      "location": "129, 317",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. Specialty GF/vegan share pretzel, not generic pretzel filler.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Lightly Salted Share Pretzel",
+      "vendorName": "Ben's Pretzels",
+      "description": "New 2026 Ben's Pretzels gluten-free and vegan share-sized original lightly salted pretzel, prepared same-day, sections 129 and 317.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "129",
+        "317"
+      ],
+      "location": "129, 317",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. Specialty GF/vegan share pretzel, not generic pretzel filler.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Bacon Cheeseburger",
+      "vendorName": "Tap Society",
+      "description": "New 2026 Tap Society bacon cheeseburger at section 124.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "124"
+      ],
+      "location": "124",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. Tap Society is not on the official stand list; North Star Grill is also at 124. Keep as the named 2026 partner.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Ghost Smashburger",
+      "vendorName": "Tap Society",
+      "description": "New 2026 Tap Society Ghost Smashburger at section 124.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "124"
+      ],
+      "location": "124",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Wells Burger",
+      "vendorName": "Wells Roadside",
+      "description": "New 2026 Wells Roadside Wells Burger at section 103.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "103"
+      ],
+      "location": "103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. North Star Grill is also listed at 103; keep Wells Roadside as the named partner.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "TLC Smash or Pass Double Cheeseburger",
+      "vendorName": "Tender Lovin Chix",
+      "description": "New 2026 Tender Lovin Chix TLC Smash or Pass Double Cheeseburger at section 121.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "121"
+      ],
+      "location": "121",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. Official directory lists Nashville Coop at 121; flagged as possible duplicate of that stand identity.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Mango Tango",
+      "vendorName": "Sweet Habits",
+      "description": "New 2026 Sweet Habits dirty soda at section 119: Mango Tango with a hint of spice over sweet fruit.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "119"
+      ],
+      "location": "119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026. Official Parlour occupies 118, where CSV Dirty Soda Shoppe flavors currently sit.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Ranch Cheese Curds",
+      "vendorName": "Curds N Cakes",
+      "description": "Returning Curds N Cakes tenth-season 2026 spin: ranch infused into the cheese-curd batter rather than served as a dip.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "114",
+        "310"
+      ],
+      "location": "114, 310",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026 from MSP Mag (returning vendor, new ranch curd). Locations are the official Curds N Cakes stands.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Hawaiian Shaved Ice",
+      "vendorName": "Minnesnowii",
+      "description": "New 2026 Minnesnowii Hawaiian-style shaved ice at section 304, non-alcoholic.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "SWEET",
+      "sections": [
+        "304"
+      ],
+      "location": "304",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026 from MSP Mag.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Spiked Hawaiian Shaved Ice",
+      "vendorName": "Minnesnowii",
+      "description": "New 2026 Minnesnowii Hawaiian-style shaved ice with alcohol at section 304.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "304"
+      ],
+      "location": "304",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH",
+      "notes": "labeledNewFor2026 from MSP Mag (with or without alcohol).",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Bratchos",
+      "vendorName": "MN Brat",
+      "description": "Official Aramark Food Selections Bratchos at sections 101 and 348, matching MN Brat Dog (101) and MN Brat (348).",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "101",
+        "348"
+      ],
+      "location": "101, 348",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheese Curds",
+      "vendorName": "Curds N Cakes",
+      "description": "Official Aramark Food Selections cheese curds. Curds N Cakes stands are 114 and 310; the SKU list also prints 129, 143, and 339.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "114",
+        "129",
+        "143",
+        "310",
+        "339"
+      ],
+      "location": "114, 129, 143, 310, 339",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "Full sourced SKU section list. Extra sections overlap 1st and Fry stands; do not clone a second FoodItem."
+    },
+    {
+      "name": "Pothole Pizza",
+      "vendorName": "Pothole Pizza",
+      "description": "Official Pothole Pizza stands. Food Selections list pizza at sections 114, 134, 307, and 349.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "134",
+        "307",
+        "349"
+      ],
+      "location": "114, 134, 307, 349",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "Named local pizza concept. Directory does not print slice SKUs.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Rusty Tacos",
+      "vendorName": "Rusty Taco",
+      "description": "Official Rusty Taco stands. Food Selections list tacos at sections 105, 113, 122, 311, 317, and 341.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105",
+        "113",
+        "122",
+        "311",
+        "317",
+        "341"
+      ],
+      "location": "105, 113, 122, 311, 317, 341",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Walking Taco",
+      "vendorName": "Walking Taco",
+      "description": "Official Walking Taco stands and Food Selections walking tacos at sections 119, 134, and 360.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "119",
+        "134",
+        "360"
+      ],
+      "location": "119, 134, 360",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Mac & Cheese",
+      "vendorName": "Mac Truck Mac & Cheese",
+      "description": "Official Mac Truck Mac & Cheese portable at section 111. Food Selections also list mac and cheese at 121 and EndZone Grill; those are other stands and are not copied onto this vendor.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "111"
+      ],
+      "location": "111",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "Do not attach 121 or ENDZONE GRILL to Mac Truck."
+    },
+    {
+      "name": "Chicken Wings",
+      "vendorName": "Heritage Tea House & Wings",
+      "description": "Official Heritage Tea House & Wings chicken wings at section 344.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "344"
+      ],
+      "location": "344",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Fried Broccoli",
+      "vendorName": "Heritage Tea House & Wings",
+      "description": "Official Food Selections fried broccoli at section 344, matching Heritage Tea House & Wings.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "344"
+      ],
+      "location": "344",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Grilled Cheese",
+      "vendorName": "O'Cheese",
+      "description": "Official O'Cheese stand and Food Selections grilled cheese at section 109.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109"
+      ],
+      "location": "109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheesesteak",
+      "vendorName": "Steak & Cheese",
+      "description": "Official Steak & Cheese stands at 107 and 334. Food Selections list cheesesteak at 108 and 334; item locations use the printed SKU sections.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "108",
+        "334"
+      ],
+      "location": "108, 334",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "notes": "Vendor stands include 107; cheesesteak SKU prints 108, 334. Do not invent 107 onto the SKU."
+    },
+    {
+      "name": "Hot Tots",
+      "vendorName": "Union",
+      "description": "Official Food Selections Hot Tots at section 111, matching the Union concession stand.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "111"
+      ],
+      "location": "111",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Schweigerts Hot Dog",
+      "vendorName": "Schweigerts Hot Dogs",
+      "description": "Official Schweigerts Hot Dogs branded stands at sections 131 and 317.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "131",
+        "317"
+      ],
+      "location": "131, 317",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Love You Cookie",
+      "vendorName": "Love You Cookie",
+      "description": "Official Love You Cookie portable at section 346.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "346"
+      ],
+      "location": "346",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "T-Rex Cookies",
+      "vendorName": "T-Rex Cookies",
+      "description": "Official T-Rex Cookies portable at section 129. Food Selections list cookies at 129.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "129"
+      ],
+      "location": "129",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Mini Donuts",
+      "vendorName": "Mini Donuts",
+      "description": "Official Mini Donuts portables at sections 111 and 328.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "111",
+        "328"
+      ],
+      "location": "111, 328",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Black Raspberry Smoothie",
+      "vendorName": "Maui Wowi",
+      "description": "Maui Wowi black raspberry smoothie. Official portable is at section 111; MSP Mag confirms black raspberry and strawberry flavors this season.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "111"
+      ],
+      "location": "111",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Strawberry Smoothie",
+      "vendorName": "Maui Wowi",
+      "description": "Maui Wowi strawberry smoothie. Official portable is at section 111; MSP Mag confirms black raspberry and strawberry flavors this season.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "111"
+      ],
+      "location": "111",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/",
+      "confidence": "HIGH"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "Fountain Soda / Bottled Water / Domestic Beer",
+      "reason": "Stadium Slop convention excludes fountain soda, bottled water, and generic domestic beer."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Chips / Popcorn / Peanuts / Pretzel / Candy / Cracker Jacks",
+      "reason": "Generic snack SKUs on the Aramark Food Selections list."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Bratwurst / Cheeseburger / Chicken Tenders / French Fries / Hot Dog / Nachos",
+      "reason": "Generic grill SKUs without a distinctive build. Distinctive branded items are imported separately."
+    },
+    {
+      "kind": "heading",
+      "name": "Vegan Options / Cocktails / Coffee",
+      "reason": "Menu headings or generic beverage categories, not FoodItems."
+    },
+    {
+      "kind": "missing_section",
+      "name": "SPAM Dog / Hawaiian Specialty SPAM Dog",
+      "reason": "MSP Mag confirms 2026 SPAM dogs but does not print a section. Do not invent a location."
+    },
+    {
+      "kind": "missing_section",
+      "name": "Centro Loaded Nachos",
+      "reason": "MSP Mag confirms Centro loaded nachos this season but does not print a section. Do not copy 105 from the margarita SKU."
+    },
+    {
+      "kind": "generic_stand",
+      "name": "1st and Fry / Popped Corn / The Kernel / Cheetos Popcorn",
+      "reason": "Fry and popcorn stands without a distinctive non-generic SKU."
+    },
+    {
+      "kind": "place_not_food",
+      "name": "Bru Thru / Blue Line Bar / Drink MKT / liquor portables",
+      "reason": "Walk-out markets and bars, not distinctive food items."
+    }
+  ],
+  "staleReview": [
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "AZC Hoagies",
+      "existingItemSlug": "andrew-zimmern-s-canteen-azc-hoagies",
+      "existingVendorSlug": "andrew-zimmern-s-canteen",
+      "recommendation": "hide",
+      "evidence": "Andrew Zimmern's Canteen is not on the live 2026 Aramark stand directory. Sections 114 and 342 are now Curds N Cakes / Pothole Pizza and Liquor Portable Crown. Absent from MSP Mag 2026 new-food coverage. Left active; do not auto-hide.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "AZC Rotisserie",
+      "existingItemSlug": "andrew-zimmern-s-canteen-azc-rotisserie",
+      "existingVendorSlug": "andrew-zimmern-s-canteen",
+      "recommendation": "hide",
+      "evidence": "Same evidence as AZC Hoagies: Andrew Zimmern's Canteen is not on the 2026 official directory or 2026 new-vendor coverage. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Ike's Food & Cocktails",
+      "existingItemSlug": "ike-s-food-cocktails-ike-s-food-cocktails",
+      "existingVendorSlug": "ike-s-food-cocktails",
+      "recommendation": "hide",
+      "evidence": "Ike's is not on the live 2026 Aramark directory. CSV sections 119 and 329 are Drink MKT / Sweet Habits territory and Be Graceful. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Revival",
+      "existingItemSlug": "revival-revival",
+      "existingVendorSlug": "revival",
+      "recommendation": "hide",
+      "evidence": "Revival is not on the live 2026 Aramark directory. Official Union stand occupies section 111. Left active; do not auto-hide.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Switch Up",
+      "existingItemSlug": "switch-up-switch-up",
+      "existingVendorSlug": "switch-up",
+      "recommendation": "hide",
+      "evidence": "Switch Up is not on the live 2026 Aramark directory or 2026 new-vendor coverage. CSV section 126 is unpublished. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Lao Brat",
+      "existingItemSlug": "the-lao-brat-the-lao-brat",
+      "existingVendorSlug": "the-lao-brat",
+      "recommendation": "hide",
+      "evidence": "The Lao Brat is not named on the 2026 official directory. CSV sections 124, 130, 304 overlap North Star Grill / Red Zone Grill generic bratwurst listings. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Walleye Finger Fish & Chips",
+      "existingItemSlug": "walleye-finger-fish-chips-walleye-finger-fish-chips",
+      "existingVendorSlug": "walleye-finger-fish-chips",
+      "recommendation": "hide",
+      "evidence": "Walleye is not on the 2026 Food Selections list. Section 101 is official MN Brat Dog / Headwaters. Left active; do not attach walleye to Headwaters without a printed SKU.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Pendleton Whisky Longhouse",
+      "existingItemSlug": "pendleton-whisky-longhouse-pendleton-whisky-longhouse",
+      "existingVendorSlug": "pendleton-whisky-longhouse",
+      "recommendation": "hide",
+      "evidence": "Pendleton Whisky Longhouse is a place/zone CSV row, not a food SKU, and is absent from the current official directory. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Wholesome Wonders",
+      "existingItemSlug": "wholesome-wonders-wholesome-wonders",
+      "existingVendorSlug": "wholesome-wonders",
+      "recommendation": "hide",
+      "evidence": "Wholesome Wonders is not on the 2026 official directory. Official GF/vegan stand is Be Graceful at 121, 329. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "PoppedCorn",
+      "existingItemSlug": "poppedcorn-poppedcorn",
+      "existingVendorSlug": "poppedcorn",
+      "recommendation": "hide",
+      "evidence": "CSV PoppedCorn at unsourced section 104. Official Popped Corn is at 108, 315 and is generic popcorn, which Stadium Slop excludes. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Walk-Thru Bru",
+      "existingItemSlug": "the-walk-thru-bru-the-walk-thru-bru",
+      "existingVendorSlug": "the-walk-thru-bru",
+      "recommendation": "hide",
+      "evidence": "Walk-out beer market, not a food item. Official Bru Thru is at 102; CSV used 101, 208, 333. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Waffle Cone Fusion",
+      "existingItemSlug": "soul-bowl-waffle-cone-fusion",
+      "existingVendorSlug": "soul-bowl",
+      "recommendation": "hide",
+      "evidence": "Official Soul Bowl listing is section 317 only and does not mention waffle cones. CSV section 214 is unpublished on the current directory. Left active.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Starry Night",
+      "existingItemSlug": "dirty-soda-shoppe-starry-night",
+      "existingVendorSlug": "dirty-soda-shoppe",
+      "recommendation": "hide",
+      "evidence": "CSV Dirty Soda Shoppe sits at section 118, which the 2026 directory assigns to Parlour. MSP Mag names Sweet Habits as the new dirty-soda vendor at 119. Left active.",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Rootbeer Mayhem",
+      "existingItemSlug": "dirty-soda-shoppe-rootbeer-mayhem",
+      "existingVendorSlug": "dirty-soda-shoppe",
+      "recommendation": "hide",
+      "evidence": "Same Dirty Soda Shoppe / Parlour 118 conflict. 2026 dirty sodas are Sweet Habits at 119. Left active.",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Toffee Surprise",
+      "existingItemSlug": "dirty-soda-shoppe-toffee-surprise",
+      "existingVendorSlug": "dirty-soda-shoppe",
+      "recommendation": "hide",
+      "evidence": "Same Dirty Soda Shoppe / Parlour 118 conflict. 2026 dirty sodas are Sweet Habits at 119. Left active.",
+      "sourceUrl": "https://mspmag.com/eat-and-drink/foodie/new-food-and-drinks-touchdown-at-us-bank-stadium/"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Mac Time",
+      "existingItemSlug": "mac-time-mac-time",
+      "existingVendorSlug": "mac-time",
+      "recommendation": "hide",
+      "evidence": "Mac Time at CSV section 133 is not on the 2026 directory. Official mac stand is Mac Truck Mac & Cheese at 111. Left active; also flagged possible duplicate.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    }
+  ],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Mac Time",
+      "existingItemSlug": "mac-time-mac-time",
+      "existingVendorSlug": "mac-time",
+      "recommendation": "manual_review",
+      "evidence": "May be the same mac-and-cheese concept as new official Mac Truck Mac & Cheese at 111. CSV Mac Time used unpublished section 133. Do not merge automatically.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Wholesome Wonders",
+      "existingItemSlug": "wholesome-wonders-wholesome-wonders",
+      "existingVendorSlug": "wholesome-wonders",
+      "recommendation": "manual_review",
+      "evidence": "GF/vegan concept may overlap official Be Graceful at 121, 329. Different CSV sections (119, 122). Do not merge automatically.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Minneapolis Cocktail Co.",
+      "existingItemSlug": "minneapolis-cocktail-co-minneapolis-cocktail-co",
+      "existingVendorSlug": "minneapolis-cocktail-co",
+      "recommendation": "manual_review",
+      "evidence": "CSV bar at section 336 matches official Cocktails on Tap Bar at 336. Place-as-item, not a sourced cocktail SKU. Do not merge automatically.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Nashville Coop (official stand at 121)",
+      "recommendation": "manual_review",
+      "evidence": "Official directory lists Nashville Coop at 121. MSP Mag names Tender Lovin Chix at 121 for the TLC Smash burger. Possible same stand, different identity. Created the MSP-named 2026 vendor only; did not also create Nashville Coop.",
+      "sourceUrl": "https://www.usbankstadium.com/guest-experience/concessions"
+    }
+  ]
+}

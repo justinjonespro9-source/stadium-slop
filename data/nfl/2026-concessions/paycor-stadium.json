@@ -1,0 +1,167 @@
+{
+  "venueSlug": "paycor-stadium",
+  "venueName": "Paycor Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.businesswire.com/news/home/20260909842365/en/",
+    "title": "Aramark Sports + Entertainment Kicks Off 2026 NFL Season Across Eight NFL Stadiums",
+    "type": "official_operator",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Aramark 2026 items with sections, cross-checked against the Bengals Jungle Hospitality stand list. Oktoberfest schnitzel from Local 12 had no section and was skipped. Generic smash burgers skipped (Aramark listed a suspicious section 263).",
+  "vendors": [
+    {
+      "name": "Who Dey Sausage",
+      "section": "150",
+      "location": "150",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mazunte",
+      "section": "134, 148, 308, 338",
+      "location": "134, 148, 308, 338",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "United Dairy Farmers",
+      "section": "209, 239",
+      "location": "209, 239",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Penn Station",
+      "section": "120",
+      "location": "120",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Pork Rind Nachos",
+      "vendorName": "Who Dey Sausage",
+      "description": "Official 2026 Grippo's Hot Pork Rinds with Carolina-style smoked pork shoulder, cheddar, barbecue sauce, chipotle ranch, pickled red onions, and jalape\u00f1os in a souvenir tray.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "150"
+      ],
+      "location": "150",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Who Dey Sausage",
+      "vendorName": "Who Dey Sausage",
+      "description": "Official 2026 24-inch BBQ cheddar pork sausage with pickled red onions, jalape\u00f1o, and sweet BBQ sauce.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "150"
+      ],
+      "location": "150",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Mazunte Tamales",
+      "vendorName": "Mazunte",
+      "description": "Official 2026 Mazunte tamales: chicken with rajas and salsa verde, or cheese with poblanos and salsa verde, in corn husks.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "134",
+        "148",
+        "308",
+        "338"
+      ],
+      "location": "134, 148, 308, 338",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Homemade Killer SunDEY",
+      "vendorName": "United Dairy Farmers",
+      "description": "Official 2026 Homemade Brand vanilla ice cream with killer brownie brookie, whipped cream, crushed Butterfinger, chocolate and caramel sauces, sprinkles, and a cherry in a souvenir tray.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "209",
+        "239"
+      ],
+      "location": "209, 239",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Penn Station Cheesesteak",
+      "vendorName": "Penn Station",
+      "description": "Official 2026 local partnership: Penn Station cheesesteaks at section 120.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120"
+      ],
+      "location": "120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "incomplete_location",
+      "name": "Oktoberfest pretzel-crusted pork loin / schnitzel sandwich",
+      "reason": "Local 12 coverage, no stand number."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Smash Burgers / Lee's Famous Recipe tenders",
+      "reason": "Generic burgers/tenders; Aramark smash-burger list included unverified section 263."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Taco Tigre",
+      "existingItemSlug": "taco-tigre-taco-tigre",
+      "existingVendorSlug": "taco-tigre",
+      "recommendation": "manual_review",
+      "evidence": "Production Taco Tigre vs official Nacho Tigre / Mazunte walking tacos. Do not merge.",
+      "sourceUrl": "https://www.bengals.com/stadium/concessions/"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Boone County Bourbon Bar",
+      "existingItemSlug": "the-boone-county-bourbon-bar-the-boone-county-bourbon-bar",
+      "existingVendorSlug": "the-boone-county-bourbon-bar",
+      "recommendation": "manual_review",
+      "evidence": "Existing bar at 150 is not assumed to be the Who Dey Sausage / pork rind stand. Keep both.",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "generatedFrom": "2026 NFL coverage report STALE_REVIEW queue",
+  "recommendation": "LIKELY HIDE",
+  "publicReviewsAtReport": 0,
+  "venues": [
+    {
+      "venueSlug": "highmark-stadium",
+      "venueName": "Highmark Stadium",
+      "items": [
+        { "slug": "the-battle-boat-the-battle-boat", "name": "The \"Battle Boat\"" },
+        { "slug": "the-queen-city-weck-the-queen-city-weck", "name": "The Queen City Weck" },
+        { "slug": "all-dressed-chicken-tenders-all-dressed-chicken-tenders", "name": "All-Dressed Chicken Tenders" },
+        { "slug": "the-mvp-sandwich-the-mvp-sandwich", "name": "The MVP Sandwich" },
+        { "slug": "the-hippo-pocket-the-hippo-pocket", "name": "The Hippo Pocket" },
+        { "slug": "la-nova-wings-la-nova-wings", "name": "La Nova Wings" },
+        { "slug": "la-nova-wings-sahlen-s-hot-dogs", "name": "Sahlen’s Hot Dogs" },
+        { "slug": "perry-s-ice-cream-perry-s-ice-cream", "name": "Perry’s Ice Cream" },
+        { "slug": "the-miller-lite-brew-pub-the-miller-lite-brew-pub", "name": "The Miller Lite Brew Pub" },
+        { "slug": "jack-in-black-jack-in-black", "name": "Jack in Black" },
+        { "slug": "jack-in-black-the-cocktail-carafe", "name": "The Cocktail Carafe" },
+        { "slug": "the-chickpea-blitz-the-chickpea-blitz", "name": "The Chickpea Blitz" },
+        { "slug": "spitako-chicken-spitako-chicken", "name": "Spitako Chicken" },
+        { "slug": "vegan-powerhouse-quesadilla-vegan-powerhouse-quesadilla", "name": "Vegan \"Powerhouse\" Quesadilla" }
+      ]
+    },
+    {
+      "venueSlug": "lambeau-field",
+      "venueName": "Lambeau Field",
+      "items": [
+        { "slug": "bratcho-bratcho", "name": "Bratcho" },
+        { "slug": "summer-sausage-grilled-cheese-summer-sausage-grilled-cheese", "name": "Summer Sausage Grilled Cheese" },
+        { "slug": "green-and-gold-bbq-chicken-sandwich-green-and-gold-bbq-chicken-sandwich", "name": "Green and Gold BBQ Chicken Sandwich" },
+        { "slug": "bento-box-bento-box", "name": "Bento Box" },
+        { "slug": "1919-kitchen-tap-1919-kitchen-tap", "name": "1919 Kitchen & Tap" },
+        { "slug": "fresh-cheese-curds-johnsonville-tailgate-village", "name": "Johnsonville Tailgate Village" },
+        { "slug": "gluten-free-markets-gluten-free-markets", "name": "Gluten-Free Markets" },
+        { "slug": "gluten-free-markets-5-value-items", "name": "$5 Value Items" }
+      ]
+    },
+    {
+      "venueSlug": "m-t-bank-stadium",
+      "venueName": "M&T Bank Stadium",
+      "items": [
+        { "slug": "ekiben-ekiben", "name": "Ekiben" },
+        { "slug": "grotto-pizza-grotto-pizza", "name": "Grotto Pizza" },
+        { "slug": "hoffman-s-meats-hoffman-s-meats", "name": "Hoffman’s Meats" },
+        { "slug": "the-1996-crab-stack-the-1996-crab-stack", "name": "The 1996 Crab Stack" }
+      ]
+    },
+    {
+      "venueSlug": "u-s-bank-stadium",
+      "venueName": "U.S. Bank Stadium",
+      "items": [
+        { "slug": "andrew-zimmern-s-canteen-azc-hoagies", "name": "AZC Hoagies" },
+        { "slug": "andrew-zimmern-s-canteen-azc-rotisserie", "name": "AZC Rotisserie" },
+        { "slug": "ike-s-food-cocktails-ike-s-food-cocktails", "name": "Ike’s Food & Cocktails" },
+        { "slug": "revival-revival", "name": "Revival" },
+        { "slug": "switch-up-switch-up", "name": "Switch Up" },
+        { "slug": "the-lao-brat-the-lao-brat", "name": "The Lao Brat" },
+        { "slug": "walleye-finger-fish-chips-walleye-finger-fish-chips", "name": "Walleye Finger Fish & Chips" },
+        { "slug": "pendleton-whisky-longhouse-pendleton-whisky-longhouse", "name": "Pendleton Whisky Longhouse" },
+        { "slug": "wholesome-wonders-wholesome-wonders", "name": "Wholesome Wonders" },
+        { "slug": "poppedcorn-poppedcorn", "name": "PoppedCorn" },
+        { "slug": "the-walk-thru-bru-the-walk-thru-bru", "name": "The Walk-Thru Bru" },
+        { "slug": "soul-bowl-waffle-cone-fusion", "name": "Waffle Cone Fusion" },
+        { "slug": "dirty-soda-shoppe-starry-night", "name": "Starry Night" },
+        { "slug": "dirty-soda-shoppe-rootbeer-mayhem", "name": "Rootbeer Mayhem" },
+        { "slug": "dirty-soda-shoppe-toffee-surprise", "name": "Toffee Surprise" },
+        { "slug": "mac-time-mac-time", "name": "Mac Time" }
+      ]
+    }
+  ]
+}

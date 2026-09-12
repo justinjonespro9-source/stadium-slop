@@ -1,0 +1,235 @@
+{
+  "venueSlug": "acrisure-stadium",
+  "venueName": "Acrisure Stadium",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+    "title": "What's new at Acrisure Stadium in 2026",
+    "type": "official_team",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Steelers 2026 announcement plus Aramark Sports + Entertainment 2026 release. Focused 2026 highlights with sourced sections. Dippin' Dots, kale salads, and generic tenders excluded. Pick 6 Sammies updated in place.",
+  "vendors": [
+    {
+      "name": "Fourth and Flav Nacho",
+      "section": "118, 505, 516, 518, 529, 534, North Club, PNC Champions Club",
+      "location": "118, 505, 516, 518, 529, 534, North Club, PNC Champions Club",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pittsburgh Pierogies Stand",
+      "section": "119",
+      "location": "119",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Goal Line Stand",
+      "section": "124",
+      "location": "124",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Steelhouse",
+      "section": "109, 128",
+      "location": "109, 128",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Steel City Markets",
+      "section": "215, 239",
+      "location": "215, 239",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH",
+      "existingVendorSlug": "steel-city-markets"
+    },
+    {
+      "name": "PNC Champions Club",
+      "section": "PNC Champions Club",
+      "location": "PNC Champions Club",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pick 6 Sammies",
+      "section": "UPMC East Club, West Club",
+      "location": "UPMC East Club, West Club",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH",
+      "existingVendorSlug": "pick-6-sammies"
+    }
+  ],
+  "items": [
+    {
+      "name": "Fourth and Flav Nacho",
+      "vendorName": "Fourth and Flav Nacho",
+      "description": "Official 2026 upscale nachos with smoked cheese sauce, mojo pulled pork, roasted corn and bean salsa, pickled jalape\u00f1os, blackened red onions, and avocado-lime crema.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118",
+        "505",
+        "516",
+        "518",
+        "529",
+        "534",
+        "North Club",
+        "PNC Champions Club"
+      ],
+      "location": "118, 505, 516, 518, 529, 534, North Club, PNC Champions Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Pierogies N'at",
+      "vendorName": "Pittsburgh Pierogies Stand",
+      "description": "Official 2026 Pittsburgh pierogi stand blending comfort-food flavors with unexpected toppings at section 119.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "119"
+      ],
+      "location": "119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Three Little Pigs",
+      "vendorName": "Goal Line Stand",
+      "description": "Official 2026 pig-in-a-blanket: cheddar bratwurst, spicy Italian sausage, capicola, 1933 steak sauce, Mike's Hot Honey, and crushed Voodoo chips.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "124"
+      ],
+      "location": "124",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "The Immaculate Refreshment",
+      "vendorName": "Steelhouse",
+      "description": "Official 2026 cocktail of vodka, orange juice, and Starry served in a Steelers logo mini-Gatorade cooler cup. 21+ with valid ID.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "109",
+        "128"
+      ],
+      "location": "109, 128",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Yinzer Wrap",
+      "vendorName": "Steel City Markets",
+      "description": "Official 2026 Pittsburgh wrap: grilled kielbasa, mini pierogies, caramelized onions, cheddar, bacon bits, and chive crema.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "215",
+        "239"
+      ],
+      "location": "215, 239",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "steel-city-markets",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Black N' Gold Chicken and Waffle",
+      "vendorName": "PNC Champions Club",
+      "description": "Official 2026 house-made black-and-gold waffles with fried chicken, coleslaw, bacon jam, sweet potato fries, and Mike's Hot Honey.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "PNC Champions Club"
+      ],
+      "location": "PNC Champions Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Pick 6 Sammies",
+      "vendorName": "Pick 6 Sammies",
+      "description": "Official 2026 kiosk sandwiches now include Alla Famiglia hot sausage sandwiches, Steel City steak salads, house smash burgers, and chicken tenders with seasoned fries.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "UPMC East Club",
+        "West Club"
+      ],
+      "location": "UPMC East Club, West Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026",
+      "confidence": "HIGH",
+      "notes": "UPDATE canonical Pick 6 Sammies in place. Preserve slug.",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "pick-6-sammies-pick-6-sammies",
+      "existingVendorSlug": "pick-6-sammies"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "Dippin' Dots",
+      "reason": "Novelty ice cream, not a distinctive review target."
+    },
+    {
+      "kind": "generic_filler",
+      "name": "Kale & Berry Salads",
+      "reason": "Generic club salad."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Pierogi Pileup",
+      "existingItemSlug": "bridges-n-at-the-pierogi-pileup",
+      "existingVendorSlug": "bridges-n-at",
+      "recommendation": "manual_review",
+      "evidence": "Existing Bridges N'at Pierogi Pileup at 107 & 231 may overlap 2026 Pierogies N'at at the Pittsburgh Pierogies Stand, section 119. Do not merge.",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Pulled Pork Nachos",
+      "existingItemSlug": "pulled-pork-nachos-pulled-pork-nachos",
+      "existingVendorSlug": "pulled-pork-nachos",
+      "recommendation": "manual_review",
+      "evidence": "CSV pulled-pork nachos at 506, 516, 529 overlap Fourth and Flav Nacho sections 516 and 529. Different concept; do not merge.",
+      "sourceUrl": "https://www.steelers.com/news/what-s-new-at-acrisure-stadium-in-2026"
+    }
+  ]
+}

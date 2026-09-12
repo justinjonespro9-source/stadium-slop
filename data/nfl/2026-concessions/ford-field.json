@@ -1,0 +1,176 @@
+{
+  "venueSlug": "ford-field",
+  "venueName": "Ford Field",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.fordfield.com/restaurant-partner-menus",
+    "title": "Restaurant Partner Menus | Ford Field",
+    "type": "official_stadium",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Ford Field partner directory and menus. Focused on 2026 local partners with named SKUs and sections. Value combos, kids meals, walking tacos, and generic pretzels excluded. Passport SKUs reported only by local media were not imported.",
+  "vendors": [
+    {
+      "name": "Xav's Jammin' Caribbean Fusion",
+      "section": "135",
+      "location": "135",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Paradise Street Eats & Biryani",
+      "section": "235, Fifth Third Gridiron Club",
+      "location": "235, Fifth Third Gridiron Club",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "existingVendorSlug": "paradise-street-eats"
+    },
+    {
+      "name": "Slow's BBQ",
+      "section": "210",
+      "location": "210",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "existingVendorSlug": "slow-s-bbq"
+    },
+    {
+      "name": "Cooking with Que",
+      "section": "134",
+      "location": "134",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "existingVendorSlug": "cooking-with-que"
+    }
+  ],
+  "items": [
+    {
+      "name": "Jerk Chicken Wings",
+      "vendorName": "Xav's Jammin' Caribbean Fusion",
+      "description": "Official Ford Field partner menu: Caribbean jerk chicken wings at section 135.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "135"
+      ],
+      "location": "135",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Oxtail Empanadas",
+      "vendorName": "Xav's Jammin' Caribbean Fusion",
+      "description": "Official Ford Field partner menu: oxtail empanadas at Xav's Jammin' Caribbean Fusion, section 135.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "135"
+      ],
+      "location": "135",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Paradise Loaded Fries",
+      "vendorName": "Paradise Street Eats & Biryani",
+      "description": "Official partner menu: chaat masala fries with crispy butter chicken, cheese, red onion, cilantro, black sesame, and XXX sauce.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "235",
+        "Fifth Third Gridiron Club"
+      ],
+      "location": "235, Fifth Third Gridiron Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "existingVendorSlug": "paradise-street-eats",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Butter Chicken Tacos",
+      "vendorName": "Paradise Street Eats & Biryani",
+      "description": "Official partner menu: two puffy chapati tacos with tandoori butter chicken, XXX slaw, diced vegetables, chutney, and lime.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "235",
+        "Fifth Third Gridiron Club"
+      ],
+      "location": "235, Fifth Third Gridiron Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "existingVendorSlug": "paradise-street-eats",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "The Reason",
+      "vendorName": "Slow's BBQ",
+      "description": "Official partner menu: Slow's smoked pork butt dressed in NC BBQ sauce, topped with coleslaw and dill pickles.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "210"
+      ],
+      "location": "210",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "existingVendorSlug": "slow-s-bbq"
+    },
+    {
+      "name": "Oh Kale Yeah Burger",
+      "vendorName": "Cooking with Que",
+      "description": "Official partner menu: Beyond or beef patty with saut\u00e9ed kale, mushrooms, vegan cheese, mayo, pickles, and tomatoes on a pretzel bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "134"
+      ],
+      "location": "134",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus",
+      "confidence": "HIGH",
+      "existingVendorSlug": "cooking-with-que"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic_filler",
+      "name": "F-150 Tailgate Combo / Stadium Classics / Den Marketplace",
+      "reason": "Value sausage, hot dogs, chips, soda, candy."
+    },
+    {
+      "kind": "medium_only",
+      "name": "Food passport potstickers / corned beef nachos / BBQ wings",
+      "reason": "Named at the Lions tasting in local reporting, not on the official partner-menu page."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Paradise Street Eats",
+      "existingItemSlug": "paradise-street-eats-paradise-street-eats",
+      "existingVendorSlug": "paradise-street-eats",
+      "recommendation": "manual_review",
+      "evidence": "Canonical vendor-as-item remains. New SKUs added under the same vendor rather than replacing it.",
+      "sourceUrl": "https://www.fordfield.com/restaurant-partner-menus"
+    }
+  ]
+}

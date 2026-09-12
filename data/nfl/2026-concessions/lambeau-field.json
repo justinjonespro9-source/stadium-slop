@@ -1,0 +1,1498 @@
+{
+  "venueSlug": "lambeau-field",
+  "venueName": "Lambeau Field",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+    "title": "2026 F&B Menu by Item (Green Bay Packers / Lambeau Field)",
+    "type": "official_club_pdf",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Lambeau reconciliation against the official 2026 Packers F&B by Item gameday PDF, cross-checked with 2026 F&B Concepts by Stands. The audit snapshot used a concert by-item PDF; this payload prefers the gameday directory. Existing CSV headline rows are updated in place when the official SKU is clearly the same product. Uncertain and stale rows stay active. No prices are published in the official PDFs, so all basePrice values are null. Operator: Delaware North.",
+  "vendors": [
+    {
+      "name": "Loaded Big Pretzel",
+      "section": "106-O, 134-O, 312, 742-I, JTV",
+      "location": "106-O, 134-O, 312, 742-I, JTV",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "existingVendorSlug": "loaded-big-pretzel"
+    },
+    {
+      "name": "Brat Egg Rolls",
+      "section": "100-M, 305, JTV",
+      "location": "100-M, 305, JTV",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "existingVendorSlug": "brat-egg-rolls"
+    },
+    {
+      "name": "Fresh Cheese Curds",
+      "section": "100-M, 106-M, 121-O, 134-M, 138-M, 300, 305, 308, 119-U, 326, 340, 354-M, 407, 427, 435-O, 635-O, 686, 742-O, JTV",
+      "location": "100-M, 106-M, 121-O, 134-M, 138-M, 300, 305, 308, 119-U, 326, 340, 354-M, 407, 427, 435-O, 635-O, 686, 742-O, JTV",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "existingVendorSlug": "fresh-cheese-curds"
+    },
+    {
+      "name": "Sara’s Artisan Gelato",
+      "section": "106-M, 133-M, P347, 312, 131-U, 427",
+      "location": "106-M, 133-M, P347, 312, 131-U, 427",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "existingVendorSlug": "sara-s-artisan-gelato"
+    },
+    {
+      "name": "Rival Recipes",
+      "section": "P413, 690",
+      "location": "P413, 690",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH",
+      "existingVendorSlug": "buffalo-buttermilk-wings"
+    },
+    {
+      "name": "1919 Kitchen & Tap",
+      "section": "P111",
+      "location": "P111",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH",
+      "existingVendorSlug": "1919-kitchen-tap"
+    },
+    {
+      "name": "Fox River Market BBQ",
+      "section": "105-O, 133-O",
+      "location": "105-O, 133-O",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Fox River Market",
+      "section": "106-O, 134-O, 138-O, 326",
+      "location": "106-O, 134-O, 138-O, 326",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "920 Burger Farm Fresh",
+      "section": "116-O",
+      "location": "116-O",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pack N Cheese",
+      "section": "P101, 312, 743-I",
+      "location": "P101, 312, 743-I",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Going Deep Pizza",
+      "section": "107-O, 117-O, 120-I, 123-I",
+      "location": "107-O, 117-O, 120-I, 123-I",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Johnsonville Tailgate Village",
+      "section": "JTV",
+      "location": "JTV",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Grilled Cheese Chicken",
+      "section": "124-O",
+      "location": "124-O",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Taco Verde",
+      "section": "P415",
+      "location": "P415",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Melotte Marketplace",
+      "section": "427",
+      "location": "427",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "1919 Express",
+      "section": "472",
+      "location": "472",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Philly Cheese Steak",
+      "section": "P102, P136, P342",
+      "location": "P102, P136, P342",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Against the Grain",
+      "section": "P688",
+      "location": "P688",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Stadium Snacks",
+      "section": "115-I, 118-I, 121-I",
+      "location": "115-I, 118-I, 121-I",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Slice Pizza",
+      "section": "305",
+      "location": "305",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sweet Spot",
+      "section": "P484, P678",
+      "location": "P484, P678",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Heavenly Roasted Nuts",
+      "section": "P101, P123, P315",
+      "location": "P101, P123, P315",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Throwbacks",
+      "section": "117-I, 122-I, 131-O",
+      "location": "117-I, 122-I, 131-O",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Miller Lite Haus",
+      "section": "486",
+      "location": "486",
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Loaded Big Pretzel",
+      "vendorName": "Loaded Big Pretzel",
+      "description": "Official 2026 gameday SKU Pretzel- Loaded Big. Sold at 106-O, 134-O, 312, 742-I, and JTV. No price is published in the Packers F&B by Item directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "106-O",
+        "134-O",
+        "312",
+        "742-I",
+        "JTV"
+      ],
+      "location": "106-O, 134-O, 312, 742-I, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "loaded-big-pretzel-loaded-big-pretzel",
+      "existingVendorSlug": "loaded-big-pretzel",
+      "notes": "UPDATE of canonical CSV headline item. Official SKU: Pretzel- Loaded Big."
+    },
+    {
+      "name": "Brat Egg Rolls",
+      "vendorName": "Brat Egg Rolls",
+      "description": "Official 2026 gameday SKU Brat Eggroll at 100-M, 305, and Johnsonville Tailgate Village. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100-M",
+        "305",
+        "JTV"
+      ],
+      "location": "100-M, 305, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "brat-egg-rolls-brat-egg-rolls",
+      "existingVendorSlug": "brat-egg-rolls",
+      "notes": "UPDATE. Official SKU: Brat Eggroll. Gameday locations are 100-M, 305, and JTV (not JTV-only)."
+    },
+    {
+      "name": "Fresh Cheese Curds",
+      "vendorName": "Fresh Cheese Curds",
+      "description": "Official 2026 gameday SKU Cheese Curds at multiple Lambeau stands including JTV. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100-M",
+        "106-M",
+        "121-O",
+        "134-M",
+        "138-M",
+        "300",
+        "305",
+        "308",
+        "119-U",
+        "326",
+        "340",
+        "354-M",
+        "407",
+        "427",
+        "435-O",
+        "635-O",
+        "686",
+        "742-O",
+        "JTV"
+      ],
+      "location": "100-M, 106-M, 121-O, 134-M, 138-M, 300, 305, 308, 119-U, 326, 340, 354-M, 407, 427, 435-O, 635-O, 686, 742-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "fresh-cheese-curds-fresh-cheese-curds",
+      "existingVendorSlug": "fresh-cheese-curds",
+      "notes": "UPDATE. Official SKU: Cheese Curds. Keep canonical CSV name/vendor to preserve reviews."
+    },
+    {
+      "name": "Sara’s Artisan Gelato",
+      "vendorName": "Sara’s Artisan Gelato",
+      "description": "Official 2026 gameday SKU Gelato- Assorted at 106-M, 133-M, P347, 312, 131-U, and 427. No price is published.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "106-M",
+        "133-M",
+        "P347",
+        "312",
+        "131-U",
+        "427"
+      ],
+      "location": "106-M, 133-M, P347, 312, 131-U, 427",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "existingItemSlug": "sara-s-artisan-gelato-sara-s-artisan-gelato",
+      "existingVendorSlug": "sara-s-artisan-gelato",
+      "notes": "UPDATE. Official SKU: Gelato- Assorted. Canonical vendor name retained."
+    },
+    {
+      "name": "Chicken Wings",
+      "vendorName": "Rival Recipes",
+      "description": "Official 2026 gameday SKU Chicken Wings- Assorted at P413 Rival Recipes. No price is published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P413"
+      ],
+      "location": "P413",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "existingItemSlug": "buffalo-buttermilk-wings-buffalo-buttermilk-wings",
+      "existingVendorSlug": "buffalo-buttermilk-wings",
+      "notes": "UPDATE of Buffalo-Buttermilk Wings. Official SKU Chicken Wings- Assorted at P413 Rival Recipes (CSV had Club P415, which is Taco Verde)."
+    },
+    {
+      "name": "Jumbo Brat",
+      "vendorName": "Fox River Market BBQ",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P102, P111, P135, P136, 100-M, 105-M, 106-M, 115-I, 116-O, 118-I, 121-O, 124-I, 133-M, 134-M, 138-M, P342, 300, 308, 119-U, 326, 354-M, 435-O, 440-O, 630-O, 635-O, 642-O, 730-O, 735-I, 735-O, 742-O, 750-O, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P102",
+        "P111",
+        "P135",
+        "P136",
+        "100-M",
+        "105-M",
+        "106-M",
+        "115-I",
+        "116-O",
+        "118-I",
+        "121-O",
+        "124-I",
+        "133-M",
+        "134-M",
+        "138-M",
+        "P342",
+        "300",
+        "308",
+        "119-U",
+        "326",
+        "354-M",
+        "435-O",
+        "440-O",
+        "630-O",
+        "635-O",
+        "642-O",
+        "730-O",
+        "735-I",
+        "735-O",
+        "742-O",
+        "750-O",
+        "JTV"
+      ],
+      "location": "P102, P111, P135, P136, 100-M, 105-M, 106-M, 115-I, 116-O, 118-I, 121-O, 124-I, 133-M, 134-M, 138-M, P342, 300, 308, 119-U, 326, 354-M, 435-O, 440-O, 630-O, 635-O, 642-O, 730-O, 735-I, 735-O, 742-O, 750-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Stadium Brat",
+      "vendorName": "Rival Recipes",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 121-I, P413, 407, 427, 486, 674, 686, 690. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "121-I",
+        "P413",
+        "407",
+        "427",
+        "486",
+        "674",
+        "686",
+        "690"
+      ],
+      "location": "121-I, P413, 407, 427, 486, 674, 686, 690",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pickle Crunch Brat",
+      "vendorName": "1919 Express",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 472, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "472",
+        "JTV"
+      ],
+      "location": "472, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "1919 Brat",
+      "vendorName": "1919 Express",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 472. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "472"
+      ],
+      "location": "472",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "920 Burger",
+      "vendorName": "920 Burger Farm Fresh",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 100-M, 116-O, 121-O, 138-M, 300, 119-U, 326, 354-M, 427, 435-O, 635-O, 686, 742-O, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100-M",
+        "116-O",
+        "121-O",
+        "138-M",
+        "300",
+        "119-U",
+        "326",
+        "354-M",
+        "427",
+        "435-O",
+        "635-O",
+        "686",
+        "742-O",
+        "JTV"
+      ],
+      "location": "100-M, 116-O, 121-O, 138-M, 300, 119-U, 326, 354-M, 427, 435-O, 635-O, 686, 742-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Beyond Burger",
+      "vendorName": "920 Burger Farm Fresh",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 116-O. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "116-O"
+      ],
+      "location": "116-O",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Double Onion Burger",
+      "vendorName": "1919 Kitchen & Tap",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P111. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P111"
+      ],
+      "location": "P111",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Triple Onion Burger",
+      "vendorName": "1919 Kitchen & Tap",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P111, 472. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P111",
+        "472"
+      ],
+      "location": "P111, 472",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Wisco Burger",
+      "vendorName": "1919 Express",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 472. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "472"
+      ],
+      "location": "472",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheese Fries",
+      "vendorName": "Fox River Market",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 100-M, 106-M, 116-O, 121-O, 124-O, 134-M, 138-M, 300, 308, 119-U, 326, 340, 354-M, 407, 427, 440-O, 472, 642-O, 686, 742-O, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100-M",
+        "106-M",
+        "116-O",
+        "121-O",
+        "124-O",
+        "134-M",
+        "138-M",
+        "300",
+        "308",
+        "119-U",
+        "326",
+        "340",
+        "354-M",
+        "407",
+        "427",
+        "440-O",
+        "472",
+        "642-O",
+        "686",
+        "742-O",
+        "JTV"
+      ],
+      "location": "100-M, 106-M, 116-O, 121-O, 124-O, 134-M, 138-M, 300, 308, 119-U, 326, 340, 354-M, 407, 427, 440-O, 472, 642-O, 686, 742-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheesy Chicken Nuggets",
+      "vendorName": "920 Burger Farm Fresh",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 116-O, 121-O, 340-M, 642-O. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "116-O",
+        "121-O",
+        "340-M",
+        "642-O"
+      ],
+      "location": "116-O, 121-O, 340-M, 642-O",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chicken Tenders",
+      "vendorName": "Fox River Market",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 100-M, 106-M, 116-O, 124-O, 134-M, 138-M, 300, 308, 119-U, 326, 340, 354-M, 407, 427, 440-O, 472, 642-O, 686, 742-O, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100-M",
+        "106-M",
+        "116-O",
+        "124-O",
+        "134-M",
+        "138-M",
+        "300",
+        "308",
+        "119-U",
+        "326",
+        "340",
+        "354-M",
+        "407",
+        "427",
+        "440-O",
+        "472",
+        "642-O",
+        "686",
+        "742-O",
+        "JTV"
+      ],
+      "location": "100-M, 106-M, 116-O, 124-O, 134-M, 138-M, 300, 308, 119-U, 326, 340, 354-M, 407, 427, 440-O, 472, 642-O, 686, 742-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Hot Honey Chicken Tenders",
+      "vendorName": "Fox River Market",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 100-M, 106-M, 116-O, 124-O, 134-M, 138-M, 300, 308, 119-U, 326, 340, 354-M, 440-O, 642-O, 742-O, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100-M",
+        "106-M",
+        "116-O",
+        "124-O",
+        "134-M",
+        "138-M",
+        "300",
+        "308",
+        "119-U",
+        "326",
+        "340",
+        "354-M",
+        "440-O",
+        "642-O",
+        "742-O",
+        "JTV"
+      ],
+      "location": "100-M, 106-M, 116-O, 124-O, 134-M, 138-M, 300, 308, 119-U, 326, 340, 354-M, 440-O, 642-O, 742-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Fried Pickles",
+      "vendorName": "Fox River Market",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 106-M, 134-M, 305, 340, 427, 635-O, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "106-M",
+        "134-M",
+        "305",
+        "340",
+        "427",
+        "635-O",
+        "JTV"
+      ],
+      "location": "106-M, 134-M, 305, 340, 427, 635-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Horse Collar",
+      "vendorName": "Fox River Market BBQ",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 105-M, 133-M, 340-M, 486. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105-M",
+        "133-M",
+        "340-M",
+        "486"
+      ],
+      "location": "105-M, 133-M, 340-M, 486",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Jumbo Hot Dog",
+      "vendorName": "Fox River Market BBQ",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P135, 100-M, 105-M, 106-M, 115-I, 118-I, 121-O, 124-I, 133-M, 134-M, 138-M, 300, 308, 119-U, 326, 354-M, 407, 435-O, 440-O, 630-O, 635-O, 642-O, 730-O, 735-I, 735-O, 750-O, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P135",
+        "100-M",
+        "105-M",
+        "106-M",
+        "115-I",
+        "118-I",
+        "121-O",
+        "124-I",
+        "133-M",
+        "134-M",
+        "138-M",
+        "300",
+        "308",
+        "119-U",
+        "326",
+        "354-M",
+        "407",
+        "435-O",
+        "440-O",
+        "630-O",
+        "635-O",
+        "642-O",
+        "730-O",
+        "735-I",
+        "735-O",
+        "750-O",
+        "JTV"
+      ],
+      "location": "P135, 100-M, 105-M, 106-M, 115-I, 118-I, 121-O, 124-I, 133-M, 134-M, 138-M, 300, 308, 119-U, 326, 354-M, 407, 435-O, 440-O, 630-O, 635-O, 642-O, 730-O, 735-I, 735-O, 750-O, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Stadium Hot Dog",
+      "vendorName": "Stadium Snacks",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 121-I, 407, 427. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "121-I",
+        "407",
+        "427"
+      ],
+      "location": "121-I, 407, 427",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pack N Cheese Original",
+      "vendorName": "Pack N Cheese",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P101, 105-M, 133-M, 312, 131-U, 435-O, 743-I. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P101",
+        "105-M",
+        "133-M",
+        "312",
+        "131-U",
+        "435-O",
+        "743-I"
+      ],
+      "location": "P101, 105-M, 133-M, 312, 131-U, 435-O, 743-I",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pack N Cheese BBQ Pork",
+      "vendorName": "Fox River Market BBQ",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 105-M, 133-M. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105-M",
+        "133-M"
+      ],
+      "location": "105-M, 133-M",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pack N Cheese Brat",
+      "vendorName": "Pack N Cheese",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P101, 312, 131-U, 743-I. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P101",
+        "312",
+        "131-U",
+        "743-I"
+      ],
+      "location": "P101, 312, 131-U, 743-I",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pack N Cheese Sloppy Joe",
+      "vendorName": "Pack N Cheese",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P101, 312, 331, 435-O, 674, 743-I. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P101",
+        "312",
+        "331",
+        "435-O",
+        "674",
+        "743-I"
+      ],
+      "location": "P101, 312, 331, 435-O, 674, 743-I",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheese Pizza",
+      "vendorName": "Going Deep Pizza",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 107-O, 117-O, 120-I, 123-I, 305, 312, 131-U, 427, 686, 743-O. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "107-O",
+        "117-O",
+        "120-I",
+        "123-I",
+        "305",
+        "312",
+        "131-U",
+        "427",
+        "686",
+        "743-O"
+      ],
+      "location": "107-O, 117-O, 120-I, 123-I, 305, 312, 131-U, 427, 686, 743-O",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pepperoni Pizza",
+      "vendorName": "Going Deep Pizza",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 107-O, 117-O, 120-I, 123-I, 305, 312, 131-U, 427, 686, 743-O. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "107-O",
+        "117-O",
+        "120-I",
+        "123-I",
+        "305",
+        "312",
+        "131-U",
+        "427",
+        "686",
+        "743-O"
+      ],
+      "location": "107-O, 117-O, 120-I, 123-I, 305, 312, 131-U, 427, 686, 743-O",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bahn Mi Sandwich",
+      "vendorName": "Melotte Marketplace",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 427. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "427"
+      ],
+      "location": "427",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bratzilla Grilled Cheese",
+      "vendorName": "Grilled Cheese Chicken",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 124-O, 326. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "124-O",
+        "326"
+      ],
+      "location": "124-O, 326",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cinnamon Roll Sandwich",
+      "vendorName": "Johnsonville Tailgate Village",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "JTV"
+      ],
+      "location": "JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Hot Italian Sub",
+      "vendorName": "Slice Pizza",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 305. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "305"
+      ],
+      "location": "305",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mega Grilled Cheese",
+      "vendorName": "Miller Lite Haus",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 486. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "486"
+      ],
+      "location": "486",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Midwest Grilled Cheese",
+      "vendorName": "Grilled Cheese Chicken",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 106-M, 124-O, 138-M, 308, 642-O. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "106-M",
+        "124-O",
+        "138-M",
+        "308",
+        "642-O"
+      ],
+      "location": "106-M, 124-O, 138-M, 308, 642-O",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Philly Cheesesteak",
+      "vendorName": "Philly Cheese Steak",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P102, P136, P342, 746-I. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P102",
+        "P136",
+        "P342",
+        "746-I"
+      ],
+      "location": "P102, P136, P342, 746-I",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Pulled Pork Sandwich",
+      "vendorName": "Fox River Market BBQ",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 105-M, 133-M, 427, 742-I, JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105-M",
+        "133-M",
+        "427",
+        "742-I",
+        "JTV"
+      ],
+      "location": "105-M, 133-M, 427, 742-I, JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Steak Sandwich",
+      "vendorName": "Rival Recipes",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P413. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P413"
+      ],
+      "location": "P413",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Tenderloin Sandwich",
+      "vendorName": "Against the Grain",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P688. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P688"
+      ],
+      "location": "P688",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Wrap of the Game",
+      "vendorName": "Rival Recipes",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 690. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "690"
+      ],
+      "location": "690",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Walking Taco",
+      "vendorName": "Philly Cheese Steak",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P102, P324, 746-I. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P102",
+        "P324",
+        "746-I"
+      ],
+      "location": "P102, P324, 746-I",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Taco Bowl",
+      "vendorName": "Taco Verde",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P415. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P415"
+      ],
+      "location": "P415",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Taco Trio",
+      "vendorName": "Taco Verde",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P415. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "P415"
+      ],
+      "location": "P415",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Noodle Bowl",
+      "vendorName": "Melotte Marketplace",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 427. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "427"
+      ],
+      "location": "427",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "notes": "Official PDF prints Noodle Bow at 427; treated as Noodle Bowl."
+    },
+    {
+      "name": "Chili",
+      "vendorName": "1919 Express",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 472, 674. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "472",
+        "674"
+      ],
+      "location": "472, 674",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Polish Sausage",
+      "vendorName": "Johnsonville Tailgate Village",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at JTV. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "JTV"
+      ],
+      "location": "JTV",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Cheddarwurst",
+      "vendorName": "Stadium Snacks",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 115-I, 118-I, 121-I, 308, 630-O, 730-O, 735-O, 750-O. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115-I",
+        "118-I",
+        "121-I",
+        "308",
+        "630-O",
+        "730-O",
+        "735-O",
+        "750-O"
+      ],
+      "location": "115-I, 118-I, 121-I, 308, 630-O, 730-O, 735-O, 750-O",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Fried Brownie Bites",
+      "vendorName": "Sweet Spot",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P347, 427. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "P347",
+        "427"
+      ],
+      "location": "P347, 427",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Fried Cookie Dough",
+      "vendorName": "Sweet Spot",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P347. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "P347"
+      ],
+      "location": "P347",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Frozen Tundra Sundae",
+      "vendorName": "Sweet Spot",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P484, P678. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "P484",
+        "P678"
+      ],
+      "location": "P484, P678",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Turtle Stick",
+      "vendorName": "Heavenly Roasted Nuts",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at P101, P123, P315. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "P101",
+        "P123",
+        "P315"
+      ],
+      "location": "P101, P123, P315",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Gluten Free Bun",
+      "vendorName": "920 Burger Farm Fresh",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 116-O. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "116-O"
+      ],
+      "location": "116-O",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chef’s Choice Seasonal Salad",
+      "vendorName": "Fox River Market",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 100-M, 138-M, 312, 131-U, 690. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "100-M",
+        "138-M",
+        "312",
+        "131-U",
+        "690"
+      ],
+      "location": "100-M, 138-M, 312, 131-U, 690",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "1919 Cheese Curds",
+      "vendorName": "1919 Express",
+      "description": "Listed on the official 2026 Packers F&B by Item (gameday) menu at 472. No price is published in that directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "472"
+      ],
+      "location": "472",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Wisconsin Bloody Mary",
+      "vendorName": "Throwbacks",
+      "description": "Official 2026 gameday SKU Bloody Mary- WI at Throwbacks stands 117-I, 122-I, 131-O, and P352. No price is published.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "117-I",
+        "122-I",
+        "131-O",
+        "P352"
+      ],
+      "location": "117-I, 122-I, 131-O, P352",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "notes": "Signature Wisconsin drink, not a generic domestic beer/soda filler."
+    },
+    {
+      "name": "Hinterland IPA",
+      "vendorName": "Throwbacks",
+      "description": "Official 2026 gameday SKU Hinterland IPA, a Green Bay local craft beer listed across Lambeau stands. No price is published.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "P101",
+        "P112",
+        "P126",
+        "P127",
+        "P136",
+        "105-I",
+        "116-I",
+        "119-I",
+        "124-I",
+        "131-I",
+        "132-I",
+        "302",
+        "109-U",
+        "315-O",
+        "P413",
+        "427",
+        "642-O",
+        "686",
+        "701",
+        "736-I"
+      ],
+      "location": "P101, P112, P126, P127, P136, 105-I, 116-I, 119-I, 124-I, 131-I, 132-I, 302, 109-U, 315-O, P413, 427, 642-O, 686, 701, 736-I",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf",
+      "confidence": "HIGH",
+      "notes": "Local craft SKU. Distinct from the existing Titletown Hinterland Brewery restaurant row."
+    }
+  ],
+  "staleReview": [
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Bratcho",
+      "existingItemSlug": "bratcho-bratcho",
+      "existingVendorSlug": "bratcho",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: Bratcho is absent from the official 2026 gameday F&B by Item PDF and from the 2026 concert by-item PDF. CSV described tater tots with brat coins, which is not Jumbo Brat, Brat Eggroll, or Pack N Cheese Brat. Left active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Summer Sausage Grilled Cheese",
+      "existingItemSlug": "summer-sausage-grilled-cheese-summer-sausage-grilled-cheese",
+      "existingVendorSlug": "summer-sausage-grilled-cheese",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: not listed on the official 2026 gameday F&B by Item PDF. A similarly named sandwich appears only on the concert by-item PDF. Left active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/nueiiwlc6l06rddkeiyb.pdf"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Green and Gold BBQ Chicken Sandwich",
+      "existingItemSlug": "green-and-gold-bbq-chicken-sandwich-green-and-gold-bbq-chicken-sandwich",
+      "existingVendorSlug": "green-and-gold-bbq-chicken-sandwich",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: that name is absent from the 2026 gameday by-item PDF. CSV locations 105-M, 133-M, 742-I overlap official Pulled Pork Sandwich locations, but the official SKU is pork, not chicken. Left active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Bento Box",
+      "existingItemSlug": "bento-box-bento-box",
+      "existingVendorSlug": "bento-box",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: Bento Box is not on the 2026 gameday by-item PDF. Club 427 is Melotte Marketplace, which lists Noodle Bow, Bahn Mi, pizza, and other SKUs instead. Left active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "1919 Kitchen & Tap",
+      "existingItemSlug": "1919-kitchen-tap-1919-kitchen-tap",
+      "existingVendorSlug": "1919-kitchen-tap",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: the official 2026 by-item PDF lists plated SKUs at 1919 stands (Brat-1919, Cheese Curds-1919, burgers) but not a food product named 1919 Kitchen & Tap. The row is a restaurant-as-item leftover from the CSV headline import. The vendor record is still valid (P111). Left active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Johnsonville Tailgate Village",
+      "existingItemSlug": "fresh-cheese-curds-johnsonville-tailgate-village",
+      "existingVendorSlug": "fresh-cheese-curds",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: this food item is a malformed CSV row (item name is the JTV concept; vendor is Fresh Cheese Curds). JTV is an official 2026 location/concept, not a plated SKU. A proper Johnsonville Tailgate Village vendor is created for JTV items. Left this row active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/eqxozvqru8cgayniwzlp.pdf"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Gluten-Free Markets",
+      "existingItemSlug": "gluten-free-markets-gluten-free-markets",
+      "existingVendorSlug": "gluten-free-markets",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: the 2026 gameday by-item PDF lists Gluten Free Bun at 116-O, not a Gluten-Free Markets food product at CSV sections 103, 116. Left active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "$5 Value Items",
+      "existingItemSlug": "gluten-free-markets-5-value-items",
+      "existingVendorSlug": "gluten-free-markets",
+      "recommendation": "hide",
+      "evidence": "Positive evidence: $5 Value Items is a CSV heading, not an official 2026 plated SKU. Left active; do not auto-hide.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf"
+    }
+  ],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Bento Box",
+      "existingItemSlug": "bento-box-bento-box",
+      "existingVendorSlug": "bento-box",
+      "recommendation": "manual_review",
+      "evidence": "Uncertain relationship to official Noodle Bowl at Melotte Marketplace 427. CSV described beef/chicken, fried rice, and kimchi-cucumber salad, which is not confirmed as the PDF Noodle Bow SKU. Do not merge.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Green and Gold BBQ Chicken Sandwich",
+      "existingItemSlug": "green-and-gold-bbq-chicken-sandwich-green-and-gold-bbq-chicken-sandwich",
+      "existingVendorSlug": "green-and-gold-bbq-chicken-sandwich",
+      "recommendation": "manual_review",
+      "evidence": "CSV locations overlap official Pulled Pork Sandwich (105-M, 133-M, 742-I) but protein does not match. Do not merge into Pulled Pork Sandwich.",
+      "sourceUrl": "https://static.clubs.nfl.com/image/upload/packers/mxyp3ez0wuite8ltrzi7.pdf"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Hinterland Brewery",
+      "existingItemSlug": "hinterland-brewery-hinterland-brewery",
+      "existingVendorSlug": "hinterland-brewery",
+      "recommendation": "manual_review",
+      "evidence": "Existing Titletown restaurant row is not the same object as the stadium-wide Hinterland IPA SKU. Do not merge.",
+      "sourceUrl": "https://www.packers.com/lambeau-field/concession-links"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "generic",
+      "name": "Candy",
+      "reason": "Packaged candy is generic filler under Stadium Slop inclusion rules."
+    },
+    {
+      "kind": "generic",
+      "name": "Chips-Assorted",
+      "reason": "Packaged chips are generic filler."
+    },
+    {
+      "kind": "generic",
+      "name": "Popcorn-Packaged",
+      "reason": "Packaged popcorn is generic filler."
+    },
+    {
+      "kind": "generic",
+      "name": "Nuts-Almonds/Cashews/Peanuts/Pecans",
+      "reason": "Packaged nuts/peanuts are generic filler."
+    },
+    {
+      "kind": "generic",
+      "name": "Pretzel Stick",
+      "reason": "Plain pretzel SKU without a distinctive loaded/specialty qualifier."
+    },
+    {
+      "kind": "generic",
+      "name": "Pretzel/Cheese Cup",
+      "reason": "Plain pretzel-and-cheese cup is generic filler."
+    },
+    {
+      "kind": "generic",
+      "name": "Sweet Treat Combo",
+      "reason": "Popcorn-and-candy combo is generic filler."
+    },
+    {
+      "kind": "generic",
+      "name": "Coke / Diet Coke / Sprite / bottled water",
+      "reason": "Fountain and packaged soda/water are generic filler."
+    },
+    {
+      "kind": "generic",
+      "name": "Miller Lite / Coors Light / High Life / domestic drafts",
+      "reason": "Mass domestic beer SKUs are excluded; local Hinterland IPA and WI Bloody Mary are included."
+    },
+    {
+      "kind": "generic",
+      "name": "Wine / Cocktails / Souvenir Draft",
+      "reason": "Generic bar categories, not plated reviewable products."
+    },
+    {
+      "kind": "concert-only",
+      "name": "Sandwich- Summer Sausage Grilled Cheese",
+      "reason": "Present on the concert by-item PDF, absent from the gameday by-item PDF. Existing CSV row classified STALE_REVIEW instead of CREATE."
+    },
+    {
+      "kind": "concert-only",
+      "name": "Sandwich- French Onion Grilled Cheese",
+      "reason": "Listed on the concert by-item PDF only; not created from concert-only evidence."
+    },
+    {
+      "kind": "concert-only",
+      "name": "Sandwich- Meatloaf",
+      "reason": "Listed on the concert by-item PDF only."
+    },
+    {
+      "kind": "unverified-partner",
+      "name": "Leinenkugel’s Beer Garden / Ariens Hill + Chill / Kwik Trip Packer Perks",
+      "reason": "Titletown/atrium partner rows are outside the Delaware North concourse by-item PDF. No positive evidence they were removed; left untouched and not classified STALE_REVIEW."
+    }
+  ]
+}

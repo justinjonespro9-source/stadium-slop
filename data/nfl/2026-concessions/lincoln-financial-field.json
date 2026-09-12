@@ -1,0 +1,143 @@
+{
+  "venueSlug": "lincoln-financial-field",
+  "venueName": "Lincoln Financial Field",
+  "season": 2026,
+  "league": "NFL",
+  "source": {
+    "url": "https://www.businesswire.com/news/home/20260909842365/en/",
+    "title": "Aramark Sports + Entertainment Kicks Off 2026 NFL Season Across Eight NFL Stadiums",
+    "type": "official_operator",
+    "retrievedAt": "2026-09-12"
+  },
+  "notes": "Official Aramark 2026 items with sections, plus official Linc local-favorites page for the 9th Street Market Pastel. South Philly Special cheesesteak skipped because Inquirer and Philly Mag disagree on 138 vs 148. Generic pretzels, calzones, and gluten-free staples not re-imported.",
+  "vendors": [
+    {
+      "name": "Broad Street Beast",
+      "section": "113",
+      "location": "113",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sideline Markets",
+      "section": "C38, C23",
+      "location": "C38, C23",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.lincolnfinancialfield.com/food-and-concessions/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "sideline-markets"
+    },
+    {
+      "name": "Smoked BBQ Chicken Nachos",
+      "section": "120, 216",
+      "location": "120, 216",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "9th Street Market",
+      "section": "138",
+      "location": "138",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.lincolnfinancialfield.com/food-and-concessions/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Broad Street Beast",
+      "vendorName": "Broad Street Beast",
+      "description": "Official 2026 18-inch green chalupa shell with braised wagyu beef shank, fried jalape\u00f1o poppers, tomatillo avocado salsa, Oaxaca queso, crispy shallots, and cilantro.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "113"
+      ],
+      "location": "113",
+      "basePrice": 55,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Tush Push Tater",
+      "vendorName": "Sideline Markets",
+      "description": "Official 2026 deep-fried russet potato topped with fried chicken cutlet, pimento mac and cheese, bacon hot honey jam, 215 sauce, and scallions at East and West club markets.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "C38",
+        "C23"
+      ],
+      "location": "C38, C23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "sideline-markets",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Smoked BBQ Chicken Nachos",
+      "vendorName": "Smoked BBQ Chicken Nachos",
+      "description": "Official 2026 tortilla chips with smoked chicken in caramelized honey BBQ, roasted poblano queso, black beans, charred corn relish, mango pico, crema, and scallions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120",
+        "216"
+      ],
+      "location": "120, 216",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.businesswire.com/news/home/20260909842365/en/",
+      "confidence": "HIGH",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "9th Street Market Pastel",
+      "vendorName": "9th Street Market",
+      "description": "Official this-season local item: pastel stuffed with mortadella, capicola, prosciutto cotto, and tomato relish, served with long hot aioli at section 138.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "138"
+      ],
+      "location": "138",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.lincolnfinancialfield.com/food-and-concessions/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "source_conflict",
+      "name": "South Philly Special Cheesesteak",
+      "reason": "Philly Mag lists 126, 129, 138; Inquirer lists 126, 129, 148. Not imported."
+    },
+    {
+      "kind": "incomplete_location",
+      "name": "Kool-Aid Glazed Chicken Wings",
+      "reason": "Philly Mag places them in FanDuel Lounge only; Aramark release did not list a section."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Maui BBQ Meat Pie",
+      "existingItemSlug": "g-day-gourmet-maui-bbq-meat-pie",
+      "existingVendorSlug": "g-day-gourmet",
+      "recommendation": "manual_review",
+      "evidence": "Existing G'Day Gourmet pie at 111 is not the 9th Street Market Pastel. Keep both.",
+      "sourceUrl": "https://www.lincolnfinancialfield.com/food-and-concessions/"
+    }
+  ]
+}
