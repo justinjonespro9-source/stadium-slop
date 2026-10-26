@@ -1,0 +1,144 @@
+{
+  "venueSlug": "td-garden",
+  "venueName": "TD Garden",
+  "season": 2026,
+  "league": "NBA-NHL",
+  "source": {
+    "url": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+    "title": "New season brings a fresh look, new flavors, and more to TD Garden",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "September 29, 2026 release. Shared Celtics and Bruins menu. Only items with a published location were imported. The public stand directory was not treated as a full menu. Existing stands, including playoff items, were left unchanged and were not marked stale.",
+  "vendors": [
+    {
+      "name": "Kelly's Roast Beef",
+      "section": "Level 4, JetBlue Runway, Level 7, On Causeway",
+      "location": "Level 4 Loge at the JetBlue Runway and Level 7 Balcony at On Causeway",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Blount's Clam Shack",
+      "section": "Level 4, Boston Common",
+      "location": "Level 4 Boston Common",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Causeway Craves",
+      "section": "Level 4",
+      "location": "Level 4 Loge",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Kelly's Roast Beef Sandwich",
+      "vendorName": "Kelly's Roast Beef",
+      "description": "Classic roast beef sandwich at the new Kelly's Roast Beef stands on Level 4 at the JetBlue Runway and Level 7 at On Causeway.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Level 4",
+        "JetBlue Runway",
+        "Level 7",
+        "On Causeway"
+      ],
+      "location": "Level 4 Loge at the JetBlue Runway and Level 7 Balcony at On Causeway",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. New partner."
+    },
+    {
+      "name": "Cheese Fries",
+      "vendorName": "Kelly's Roast Beef",
+      "description": "Cheese fries at the new Kelly's Roast Beef stands.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "Level 4",
+        "JetBlue Runway",
+        "Level 7",
+        "On Causeway"
+      ],
+      "location": "Level 4 Loge at the JetBlue Runway and Level 7 Balcony at On Causeway",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "New England Clam Chowder",
+      "vendorName": "Blount's Clam Shack",
+      "description": "New England clam chowder at the new Blount's Clam Shack on Level 4 at Boston Common.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Level 4",
+        "Boston Common"
+      ],
+      "location": "Level 4 Boston Common",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. New partner."
+    },
+    {
+      "name": "Gifford's Ice Cream",
+      "vendorName": "Causeway Craves",
+      "description": "Gifford's ice cream at the new Causeway Craves stand on Level 4.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Level 4"
+      ],
+      "location": "Level 4 Loge",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.tdgarden.com/news/detail/new-season-brings-a-fresh-look-new-flavors-and-more-to-td-garden",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. New stand. Dirty sodas, slushies, boba, and boozy milkshakes were not imported."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Coconut chicken curry rice bowl, teriyaki chicken rice noodle bowl, yucca fries, falafel",
+      "reason": "Named in the release, but the re-opened article does not give a section. The second allergen-friendly stand's location was not published."
+    },
+    {
+      "kind": "item",
+      "name": "Taqueria churro chips",
+      "reason": "Named without a section."
+    },
+    {
+      "kind": "item",
+      "name": "Back Bay BBQ strawberry shortcake",
+      "reason": "Named without a section in the re-opened release."
+    },
+    {
+      "kind": "item",
+      "name": "Dirty sodas, slushies, boba, boozy milkshakes",
+      "reason": "Generic drinks at Causeway Craves."
+    },
+    {
+      "kind": "item",
+      "name": "Souvenir goalie masks, straws, and gloves",
+      "reason": "Not food."
+    }
+  ],
+  "possibleDuplicates": []
+}

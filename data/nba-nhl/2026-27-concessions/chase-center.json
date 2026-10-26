@@ -1,0 +1,771 @@
+{
+  "venueSlug": "chase-center",
+  "venueName": "Chase Center",
+  "season": 2026,
+  "league": "NBA",
+  "source": {
+    "url": "https://www.chasecenter.com/news/food-and-beverage-program-20261020/",
+    "title": "Chase Center Announces New Culinary Concepts & Offerings",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "Official October 20, 2026 page returned the title only when re-opened. Dish names and portals are from Tamara Palmer's October 22, 2026 tasting recap of that announcement. Existing stands are updated in place. Fikscue, Señor Sisig, and Sake ONO are untouched.",
+  "vendors": [
+    {
+      "name": "City Bistro",
+      "section": "Portal 51",
+      "location": "Portal 51",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "city-bistro"
+    },
+    {
+      "name": "La Ciudad",
+      "section": "Portals 10 and 23",
+      "location": "Portals 10 and 23",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "la-ciudad"
+    },
+    {
+      "name": "Nuevos",
+      "section": "Portal 3",
+      "location": "Portal 3",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "nuevos"
+    },
+    {
+      "name": "Pure Catch",
+      "section": "Portal 22",
+      "location": "Portal 22",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "pure-catch"
+    },
+    {
+      "name": "Stacked Sandos",
+      "section": "Portals 3 and 49",
+      "location": "Portals 3 and 49",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "stacked-sandos"
+    },
+    {
+      "name": "Swish & Sugar",
+      "section": "Portal 31",
+      "location": "Portal 31",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "swish-sugar"
+    },
+    {
+      "name": "Tony G’s Slice House Pizza",
+      "section": "Portals 5, 10, 15, 21, and 51",
+      "location": "Portals 5, 10, 15, 21, and 51",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "tony-g-s-slice-house-pizza"
+    },
+    {
+      "name": "Golden State Waffle Co.",
+      "section": "Portal 14",
+      "location": "Portal 14",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "golden-state-waffle-co"
+    },
+    {
+      "name": "Bay Bird",
+      "section": "Portals 10 and 55",
+      "location": "Portals 10 and 55",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Big Nate's BBQ",
+      "section": "Portals 11, 23, and 40",
+      "location": "Portals 11, 23, and 40",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Sarap Shop",
+      "section": "Portal 49",
+      "location": "Portal 49",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "The Green House",
+      "section": "Portal 57",
+      "location": "Portal 57",
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "City Bistro",
+      "vendorName": "City Bistro",
+      "description": "Home of the new Chicken Elote Nachos—crispy tortilla chips loaded with tender chicken, street corn, cotija cheese, and lime crema.",
+      "itemType": "NON_ALCOHOLIC_DRINK",
+      "category": "BEVERAGE",
+      "sections": [
+        "Portal 51"
+      ],
+      "location": "Portal 51",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingItemSlug": "city-bistro-city-bistro",
+      "existingVendorSlug": "city-bistro",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Portals are from the October 22, 2026 tasting recap of the October 20 announcement. The official page body did not render.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "IPA Onion Smashburger",
+      "vendorName": "City Bistro",
+      "description": "Smashburger with IPA-braised onions and beer cheese at the Lagunitas City Bistro, Portal 51.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 51"
+      ],
+      "location": "Portal 51",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. New 2026 concept at the existing City Bistro stand.",
+      "existingVendorSlug": "city-bistro"
+    },
+    {
+      "name": "IPA Onion Nathan's Hot Dog",
+      "vendorName": "City Bistro",
+      "description": "Nathan's hot dog with IPA-braised onions at the Lagunitas City Bistro, Portal 51.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 51"
+      ],
+      "location": "Portal 51",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "city-bistro"
+    },
+    {
+      "name": "La Ciudad",
+      "vendorName": "La Ciudad",
+      "description": "A vibrant celebration of Latin street food, serving up street tacos crafted with freshly made masa corn tortillas. Options include Al Pastor Chicken and luscious Bistecca Burnt Ends.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Portal 10",
+        "Portal 23"
+      ],
+      "location": "Portals 10 and 23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingItemSlug": "la-ciudad-la-ciudad",
+      "existingVendorSlug": "la-ciudad",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Portals are from the October 22, 2026 tasting recap of the October 20 announcement. The official page body did not render.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Loaded Chicken Tinga Nachos",
+      "vendorName": "La Ciudad",
+      "description": "Loaded chicken tinga nachos at La Ciudad, Portals 10 and 23.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 10",
+        "Portal 23"
+      ],
+      "location": "Portals 10 and 23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "la-ciudad"
+    },
+    {
+      "name": "Beef Birria Tacos",
+      "vendorName": "La Ciudad",
+      "description": "Beef birria tacos at La Ciudad, Portals 10 and 23.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 10",
+        "Portal 23"
+      ],
+      "location": "Portals 10 and 23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "la-ciudad"
+    },
+    {
+      "name": "Black Bean and Cheese Burrito",
+      "vendorName": "La Ciudad",
+      "description": "Black bean and cheese burrito at La Ciudad, Portals 10 and 23.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 10",
+        "Portal 23"
+      ],
+      "location": "Portals 10 and 23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "la-ciudad"
+    },
+    {
+      "name": "Smothered Chicken Burrito",
+      "vendorName": "Nuevos",
+      "description": "Smothered chicken burrito at Nuevos, Portal 3.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 3"
+      ],
+      "location": "Portal 3",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "nuevos"
+    },
+    {
+      "name": "Nuevo's Posole",
+      "vendorName": "Nuevos",
+      "description": "Posole at Nuevos, Portal 3.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 3"
+      ],
+      "location": "Portal 3",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "nuevos"
+    },
+    {
+      "name": "Local Rock Cod Ceviche",
+      "vendorName": "Pure Catch",
+      "description": "Local rock cod ceviche at Pure Catch, Portal 22.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 22"
+      ],
+      "location": "Portal 22",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "pure-catch"
+    },
+    {
+      "name": "Crispy Calamari",
+      "vendorName": "Pure Catch",
+      "description": "Crispy calamari at Pure Catch, Portal 22.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 22"
+      ],
+      "location": "Portal 22",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "pure-catch"
+    },
+    {
+      "name": "Fog City Crabcakes",
+      "vendorName": "Pure Catch",
+      "description": "Fog City crabcakes at Pure Catch, Portal 22. The tasting also describes a Dungeness crab cake on Dutch crunch at this stand. Kept as this item, separate from the Fog City Crab Roll at Stacked Sandos.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 22"
+      ],
+      "location": "Portal 22",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "pure-catch"
+    },
+    {
+      "name": "Stacked Sandos",
+      "vendorName": "Stacked Sandos",
+      "description": "A flavor-packed sandwich shop serving up elevated, heavy hot sandwiches. The undisputed star of 2026 is the Korean Bulgogi Cheesesteak, featuring deeply marinated beef with a slight kick, though the Classic French Dip…",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Portal 3",
+        "Portal 49"
+      ],
+      "location": "Portals 3 and 49",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingItemSlug": "stacked-sandos-stacked-sandos",
+      "existingVendorSlug": "stacked-sandos",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Portals are from the October 22, 2026 tasting recap of the October 20 announcement. The official page body did not render.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Birria Chopped Cheese",
+      "vendorName": "Stacked Sandos",
+      "description": "Birria chopped cheese at Stacked Sandos, Portals 3 and 49.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 3",
+        "Portal 49"
+      ],
+      "location": "Portals 3 and 49",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "stacked-sandos"
+    },
+    {
+      "name": "Cali Chicken Sandwich",
+      "vendorName": "Stacked Sandos",
+      "description": "Cali chicken sandwich at Stacked Sandos, Portals 3 and 49.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 3",
+        "Portal 49"
+      ],
+      "location": "Portals 3 and 49",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "stacked-sandos"
+    },
+    {
+      "name": "Fog City Crab Roll",
+      "vendorName": "Stacked Sandos",
+      "description": "Fog City crab roll at Stacked Sandos, Portals 3 and 49. Separate from the Fog City crabcakes at Pure Catch.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 3",
+        "Portal 49"
+      ],
+      "location": "Portals 3 and 49",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "stacked-sandos"
+    },
+    {
+      "name": "Swish & Sugar",
+      "vendorName": "Swish & Sugar",
+      "description": "A bold dessert destination partnering with SF legend Mitchell’s Ice Cream. Fans line up for warm, gooey blondies and brownies topped with premium scoops, but the ultimate move is the Waffle Ice Cream Sando laced with…",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Portal 31"
+      ],
+      "location": "Portal 31",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingItemSlug": "swish-sugar-swish-sugar",
+      "existingVendorSlug": "swish-sugar",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Portals are from the October 22, 2026 tasting recap of the October 20 announcement. The official page body did not render.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Warm Cinnamon Buns",
+      "vendorName": "Swish & Sugar",
+      "description": "Warm cinnamon buns at Swish & Sugar, Portal 31.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Portal 31"
+      ],
+      "location": "Portal 31",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "swish-sugar"
+    },
+    {
+      "name": "Mitchell's Ice Cream Sandwiches",
+      "vendorName": "Swish & Sugar",
+      "description": "Mitchell's ice cream sandwiches at Swish & Sugar, Portal 31.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Portal 31"
+      ],
+      "location": "Portal 31",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "swish-sugar"
+    },
+    {
+      "name": "Tony G’s Slice House Pizza",
+      "vendorName": "Tony G’s Slice House Pizza",
+      "description": "The award-winning local pizza staple has expanded for 2026, debuting a dedicated Soft-Serve Ice Cream machine with rotating flavors alongside their classic premium slices.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Portal 5",
+        "Portal 10",
+        "Portal 15",
+        "Portal 21",
+        "Portal 51"
+      ],
+      "location": "Portals 5, 10, 15, 21, and 51",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingItemSlug": "tony-g-s-slice-house-pizza-tony-g-s-slice-house-pizza",
+      "existingVendorSlug": "tony-g-s-slice-house-pizza",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Portals are from the October 22, 2026 tasting recap of the October 20 announcement. The official page body did not render.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "The Town Slice",
+      "vendorName": "Tony G’s Slice House Pizza",
+      "description": "The Town slice at Tony G's Slice House, Portals 5, 10, 15, 21, and 51.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 5",
+        "Portal 10",
+        "Portal 15",
+        "Portal 21",
+        "Portal 51"
+      ],
+      "location": "Portals 5, 10, 15, 21, and 51",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "tony-g-s-slice-house-pizza"
+    },
+    {
+      "name": "Golden State Waffle Co.",
+      "vendorName": "Golden State Waffle Co.",
+      "description": "Next-level comfort food combining sweet and savory. The headline item is the Golden Firebird Sando—a fiery take on Nashville hot chicken sandwiched between golden, crispy waffles and drizzled with real maple syrup and…",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Portal 14"
+      ],
+      "location": "Portal 14",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "existingItemSlug": "golden-state-waffle-co-golden-state-waffle-co",
+      "existingVendorSlug": "golden-state-waffle-co",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Portals are from the October 22, 2026 tasting recap of the October 20 announcement. The official page body did not render.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Churro Waffle",
+      "vendorName": "Golden State Waffle Co.",
+      "description": "Churro waffle at Golden State Waffle Co., Portal 14.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Portal 14"
+      ],
+      "location": "Portal 14",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "golden-state-waffle-co"
+    },
+    {
+      "name": "Fowl Language Chicken Sandwich",
+      "vendorName": "Bay Bird",
+      "description": "Chicken sandwich in Mild, Medium, and They're on Fire. Bay Bird debuts in November 2026 at Portals 10 and 55.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 10",
+        "Portal 55"
+      ],
+      "location": "Portals 10 and 55",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Loaded Fries",
+      "vendorName": "Bay Bird",
+      "description": "Loaded fries at Bay Bird, Portals 10 and 55.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "Portal 10",
+        "Portal 55"
+      ],
+      "location": "Portals 10 and 55",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Big Nate's Sandwich",
+      "vendorName": "Big Nate's BBQ",
+      "description": "Big Nate's sandwich at Portals 11, 23, and 40.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 11",
+        "Portal 23",
+        "Portal 40"
+      ],
+      "location": "Portals 11, 23, and 40",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Smoked Pulled Pork Plate",
+      "vendorName": "Big Nate's BBQ",
+      "description": "Smoked pulled pork plate at Big Nate's BBQ, Portals 11, 23, and 40.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 11",
+        "Portal 23",
+        "Portal 40"
+      ],
+      "location": "Portals 11, 23, and 40",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Roasted BBQ Chicken Plate",
+      "vendorName": "Big Nate's BBQ",
+      "description": "Roasted BBQ chicken plate at Big Nate's BBQ, Portals 11, 23, and 40.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 11",
+        "Portal 23",
+        "Portal 40"
+      ],
+      "location": "Portals 11, 23, and 40",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Loaded Potato",
+      "vendorName": "Big Nate's BBQ",
+      "description": "Loaded potato at Big Nate's BBQ, Portals 11, 23, and 40.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 11",
+        "Portal 23",
+        "Portal 40"
+      ],
+      "location": "Portals 11, 23, and 40",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Chicken Adobo Cheese Curds",
+      "vendorName": "Sarap Shop",
+      "description": "Chicken adobo cheese curds at Sarap Shop, Portal 49.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "Portal 49"
+      ],
+      "location": "Portal 49",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Vegan Pancit",
+      "vendorName": "Sarap Shop",
+      "description": "Vegan pancit at Sarap Shop, Portal 49.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 49"
+      ],
+      "location": "Portal 49",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Bicol Express Nachos",
+      "vendorName": "Sarap Shop",
+      "description": "Bicol express nachos at Sarap Shop, Portal 49.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 49"
+      ],
+      "location": "Portal 49",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Wild Mushroom Orzo",
+      "vendorName": "The Green House",
+      "description": "Wild mushroom orzo at The Green House, Portal 57.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Portal 57"
+      ],
+      "location": "Portal 57",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://48hills.org/2026/10/good-taste-warriors-score-early-wins-with-tasty-new-fare/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Bay Bird chicken tenders",
+      "reason": "Named, but ordinary tenders. The Fowl Language sandwich and loaded fries are the distinctive items."
+    },
+    {
+      "kind": "item",
+      "name": "Nuevos blue corn chips and dips",
+      "reason": "Closer to a chips row than a plated item."
+    },
+    {
+      "kind": "item",
+      "name": "Cache Creek popcorn and soda",
+      "reason": "Generic popcorn and soda."
+    },
+    {
+      "kind": "item",
+      "name": "Buzzer Beater",
+      "reason": "Named cocktail, but the recap only places it in club spaces."
+    },
+    {
+      "kind": "item",
+      "name": "Señor Sisig, Fikscue, Sake ONO",
+      "reason": "Not in the rendered new-concept list. Left unchanged."
+    }
+  ],
+  "possibleDuplicates": []
+}

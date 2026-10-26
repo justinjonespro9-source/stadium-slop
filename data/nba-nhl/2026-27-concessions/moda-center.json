@@ -1,0 +1,131 @@
+{
+  "venueSlug": "moda-center",
+  "venueName": "Moda Center",
+  "season": 2026,
+  "league": "NBA",
+  "source": {
+    "url": "https://www.nba.com/blazers/news/portland-trail-blazers-announce-new-fan-offerings-ahead-of-opening-night-vs-phoenix-suns",
+    "title": "Portland Trail Blazers announce new fan offerings ahead of opening night",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "October 20, 2026 Blazers release. Only named products with a place were imported. Partner names without a reviewable product were skipped. The rotating Crafters burger, Killer Burger, Tipsy Scoop, Fifty Licks, Baes, Kinnamon's, and Cha Cha Cha were left unchanged.",
+  "vendors": [
+    {
+      "name": "CheeseWorks",
+      "section": "Level 300",
+      "location": "300-level concourse",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/blazers/news/portland-trail-blazers-announce-new-fan-offerings-ahead-of-opening-night-vs-phoenix-suns",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Crafters",
+      "section": "Level 100, Level 300",
+      "location": "100-level and 300-level concourses",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/blazers/news/portland-trail-blazers-announce-new-fan-offerings-ahead-of-opening-night-vs-phoenix-suns",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Riverside Club",
+      "section": "Riverside Club",
+      "location": "Riverside Club",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/blazers/news/portland-trail-blazers-announce-new-fan-offerings-ahead-of-opening-night-vs-phoenix-suns",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Mac and Cheese Bites",
+      "vendorName": "CheeseWorks",
+      "description": "New mac and cheese bites at CheeseWorks on the 300-level concourse.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "Level 300"
+      ],
+      "location": "300-level concourse",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/blazers/news/portland-trail-blazers-announce-new-fan-offerings-ahead-of-opening-night-vs-phoenix-suns",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Elote Mini-Corn Dog Nachos",
+      "vendorName": "Crafters",
+      "description": "New elote mini-corn-dog nachos at Crafters on the 100- and 300-level concourses. Not merged with the rotating burger row.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Level 100",
+        "Level 300"
+      ],
+      "location": "100-level and 300-level concourses",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/blazers/news/portland-trail-blazers-announce-new-fan-offerings-ahead-of-opening-night-vs-phoenix-suns",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Deviled Egg Trio",
+      "vendorName": "Riverside Club",
+      "description": "New deviled egg trio at the Riverside Club.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Riverside Club"
+      ],
+      "location": "Riverside Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/blazers/news/portland-trail-blazers-announce-new-fan-offerings-ahead-of-opening-night-vs-phoenix-suns",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Salt & Straw",
+      "reason": "Named partner with no flavor and no section."
+    },
+    {
+      "kind": "item",
+      "name": "Iron Strike Burgers",
+      "reason": "Named partner on the 100 level with no specific burger."
+    },
+    {
+      "kind": "item",
+      "name": "Matsunoki Ramen and Chicken",
+      "reason": "Named partner with no section and no dish."
+    },
+    {
+      "kind": "item",
+      "name": "Pizza Jerk",
+      "reason": "Named partner with no section and no pizza."
+    },
+    {
+      "kind": "item",
+      "name": "Le Bon Temps Café",
+      "reason": "Club-level partner with no dishes."
+    },
+    {
+      "kind": "item",
+      "name": "Backyard Bird, Saltwater Fry Co., Cheesesteaks",
+      "reason": "New locations announced without dishes or section numbers."
+    },
+    {
+      "kind": "item",
+      "name": "10 Barrel, Widmer, Hop Valley",
+      "reason": "Craft beer partners."
+    }
+  ],
+  "possibleDuplicates": []
+}

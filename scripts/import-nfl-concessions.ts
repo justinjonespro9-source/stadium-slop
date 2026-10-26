@@ -65,7 +65,9 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`\n  NFL concessions import: ${venueSlug}`);
+  console.log(
+    `\n  ${payload.league === "NFL" ? "NFL concessions import" : "Concessions import"}: ${venueSlug}`
+  );
   console.log(`  File: ${filePath}`);
   console.log(`  Mode: ${dryRun ? "DRY RUN (no changes)" : "APPLY"}`);
   console.log(`  Source: ${payload.source.url}\n`);
@@ -94,6 +96,9 @@ async function main() {
   console.log(`  Possible duplicate:  ${plan.items.possibleDuplicate}`);
   console.log(`  Stale review:        ${plan.items.staleReview}`);
   console.log(`  Skipped:             ${plan.items.skip}`);
+  if (payload.applyRecommendedHides || plan.recommendedHides > 0) {
+    console.log(`  Recommended hides:   ${plan.recommendedHides}`);
+  }
 
   console.log("\n── Projected after ──────────────────────────────────");
   console.log(`  Active vendors:   ${plan.after.activeVendors}`);
@@ -112,7 +117,11 @@ async function main() {
   }
 
   if (plan.staleReview.length > 0) {
-    console.log("\n── Stale review (left active; not imported as updates) ─");
+    console.log(
+      payload.applyRecommendedHides
+        ? "\n── Stale review (hide only when recommendation is hide) ─"
+        : "\n── Stale review (left active; not imported as updates) ─"
+    );
     for (const row of plan.staleReview) {
       console.log(`  ${row.existingName}  → recommend ${row.recommendation}`);
       console.log(`    ${row.evidence}`);

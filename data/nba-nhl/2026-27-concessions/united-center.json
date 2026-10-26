@@ -1,0 +1,1126 @@
+{
+  "venueSlug": "united-center",
+  "venueName": "United Center",
+  "season": 2026,
+  "league": "NBA-NHL",
+  "applyRecommendedHides": true,
+  "source": {
+    "url": "https://www.unitedcenter.com/venue/dining/",
+    "title": "Dining & Concessions | United Center",
+    "type": "official_stadium",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "One shared Bulls and Blackhawks menu. Re-fetched the live Levy dining directory on 2026-10-26. The 2026-27 downstairs FanDuel Sportsbook PDF was not used for concourse items. labeledNewFor2026 is false: the live directory does not call these items new for 2026-27. Mrs. Levy's sandwiches are excluded because the directory still publishes no section.",
+  "vendors": [
+    {
+      "name": "Honey Butter Fried Chicken",
+      "section": "Section 115",
+      "location": "Section 115",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "honey-butter-fried-chicken"
+    },
+    {
+      "name": "This Little Goat Taqueria",
+      "section": "114, 230",
+      "location": "Sections 114, 230",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Lillie’s Q",
+      "section": "119, 206, 330",
+      "location": "Sections 119, 206, 330",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "lillie-s-q"
+    },
+    {
+      "name": "Giordano's",
+      "section": "Section 120",
+      "location": "Section 120",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "giordano-s"
+    },
+    {
+      "name": "Buona Beef",
+      "section": "104",
+      "location": "Section 104",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Gibsons Steakhouse",
+      "section": "103",
+      "location": "Section 103",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chicago Dish",
+      "section": "222, 305, 322",
+      "location": "Sections 222, 305, 322",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Rocky’s Bar",
+      "section": "118, 119",
+      "location": "Sections 118, 119",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rocky-s-bar"
+    },
+    {
+      "name": "Legacy Burger",
+      "section": "108, 213, 313",
+      "location": "Sections 108, 213, 313",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "LQ Chicken Shack",
+      "section": "205",
+      "location": "Section 205",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Goose Island Pub",
+      "section": "109",
+      "location": "Section 109",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Corona Beach Bar",
+      "section": "309",
+      "location": "Section 309",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Bar One",
+      "section": "103",
+      "location": "Section 103",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Kosher Stand",
+      "section": "119",
+      "location": "Section 119",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mad West",
+      "section": "105",
+      "location": "East Atrium, Section 105",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "OG Sandwich",
+      "vendorName": "Honey Butter Fried Chicken",
+      "description": "Honey butter fried chicken strips, candied jalapeño mayo, and Sammie slaw on a brioche bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingItemSlug": "honey-butter-fried-chicken-honey-butter-fried-chicken",
+      "existingVendorSlug": "honey-butter-fried-chicken"
+    },
+    {
+      "name": "Honey Butter Sandwich",
+      "vendorName": "Honey Butter Fried Chicken",
+      "description": "Fried chicken strips and honey butter on a buttery bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "honey-butter-fried-chicken"
+    },
+    {
+      "name": "Basket of Fried Chicken Strips",
+      "vendorName": "Honey Butter Fried Chicken",
+      "description": "Fried chicken strips with signature corn muffins, honey butter, and a choice of sauce.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "honey-butter-fried-chicken"
+    },
+    {
+      "name": "Honey Butter Fries",
+      "vendorName": "Honey Butter Fried Chicken",
+      "description": "Fries topped with a choice of pimento cheese or honey butter.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "honey-butter-fried-chicken"
+    },
+    {
+      "name": "Buffalo Ranch Fries",
+      "vendorName": "Honey Butter Fried Chicken",
+      "description": "Honey-butter buffalo sauce and ranch on tin roof fries.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "honey-butter-fried-chicken"
+    },
+    {
+      "name": "Hillpop",
+      "vendorName": "Honey Butter Fried Chicken",
+      "description": "Bourbon and lemonade.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "honey-butter-fried-chicken"
+    },
+    {
+      "name": "Yucatan Pork Tacos",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Slaw, pickled peppers, cilantro, and queso fresco with lime cilantro sauce.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingItemSlug": "this-little-goat-taqueria-this-little-goat-taqueria",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Nacho Average Nachos",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Flour tortilla chips with short rib, pickled red onions, peppers, cheese sauce, and queso fresco.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Avocado Dip",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Avocado dip with chili-lime crunch, pickled peppers, and queso fresco.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Korean Chicken Tacos",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Braised chicken, cabbage, pickled peppers, cilantro, lime, and queso fresco.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Hong Kong Short Rib Tacos",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Braised short rib, cabbage, cilantro, and queso fresco. The directory spells the item Hong Kong Shortrib Tacos.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Veggie Tacos",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Mexican-spiced vegetables, pickled peppers, shaved cabbage, chip crunch, and chili-lime cream.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Casamigos Margarita",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Casamigos margarita listed at This Little Goat.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Casamigos Spicy Margarita",
+      "vendorName": "This Little Goat Taqueria",
+      "description": "Casamigos spicy margarita listed at This Little Goat.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "114",
+        "230"
+      ],
+      "location": "Sections 114, 230",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "this-little-goat-taqueria"
+    },
+    {
+      "name": "Pulled Pork Sandwich",
+      "vendorName": "Lillie’s Q",
+      "description": "Six-hour slow-smoked pork with house-made coleslaw on a toasted brioche bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "119",
+        "206",
+        "330"
+      ],
+      "location": "Sections 119, 206, 330",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingItemSlug": "lillie-s-q-lillie-s-q",
+      "existingVendorSlug": "lillie-s-q"
+    },
+    {
+      "name": "Pulled Pork Nachos",
+      "vendorName": "Lillie’s Q",
+      "description": "Shredded pork, pickled jalapeños, green onion, BBQ sauce, cheese sauce, and sour cream over nachos.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "119",
+        "206",
+        "330"
+      ],
+      "location": "Sections 119, 206, 330",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "lillie-s-q"
+    },
+    {
+      "name": "Chopped Brisket Sandwich",
+      "vendorName": "Lillie’s Q",
+      "description": "Chopped brisket on a brioche bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "119",
+        "206",
+        "330"
+      ],
+      "location": "Sections 119, 206, 330",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "lillie-s-q"
+    },
+    {
+      "name": "Chopped Brisket Fries",
+      "vendorName": "Lillie’s Q",
+      "description": "Fries topped with chopped brisket, pickled jalapeños, green onion, BBQ sauce, cheese sauce, and sour cream.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "119",
+        "206",
+        "330"
+      ],
+      "location": "Sections 119, 206, 330",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "lillie-s-q"
+    },
+    {
+      "name": "Bulleit Bourbon Lemonade",
+      "vendorName": "Lillie’s Q",
+      "description": "Bulleit bourbon, lemon, and cane sugar.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "119",
+        "206",
+        "330"
+      ],
+      "location": "Sections 119, 206, 330",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "lillie-s-q"
+    },
+    {
+      "name": "Bulleit Bourbon Sweet Tea",
+      "vendorName": "Lillie’s Q",
+      "description": "Bulleit bourbon mixed with tea and lemonade.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "119",
+        "206",
+        "330"
+      ],
+      "location": "Sections 119, 206, 330",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "lillie-s-q"
+    },
+    {
+      "name": "Giordano's Thin Crust Pizza",
+      "vendorName": "Giordano's",
+      "description": "Giordano's thin crust pizza with cheese or pepperoni.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120"
+      ],
+      "location": "Section 120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingItemSlug": "giordano-s-giordano-s",
+      "existingVendorSlug": "giordano-s"
+    },
+    {
+      "name": "Thin Crust Special",
+      "vendorName": "Giordano's",
+      "description": "Thin crust with sausage, mushrooms, green peppers, and onions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120"
+      ],
+      "location": "Section 120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "giordano-s"
+    },
+    {
+      "name": "Thin Crust Meat & More Meat",
+      "vendorName": "Giordano's",
+      "description": "Thin crust with pepperoni, sausage, salami, and bacon.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120"
+      ],
+      "location": "Section 120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "giordano-s"
+    },
+    {
+      "name": "6-Inch Italian Beef",
+      "vendorName": "Giordano's",
+      "description": "Six-inch Italian beef with a choice of sweet or hot peppers.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "120"
+      ],
+      "location": "Section 120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "giordano-s"
+    },
+    {
+      "name": "Buona Italian Beef Sandwich",
+      "vendorName": "Buona Beef",
+      "description": "All-natural Buona Italian beef on French bread, dipped, with hot or sweet peppers.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Buona Beef Combo Sandwich",
+      "vendorName": "Buona Beef",
+      "description": "Buona Italian beef and Italian sausage on French bread, dipped, with hot or sweet peppers.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Buona Italian Sausage Sandwich",
+      "vendorName": "Buona Beef",
+      "description": "Buona Italian sausage on French bread, dipped, with hot or sweet peppers. The directory misspells this heading as Suasage.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Meatball Marinara Sandwich",
+      "vendorName": "Buona Beef",
+      "description": "House-made marinara meatball sandwich on French bread.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Arancini Beef Bites",
+      "vendorName": "Buona Beef",
+      "description": "Fried rice balls stuffed with Buona Italian beef, served with marinara.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "104"
+      ],
+      "location": "Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Gibson's Famous Filet Mignon Sliders",
+      "vendorName": "Gibsons Steakhouse",
+      "description": "Filet mignon sliders with house-made kettle chips.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "103"
+      ],
+      "location": "Section 103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chicago-Style Hot Dog",
+      "vendorName": "Chicago Dish",
+      "description": "Vienna Beef hot dog on a poppy seed bun with relish, onion, sport peppers, tomato, mustard, and celery salt.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "222",
+        "305",
+        "322"
+      ],
+      "location": "Sections 222, 305, 322",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Maxwell Street Polish",
+      "vendorName": "Chicago Dish",
+      "description": "Vienna Polish sausage with caramelized onion and yellow mustard.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "222",
+        "305",
+        "322"
+      ],
+      "location": "Sections 222, 305, 322",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingItemSlug": "the-double-dog-maxwell-street-polish",
+      "notes": "Moved from The Double-Dog vendor to Chicago Dish, where the live directory lists it. Slug preserved."
+    },
+    {
+      "name": "Old Fashioned",
+      "vendorName": "Rocky’s Bar",
+      "description": "Bulleit bourbon, Angostura bitters, and an orange twist.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "118",
+        "119"
+      ],
+      "location": "Sections 118, 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingItemSlug": "rocky-s-bar-rocky-s-bar",
+      "existingVendorSlug": "rocky-s-bar"
+    },
+    {
+      "name": "Manhattan",
+      "vendorName": "Rocky’s Bar",
+      "description": "Templeton rye, sweet vermouth, and a brandied cherry.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "118",
+        "119"
+      ],
+      "location": "Sections 118, 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rocky-s-bar"
+    },
+    {
+      "name": "Margarita",
+      "vendorName": "Rocky’s Bar",
+      "description": "Don Julio Blanco, Cointreau, lime, and agave syrup.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "118",
+        "119"
+      ],
+      "location": "Sections 118, 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rocky-s-bar"
+    },
+    {
+      "name": "American Mule",
+      "vendorName": "Rocky’s Bar",
+      "description": "Tito's vodka, Barritt's ginger beer, and lime juice.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "118",
+        "119"
+      ],
+      "location": "Sections 118, 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rocky-s-bar"
+    },
+    {
+      "name": "Martini",
+      "vendorName": "Rocky’s Bar",
+      "description": "Ketel One vodka and Carpano Blanco vermouth.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "118",
+        "119"
+      ],
+      "location": "Sections 118, 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rocky-s-bar"
+    },
+    {
+      "name": "Legacy Burger Basket",
+      "vendorName": "Legacy Burger",
+      "description": "Legacy burger with American cheese, lettuce, tomato, and special sauce on a brioche bun, served with fries.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "108",
+        "213",
+        "313"
+      ],
+      "location": "Sections 108, 213, 313",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Impossible Burger Basket",
+      "vendorName": "Legacy Burger",
+      "description": "Impossible burger with American cheese, lettuce, tomato, and special sauce on a brioche bun, served with fries.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "108",
+        "213",
+        "313"
+      ],
+      "location": "Sections 108, 213, 313",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Fried Chicken Sandwich",
+      "vendorName": "LQ Chicken Shack",
+      "description": "Fried chicken breast with pickle on a toasted brioche bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "205"
+      ],
+      "location": "Section 205",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Turkey Sandwich",
+      "vendorName": "Goose Island Pub",
+      "description": "Sliced turkey on nine-grain bread.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109"
+      ],
+      "location": "Section 109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Corned Beef Sandwich",
+      "vendorName": "Goose Island Pub",
+      "description": "Freshly carved corned beef on rye with house-made chips and half a pickle.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109"
+      ],
+      "location": "Section 109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Roast Beef Sandwich",
+      "vendorName": "Goose Island Pub",
+      "description": "Thinly sliced roast beef with horseradish cream on a toasted roll.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109"
+      ],
+      "location": "Section 109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chicken or Shredded Beef Torta",
+      "vendorName": "Corona Beach Bar",
+      "description": "Shredded beef or chicken al pastor with lettuce, tomato, refried beans, queso fresco, and sour cream on a telera roll.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "309"
+      ],
+      "location": "Section 309",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Loaded Nacho",
+      "vendorName": "Corona Beach Bar",
+      "description": "Shredded beef or chicken al pastor on house-made tortilla chips with assorted toppings.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "309"
+      ],
+      "location": "Section 309",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Madhouse Margarita",
+      "vendorName": "Bar One",
+      "description": "Don Julio Blanco, Cointreau, fresh lime, and sour.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "103"
+      ],
+      "location": "Section 103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Melon on Madison",
+      "vendorName": "Bar One",
+      "description": "Ketel One with cucumber, mint, rosemary, watermelon, and lime.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "103"
+      ],
+      "location": "Section 103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Nitro Espresso Martini",
+      "vendorName": "Bar One",
+      "description": "Ketel One, Borghetti liqueur, and espresso.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "103"
+      ],
+      "location": "Section 103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Whiskey Harvest",
+      "vendorName": "Bar One",
+      "description": "Crown Royal Apple, lemon juice, and simple syrup.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "103"
+      ],
+      "location": "Section 103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "West Side Sunset",
+      "vendorName": "Bar One",
+      "description": "Ketel One Oranje, passion fruit, watermelon, and lime.",
+      "itemType": "ALCOHOLIC_DRINK",
+      "category": "ALCOHOLIC_BEVERAGE",
+      "sections": [
+        "103"
+      ],
+      "location": "Section 103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Kosher Dog",
+      "vendorName": "Kosher Stand",
+      "description": "Kosher hot dog.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "119"
+      ],
+      "location": "Section 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "notes": "Directory: open for Bulls and Blackhawks games on Sunday through Thursday only."
+    },
+    {
+      "name": "Pastrami Dog",
+      "vendorName": "Kosher Stand",
+      "description": "Pastrami dog.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "119"
+      ],
+      "location": "Section 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "notes": "Directory: open for Bulls and Blackhawks games on Sunday through Thursday only."
+    },
+    {
+      "name": "Pastrami Sandwich",
+      "vendorName": "Kosher Stand",
+      "description": "Pastrami sandwich.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "119"
+      ],
+      "location": "Section 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH",
+      "notes": "Directory: open for Bulls and Blackhawks games on Sunday through Thursday only."
+    },
+    {
+      "name": "Chicago-Style Hot Dog",
+      "vendorName": "Mad West",
+      "description": "Vienna Beef hot dog on a poppy seed bun with mustard, relish, onion, tomato, pickle, sport peppers, and celery salt.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105",
+        "East Atrium"
+      ],
+      "location": "East Atrium, Section 105",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Polish Sausage",
+      "vendorName": "Mad West",
+      "description": "Vienna Beef Polish sausage with yellow mustard and grilled onions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "105",
+        "East Atrium"
+      ],
+      "location": "East Atrium, Section 105",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.unitedcenter.com/venue/dining/",
+      "confidence": "HIGH"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Mrs. Levy's deli sandwiches",
+      "reason": "The Loop, The Stockyard, The Stack, and The High Rise are on the live directory, but no section is published. Not guessed."
+    },
+    {
+      "kind": "item",
+      "name": "Mindy's Hot Chocolate",
+      "reason": "No section is published on the live directory."
+    },
+    {
+      "kind": "item",
+      "name": "FanDuel Sportsbook downstairs menu",
+      "reason": "The 2026-27 downstairs PDF prices a FanDuel Burger and beer-braised bratwurst for that lounge, not the concourse. Left off this payload."
+    },
+    {
+      "kind": "item",
+      "name": "Chicago Dish Buona sandwiches",
+      "reason": "The same Buona beef, combo, and sausage sandwiches are imported at the Buona Beef stand in Section 104."
+    },
+    {
+      "kind": "item",
+      "name": "Generic Vienna Beef hot dogs, nachos, pretzels, popcorn, fries, and ice cream",
+      "reason": "Repeated market headings, not distinctive products."
+    }
+  ],
+  "staleReview": [
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The \"Next Originals\" Elote Dog",
+      "existingItemSlug": "the-next-originals-elote-dog-the-next-originals-elote-dog",
+      "existingVendorSlug": "the-next-originals-elote-dog",
+      "recommendation": "hide",
+      "evidence": "Blackhawks release of October 3, 2025 limits The Next Originals Dog, topped with elote, cotija, and Hot Cheeto dust, to Chicago Dish games from March 6 through March 31, 2026. Re-read on October 26, 2026. The live dining directory does not list it. Public reviews on the row: 0. Hide, do not delete.",
+      "sourceUrl": "https://www.nhl.com/blackhawks/news/release-united-center-showcases-new-banner-level-plus-food-and-beverage-offerings-for-the-2025-26-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "The Next Original Drop",
+      "existingItemSlug": "fanduel-lounge-the-next-original-drop",
+      "existingVendorSlug": "fanduel-lounge",
+      "recommendation": "retain",
+      "evidence": "The same 2025-26 release limited this Ketel One lemon-drop cocktail to March 6 through March 31, 2026, at the Ketel One Bar in Section 103. The production row is filed at FanDuel Lounge as a non-alcoholic drink. Left active because the authorized hide is only the elote dog.",
+      "sourceUrl": "https://www.nhl.com/blackhawks/news/release-united-center-showcases-new-banner-level-plus-food-and-beverage-offerings-for-the-2025-26-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Centennial Six Stack Burger",
+      "existingItemSlug": "centennial-six-stack-burger-centennial-six-stack-burger",
+      "existingVendorSlug": "centennial-six-stack-burger",
+      "recommendation": "retain",
+      "evidence": "2025-26 season-long item at Legacy Burger stands. The live Legacy Burger listing is a different burger basket. Left active; the current basket is imported separately.",
+      "sourceUrl": "https://www.nhl.com/blackhawks/news/release-united-center-showcases-new-banner-level-plus-food-and-beverage-offerings-for-the-2025-26-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Wedge Steakhouse Sandwich",
+      "existingItemSlug": "wedge-steakhouse-sandwich-wedge-steakhouse-sandwich",
+      "existingVendorSlug": "wedge-steakhouse-sandwich",
+      "recommendation": "retain",
+      "evidence": "2025-26 season-long Chicago Dish item. Absent from the live Chicago Dish list. No end date narrower than that season was published, so it stays active.",
+      "sourceUrl": "https://www.nhl.com/blackhawks/news/release-united-center-showcases-new-banner-level-plus-food-and-beverage-offerings-for-the-2025-26-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Crispy Mozzarella Pucks",
+      "existingItemSlug": "crispy-mozzarella-pucks-crispy-mozzarella-pucks",
+      "existingVendorSlug": "crispy-mozzarella-pucks",
+      "recommendation": "retain",
+      "evidence": "2025-26 season-long Chicago Dish item. Absent from the live Chicago Dish list. Left active.",
+      "sourceUrl": "https://www.nhl.com/blackhawks/news/release-united-center-showcases-new-banner-level-plus-food-and-beverage-offerings-for-the-2025-26-season"
+    },
+    {
+      "classification": "STALE_REVIEW",
+      "existingName": "Centennial Loaded Waffle Fries",
+      "existingItemSlug": "crispy-mozzarella-pucks-centennial-loaded-waffle-fries",
+      "existingVendorSlug": "crispy-mozzarella-pucks",
+      "recommendation": "retain",
+      "evidence": "2025-26 season-long item. Absent from the live directory. Left active. Not moved off the mozzarella-puck vendor.",
+      "sourceUrl": "https://www.nhl.com/blackhawks/news/release-united-center-showcases-new-banner-level-plus-food-and-beverage-offerings-for-the-2025-26-season"
+    }
+  ],
+  "possibleDuplicates": []
+}

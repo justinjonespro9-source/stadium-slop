@@ -1,0 +1,334 @@
+{
+  "venueSlug": "bridgestone-arena",
+  "venueName": "Bridgestone Arena",
+  "season": 2026,
+  "league": "NHL",
+  "source": {
+    "url": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+    "title": "Predators introduce new food and drink items ahead of the 2026-27 season",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "September 23, 2026 Predators article. Existing structured rows, including Banjo mac and cheese, Puckett's, Hunt Brothers, Christie Cookie, and Gnash, were not rewritten. Generic hot dog, pretzel, and tender rows were left as stored.",
+  "vendors": [
+    {
+      "name": "Banjo’s Pickin’ Chicken",
+      "section": "Section 109",
+      "location": "Section 109",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "existingVendorSlug": "banjo-s-pickin-chicken"
+    },
+    {
+      "name": "Sausagery",
+      "section": "104",
+      "location": "Main food court near Section 104",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Walking Taco",
+      "section": "Level 100",
+      "location": "100 level",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mister Softee",
+      "section": "Nissan Atrium",
+      "location": "Main concourse inside the Nissan Atrium",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "BetMGM Sports Lounge",
+      "section": "BetMGM Sports Lounge",
+      "location": "BetMGM Sports Lounge",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Loaded Banjo Hot Fry",
+      "vendorName": "Banjo’s Pickin’ Chicken",
+      "description": "New loaded fry at Banjo Hot Chicken, Section 109.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "109"
+      ],
+      "location": "Section 109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "banjo-s-pickin-chicken"
+    },
+    {
+      "name": "Funnel Cake Fry Basket",
+      "vendorName": "Banjo’s Pickin’ Chicken",
+      "description": "New funnel cake fry basket at Banjo Hot Chicken, Section 109.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "109"
+      ],
+      "location": "Section 109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "banjo-s-pickin-chicken"
+    },
+    {
+      "name": "Loaded Cheese Curd Fries",
+      "vendorName": "Banjo’s Pickin’ Chicken",
+      "description": "Cheese-curd fries with brown gravy, described as also available this season at Banjo Hot Chicken, Section 109. The article calls the loaded fry and funnel cake fry new, and these fries available.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "109"
+      ],
+      "location": "Section 109",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": false,
+      "notes": "Available this season. Not called new.",
+      "existingVendorSlug": "banjo-s-pickin-chicken"
+    },
+    {
+      "name": "Bacon-Wrapped Footlong Hot Dog",
+      "vendorName": "Sausagery",
+      "description": "Footlong bacon-wrapped hot dog at the new Sausagery stand in the main food court near Section 104, with a monthly special sauce.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Main food court near Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Spicy Italian Sausage",
+      "vendorName": "Sausagery",
+      "description": "Spicy Italian sausage at the new Sausagery stand near Section 104.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Main food court near Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Sweet Italian Sausage",
+      "vendorName": "Sausagery",
+      "description": "Sweet Italian sausage at the new Sausagery stand near Section 104.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Main food court near Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Bratwurst",
+      "vendorName": "Sausagery",
+      "description": "Bratwurst at the new Sausagery stand near Section 104.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "104"
+      ],
+      "location": "Main food court near Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Birria Boom Box Nachos",
+      "vendorName": "Walking Taco",
+      "description": "Birria Boom Box nachos at the new Walking Taco stand on the 100 level.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Level 100"
+      ],
+      "location": "100 level",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Mister Softee Soft Serve",
+      "vendorName": "Mister Softee",
+      "description": "Soft serve in vanilla, chocolate, or swirl, in a cone, cup, or mini goalie helmet, inside the Nissan Atrium.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Nissan Atrium"
+      ],
+      "location": "Main concourse inside the Nissan Atrium",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Braised Beef Nachos",
+      "vendorName": "BetMGM Sports Lounge",
+      "description": "Braised beef nachos on the revamped BetMGM Sports Lounge menu.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "BetMGM Sports Lounge"
+      ],
+      "location": "BetMGM Sports Lounge",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. Revamped lounge menu."
+    },
+    {
+      "name": "Southwestern Egg Rolls",
+      "vendorName": "BetMGM Sports Lounge",
+      "description": "Southwestern egg rolls on the revamped BetMGM Sports Lounge menu.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "BetMGM Sports Lounge"
+      ],
+      "location": "BetMGM Sports Lounge",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. Revamped lounge menu."
+    },
+    {
+      "name": "Chicken Quesadillas",
+      "vendorName": "BetMGM Sports Lounge",
+      "description": "Chicken quesadillas on the revamped BetMGM Sports Lounge menu.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "BetMGM Sports Lounge"
+      ],
+      "location": "BetMGM Sports Lounge",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. Revamped lounge menu."
+    },
+    {
+      "name": "French Dip",
+      "vendorName": "BetMGM Sports Lounge",
+      "description": "French dip on the revamped BetMGM Sports Lounge menu.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "BetMGM Sports Lounge"
+      ],
+      "location": "BetMGM Sports Lounge",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. Revamped lounge menu."
+    },
+    {
+      "name": "Cuban Sandwich",
+      "vendorName": "BetMGM Sports Lounge",
+      "description": "Cuban sandwich on the revamped BetMGM Sports Lounge menu.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "BetMGM Sports Lounge"
+      ],
+      "location": "BetMGM Sports Lounge",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. Revamped lounge menu."
+    },
+    {
+      "name": "Buffalo Chicken Cheesy Breadsticks",
+      "vendorName": "BetMGM Sports Lounge",
+      "description": "Buffalo chicken cheesy breadsticks on the revamped BetMGM Sports Lounge menu.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "BetMGM Sports Lounge"
+      ],
+      "location": "BetMGM Sports Lounge",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/predators/news/preds-introduce-new-food-drink-items-ahead-of-2026-27-season-latest-bridgestone-arena-renderings-also-unveiled-2026-09-24",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. Revamped lounge menu."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "BBQ Ultimate Sampler",
+      "reason": "The re-opened Predators article does not name the stand."
+    },
+    {
+      "kind": "item",
+      "name": "The Fang",
+      "reason": "Souvenir frozen-cocktail vessel, not a food item."
+    },
+    {
+      "kind": "item",
+      "name": "Banjo garlic fries",
+      "reason": "Plain garlic fries."
+    }
+  ],
+  "possibleDuplicates": []
+}

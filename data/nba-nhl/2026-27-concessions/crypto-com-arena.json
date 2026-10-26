@@ -1,0 +1,452 @@
+{
+  "venueSlug": "crypto-com-arena",
+  "venueName": "Crypto.com Arena",
+  "season": 2026,
+  "league": "NBA-NHL",
+  "source": {
+    "url": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+    "title": "Crypto.com Arena dives into the 2026-2027 season",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "October 7, 2026 Levy release plus the live Lakers stand list. Shared Lakers and Kings menu. Tenant cocktail names were not duplicated. Fresh Brothers already matched Section 109 and was left unchanged. Amazon markets and the Lexus Club were left unchanged.",
+  "vendors": [
+    {
+      "name": "fuku® by Chef David Chang",
+      "section": "325",
+      "location": "Next to Section 325",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingVendorSlug": "fuku-by-chef-david-chang"
+    },
+    {
+      "name": "LudoBird",
+      "section": "119",
+      "location": "Across from Section 119",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingVendorSlug": "ludobird"
+    },
+    {
+      "name": "Ludobab",
+      "section": "117",
+      "location": "Across from Section 117",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingVendorSlug": "ludobab"
+    },
+    {
+      "name": "Trois Familia",
+      "section": "117",
+      "location": "Next to Section 117",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingVendorSlug": "trois-familia"
+    },
+    {
+      "name": "Dirt Dog",
+      "section": "102, 112",
+      "location": "Sections 102 and 112",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingVendorSlug": "dirt-dog"
+    },
+    {
+      "name": "Doritos After Dark",
+      "section": "116",
+      "location": "Next to Section 116",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingVendorSlug": "doritos-after-dark"
+    },
+    {
+      "name": "Deli Dash",
+      "section": "115",
+      "location": "Next to Section 115",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Golden Road Brew House",
+      "section": "118",
+      "location": "Across from Section 118",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Spotlight and Skyline Grills",
+      "section": "Spotlight Grill, Skyline Grill",
+      "location": "Spotlight Grill across from PR4 and Skyline Grill across from PR12",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "fuku® by Chef David Chang",
+      "vendorName": "fuku® by Chef David Chang",
+      "description": "Perched on the newly renovated, open-air upper concourse next to Section 325, this spicy fried chicken concept has become a mandatory pre-game stop. The move here is the OG Sando—a fiery, juicy chicken breast slathered in fuku mayo and…",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "325"
+      ],
+      "location": "Next to Section 325",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "fuku-by-chef-david-chang-fuku-by-chef-david-chang",
+      "existingVendorSlug": "fuku-by-chef-david-chang",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Lakers stand list places fuku next to Section 325. The dish list is still unpublished, so the row was not replaced.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "LudoBird",
+      "vendorName": "LudoBird",
+      "description": "The arena anchor that started it all. Famous for its crispy Provencal Fried Chicken Sandwich served on a plush bun, alongside a newly introduced Plant-Based Ludo Sando that matches the original's crunch beat-for-beat.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "119"
+      ],
+      "location": "Across from Section 119",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "ludobird-ludobird",
+      "existingVendorSlug": "ludobird",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Ludobab",
+      "vendorName": "Ludobab",
+      "description": "Chef Ludo’s nod to the Mediterranean street food of his youth. This is the arena's premier destination for clean eating, serving up Grilled Pita Burgers, charred kabob bowls, and scratch-made hummus with warm pita.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "117"
+      ],
+      "location": "Across from Section 117",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "ludobab-ludobab",
+      "existingVendorSlug": "ludobab",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Trois Familia",
+      "vendorName": "Trois Familia",
+      "description": "A stadium recreation of his beloved Silver Lake restaurant, blending classic Mexican dishes with French technique (and lots of butter). Fans flock here for the Double Decker Style Potato Taco and the incredibly rich…",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "117"
+      ],
+      "location": "Next to Section 117",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "trois-familia-trois-familia",
+      "existingVendorSlug": "trois-familia",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Dirt Dog",
+      "vendorName": "Dirt Dog",
+      "description": "An authentic, Los Angeles-bred street food icon. Their Elote Dog is legendary: a premium snap-casing frank wrapped in bacon, heavily blanketed in street corn, cotija cheese, cilantro, and chili powder.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "102",
+        "112"
+      ],
+      "location": "Sections 102 and 112",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "dirt-dog-dirt-dog",
+      "existingVendorSlug": "dirt-dog",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Doritos Spicy Sweet Chili Ramen-Rito",
+      "vendorName": "Doritos After Dark",
+      "description": "A wild late-night dream come to life. Instant ramen, seasoned protein, and melty cheese rolled tightly into a burrito wrap with a heavy crunch of crushed Spicy Sweet Chili Doritos.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "116"
+      ],
+      "location": "Next to Section 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "doritos-after-dark-doritos-spicy-sweet-chili-ramen-rito",
+      "existingVendorSlug": "doritos-after-dark",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Ramen-Rito stays. It was not marked stale."
+    },
+    {
+      "name": "Flamin' Hot Nacho Veggie Dumplings",
+      "vendorName": "Doritos After Dark",
+      "description": "A breakout hit for the 2026 season—steamed dumplings coated in a fiery, cheesy Doritos dust.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "116"
+      ],
+      "location": "Next to Section 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "doritos-after-dark-flamin-hot-nacho-veggie-dumplings",
+      "existingVendorSlug": "doritos-after-dark",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new."
+    },
+    {
+      "name": "Nacho Cheese Crunchtastic Vanilla Cone",
+      "vendorName": "Doritos After Dark",
+      "description": "A sweet-and-savory stunt dessert featuring premium vanilla soft serve in a cone heavily crusted with traditional Nacho Cheese Doritos.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "116"
+      ],
+      "location": "Next to Section 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nba.com/lakers/tickets/food-and-drink",
+      "confidence": "HIGH",
+      "existingItemSlug": "doritos-after-dark-nacho-cheese-crunchtastic-vanilla-cone",
+      "existingVendorSlug": "doritos-after-dark",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new."
+    },
+    {
+      "name": "LA Mac and Philly Chicken Cheesesteak",
+      "vendorName": "Deli Dash",
+      "description": "Chipotle-braised chicken, white cheddar mac, peppers, and crispy onions on the new Deli Dash menu, next to Section 115.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115"
+      ],
+      "location": "Next to Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Bacon Chimichurri Sandwich",
+      "vendorName": "Deli Dash",
+      "description": "Oven-roasted turkey, bacon, tomato, arugula, and chimichurri on ciabatta at Deli Dash, next to Section 115.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115"
+      ],
+      "location": "Next to Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Teriyaki Bowl",
+      "vendorName": "Golden Road Brew House",
+      "description": "New teriyaki bowl at Golden Road Brew House, across from Section 118.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118"
+      ],
+      "location": "Across from Section 118",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Pork Belly Bowl",
+      "vendorName": "Golden Road Brew House",
+      "description": "New pork belly bowl at Golden Road Brew House, across from Section 118.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118"
+      ],
+      "location": "Across from Section 118",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "BBQ Brisket Walking Taco",
+      "vendorName": "Doritos After Dark",
+      "description": "Brisket, smokey BBQ, nacho cheese, dill pickles, and sweet onions. New at Doritos After Dark, next to Section 116.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "116"
+      ],
+      "location": "Next to Section 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "doritos-after-dark"
+    },
+    {
+      "name": "Doritos Loaded",
+      "vendorName": "Doritos After Dark",
+      "description": "Build-your-own Doritos Loaded: Chicken Bacon Cool Ranch, Flamin' Hot Carne Asada, or Texas-Style Brisket BBQ. New at Doritos After Dark, next to Section 116.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "116"
+      ],
+      "location": "Next to Section 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "doritos-after-dark"
+    },
+    {
+      "name": "Spicy Sweet Chili Chicken Bites",
+      "vendorName": "Doritos After Dark",
+      "description": "Returning spicy sweet chili chicken bites at Doritos After Dark, next to Section 116. The release calls them returning, not new.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "116"
+      ],
+      "location": "Next to Section 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": false,
+      "notes": "Returning item. Not labeled new.",
+      "existingVendorSlug": "doritos-after-dark"
+    },
+    {
+      "name": "Nacho Cheese Messy Taquitos",
+      "vendorName": "Doritos After Dark",
+      "description": "Returning nacho cheese messy taquitos at Doritos After Dark, next to Section 116. The release calls them returning, not new.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "116"
+      ],
+      "location": "Next to Section 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": false,
+      "notes": "Returning item. Not labeled new.",
+      "existingVendorSlug": "doritos-after-dark"
+    },
+    {
+      "name": "Taco Trio",
+      "vendorName": "Spotlight and Skyline Grills",
+      "description": "Pork belly, carne asada, and chicken tacos with slaw, pickled onions, crema, and cotija. New premium in-seat item at Spotlight Grill and Skyline Grill.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Spotlight Grill",
+        "Skyline Grill"
+      ],
+      "location": "Spotlight Grill across from PR4 and Skyline Grill across from PR12",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. One shared item because the release serves it at both grills."
+    },
+    {
+      "name": "Smoked Turkey Leg",
+      "vendorName": "Spotlight and Skyline Grills",
+      "description": "Smoked turkey leg with BBQ glaze and jalapeño-apricot chutney. New premium in-seat item at Spotlight Grill and Skyline Grill.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Spotlight Grill",
+        "Skyline Grill"
+      ],
+      "location": "Spotlight Grill across from PR4 and Skyline Grill across from PR12",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.cryptoarena.com/news/detail/cryptocom-arena-dives-into-the-2026-2027-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "CodiGold and CodiGoal",
+      "reason": "Same Código margarita under two tenant names. The schema has no tenant field, so neither was imported."
+    },
+    {
+      "kind": "item",
+      "name": "Salt & Char",
+      "reason": "Named stand with no plated item in the release."
+    },
+    {
+      "kind": "item",
+      "name": "Wetzel's Pretzels",
+      "reason": "Pretzel brand without a specialty item. Plain pretzels are excluded."
+    },
+    {
+      "kind": "item",
+      "name": "After Glow, Golden Hour, Waterberry, Smash Kitchen condiments",
+      "reason": "Cocktails, generic beer, or condiments."
+    }
+  ],
+  "possibleDuplicates": []
+}

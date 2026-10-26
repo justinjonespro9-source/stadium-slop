@@ -1,0 +1,316 @@
+{
+  "venueSlug": "fiserv-forum",
+  "venueName": "Fiserv Forum",
+  "season": 2026,
+  "league": "NBA",
+  "source": {
+    "url": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+    "title": "Milwaukee Bucks unveil new food and beverage offerings at Fiserv Forum for the 2026-27 season",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "October 19, 2026 Bucks list only. Existing Cluckery, Mecca, and Smokestack items stay. Palermo's is not merged with Flourchild. Spuds is not merged with Southside Market. The Double Decker location still includes Section 221, which this release does not mention, so that row was not rewritten.",
+  "vendors": [
+    {
+      "name": "The Cluckery",
+      "section": "Sections 115 & 220",
+      "location": "Sections 115 & 220",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "the-cluckery"
+    },
+    {
+      "name": "Mecca Burger Bar",
+      "section": "Sections 116 & 221",
+      "location": "Sections 116 & 221",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "mecca-burger-bar"
+    },
+    {
+      "name": "Smokestack",
+      "section": "Section 122",
+      "location": "Section 122",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "existingVendorSlug": "smokestack"
+    },
+    {
+      "name": "Palermo's",
+      "section": "108, 119, 224",
+      "location": "Sections 108, 119, and 224",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Johnsonville",
+      "section": "118",
+      "location": "Section 118",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Spuds",
+      "section": "207",
+      "location": "Section 207",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "The Spot",
+      "section": "104",
+      "location": "Section 104",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mezzanine Club",
+      "section": "Mezzanine Club",
+      "location": "Mezzanine Club",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Spicy Chicken Sandwich",
+      "vendorName": "The Cluckery",
+      "description": "A new spicy chicken sandwich at The Cluckery, Sections 115 and 220. The October 19, 2026 release does not publish toppings.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115",
+        "220"
+      ],
+      "location": "Sections 115 and 220",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "the-cluckery"
+    },
+    {
+      "name": "King's Hawaiian Churro Bites",
+      "vendorName": "The Cluckery",
+      "description": "New King's Hawaiian churro bites at The Cluckery stand at Section 115.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. Separate from the King's Hawaiian pretzel bites outside Section 103.",
+      "existingVendorSlug": "the-cluckery"
+    },
+    {
+      "name": "Cream City Smash Burger",
+      "vendorName": "Mecca Burger Bar",
+      "description": "New Cream City smash burger at Mecca Burger Bar, Sections 106 and 116. The Double Decker MKE Burger stays at Sections 116 and 221.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "106",
+        "116"
+      ],
+      "location": "Sections 106 and 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "mecca-burger-bar"
+    },
+    {
+      "name": "Brisket Elote",
+      "vendorName": "Smokestack",
+      "description": "New brisket elote at Smoke Stack, Section 122.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "122"
+      ],
+      "location": "Section 122",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW.",
+      "existingVendorSlug": "smokestack"
+    },
+    {
+      "name": "Palermo's Roman Style Pizza",
+      "vendorName": "Palermo's",
+      "description": "New Roman-style crust pizza at Palermo's stands, Sections 108, 119, and 224. Not merged with Flourchild Pizza.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "108",
+        "119",
+        "224"
+      ],
+      "location": "Sections 108, 119, and 224",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Half-Court Smash Tacos",
+      "vendorName": "Johnsonville",
+      "description": "New half-court smash tacos at Johnsonville, Section 118.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118"
+      ],
+      "location": "Section 118",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "BBQ Pork Baked Potato",
+      "vendorName": "Spuds",
+      "description": "New BBQ pork baked potato at Spuds, Section 207. Not merged with Southside Market.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "207"
+      ],
+      "location": "Section 207",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Cheesecake Parfaits",
+      "vendorName": "The Spot",
+      "description": "New cheesecake parfaits in strawberry and turtle at The Spot, Section 104.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "104"
+      ],
+      "location": "Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "French Onion Burger",
+      "vendorName": "Mezzanine Club",
+      "description": "New French onion burger at the Mezzanine Club.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Mezzanine Club"
+      ],
+      "location": "Mezzanine Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Reuben Sandwich",
+      "vendorName": "Mezzanine Club",
+      "description": "New Reuben sandwich at the Mezzanine Club.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Mezzanine Club"
+      ],
+      "location": "Mezzanine Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Campfire Funnel Fries",
+      "vendorName": "Mezzanine Club",
+      "description": "New funnel-cake fries with marshmallow crème, chocolate sauce, cinnamon sugar, and mini marshmallows at the Mezzanine Club.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Mezzanine Club"
+      ],
+      "location": "Mezzanine Club",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Pritzlaff Meats",
+      "reason": "Named as a suite and BMO Club supplier, with no public plated item."
+    },
+    {
+      "kind": "item",
+      "name": "NUTRL, Hoop Tea, Anheuser-Busch",
+      "reason": "Generic seltzer and beer."
+    },
+    {
+      "kind": "item",
+      "name": "Fizz dirty sodas",
+      "reason": "Not in the October 19, 2026 official list."
+    }
+  ],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Flourchild Pizza",
+      "existingItemSlug": "flourchild-pizza-flourchild-pizza",
+      "existingVendorSlug": "flourchild-pizza",
+      "recommendation": "manual_review",
+      "evidence": "Palermo's is a new Roman-style stand at Sections 108, 119, and 224. Flourchild remains at 119 and 224. Not merged.",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season"
+    },
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Southside Market",
+      "existingItemSlug": "southside-market-southside-market",
+      "existingVendorSlug": "southside-market",
+      "recommendation": "manual_review",
+      "evidence": "Spuds is a separately named baked-potato stand at Section 207. Not merged with Southside Market.",
+      "sourceUrl": "https://www.fiservforum.com/news/detail/milwaukee-bucks-unveil-delicious-new-food-and-beverage-offerings-at-fiserv-forum-2026-27-season"
+    }
+  ]
+}

@@ -1,0 +1,271 @@
+{
+  "venueSlug": "wells-fargo-center",
+  "venueName": "Wells Fargo Center",
+  "season": 2026,
+  "league": "NBA-NHL",
+  "source": {
+    "url": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+    "title": "Xfinity Mobile Arena concessions",
+    "type": "venue_directory",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "Production slug remains wells-fargo-center. Shared 76ers and Flyers menu. Location corrections come from the live Xfinity concessions map. Announced dishes with no stand were not assigned a vendor. Buena Onda, Pizzeria Salvy, Melissa's Produce, and Bella Vista already matched and were left unchanged.",
+  "vendors": [
+    {
+      "name": "The Coop",
+      "section": "107",
+      "location": "Section 107",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "the-coop"
+    },
+    {
+      "name": "Rita's Water Ice",
+      "section": "106, 204",
+      "location": "Sections 106 and 204",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "rita-s-water-ice-shake-shack"
+    },
+    {
+      "name": "Shake Shack",
+      "section": "115",
+      "location": "Section 115",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Chickie’s & Pete’s",
+      "section": "104, 116, 204, 210, 216, 222, 222A",
+      "location": "Sections 104, 116, 204, 210, 216, 222, and 222A",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "chickie-s-pete-s"
+    },
+    {
+      "name": "Line Change",
+      "section": "107",
+      "location": "Section 107",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "line-change"
+    },
+    {
+      "name": "Insomnia Cookies",
+      "section": "118, 207A",
+      "location": "Sections 118 and 207A",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingVendorSlug": "insomnia-cookies"
+    },
+    {
+      "name": "Carselliano's Steaks",
+      "section": "124",
+      "location": "Section 124",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "South Street Smoked Chicken Cheesesteak",
+      "vendorName": "The Coop",
+      "description": "A spectacular, smoky twist on the city's signature dish. Features smoked and deep-fried chicken thighs smothered in a rich \"gouda wiz,\" sweet onion jam, and a heavy crunch of crispy chicken skin on a seeded roll.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "107"
+      ],
+      "location": "Section 107",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingItemSlug": "the-coop-south-street-smoked-chicken-cheesesteak",
+      "existingVendorSlug": "the-coop",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Live map places The Coop at Section 107."
+    },
+    {
+      "name": "Rita's Water Ice",
+      "vendorName": "Rita's Water Ice",
+      "description": "Rita's Water Ice at Sections 106 and 204. The previous row combined Rita's with Shake Shack. Shake Shack is a separate stand at Section 115.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "106",
+        "204"
+      ],
+      "location": "Sections 106 and 204",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingItemSlug": "rita-s-water-ice-shake-shack-rita-s-water-ice-shake-shack",
+      "existingVendorSlug": "rita-s-water-ice-shake-shack",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Split from the combined Rita's and Shake Shack row. Shake Shack is now its own stand at Section 115.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Shake Shack",
+      "vendorName": "Shake Shack",
+      "description": "Shake Shack stand at Section 115, separate from Rita's Water Ice at Sections 106 and 204. The map names the stand and does not publish a plated SKU.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115"
+      ],
+      "location": "Section 115",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "labeledNewFor2026": false,
+      "notes": "Separated from the combined Rita's row. Not labeled new.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Chickie’s & Pete’s",
+      "vendorName": "Chickie’s & Pete’s",
+      "description": "The undisputed, time-honored staple of Philly sports. Lines stay long for their world-famous, crinkle-cut Crabfries, heavily dusted in secret crab seasoning and served with a side of warm white cheese sauce for dipping.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "104",
+        "116",
+        "204",
+        "210",
+        "216",
+        "222",
+        "Section 222A"
+      ],
+      "location": "Sections 104, 116, 204, 210, 216, 222, and 222A",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingItemSlug": "chickie-s-pete-s-chickie-s-pete-s",
+      "existingVendorSlug": "chickie-s-pete-s",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Port Richmond Style Pierogies",
+      "vendorName": "Line Change",
+      "description": "A massive nod to Philly’s Polish heritage. Pillowy, scratch-made pierogies tossed in rich brown butter sour cream and deeply caramelized onions.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "107"
+      ],
+      "location": "Section 107",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingItemSlug": "line-change-port-richmond-style-pierogies",
+      "existingVendorSlug": "line-change",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Live map places Line Change at Section 107."
+    },
+    {
+      "name": "Truffled Short Rib Grilled Cheese",
+      "vendorName": "Line Change",
+      "description": "The ultimate cold-weather comfort food for a winter hockey night. Tender, 14-hour braised short rib layered with aged cheddar and a luxurious truffle peel on buttery brioche.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "107"
+      ],
+      "location": "Section 107",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingItemSlug": "line-change-truffled-short-rib-grilled-cheese",
+      "existingVendorSlug": "line-change",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Live map places Line Change at Section 107."
+    },
+    {
+      "name": "Insomnia Cookies",
+      "vendorName": "Insomnia Cookies",
+      "description": "The late-night cookie empire that was famously founded in a UPenn dorm room keeps the arena fueled with warm, gooey chocolate chip cookie packs.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "118",
+        "Section 207A"
+      ],
+      "location": "Sections 118 and 207A",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "existingItemSlug": "insomnia-cookies-insomnia-cookies",
+      "existingVendorSlug": "insomnia-cookies",
+      "labeledNewFor2026": true,
+      "notes": "Location correction of the existing row. labeledNewFor2026 is set only to keep the row's existing isNewThisSeason value. This source did not call the dish new. Live map lists 118 and 207A. Section 122 was on the old row and is not on the current map.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Cheesesteak",
+      "vendorName": "Carselliano's Steaks",
+      "description": "Cheesesteak at Carselliano's Steaks, Section 124. The concessions map names the steak stand and the category index lists cheesesteaks at Section 124.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "124"
+      ],
+      "location": "Section 124",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions",
+      "confidence": "HIGH",
+      "labeledNewFor2026": false,
+      "notes": "Current map. Not labeled new for 2026-27."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Short-rib corn dog, chicken gyro, chicken Milanese, red-chile short-rib tacos, beignets, beer-fermented pretzel",
+      "reason": "Announced without a stand on the live concessions map."
+    },
+    {
+      "kind": "item",
+      "name": "9th Street Italian Sandwiches",
+      "reason": "Possible duplicate of the Bella Vista Italian pork sandwich. Not created."
+    },
+    {
+      "kind": "item",
+      "name": "AC Subs, Kosher Grille, Liberty Grill",
+      "reason": "Stands on the map with no plated item."
+    },
+    {
+      "kind": "item",
+      "name": "Federal Donuts",
+      "reason": "Absent from the live map. Not marked stale and not hidden."
+    }
+  ],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "The Bella Vista Italian Pork Sandwich",
+      "existingItemSlug": "the-bella-vista-italian-pork-sandwich-the-bella-vista-italian-pork-sandwich",
+      "existingVendorSlug": "the-bella-vista-italian-pork-sandwich",
+      "recommendation": "manual_review",
+      "evidence": "The live map lists 9th Street Italian Sandwiches at Sections 104 and 117. Bella Vista's Italian pork sandwich is already at Section 104. They were not merged and 9th Street was not created.",
+      "sourceUrl": "https://www.xfinitymobilearena.com/plan-your-visit/concessions"
+    }
+  ]
+}

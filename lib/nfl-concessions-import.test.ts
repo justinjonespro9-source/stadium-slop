@@ -258,6 +258,20 @@ describe("skipped-strong 2026 concession payloads", () => {
   }
 });
 
+describe("league gate", () => {
+  it("accepts NBA, NHL, and shared NBA-NHL payloads and still rejects other leagues", () => {
+    const payload = parseNflConcessionsPayload(JSON.parse(readFileSync(NISSAN_FILE, "utf8")));
+    for (const league of ["NBA", "NHL", "NBA-NHL"]) {
+      payload.league = league;
+      assert.deepEqual(qualityErrorsForPayload(payload), []);
+    }
+    payload.league = "MLB";
+    assert.ok(
+      qualityErrorsForPayload(payload).includes("league must be NFL, NBA, NHL, or NBA-NHL")
+    );
+  });
+});
+
 describe("moderate-promoted 2026 concession payloads", () => {
   const files = [
     "data/nfl/2026-concessions/acrisure-stadium.json",

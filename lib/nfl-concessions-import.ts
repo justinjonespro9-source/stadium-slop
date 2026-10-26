@@ -1,8 +1,11 @@
 /**
- * Idempotent NFL concessions import from a curated JSON payload.
+ * Idempotent venue concessions import from a curated JSON payload.
  *
- * Venue-scoped: never creates/updates/deletes other venues, games, or schema.
- * Matches existing inactive rows by slug or normalized name instead of duplicating.
+ * NFL payloads stay league "NFL". NBA, NHL, and shared "NBA-NHL" payloads use
+ * the same matcher. Venue-scoped: never creates, updates, or deletes other
+ * venues, games, or schema. Matches existing inactive rows by slug or
+ * normalized name instead of duplicating. Recommended hides run only when a
+ * payload sets applyRecommendedHides, and only for rows with zero public reviews.
  */
 
 import {
@@ -29,6 +32,8 @@ const ENTITY_STATUSES = new Set<string>(["ACTIVE", "HIDDEN", "ARCHIVED", "SUSPEN
 
 const PLACEHOLDER_VENDOR_RE =
   /^(concessions|food|stadium concessions|general concessions|menu|various)$/i;
+
+const IMPORT_LEAGUES = new Set(["NFL", "NBA", "NHL", "NBA-NHL"]);
 
 /** Nissan (`105`, `146-P`), Lambeau (`105-M`, `P111`, `JTV`), Highmark markets (`Kaisertown`, `Bud Light Marketplace`). */
 const SECTION_RE =
@@ -101,6 +106,8 @@ export type NflConcessionsPayload = {
   excluded?: NflConcessionsExcluded[];
   staleReview?: NflConcessionsReviewRow[];
   possibleDuplicates?: NflConcessionsReviewRow[];
+  /** When true, apply hides staleReview rows whose recommendation is "hide". */
+  applyRecommendedHides?: boolean;
 };
 
 export type NflConcessionsRowAction =
@@ -154,6 +161,7 @@ export type NflConcessionsPlan = {
   excluded: NflConcessionsExcluded[];
   staleReview: NflConcessionsReviewRow[];
   possibleDuplicates: NflConcessionsReviewRow[];
+  recommendedHides: number;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -171,9 +179,14 @@ function normalizeComparableName(value: string): string {
   return normalizeMenuItemName(value);
 }
 
+function leagueTags(league: string): string[] {
+  if (league === "NBA-NHL") return ["NBA", "NHL"];
+  return [league];
+}
+
 function defaultItemTags(payload: NflConcessionsPayload, item: NflConcessionsItemInput): string[] {
   const tags = [
-    payload.league,
+    ...leagueTags(payload.league),
     "Import",
     `import-season:${payload.season}`,
     `import-source:${payload.source.url}`,
@@ -304,7 +317,8 @@ export function parseNflConcessionsPayload(raw: unknown): NflConcessionsPayload 
       : [],
     possibleDuplicates: Array.isArray(raw.possibleDuplicates)
       ? raw.possibleDuplicates.map((row, index) => parseReviewRow(row, index, "possibleDuplicates"))
-      : []
+      : [],
+    applyRecommendedHides: raw.applyRecommendedHides === true
   };
 
   if (!Number.isInteger(payload.season) || payload.season < 2020) {
@@ -397,8 +411,8 @@ export function qualityErrorsForPayload(payload: NflConcessionsPayload): string[
   const vendorNames = new Set<string>();
   const vendorByNorm = new Map<string, string>();
 
-  if (payload.league !== "NFL") {
-    errors.push("league must be NFL");
+  if (!IMPORT_LEAGUES.has(payload.league)) {
+    errors.push("league must be NFL, NBA, NHL, or NBA-NHL");
   }
 
   for (const vendor of payload.vendors) {
@@ -475,6 +489,48 @@ export function qualityErrorsForPayload(payload: NflConcessionsPayload): string[
   }
 
   return errors;
+}
+
+type HideDb = PrismaClient | Prisma.TransactionClient;
+
+async function recommendedHideIds(db: HideDb, venueId: string, payload: NflConcessionsPayload): Promise<string[]> {
+  if (!payload.applyRecommendedHides) return [];
+  const rows = (payload.staleReview ?? []).filter((row) => row.recommendation === "hide");
+  const ids: string[] = [];
+  for (const row of rows) {
+    if (!row.existingItemSlug) {
+      throw new Error(`Hide recommendation for "${row.existingName}" is missing existingItemSlug`);
+    }
+    const item = await db.foodItem.findFirst({
+      where: { venueId, slug: row.existingItemSlug },
+      select: {
+        id: true,
+        name: true,
+        status: true,
+        reviews: {
+          where: { status: EntityStatus.ACTIVE, isTestReview: false },
+          select: { id: true }
+        }
+      }
+    });
+    if (!item) {
+      throw new Error(`Hide target not found at this venue: ${row.existingItemSlug}`);
+    }
+    if (item.name !== row.existingName) {
+      throw new Error(
+        `Hide target ${row.existingItemSlug} is named "${item.name}", not "${row.existingName}"`
+      );
+    }
+    if (item.reviews.length > 0) {
+      throw new Error(`Refusing to hide ${row.existingItemSlug}: public reviews exist`);
+    }
+    if (item.status === EntityStatus.HIDDEN) continue;
+    if (item.status !== EntityStatus.ACTIVE) {
+      throw new Error(`Refusing to hide ${row.existingItemSlug}: status is ${item.status}`);
+    }
+    ids.push(item.id);
+  }
+  return ids;
 }
 
 function countByStatus<T extends { status: EntityStatus }>(
@@ -675,12 +731,15 @@ export async function planNflConcessionsImport(
 
   const beforeVendors = countByStatus(existingVendors);
   const beforeItems = countByStatus(existingItems);
+  const hideIds = await recommendedHideIds(db, venue.id, payload);
 
   const afterActiveVendors =
     beforeVendors.active + vendorCounts.create + vendorCounts.reactivate;
   const afterInactiveVendors = Math.max(0, beforeVendors.inactive - vendorCounts.reactivate);
-  const afterActiveItems = beforeItems.active + itemCounts.create + itemCounts.reactivate;
-  const afterInactiveItems = Math.max(0, beforeItems.inactive - itemCounts.reactivate);
+  const afterActiveItems =
+    beforeItems.active + itemCounts.create + itemCounts.reactivate - hideIds.length;
+  const afterInactiveItems =
+    Math.max(0, beforeItems.inactive - itemCounts.reactivate) + hideIds.length;
 
   return {
     venueId: venue.id,
@@ -703,7 +762,8 @@ export async function planNflConcessionsImport(
     rows,
     excluded: payload.excluded ?? [],
     staleReview: payload.staleReview ?? [],
-    possibleDuplicates: payload.possibleDuplicates ?? []
+    possibleDuplicates: payload.possibleDuplicates ?? [],
+    recommendedHides: hideIds.length
   };
 }
 
@@ -839,6 +899,21 @@ export async function applyNflConcessionsImport(
       } else {
         await tx.foodItem.create({ data });
       }
+    }
+
+    const hideIds = await recommendedHideIds(tx, venue.id, payload);
+    for (const id of hideIds) {
+      const current = await tx.foodItem.findFirstOrThrow({
+        where: { id, venueId: venue.id },
+        select: { tags: true }
+      });
+      await tx.foodItem.update({
+        where: { id },
+        data: {
+          status: EntityStatus.HIDDEN,
+          tags: [...new Set([...current.tags, "hidden-stale-2026"])]
+        }
+      });
     }
 
     const otherVendorCountAfter = await tx.vendor.count({

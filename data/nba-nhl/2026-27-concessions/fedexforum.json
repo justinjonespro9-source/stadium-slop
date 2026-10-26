@@ -1,0 +1,71 @@
+{
+  "venueSlug": "fedexforum",
+  "venueName": "FedExForum",
+  "season": 2026,
+  "league": "NBA",
+  "source": {
+    "url": "https://www.fedexforum.com/plan-your-visit/food-beverage",
+    "title": "FedExForum food and beverage",
+    "type": "venue_directory",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "Undated typical menu, re-opened October 26, 2026. Only the two local desserts that are still listed were added. Nothing else was padded, and no existing row was rewritten. Smoke n Pour's page text does not repeat a section, so its location was left as stored.",
+  "vendors": [
+    {
+      "name": "Zio Matto Gelato",
+      "section": "103",
+      "location": "By Section 103",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fedexforum.com/plan-your-visit/food-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mini Melts",
+      "section": "Section 116A",
+      "location": "Across from Section 116A",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fedexforum.com/plan-your-visit/food-beverage",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Zio Matto Gelato",
+      "vendorName": "Zio Matto Gelato",
+      "description": "Assorted gelato from Memphis shop Zio Matto, by Section 103, listed for Grizzlies and Tigers games. The page is an undated typical menu, so this is not flagged as new for 2026-27.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "103"
+      ],
+      "location": "By Section 103",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fedexforum.com/plan-your-visit/food-beverage",
+      "confidence": "HIGH",
+      "labeledNewFor2026": false,
+      "notes": "Current directory item. Not labeled new.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Mini Melts",
+      "vendorName": "Mini Melts",
+      "description": "Mini Melts ice cream across from Section 116A. The page is an undated typical menu, so this is not flagged as new for 2026-27.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "Section 116A"
+      ],
+      "location": "Across from Section 116A",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.fedexforum.com/plan-your-visit/food-beverage",
+      "confidence": "HIGH",
+      "labeledNewFor2026": false,
+      "notes": "Current directory item. Not labeled new.",
+      "allowItemNameEqualsVendor": true
+    }
+  ],
+  "excluded": [],
+  "possibleDuplicates": []
+}

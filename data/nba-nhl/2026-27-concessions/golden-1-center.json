@@ -1,0 +1,185 @@
+{
+  "venueSlug": "golden-1-center",
+  "venueName": "Golden 1 Center",
+  "season": 2026,
+  "league": "NBA",
+  "source": {
+    "url": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+    "title": "Sacramento Kings new concessions for the 2026-2027 season",
+    "type": "media_tasting",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "October 1, 2026 Abridged / PBS KVIE tasting with Legends chef Rod Cuadra. Not an official full directory. Items without a published section were skipped. The black bean burger was not merged with the existing smashburger. Porchetta House, LowBrau, Star Ginger, Petra Greek, and Café Bernardo were left unchanged.",
+  "vendors": [
+    {
+      "name": "Legends",
+      "section": "106, 112, 108, 219",
+      "location": "Sections named in the October 1, 2026 tasting. No stand name was published for these items.",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Mary's Chicken",
+      "section": "121",
+      "location": "Section 121",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Paragary Restaurant Group",
+      "section": "115, 216",
+      "location": "Sections 115 and 216",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Chicken Parm Sandwich",
+      "vendorName": "Legends",
+      "description": "Chicken parm sandwich with Bianco DiNapoli sauce on a Bella Bru Pugliese roll at Section 106. The tasting does not publish a stand name. Legends is the operator named with chef Rod Cuadra.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "106"
+      ],
+      "location": "Section 106",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. No stand name published."
+    },
+    {
+      "name": "Ahi Poke Nachos",
+      "vendorName": "Legends",
+      "description": "Ahi poke nachos with sweet soy glaze, avocado crema, spicy mayo, jalapeño, furikake, green onions, and wonton chips at Section 112. No stand name was published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "112"
+      ],
+      "location": "Section 112",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. No stand name published."
+    },
+    {
+      "name": "Cherrywood-Smoked Turkey Leg",
+      "vendorName": "Legends",
+      "description": "Cherrywood-smoked turkey leg from R&G Family Farms with kettle chips and house BBQ sauce at Section 112. No stand name was published.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "112"
+      ],
+      "location": "Section 112",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. No stand name published."
+    },
+    {
+      "name": "Confetti-Cake Trifle",
+      "vendorName": "Legends",
+      "description": "Confetti-cake trifle near Sections 108 and 219. No stand name was published.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "108",
+        "219"
+      ],
+      "location": "Near Sections 108 and 219",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. No stand name published."
+    },
+    {
+      "name": "Kings Bark",
+      "vendorName": "Legends",
+      "description": "Milk chocolate with marshmallows, M&Ms, pretzels, and popcorn at Section 112. No stand name was published.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "112"
+      ],
+      "location": "Section 112",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW. No stand name published."
+    },
+    {
+      "name": "Mary's Chicken Rotisserie Sandwich",
+      "vendorName": "Mary's Chicken",
+      "description": "Rotisserie chicken sandwich with aioli, pickled onions, creamy slaw, and a potato bun, served with fries at Section 121.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "121"
+      ],
+      "location": "Section 121",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    },
+    {
+      "name": "Paragary Black Bean Burger",
+      "vendorName": "Paragary Restaurant Group",
+      "description": "Cumin-spiced black bean burger with arugula, tomato, red onion, vegan jalapeño aioli, and a Paragary's Bakery vegan roll at Sections 115 and 216. Not the elevated smashburger at Sections 118 and 203.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "115",
+        "216"
+      ],
+      "location": "Sections 115 and 216",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true,
+      "notes": "SOURCE_BACKED_NEW."
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Rockfish and chips",
+      "reason": "Described for this season, but the article publishes no section."
+    },
+    {
+      "kind": "item",
+      "name": "Espresso chocolate cookies",
+      "reason": "Lounges and special events only, with no section."
+    }
+  ],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Paragary’s Elevated Smashburger",
+      "existingItemSlug": "paragary-s-elevated-smashburger-paragary-s-elevated-smashburger",
+      "existingVendorSlug": "paragary-s-elevated-smashburger",
+      "recommendation": "manual_review",
+      "evidence": "The black bean burger is a different item at Sections 115 and 216. The smashburger remains at Sections 118 and 203. Not merged.",
+      "sourceUrl": "https://www.abridged.org/news/sacramento-kings-new-concessions-2026-2027-season/"
+    }
+  ]
+}

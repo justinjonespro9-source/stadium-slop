@@ -1,0 +1,560 @@
+{
+  "venueSlug": "grand-casino-arena",
+  "venueName": "Grand Casino Arena",
+  "season": 2026,
+  "league": "NHL",
+  "source": {
+    "url": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+    "title": "New Game Day Food & Drinks at Grand Casino Arena",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "October 2, 2026 Wild release re-opened, with stand locations checked against the live concessions directory the same day. North Star Walleye Basket and its $15.49 price are not in this payload, so the price and the hidden test reviews on that item stay as they are. Existing Wild Greens salads that the release does not replace are left in place. New-lineup items from the release are labeled new. Directory-only partner stands are not.",
+  "vendors": [
+    {
+      "name": "Quinnesota Meatballs",
+      "section": "Section 112",
+      "location": "Section 112",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "quinnesota-meatballs"
+    },
+    {
+      "name": "Wild Greens",
+      "section": "Section 118",
+      "location": "Section 118",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "wild-greens"
+    },
+    {
+      "name": "City Burger",
+      "section": "Sections 112 & C36",
+      "location": "Sections 112 & C36",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "city-burger"
+    },
+    {
+      "name": "Pajarito",
+      "section": "Section C22",
+      "location": "Section C22",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "pajarito"
+    },
+    {
+      "name": "Sheboygan Sausage Haus",
+      "section": "Sections 103 & 116",
+      "location": "Sections 103 & 116",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingVendorSlug": "sheboygan-sausage-haus"
+    },
+    {
+      "name": "Popcorn",
+      "section": "104",
+      "location": "Section 104",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "The Taphouse",
+      "section": "Gate 4",
+      "location": "Gate 4",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Crunchy Commuter",
+      "section": "122",
+      "location": "Section 122",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Dapper Dog",
+      "section": "C23",
+      "location": "Section C23",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Minnesota Dog",
+      "section": "123, 226",
+      "location": "Sections 123, 226",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Red Baron Pizza",
+      "section": "108, 116, 126, 218",
+      "location": "Sections 108, 116, 126, 218",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "Wrecktangle Pizza",
+      "section": "C28",
+      "location": "Section C28",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "St. Paul Pierogi",
+      "section": "C36",
+      "location": "Section C36",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH"
+    },
+    {
+      "name": "J&R's Dough Shop",
+      "section": "109, 222",
+      "location": "Sections 109, 222",
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Italian Meatballs",
+      "vendorName": "Quinnesota Meatballs",
+      "description": "Italian meatballs served with red sauce.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "112"
+      ],
+      "location": "Section 112",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "existingItemSlug": "quinnesota-meatballs-quinnesota-meatballs",
+      "existingVendorSlug": "quinnesota-meatballs",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Swedish Meatballs",
+      "vendorName": "Quinnesota Meatballs",
+      "description": "Swedish meatballs served with lingonberry jam.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "112"
+      ],
+      "location": "Section 112",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "existingVendorSlug": "quinnesota-meatballs",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Italian Meatball Sub",
+      "vendorName": "Quinnesota Meatballs",
+      "description": "Italian meatballs, red sauce, and mozzarella on a hoagie bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "112"
+      ],
+      "location": "Section 112",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "existingVendorSlug": "quinnesota-meatballs",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Esquites Roasted Corn Salad",
+      "vendorName": "Wild Greens",
+      "description": "Romaine, roasted corn, radish, black beans, avocado, and cotija with cilantro-lime vinaigrette.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118"
+      ],
+      "location": "Section 118",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "existingVendorSlug": "wild-greens",
+      "notes": "Wild release: one of two new Wild Greens options.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Crunchy Thai Chicken Salad",
+      "vendorName": "Wild Greens",
+      "description": "Napa cabbage, romaine, carrots, mango, cucumber, crispy chicken, scallions, and crispy wontons with sesame dressing.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "118"
+      ],
+      "location": "Section 118",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "existingVendorSlug": "wild-greens",
+      "notes": "Wild release: one of two new Wild Greens options.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Truffle Fries",
+      "vendorName": "City Burger",
+      "description": "Hand-cut fries tossed with truffle oil and finished with Parmesan.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "112",
+        "C36"
+      ],
+      "location": "Sections 112, C36",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "existingVendorSlug": "city-burger",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "City Burger",
+      "vendorName": "City Burger",
+      "description": "Handling the heavy halftime burger rush with ultra-lacy, beautifully seared double smashburgers melted with American cheese and served with heavily salted, hand-cut French fries.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Sections 112 & C36"
+      ],
+      "location": "Sections 112 & C36",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingItemSlug": "city-burger-city-burger",
+      "existingVendorSlug": "city-burger",
+      "notes": "Existing stand row kept as-is. Truffle fries are the new item.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Pajarito",
+      "vendorName": "Pajarito",
+      "description": "Bringing upscale Twin Cities Mexican flair to the Club Level. Lines stay packed for their Charro Bean Tacos, loaded pork nachos, and fresh-whipped guacamole served with high-end, salted corn tortilla chips.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Section C22"
+      ],
+      "location": "Section C22",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingItemSlug": "pajarito-pajarito",
+      "existingVendorSlug": "pajarito",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Sheboygan Sausage Haus",
+      "vendorName": "Sheboygan Sausage Haus",
+      "description": "The traditional, un-skippable Midwest stop for snappy, fire-braised local sausages and classic ballpark dogs.",
+      "itemType": "FOOD",
+      "category": "OTHER",
+      "sections": [
+        "Sections 103 & 116"
+      ],
+      "location": "Sections 103 & 116",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "existingItemSlug": "sheboygan-sausage-haus-sheboygan-sausage-haus",
+      "existingVendorSlug": "sheboygan-sausage-haus",
+      "notes": "Directory lists this stand as Sausage Haus at sections 103 and 116. Canonical name kept.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Cheetos Popcorn",
+      "vendorName": "Popcorn",
+      "description": "Buttery popcorn flavored with Cheetos.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "104"
+      ],
+      "location": "Section 104",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "notes": "Release places it at Section 104. Directory lists a Popcorn stand at 104 and 116; only 104 is used.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Taphouse Nacho with Beef Barbacoa",
+      "vendorName": "The Taphouse",
+      "description": "House-made tortilla chips tossed in chipotle salsa with beef barbacoa, cotija, guacamole, pico de gallo, mango, sour cream, scallions, and cilantro.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Gate 4"
+      ],
+      "location": "Gate 4",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "notes": "Release calls the stand the Michelob Golden Light Taphouse. Directory name is The Taphouse at Gate 4.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Southwest Shuffle",
+      "vendorName": "Crunchy Commuter",
+      "description": "Frito scoops, chili, cheddar, sour cream, and scallions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "122"
+      ],
+      "location": "Section 122",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Street Corn Strut",
+      "vendorName": "Crunchy Commuter",
+      "description": "Salsa verde tortilla chips, roasted corn, lime crema, cotija, cilantro, and Tajín.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "122"
+      ],
+      "location": "Section 122",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Dirt Cake Cruiser",
+      "vendorName": "Crunchy Commuter",
+      "description": "Mini Oreo cookies, dirt-cake filling, gummy worms, and whipped cream.",
+      "itemType": "FOOD",
+      "category": "SWEET",
+      "sections": [
+        "122"
+      ],
+      "location": "Section 122",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Straight Up",
+      "vendorName": "Dapper Dog",
+      "description": "Minnesota all-beef wagyu hot dog stuffed with cheddar cheese curds, dressed to order. Made by Market House Meats.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "C23"
+      ],
+      "location": "Section C23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Windy",
+      "vendorName": "Dapper Dog",
+      "description": "Curd-stuffed wagyu hot dog, Chicago-style, on a poppy seed bun with mustard, tomato, pickle, sport peppers, relish, and onions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "C23"
+      ],
+      "location": "Section C23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Motown",
+      "vendorName": "Dapper Dog",
+      "description": "Curd-stuffed wagyu hot dog topped with chili, mustard, and onions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "C23"
+      ],
+      "location": "Section C23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Space Needle",
+      "vendorName": "Dapper Dog",
+      "description": "Curd-stuffed wagyu hot dog with grilled onions, cream cheese, and jalapeños.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "C23"
+      ],
+      "location": "Section C23",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Minnesota Curd-Stuffed Dog",
+      "vendorName": "Minnesota Dog",
+      "description": "Minnesota all-beef wagyu hot dog stuffed with cheddar cheese curds on a wild rice bun.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "123",
+        "226"
+      ],
+      "location": "Sections 123, 226",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/news/new-game-day-food-drinks-at-grand-casino-arena-100226",
+      "confidence": "HIGH",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Red Baron Pizza",
+      "vendorName": "Red Baron Pizza",
+      "description": "Local pizza partner listed on the Grand Casino Arena concessions directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "108",
+        "116",
+        "126",
+        "218"
+      ],
+      "location": "Sections 108, 116, 126, 218",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "notes": "Directory names the stand and sections, not a plated pizza SKU.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Wrecktangle Pizza",
+      "vendorName": "Wrecktangle Pizza",
+      "description": "Local pizza partner listed on the Grand Casino Arena concessions directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "C28"
+      ],
+      "location": "Section C28",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "notes": "Directory names the stand and section, not a plated pizza SKU.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "St. Paul Pierogi",
+      "vendorName": "St. Paul Pierogi",
+      "description": "Local pierogi partner listed on the Grand Casino Arena concessions directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "C36"
+      ],
+      "location": "Section C36",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "notes": "Directory names the stand and section, not individual pierogi fillings.",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "J&R's Dough Shop",
+      "vendorName": "J&R's Dough Shop",
+      "description": "Local dough shop listed on the Grand Casino Arena concessions directory.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "109",
+        "222"
+      ],
+      "location": "Sections 109, 222",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://www.nhl.com/wild/arena/food-and-beverage",
+      "confidence": "HIGH",
+      "notes": "Directory names the shop and sections, not individual pastries.",
+      "allowItemNameEqualsVendor": true
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "North Star Walleye Basket",
+      "reason": "Not listed or contradicted by the October 2, 2026 release or the live directory. Existing $15.49 price and hidden test reviews are left untouched."
+    },
+    {
+      "kind": "item",
+      "name": "Existing Wild Greens salads and bread bowl",
+      "reason": "Blue Ox, Viva MN Grain Bowl, Chicken & Wild Rice Bread Bowl, and Fully Loaded Spuds stay. The release adds two salads and does not retire the others."
+    },
+    {
+      "kind": "item",
+      "name": "The Grand Cove",
+      "reason": "Not on the live concessions directory. Not marked stale and not changed."
+    },
+    {
+      "kind": "item",
+      "name": "Generic popcorn, ice cream, and grab-and-go",
+      "reason": "Directory headings without a distinctive product, aside from Cheetos Popcorn."
+    },
+    {
+      "kind": "item",
+      "name": "Market House Meats stand",
+      "reason": "Named as the dog supplier and as a Section 110 stand. No plated item is published, so no second vendor was created."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": []
+}

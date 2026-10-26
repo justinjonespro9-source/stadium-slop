@@ -1,0 +1,386 @@
+{
+  "venueSlug": "climate-pledge-arena",
+  "venueName": "Climate Pledge Arena",
+  "season": 2026,
+  "league": "NHL",
+  "source": {
+    "url": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+    "title": "Climate Pledge Arena and Delaware North Sportservice unveil new food and beverage offerings for 2026-27 Seattle Kraken season",
+    "type": "team_release",
+    "retrievedAt": "2026-10-26"
+  },
+  "notes": "Delaware North release of September 22, 2026 re-opened, with the live marketplace directory re-opened the same day. Malformed price-in-the-wrong-field rows are corrected in place. The stuffed $9.99 was not copied into basePrice because neither current source republishes that price. Items whose section did not render are excluded. Chef's Table keeps sections 24 and 25 from the existing canonical row because the 2026 sources do not publish a replacement section.",
+  "vendors": [
+    {
+      "name": "Bristol Bay",
+      "section": "Section 6",
+      "location": "Section 6",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "9-99"
+    },
+    {
+      "name": "Mercer St Mac + BBQ",
+      "section": "24",
+      "location": "Section 24",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "smoked-turkey-leg"
+    },
+    {
+      "name": "Sound Bytes",
+      "section": "11",
+      "location": "Section 11",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "royal-ranch-cheese-steak"
+    },
+    {
+      "name": "Poké",
+      "section": "Section 6",
+      "location": "Section 6",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "poke-pop"
+    },
+    {
+      "name": "The Rotating Chef’s Table",
+      "section": "24, 25",
+      "location": "Sections 24, 25",
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "the-rotating-chef-s-table"
+    },
+    {
+      "name": "Piroshky Piroshky",
+      "section": "Section 4",
+      "location": "Section 4",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "piroshky-piroshky"
+    },
+    {
+      "name": "Molly D's Burgers",
+      "section": "Section 8",
+      "location": "Section 8",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "molly-d-s-burgers"
+    },
+    {
+      "name": "Ballard Pizza Co.",
+      "section": "13, 26, 120",
+      "location": "Sections 13, 26, 120",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "ballard-pizza-co"
+    },
+    {
+      "name": "¡No Güey!",
+      "section": "04",
+      "location": "Section 04",
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH"
+    }
+  ],
+  "items": [
+    {
+      "name": "Bristol Bay Salmon Chowder",
+      "vendorName": "Bristol Bay",
+      "description": "A comforting, deeply rich local favorite packed with sweet corn, braised shallots, and fresh salmon.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Section 6"
+      ],
+      "location": "Section 6",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingItemSlug": "9-99-bristol-bay-salmon-chowder",
+      "existingVendorSlug": "9-99",
+      "notes": "Vendor was the string $9.99. Renamed to Bristol Bay in place. The $9.99 was not stored as a price."
+    },
+    {
+      "name": "Hot Smoked Salmon Dip",
+      "vendorName": "Bristol Bay",
+      "description": "Hot smoked salmon dip. Delaware North says Bristol Bay continues to highlight it.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Section 6"
+      ],
+      "location": "Section 6",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "9-99"
+    },
+    {
+      "name": "Sockeye Bowl",
+      "vendorName": "Bristol Bay",
+      "description": "Sockeye bowl with roasted harissa carrots and chili crunch.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Section 6"
+      ],
+      "location": "Section 6",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "9-99"
+    },
+    {
+      "name": "Smoked Turkey Leg",
+      "vendorName": "Mercer St Mac + BBQ",
+      "description": "Smoked turkey leg at Mercer St Mac + BBQ.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "24"
+      ],
+      "location": "Section 24",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingItemSlug": "smoked-turkey-leg-smoked-turkey-leg",
+      "existingVendorSlug": "smoked-turkey-leg",
+      "notes": "Location previously read $9.99 - Mercer Mac N Cheese, Section 24. Price was not promoted to basePrice. Arena directory name is Mercer St Mac + BBQ; Delaware North says Mercer Mac 'n Cheese."
+    },
+    {
+      "name": "BBQ Plate",
+      "vendorName": "Mercer St Mac + BBQ",
+      "description": "Slow-smoked meats with classic accompaniments.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "24"
+      ],
+      "location": "Section 24",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "smoked-turkey-leg",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Royal Ranch Cheese Steak",
+      "vendorName": "Sound Bytes",
+      "description": "Shaved steak and cheese sandwich at Sound Bytes.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "11"
+      ],
+      "location": "Section 11",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingItemSlug": "royal-ranch-cheese-steak-royal-ranch-cheese-steak",
+      "existingVendorSlug": "royal-ranch-cheese-steak",
+      "notes": "Location previously read $9.99 - Sound Bytes, Section 11. Price was not promoted to basePrice. Delaware North spells the stand Sound Bites; the arena directory says Sound Bytes."
+    },
+    {
+      "name": "Gyro Smash Burger",
+      "vendorName": "Sound Bytes",
+      "description": "Royal Ranch beef, tzatziki, tomato, onion, and lettuce on pita.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "11"
+      ],
+      "location": "Section 11",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "royal-ranch-cheese-steak",
+      "notes": "Delaware North spells tzatziki as tzaztziki.",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Spam Musubi",
+      "vendorName": "Poké",
+      "description": "Gluten-free Spam musubi listed at Poké.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Section 6"
+      ],
+      "location": "Section 6",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingItemSlug": "poke-pop-poke-pop",
+      "existingVendorSlug": "poke-pop"
+    },
+    {
+      "name": "Poke Surf 'n Turf Nachos",
+      "vendorName": "Poké",
+      "description": "Ahi poke, crunchy Spam, wonton chips, eel sauce, spicy mayo, tobiko, cucumber, and scallions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Section 6"
+      ],
+      "location": "Section 6",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "poke-pop",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "The Rotating Chef’s Table",
+      "vendorName": "The Rotating Chef’s Table",
+      "description": "Rotating Chef's Table for the 2026-27 season. The release gives examples such as brisket elote, ribeye banh mi, BBQ platters, Asian-inspired rice bowls, Mediterranean gyros, and Latin-inspired bowls. Those examples are not separate permanent items.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "24",
+        "25"
+      ],
+      "location": "Sections 24, 25",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingItemSlug": "the-rotating-chef-s-table-the-rotating-chef-s-table",
+      "existingVendorSlug": "the-rotating-chef-s-table",
+      "notes": "Sections 24 and 25 are the existing canonical location. The 2026 release and live directory do not publish a different section.",
+      "allowItemNameEqualsVendor": true,
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Seattle Dog Piroshky",
+      "vendorName": "Piroshky Piroshky",
+      "description": "Piroshky Piroshky Seattle Dog topped with cream cheese and grilled onions.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "Section 4"
+      ],
+      "location": "Section 4",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingItemSlug": "piroshky-piroshky-piroshky-piroshky",
+      "existingVendorSlug": "piroshky-piroshky"
+    },
+    {
+      "name": "Tallow Fries",
+      "vendorName": "Molly D's Burgers",
+      "description": "Crispy fries cooked in beef tallow.",
+      "itemType": "FOOD",
+      "category": "SNACK",
+      "sections": [
+        "Section 8"
+      ],
+      "location": "Section 8",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://media.delawarenorth.com/climate-pledge-arena-and-delaware-north-sportservice-unveil-new-food-and-beverage-offerings-for-2026-27-seattle-kraken-season/",
+      "confidence": "HIGH",
+      "existingVendorSlug": "molly-d-s-burgers",
+      "labeledNewFor2026": true
+    },
+    {
+      "name": "Ballard Pizza Co.",
+      "vendorName": "Ballard Pizza Co.",
+      "description": "Housemade pizza by the slice.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "13",
+        "26",
+        "120"
+      ],
+      "location": "Sections 13, 26, 120",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH",
+      "existingItemSlug": "ballard-pizza-co-ballard-pizza-co",
+      "existingVendorSlug": "ballard-pizza-co",
+      "allowItemNameEqualsVendor": true
+    },
+    {
+      "name": "Birria Tacos",
+      "vendorName": "¡No Güey!",
+      "description": "Birria tacos, the favorite listed at ¡No Güey!.",
+      "itemType": "FOOD",
+      "category": "SAVORY",
+      "sections": [
+        "04"
+      ],
+      "location": "Section 04",
+      "basePrice": null,
+      "status": "ACTIVE",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/",
+      "confidence": "HIGH"
+    }
+  ],
+  "excluded": [
+    {
+      "kind": "item",
+      "name": "Filet and Caviar",
+      "reason": "Delaware North places it at The Galley. Neither source publishes a section."
+    },
+    {
+      "kind": "item",
+      "name": "Chili-lime carnitas nachos",
+      "reason": "1st Ave Nachos favorite on the arena page. The section list did not render."
+    },
+    {
+      "kind": "item",
+      "name": "Fisher Scones",
+      "reason": "Named on both sources. No section rendered."
+    },
+    {
+      "kind": "item",
+      "name": "Chicken Soup Dumplings",
+      "reason": "Dumpling House favorite. No section rendered."
+    },
+    {
+      "kind": "item",
+      "name": "The Crispy Peanut Butter & Jelly",
+      "reason": "Existing Molly D's item. Not on the 2026-27 new list and not marked stale."
+    },
+    {
+      "kind": "item",
+      "name": "The Arena Dog",
+      "reason": "Left on Bavarian Meats Cart. The Seattle Dog named in the release is the Piroshky item, not this row."
+    }
+  ],
+  "staleReview": [],
+  "possibleDuplicates": [
+    {
+      "classification": "POSSIBLE_DUPLICATE",
+      "existingName": "Freshly Shucked Oysters",
+      "existingItemSlug": "poke-pop-freshly-shucked-oysters",
+      "existingVendorSlug": "poke-pop",
+      "recommendation": "manual_review",
+      "evidence": "Oysters are attached to Poke Pop at Section 6. The live directory lists Poké and Bristol Bay separately and does not publish an oyster location. The vendor is renamed to Poké in place. The oyster row is not moved and not copied.",
+      "sourceUrl": "https://climatepledgearena.com/food-beverage/"
+    }
+  ]
+}
