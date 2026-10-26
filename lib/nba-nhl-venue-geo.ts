@@ -526,4 +526,13 @@ export function getNbaNhlVenueGeo(slug: string): NbaNhlVenueGeo | undefined {
   return NBA_NHL_VENUE_GEO[slug.trim().toLowerCase()];
 }
 
+/** Slug → IANA zone, including Grand Casino Arena (not in the coordinate registry). */
+export function buildNbaNhlVenueTimeZoneMap(): Record<string, string> {
+  const zones = Object.fromEntries(
+    Object.entries(NBA_NHL_VENUE_GEO).map(([slug, geo]) => [slug, geo.timeZone])
+  );
+  zones["grand-casino-arena"] = "America/Chicago";
+  return zones;
+}
+
 export const NBA_NHL_VENUE_SLUGS = Object.keys(NBA_NHL_VENUE_GEO).sort();

@@ -1,0 +1,108 @@
+/**
+ * ESPN arena labels → existing Stadium Slop venue slugs.
+ *
+ * Renamed buildings stay on the canonical slug already in production
+ * (Xfinity Mobile Arena is Wells Fargo Center; Mortgage Matchup Center is
+ * Footprint Center; crypto.com Arena is `crypto-com-arena`).
+ * Special-site slugs are created by the schedule sync only when missing.
+ */
+
+import { normalizeScheduleName } from "@/lib/schedules/schedule-names";
+
+const VENUE_NAME_TO_SLUG: Record<string, string> = {
+  "accor arena": "accor-arena",
+  "accors arena": "accor-arena",
+  "amerant bank arena": "amerant-bank-arena",
+  "fla live arena": "amerant-bank-arena",
+  "american airlines center": "american-airlines-center",
+  "arena cdmx": "arena-cdmx",
+  "arena ciudad de mexico": "arena-cdmx",
+  "at and t stadium": "att-stadium",
+  "atandt stadium": "att-stadium",
+  "att stadium": "att-stadium",
+  "ball arena": "ball-arena",
+  "barclays center": "barclays-center",
+  "bell centre": "bell-centre",
+  "benchmark international arena": "benchmark-international-arena",
+  "amalie arena": "benchmark-international-arena",
+  "bridgestone arena": "bridgestone-arena",
+  "canada life centre": "canada-life-centre",
+  "canada life center": "canada-life-centre",
+  "canadian tire centre": "canadian-tire-centre",
+  "canadian tire center": "canadian-tire-centre",
+  "capital one arena": "capital-one-arena",
+  "chase center": "chase-center",
+  "climate pledge arena": "climate-pledge-arena",
+  "co op live": "co-op-live",
+  "coop live": "co-op-live",
+  "crypto com arena": "crypto-com-arena",
+  "staples center": "crypto-com-arena",
+  "delta center": "delta-center",
+  "vivint arena": "delta-center",
+  "enterprise center": "enterprise-center",
+  "fedexforum": "fedexforum",
+  "fedex forum": "fedexforum",
+  "fiserv forum": "fiserv-forum",
+  "footprint center": "footprint-center",
+  "mortgage matchup center": "footprint-center",
+  "frost bank center": "frost-bank-center",
+  "att center": "frost-bank-center",
+  "gainbridge fieldhouse": "gainbridge-fieldhouse",
+  "bankers life fieldhouse": "gainbridge-fieldhouse",
+  "golden 1 center": "golden-1-center",
+  "grand casino arena": "grand-casino-arena",
+  "xcel energy center": "grand-casino-arena",
+  "honda center": "honda-center",
+  "intuit dome": "intuit-dome",
+  "kaseya center": "kaseya-center",
+  "ftx arena": "kaseya-center",
+  "keybank center": "keybank-center",
+  "kia center": "kia-center",
+  "amway center": "kia-center",
+  "lenovo center": "lenovo-center",
+  "pnc arena": "lenovo-center",
+  "little caesars arena": "little-caesars-arena",
+  "madison square garden": "madison-square-garden",
+  "moda center": "moda-center",
+  "moody center": "moody-center",
+  "nationwide arena": "nationwide-arena",
+  "paycom center": "paycom-center",
+  "chesapeake energy arena": "paycom-center",
+  "ppg paints arena": "ppg-paints-arena",
+  "princess auto stadium": "princess-auto-stadium",
+  "ig field": "princess-auto-stadium",
+  "investors group field": "princess-auto-stadium",
+  "prudential center": "prudential-center",
+  "psd bank dome": "psd-bank-dome",
+  "iss dome": "psd-bank-dome",
+  "rice eccles stadium": "rice-eccles-stadium",
+  "rocket arena": "rocket-arena",
+  "rocket mortgage fieldhouse": "rocket-arena",
+  "rogers arena": "rogers-arena",
+  "rogers place": "rogers-place",
+  "sap center": "sap-center",
+  "sap center at san jose": "sap-center",
+  "scotiabank arena": "scotiabank-arena",
+  "scotiabank saddledome": "scotiabank-saddledome",
+  "smoothie king center": "smoothie-king-center",
+  "spectrum center": "spectrum-center",
+  "state farm arena": "state-farm-arena",
+  "t mobile arena": "t-mobile-arena",
+  "target center": "target-center",
+  "td garden": "td-garden",
+  "toyota center": "toyota-center",
+  "toyota center houston": "toyota-center",
+  "ubs arena": "ubs-arena",
+  "united center": "united-center",
+  "veikkaus arena": "veikkaus-arena",
+  "helsinki halli": "veikkaus-arena",
+  "hartwall arena": "veikkaus-arena",
+  "wells fargo center": "wells-fargo-center",
+  "xfinity mobile arena": "wells-fargo-center"
+};
+
+export function resolveArenaVenueSlug(venueName: string): string | null {
+  const key = normalizeScheduleName(venueName);
+  if (!key) return null;
+  return VENUE_NAME_TO_SLUG[key] ?? null;
+}
